@@ -1,7 +1,16 @@
 ﻿namespace SportsTracker.Shared.Enums
 {
-    public class League
+    public enum League
     {
-        
+        NFL,
+        CFB,
+
+        NBA,
+        CBB,
+
+        MLB,
+        NHL,
+
+        PGA
     }
 }

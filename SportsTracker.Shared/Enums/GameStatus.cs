@@ -1,7 +1,13 @@
 ﻿namespace SportsTracker.Shared.Enums
 {
-    public class GameStatus
+    public enum GameStatus
     {
-        
+        Scheduled,
+        InProgress,
+        Halftime,
+        Final,
+        Postponed,
+        Delayed,
+        Cancelled
     }
 }

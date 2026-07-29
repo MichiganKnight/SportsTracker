@@ -16,7 +16,23 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="" />
+    <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Shared/Class1.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Shared/Enums/GameStatus.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Shared/Enums/League.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Shared/Enums/Sport.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Shared/Models/Athlete.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Shared/Models/Game.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Shared/Models/PlayerStats.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Shared/Models/Schedule.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Shared/Models/Standings.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Shared/Models/Team.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Web/Views/Shared/Error.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Web/Views/Shared/Error.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Web/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Web/Views/Shared/_Layout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Web/Views/_ViewImports.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Web/Views/_ViewImports.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.sln.DotSettings.user" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -40,15 +56,14 @@
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Workers/ScheduleWorker.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Workers/StandingsWorker.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Workers/TeamsWorker.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Class1.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Common/ApiResponse.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Enums/GameStatus.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Enums/League.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Enums/Sport.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Models/Athlete.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Models/Game.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Models/PlayerStats.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Models/Schedule.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Models/Standings.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Models/Team.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Models/Venue.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Web/Controllers/CBBController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Web/Controllers/CFBController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Web/Controllers/NBAController.cs" root0="FORCE_HIGHLIGHTING" />
@@ -168,7 +183,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1785342854138</updated>
-      <workItem from="1785342855390" duration="723000" />
+      <workItem from="1785342855390" duration="1582000" />
     </task>
     <servers />
   </component>

@@ -1,6 +1,6 @@
 ﻿namespace SportsTracker.Shared.Models
 {
-    public class Schedule
+    public class Venue
     {
         
     }
