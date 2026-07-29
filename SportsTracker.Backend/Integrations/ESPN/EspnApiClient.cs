@@ -12,7 +12,7 @@ namespace SportsTracker.Backend.Integrations.ESPN
         public EspnApiClient(HttpClient httpClient, IOptions<EspnOptions> options)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri(options.Value.BaseUrl);
+            _httpClient.BaseAddress = new Uri(options.Value.BaseUrl.TrimEnd('/') + "/");
             
             _jsonOptions = new JsonSerializerOptions
             {

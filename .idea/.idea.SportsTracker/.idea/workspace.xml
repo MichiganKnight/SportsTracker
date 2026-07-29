@@ -17,22 +17,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Services/CacheService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Services/EspnApiClient.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Services/GameService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Services/PlayerService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Services/StandingsService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Services/TeamService.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/TestController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/EspnController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/EspnApiClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/EspnApiClient.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/EspnEndpoints.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/Endpoints/EspnEndpoints.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/SportsTracker.Backend.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/SportsTracker.Backend.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Workers/LiveGamesWorker.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Workers/RankingsWorker.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Workers/ScheduleWorker.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Workers/StandingsWorker.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Workers/TeamsWorker.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Web/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Web/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Shared/Models/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Shared/Models/Game.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Shared/Models/Team.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Shared/Models/Team.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Shared/Models/Venue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Shared/Models/Venue.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,11 +42,9 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Config/EspnOptions.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Controllers/TestController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Extensions/ServiceCollectionExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/ScoreboardResponseDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/EspnApiClient.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/EspnEndpoints.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/IEspnApiClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Common/ApiResponse.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Enums/GameStatus.cs" root0="FORCE_HIGHLIGHTING" />
@@ -63,6 +52,8 @@
     <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Enums/Sport.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Models/Athlete.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Models/Game.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Models/Logo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Models/Record.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Models/Team.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Models/Venue.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Web/Controllers/CBBController.cs" root0="FORCE_HIGHLIGHTING" />
@@ -185,7 +176,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1785342854138</updated>
-      <workItem from="1785342855390" duration="3199000" />
+      <workItem from="1785342855390" duration="4367000" />
     </task>
     <servers />
   </component>

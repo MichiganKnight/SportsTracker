@@ -1,8 +1,7 @@
-﻿using System.Diagnostics;
-using SportsTracker.Shared.Config;
+﻿using SportsTracker.Shared.Config;
 using SportsTracker.Shared.Enums;
 
-namespace SportsTracker.Backend.Integrations.ESPN
+namespace SportsTracker.Backend.Integrations.ESPN.Endpoints
 {
     public static class EspnEndpoints
     {
