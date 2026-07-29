@@ -1,5 +1,6 @@
-﻿namespace SportsTracker.Shared;
-
-public class Class1
+﻿namespace SportsTracker.Shared
 {
+    public class Class1
+    {
+    }
 }
