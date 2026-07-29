@@ -1,6 +1,6 @@
 ﻿using SportsTracker.Shared.Enums;
 
-namespace SportsTracker.Shared.Config
+namespace SportsTracker.Shared.Metadata
 {
     public sealed class LeagueInfo
     {

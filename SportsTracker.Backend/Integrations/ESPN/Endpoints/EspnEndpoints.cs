@@ -1,5 +1,5 @@
-﻿using SportsTracker.Shared.Config;
-using SportsTracker.Shared.Enums;
+﻿using SportsTracker.Shared.Enums;
+using SportsTracker.Shared.Metadata;
 
 namespace SportsTracker.Backend.Integrations.ESPN.Endpoints
 {

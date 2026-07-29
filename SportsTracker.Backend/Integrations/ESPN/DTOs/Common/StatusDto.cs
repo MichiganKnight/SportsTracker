@@ -1,4 +1,4 @@
-﻿namespace SportsTracker.Backend.Integrations.ESPN.DTOs.Scoreboard
+﻿namespace SportsTracker.Backend.Integrations.ESPN.DTOs.Common
 {
     public sealed class StatusDto
     {
