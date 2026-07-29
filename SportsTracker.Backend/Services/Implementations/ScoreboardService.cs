@@ -6,6 +6,7 @@ using SportsTracker.Backend.Integrations.ESPN.DTOs.Scoreboard;
 using SportsTracker.Backend.Integrations.ESPN.Endpoints;
 using SportsTracker.Backend.Integrations.ESPN.Mappers;
 using SportsTracker.Backend.Services.Interfaces;
+using SportsTracker.Shared.Common;
 using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Models;
 
@@ -38,16 +39,16 @@ namespace SportsTracker.Backend.Services.Implementations
 
                 string endpoint = EspnEndpoints.Scoreboard(league);
 
-                ScoreboardResponseDto? dto = await _espnApiClient.GetAsync<ScoreboardResponseDto>(endpoint, cancellationToken);
+                ApiResult<ScoreboardResponseDto> result = await _espnApiClient.GetAsync<ScoreboardResponseDto>(endpoint, cancellationToken);
 
-                if (dto is null)
+                if (!result.Success)
                 {
-                    _logger.LogWarning("Not Scoreboard Returned for {league}", league);
+                    _logger.LogWarning("Unable to Retrieve Scoreboard for {league}. Status: {Status}. Error: {Error}", league, result.StatusCode, result.Error?.Message);
 
                     return [];
                 }
 
-                IReadOnlyList<Game> games = ScoreboardMapper.ToGames(dto, league).ToList();
+                IReadOnlyList<Game> games = ScoreboardMapper.ToGames(result.Value!, league).ToList();
 
                 _logger.LogInformation("Retrieved {GameCount} Games for {league}", games.Count, league);
 

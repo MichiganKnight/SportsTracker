@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Microsoft.Extensions.Options;
 using SportsTracker.Backend.Config;
+using SportsTracker.Shared.Common;
 
 namespace SportsTracker.Backend.Integrations.ESPN
 {
@@ -24,23 +24,40 @@ namespace SportsTracker.Backend.Integrations.ESPN
             };
         }
 
-        public async Task<T?> GetAsync<T>(string endpoint, CancellationToken cancellationToken = default)
+        public async Task<ApiResult<T>> GetAsync<T>(string endpoint, CancellationToken cancellationToken = default)
         {
-            _logger.LogInformation("GET {Endpoint}", endpoint);
+            try
+            {
+                _logger.LogInformation("GET {Endpoint}", endpoint);
 
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            
-            using HttpResponseMessage response = await _httpClient.GetAsync(endpoint, cancellationToken);
-            
-            stopwatch.Stop();
-            
-            _logger.LogInformation("GET {Endpoint} Returned {StatusCode} in {Elapsed} ms", endpoint, (int)response.StatusCode, stopwatch.ElapsedMilliseconds);
+                using HttpResponseMessage response = await _httpClient.GetAsync(endpoint, cancellationToken);
 
-            response.EnsureSuccessStatusCode();
-            
-            await using Stream stream = await response.Content.ReadAsStreamAsync(cancellationToken);
-            
-            return await JsonSerializer.DeserializeAsync<T>(stream, _jsonOptions, cancellationToken);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return ApiResult<T>.Fail(new Error("HTTP_ERROR", response.ReasonPhrase ?? "HTTP Request Failed"), (int)response.StatusCode);
+                }
+
+                await using Stream stream = await response.Content.ReadAsStreamAsync(cancellationToken);
+
+                T? dto = await JsonSerializer.DeserializeAsync<T>(stream, _jsonOptions, cancellationToken);
+
+                if (dto is null)
+                {
+                    return ApiResult<T>.Fail(new Error("DESERIALIZATION", "Unable to Deserialize ESPN Response"));
+                }
+
+                return ApiResult<T>.Ok(dto, (int)response.StatusCode);
+            }
+            catch (TaskCanceledException)
+            {
+                return ApiResult<T>.Fail(new Error("TIMEOUT", "The Request Timed Out"));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected EXPN Error");
+                
+                return ApiResult<T>.Fail(new Error("EXCEPTION", ex.Message));
+            }
         }
     }
 }

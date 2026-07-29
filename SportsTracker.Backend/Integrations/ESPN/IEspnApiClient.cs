@@ -1,7 +1,9 @@
-﻿namespace SportsTracker.Backend.Integrations.ESPN
+﻿using SportsTracker.Shared.Common;
+
+namespace SportsTracker.Backend.Integrations.ESPN
 {
     public interface IEspnApiClient
     {
-        Task<T?> GetAsync<T>(string endpoint, CancellationToken cancellationToken = default);
+        Task<ApiResult<T>> GetAsync<T>(string endpoint, CancellationToken cancellationToken = default);
     }
 }
