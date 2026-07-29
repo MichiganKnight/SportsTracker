@@ -10,11 +10,11 @@
 
 ## 📱 Applications in this Repository
 
-### [SportsTracker Backend](/SportTracker.Backend)
+### [SportsTracker Backend](/SportsTracker.Backend/)
 > Backend for SportsTracker
 
-### [SportsTracker Shared](/SportsTracker.Shared)
+### [SportsTracker Shared](/SportsTracker.Shared/)
 > Shared Models & Enums for SportsTracker
 
-### [SportsTracker Web Frontend](/SportsTracker.Web)
+### [SportsTracker Web Frontend](/SportsTracker.Web/)
 > Frontend Web Application for SportsTracker
