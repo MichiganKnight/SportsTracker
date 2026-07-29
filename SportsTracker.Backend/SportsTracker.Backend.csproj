@@ -13,8 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Integrations\ESPN\DTOs\Scoreboard\" />
-      <Folder Include="Integrations\ESPN\Mappers\" />
       <Folder Include="Services\" />
     </ItemGroup>
 

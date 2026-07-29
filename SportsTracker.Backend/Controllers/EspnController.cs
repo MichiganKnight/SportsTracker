@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportsTracker.Backend.Integrations.ESPN;
 using SportsTracker.Backend.Integrations.ESPN.DTOs;
+using SportsTracker.Backend.Integrations.ESPN.DTOs.Scoreboard;
 using SportsTracker.Backend.Integrations.ESPN.Endpoints;
 using SportsTracker.Shared.Enums;
 

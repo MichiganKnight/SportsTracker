@@ -11,7 +11,7 @@ namespace SportsTracker.Shared.Models
         public DateTime StartTime { get; init; }
         
         public GameStatus Status { get; init; }
-        public string StatusTExt { get; init; } = string.Empty;
+        public string StatusText { get; init; } = string.Empty;
 
         public Team HomeTeam { get; init; } = null!;
         public Team AwayTeam { get; init; } = null!;
