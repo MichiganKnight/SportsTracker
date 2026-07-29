@@ -1,4 +1,7 @@
-﻿using SportsTracker.Backend.Integrations.ESPN;
+﻿using Microsoft.Extensions.Options;
+using SportsTracker.Backend.Cache;
+using SportsTracker.Backend.Config;
+using SportsTracker.Backend.Integrations.ESPN;
 using SportsTracker.Backend.Integrations.ESPN.DTOs.Scoreboard;
 using SportsTracker.Backend.Integrations.ESPN.Endpoints;
 using SportsTracker.Backend.Integrations.ESPN.Mappers;
@@ -11,24 +14,45 @@ namespace SportsTracker.Backend.Services.Implementations
     public class ScoreboardService : IScoreboardService
     {
         private readonly IEspnApiClient _espnApiClient;
+        private readonly ICacheService _cache;
+        private readonly CacheOptions _cacheOptions;
+        private readonly ILogger<ScoreboardService> _logger;
         
-        public ScoreboardService(IEspnApiClient espnApiClient)
+        public ScoreboardService(IEspnApiClient espnApiClient, ICacheService cache, IOptions<CacheOptions> cacheOptions, ILogger<ScoreboardService> logger)
         {
             _espnApiClient = espnApiClient;
+            _cache = cache;
+            _cacheOptions = cacheOptions.Value;
+            _logger = logger;
         }
         
         public async Task<IReadOnlyList<Game>> GetScoreboardAsync(League league, CancellationToken cancellationToken = default)
         {
-            string endpoint = EspnEndpoints.Scoreboard(league);
+            string cacheKey = CacheKeys.Scoreboard(league);
             
-            ScoreboardResponseDto? response = await _espnApiClient.GetAsync<ScoreboardResponseDto>(endpoint, cancellationToken);
+            _logger.LogInformation("Loading {league} Scoreboard", league);
 
-            if (response is null)
+            return await _cache.GetOrCreateAsync(cacheKey, TimeSpan.FromMinutes(_cacheOptions.ScheduledScoreboardMinutes), async () =>
             {
-                return [];
-            }
+                _logger.LogInformation("Cache Miss for {league}. Fetching ESPN...", league);
 
-            return ScoreboardMapper.ToGames(response, league).ToList();
+                string endpoint = EspnEndpoints.Scoreboard(league);
+
+                ScoreboardResponseDto? dto = await _espnApiClient.GetAsync<ScoreboardResponseDto>(endpoint, cancellationToken);
+
+                if (dto is null)
+                {
+                    _logger.LogWarning("Not Scoreboard Returned for {league}", league);
+
+                    return [];
+                }
+
+                IReadOnlyList<Game> games = ScoreboardMapper.ToGames(dto, league).ToList();
+
+                _logger.LogInformation("Retrieved {GameCount} Games for {league}", games.Count, league);
+
+                return games;
+            }) ?? [];
         }
     }
 }
