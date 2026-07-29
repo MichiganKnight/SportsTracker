@@ -84,5 +84,7 @@ namespace SportsTracker.Shared.Metadata
                 }
             }
         };
+        
+        public static IEnumerable<League> All => Leagues.Keys;
     }
 }

@@ -4,6 +4,7 @@
     {
         public const string SectionName = "Cache";
         
+        public int WorkerRefreshSeconds { get; init; } = 15;
         public int LiveScoreboardSeconds { get; init; } = 15;
         public int ScheduledScoreboardMinutes { get; init; } = 2;
         public int FinalScoreboardMinutes { get; init; } = 30;

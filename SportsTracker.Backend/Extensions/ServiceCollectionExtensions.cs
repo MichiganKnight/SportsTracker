@@ -3,6 +3,7 @@ using SportsTracker.Backend.Config;
 using SportsTracker.Backend.Integrations.ESPN;
 using SportsTracker.Backend.Services.Implementations;
 using SportsTracker.Backend.Services.Interfaces;
+using SportsTracker.Backend.Workers;
 
 namespace SportsTracker.Backend.Extensions
 {
@@ -18,8 +19,11 @@ namespace SportsTracker.Backend.Extensions
             services.AddHttpClient<IEspnApiClient, EspnApiClient>();
 
             services.AddScoped<IScoreboardService, ScoreboardService>();
+            services.AddScoped<IScoreboardRefreshService, ScoreboardRefreshService>();
             
             services.AddSingleton<ICacheService, MemoryCacheService>();
+
+            services.AddHostedService<ScoreboardWorker>();
             
             return services;
         }
