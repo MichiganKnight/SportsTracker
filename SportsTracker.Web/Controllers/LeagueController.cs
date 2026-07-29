@@ -2,7 +2,7 @@
 
 namespace SportsTracker.Web.Controllers
 {
-    public class PlayersController : Controller
+    public class LeagueController : Controller
     {
         // GET
         public IActionResult Index()

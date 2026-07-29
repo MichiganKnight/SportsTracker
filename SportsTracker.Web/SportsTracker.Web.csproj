@@ -7,6 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Folder Include="Services\Models\" />
+      <Folder Include="Services\ViewModels\" />
+      <Folder Include="Views\Game\" />
+      <Folder Include="Views\League\" />
       <Folder Include="wwwroot\images\" />
     </ItemGroup>
 

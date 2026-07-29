@@ -2,7 +2,7 @@
 
 namespace SportsTracker.Web.Controllers
 {
-    public class CFBController : Controller
+    public class GameController : Controller
     {
         // GET
         public IActionResult Index()

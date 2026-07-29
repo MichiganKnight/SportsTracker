@@ -1,7 +1,13 @@
+using SportsTracker.Web.Services.Api;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.Configure<SportsApiOptions>(builder.Configuration.GetSection("SportsApi"));
+
+builder.Services.AddHttpClient<ISportsApiClient, SportsApiClient>();
 
 WebApplication app = builder.Build();
 
