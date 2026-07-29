@@ -6,7 +6,7 @@ using SportsTracker.Shared.Models;
 namespace SportsTracker.Backend.Controllers
 {
     [ApiController]
-    [Route("api/scoreboard")]
+    [Route("api/v1/scoreboard")]
     public class ScoreboardController : ControllerBase
     {
         private readonly IScoreboardService _scoreboardService;
