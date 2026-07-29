@@ -1,5 +1,7 @@
 ﻿using SportsTracker.Backend.Config;
 using SportsTracker.Backend.Integrations.ESPN;
+using SportsTracker.Backend.Services.Implementations;
+using SportsTracker.Backend.Services.Interfaces;
 
 namespace SportsTracker.Backend.Extensions
 {
@@ -10,6 +12,8 @@ namespace SportsTracker.Backend.Extensions
             services.Configure<EspnOptions>(configuration.GetSection(EspnOptions.SectionName));
             
             services.AddHttpClient<IEspnApiClient, EspnApiClient>();
+
+            services.AddScoped<IScoreboardService, ScoreboardService>();
             
             return services;
         }
