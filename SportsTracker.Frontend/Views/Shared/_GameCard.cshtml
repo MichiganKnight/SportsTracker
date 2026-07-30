@@ -1,0 +1,30 @@
+﻿@model SportsTracker.Frontend.ViewModels.GameCardViewModel
+
+<div class="card game-card mb-3">
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <span>@Model.AwayTeam</span>
+            <strong>@Model.AwayScore</strong>
+        </div>
+        
+        <div class="d-flex justify-content-between">
+            <span>@Model.HomeTeam</span>
+            <strong>@Model.HomeScore</strong>
+        </div>
+        
+        <hr />
+        
+        <div class="d-flex justify-content-between align-items-center">
+            <small class="text-secondary">
+                @Model.Status
+            </small>
+            
+            @if (Model.IsLive)
+            {
+                <span class="badge bg-danger">
+                    LIVE
+                </span>
+            }
+        </div>
+    </div>
+</div>

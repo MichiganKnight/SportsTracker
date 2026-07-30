@@ -1,0 +1,18 @@
+﻿@using SportsTracker.Frontend.ViewModels
+@model SportsTracker.Frontend.ViewModels.LeagueSectionViewModel
+
+<section class="mb-5">
+    <h3 class="mb-3">
+        @Model.Icon
+        @Model.LeagueName
+    </h3>
+    
+    <div class="row">
+        @foreach (GameCardViewModel game in Model.Games)
+        {
+            <div class="col-lg-4 col-md-6">
+                <partial name="_GameCard" model="game" />
+            </div>
+        }
+    </div>
+</section>
