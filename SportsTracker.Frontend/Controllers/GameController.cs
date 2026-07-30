@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace SportsTracker.Web.Controllers
+namespace SportsTracker.Frontend.Controllers
 {
     public class GameController : Controller
     {

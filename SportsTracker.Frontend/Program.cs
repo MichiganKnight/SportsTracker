@@ -1,4 +1,5 @@
-using SportsTracker.Web.Services.Api;
+using SportsTracker.Frontend.Config;
+using SportsTracker.Frontend.Services.Api;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
         name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}")
+        pattern: "{controller=Dashboard}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 

@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportsTracker.Web", "SportsTracker.Web\SportsTracker.Web.csproj", "{0CBB3DC6-D8F2-4599-931B-FE8A5C56E7B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportsTracker.Frontend", "SportsTracker.Frontend\SportsTracker.Frontend.csproj", "{0CBB3DC6-D8F2-4599-931B-FE8A5C56E7B9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportsTracker.Backend", "SportsTracker.Backend\SportsTracker.Backend.csproj", "{D8D746AE-FE73-444A-9192-E56537BAC0CD}"
 EndProject

@@ -1,0 +1,14 @@
+﻿body {
+    background: var(--st-bg);
+    color: var(--st-text);
+}
+
+main {
+    background: var(--st-bg);
+    min-height: calc(100vh - var(--st-navbar-height));
+}
+
+.container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+}

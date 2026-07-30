@@ -1,4 +1,4 @@
-﻿namespace SportsTracker.Web.Services.Api
+﻿namespace SportsTracker.Frontend.Services.Api
 {
     public interface ISportsApiClient
     {

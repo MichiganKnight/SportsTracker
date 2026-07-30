@@ -1,0 +1,9 @@
+﻿.navbar-sports {
+    background: var(--st-navbar);
+    border-bottom: 1px solid var(--st-border);
+}
+
+.navbar-brand {
+    color: var(--st-text) !important;
+    font-weight: 700;
+}

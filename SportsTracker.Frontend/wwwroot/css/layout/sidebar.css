@@ -1,0 +1,32 @@
+﻿.sidebar {
+    background: var(--st-sidebar);
+    border-right: 1px solid var(--st-border);
+    min-height: calc(100vh - var(--st-navbar-height));
+}
+
+.sidebar-header {
+    color: var(--st-text-muted);
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .08rem;
+    padding: .75rem 1rem .25rem;
+}
+
+.list-group {
+    background: transparent;
+}
+
+.list-group-item {
+    background: transparent;
+    color: var(--st-text);
+    border: none;
+}
+
+.list-group-item:hover {
+    background: var(--st-surface-alt);
+    color: white;
+}
+
+.list-group-item.active {
+    background: var(--st-primary);
+}

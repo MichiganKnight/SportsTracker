@@ -1,0 +1,10 @@
+﻿.card {
+    background: var(--st-surface);
+    border: 1px solid var(--st-border);
+    color: var(--st-text);
+    border-radius: .7rem;
+}
+
+.card-header {
+    border-bottom: 1px solid var(--st-border);
+}
