@@ -2,11 +2,14 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<h2 class="mb-4">
-    Today's Games
-</h2>
-
-@foreach (dynamic? league in Model.Leagues)
-{
-    <partial name="_LeagueSection" model="league" />   
-}
+<div class="card mb-4">
+    <div class="card-body">
+        <h2 class="mb-1">
+            Today's Games
+        </h2>
+        
+        <p class="text-secondary mb-0">
+            Live Scorebards From Every Supported League
+        </p>
+    </div>
+</div>

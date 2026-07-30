@@ -1,4 +1,5 @@
 using SportsTracker.Frontend.Config;
+using SportsTracker.Frontend.Mapping;
 using SportsTracker.Frontend.Services.Api;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -6,9 +7,11 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.Configure<SportsApiOptions>(builder.Configuration.GetSection("SportsApi"));
+builder.Services.Configure<SportsApiOptions>(builder.Configuration.GetSection(SportsApiOptions.SectionName));
 
 builder.Services.AddHttpClient<ISportsApiClient, SportsApiClient>();
+
+builder.Services.AddScoped<IDashboardMapper, DashboardMapper>();
 
 WebApplication app = builder.Build();
 

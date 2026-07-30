@@ -22,5 +22,9 @@ namespace SportsTracker.Shared.Models
         public Venue? Venue { get; init; }
         
         public bool IsNeutralSite { get; init; }
+
+        public bool IsCompleted => Status == GameStatus.Final;
+        public bool IsUpcoming => Status == GameStatus.Scheduled;
+        public bool IsLive => Status == GameStatus.InProgress;
     }
 }

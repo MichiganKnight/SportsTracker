@@ -1,61 +1,44 @@
 using Microsoft.AspNetCore.Mvc;
+using SportsTracker.Frontend.Mapping;
+using SportsTracker.Frontend.Services.Api;
 using SportsTracker.Frontend.ViewModels;
+using SportsTracker.Shared.Common;
+using SportsTracker.Shared.Enums;
+using SportsTracker.Shared.Metadata;
+using SportsTracker.Shared.Models;
 
 namespace SportsTracker.Frontend.Controllers
 {
     public class DashboardController : Controller
     {
-        public IActionResult Index()
+        private readonly ISportsApiClient _api;
+        private readonly IDashboardMapper _mapper;
+        
+        public DashboardController(ISportsApiClient api, IDashboardMapper mapper)
         {
-            DashboardViewModel model = new()
+            _api = api;
+            _mapper = mapper;
+        }
+        
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
+        {
+            Dictionary<League, IReadOnlyList<Game>> scoreboards = new();
+
+            foreach (League league in LeagueConfiguration.All)
             {
-                Leagues =
-                [
-                    new LeagueSectionViewModel
-                    {
-                        LeagueName = "NFL",
-                        Icon = "🏈",
-                        Games =
-                        [
-                            new GameCardViewModel
-                            {
-                                AwayTeam = "Packers",
-                                AwayScore = 3,
-                                HomeTeam = "Bears",
-                                HomeScore = 3,
-                                Status = "3rd • 9:24",
-                                IsLive = true
-                            },
-                            new GameCardViewModel
-                            {
-                                AwayTeam = "Chiefs",
-                                AwayScore = 24,
-                                HomeTeam = "Bills",
-                                HomeScore = 21,
-                                Status = "Final",
-                                IsLive = false
-                            }
-                        ]
-                    },
-                    new LeagueSectionViewModel()
-                    {
-                        LeagueName = "MLB",
-                        Icon = "⚾",
-                        Games =
-                        [
-                            new GameCardViewModel
-                            {
-                                AwayTeam = "Cubs",
-                                AwayScore = 6,
-                                HomeTeam = "Cardinals",
-                                HomeScore = 4,
-                                Status = "Top 8",
-                                IsLive = true
-                            }
-                        ]
-                    }
-                ]
-            };
+                try
+                {
+                    ApiResponse<IReadOnlyList<Game>>? response = await _api.GetScoreboardAsync(league, cancellationToken);
+
+                    scoreboards[league] = response?.Data ?? [];
+                }
+                catch
+                {
+                    scoreboards[league] = [];
+                }
+            }
+            
+            DashboardViewModel model = _mapper.Map(scoreboards);
 
             return View(model);
         }

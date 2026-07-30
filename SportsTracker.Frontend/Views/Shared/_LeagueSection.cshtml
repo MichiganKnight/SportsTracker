@@ -1,18 +1,13 @@
-﻿@using SportsTracker.Frontend.ViewModels
-@model SportsTracker.Frontend.ViewModels.LeagueSectionViewModel
+﻿@model SportsTracker.Frontend.ViewModels.LeagueSectionViewModel
 
-<section class="mb-5">
-    <h3 class="mb-3">
+<div class="league-header d-flex justify-content-between align-items-center">
+    <h3 class="mb-0">
         @Model.Icon
+        
         @Model.LeagueName
     </h3>
     
-    <div class="row">
-        @foreach (GameCardViewModel game in Model.Games)
-        {
-            <div class="col-lg-4 col-md-6">
-                <partial name="_GameCard" model="game" />
-            </div>
-        }
-    </div>
-</section>
+    <a href="@Model.Route" class="text-decoration-none">
+        View All →
+    </a>
+</div>

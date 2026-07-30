@@ -19,3 +19,49 @@ body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
 }
+
+.league-header {
+    border-bottom: 1px solid var(--st-border);
+    margin-bottom: 1rem;
+    padding-bottom: .5rem;
+}
+
+.league-nfl {
+    border-left: 4px solid #2E8B57;
+}
+
+.league-mlb {
+    border-left: 4px solid #005A9C;
+}
+
+.league-nba {
+    border-left: 4px solid #C8102E;
+}
+
+.league-nhl {
+    border-left: 4px solid #6C757D;
+}
+
+.league-cfb {
+    border-left: 4px solid #FF8200;
+}
+
+.league-cbb {
+    border-left: 4px solid #7A3E00;
+}
+
+.league-pga {
+    border-left: 4px solid #198754;
+}
+
+.team-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.05rem;
+    margin-bottom: .35rem;
+}
+
+.team-score {
+    font-weight: 700;
+    font-size: 1.2rem;
+}
