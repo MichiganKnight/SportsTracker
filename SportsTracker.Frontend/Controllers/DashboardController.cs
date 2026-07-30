@@ -24,20 +24,18 @@ namespace SportsTracker.Frontend.Controllers
         {
             Dictionary<League, IReadOnlyList<Game>> scoreboards = new();
 
+            const int maxGamesPerLeague = 3;
+
             foreach (League league in LeagueConfiguration.All)
             {
                 try
                 {
                     ApiResponse<IReadOnlyList<Game>>? response = await _api.GetScoreboardAsync(league, cancellationToken);
-                    
-                    Console.WriteLine($"{league}: {response?.Data.Count ?? 0} games");
 
-                    scoreboards[league] = response?.Data ?? [];
+                    scoreboards[league] = response?.Data?.Take(maxGamesPerLeague).ToList() ?? [];
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"ERROR Loading {league}: {ex.Message}");
-                    
                     scoreboards[league] = [];
                 }
             }

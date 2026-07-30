@@ -17,8 +17,6 @@ namespace SportsTracker.Frontend.Mapping
 
                 scoreboards.TryGetValue(league, out IReadOnlyList<Game>? games);
                 
-                Console.WriteLine($"{league}: {(games?.Count ?? 0)} mapped games");
-                
                 sections.Add(new LeagueSectionViewModel
                 {
                     League = league,
