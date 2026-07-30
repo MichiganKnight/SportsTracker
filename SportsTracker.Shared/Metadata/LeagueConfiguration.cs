@@ -86,5 +86,7 @@ namespace SportsTracker.Shared.Metadata
         };
         
         public static IEnumerable<League> All => Leagues.Keys;
+        
+        public static LeagueInfo Get(League league) => Leagues[league];
     }
 }
