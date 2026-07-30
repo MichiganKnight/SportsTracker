@@ -1,44 +1,58 @@
 ﻿@model SportsTracker.Frontend.ViewModels.GameCardViewModel
 
-<div class="card game-card h-100">
+<div class="card game-card h-100 shadow-sm">
     <div class="card-body">
         <div class="team-row">
             <div class="d-flex align-items-center">
                 @if (!string.IsNullOrWhiteSpace(Model.AwayTeam.Logo))
                 {
-                    <img src="@Model.AwayTeam.Logo" width="24" height="24" class="me-2" alt="@Model.AwayTeam.Name" />
+                    <img src="@Model.AwayTeam.Logo" class="team-logo me-2" alt="@Model.AwayTeam.Name"/>
                 }
-                
-                <span>@Model.AwayTeam.Name</span>
+                <div>
+                    <div>@Model.AwayTeam.Abbreviation</div>
+                    @if (!string.IsNullOrWhiteSpace(Model.AwayTeam.Record))
+                    {
+                        <small class="text-secondary">
+                            @Model.AwayTeam.Record
+                        </small>
+                    }
+                </div>
             </div>
-            
+
             <span class="team-score">
                 @Model.AwayTeam.Score
             </span>
         </div>
-        
-        <div class="team-row">
+
+        <div class="team-row mt-2">
             <div class="d-flex align-items-center">
                 @if (!string.IsNullOrWhiteSpace(Model.HomeTeam.Logo))
                 {
-                    <img src="@Model.HomeTeam.Logo" width="24" height="24" class="me-2" alt="@Model.HomeTeam.Name" />
+                    <img src="@Model.HomeTeam.Logo" class="team-logo me-2" alt="@Model.HomeTeam.Name"/>
                 }
-                
-                <span>@Model.HomeTeam.Name</span>
+                <div>
+                    <div>@Model.HomeTeam.Abbreviation</div>
+                    @if (!string.IsNullOrWhiteSpace(Model.HomeTeam.Record))
+                    {
+                        <small class="text-secondary">
+                            @Model.HomeTeam.Record
+                        </small>
+                    }
+                </div>
             </div>
-            
+
             <span class="team-score">
                 @Model.HomeTeam.Score
             </span>
         </div>
-        
-        <hr />
-        
-        <div class="d-flex justify-content-between">
+
+        <hr/>
+
+        <div class="d-flex justify-content-between align-items-center">
             <small class="text-secondary">
                 @Model.Status
             </small>
-            
+
             @if (Model.IsLive)
             {
                 <span class="badge bg-danger">

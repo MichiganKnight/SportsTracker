@@ -10,13 +10,13 @@
 }
 
 .game-card {
-    transition: transform .15s ease, box-shadow .15s ease;
-    cursor: pointer;
+    transition: all .2s ease;
+    border: 1px solid var(--st-border);
 }
 
 .game-card:hover {
     transform: translateY(-2px);
-    box-shadow: var(--st-shadow-md);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.2);
 }
 
 .game-card .badge {

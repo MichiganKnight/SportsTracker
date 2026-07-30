@@ -54,14 +54,19 @@ body {
     border-left: 4px solid #198754;
 }
 
+.team-logo {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
 .team-row {
     display: flex;
     justify-content: space-between;
-    font-size: 1.05rem;
-    margin-bottom: .35rem;
+    align-items: center;
 }
 
 .team-score {
+    font-size: 1.4rem;
     font-weight: 700;
-    font-size: 1.2rem;
 }

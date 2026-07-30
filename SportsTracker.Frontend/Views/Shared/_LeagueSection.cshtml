@@ -1,13 +1,36 @@
-﻿@model SportsTracker.Frontend.ViewModels.LeagueSectionViewModel
+﻿@using SportsTracker.Frontend.ViewModels
+@model SportsTracker.Frontend.ViewModels.LeagueSectionViewModel
 
-<div class="league-header d-flex justify-content-between align-items-center">
-    <h3 class="mb-0">
-        @Model.Icon
+<section class="mb-5">
+    <div class="league-header d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">
+            @Model.Icon
+            
+            @Model.LeagueName
+        </h3>
         
-        @Model.LeagueName
-    </h3>
+        <a href="@Model.Route" class="textdecoration-none">
+            View All →
+        </a>
+    </div>
     
-    <a href="@Model.Route" class="text-decoration-none">
-        View All →
-    </a>
-</div>
+    @if (!Model.HasGames)
+    {
+        <div class="card">
+            <div class="card-body text-secondary">
+                No Games Scheduled
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-3">
+            @foreach (GameCardViewModel game in Model.Games)
+            {
+                <div class="col-xl-4 col-lg-6">
+                    <partial name="_GameCard" model="game" />
+                </div>
+            }
+        </div>
+    }
+</section>

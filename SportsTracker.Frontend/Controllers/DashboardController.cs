@@ -29,11 +29,15 @@ namespace SportsTracker.Frontend.Controllers
                 try
                 {
                     ApiResponse<IReadOnlyList<Game>>? response = await _api.GetScoreboardAsync(league, cancellationToken);
+                    
+                    Console.WriteLine($"{league}: {response?.Data.Count ?? 0} games");
 
                     scoreboards[league] = response?.Data ?? [];
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Console.WriteLine($"ERROR Loading {league}: {ex.Message}");
+                    
                     scoreboards[league] = [];
                 }
             }

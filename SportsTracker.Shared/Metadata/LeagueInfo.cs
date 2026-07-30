@@ -12,6 +12,8 @@ namespace SportsTracker.Shared.Metadata
         public string DisplayName { get; init; } = string.Empty;
         public string Icon { get; init; } = string.Empty;
         
+        public int DisplayOrder { get; init; }
+        
         public string Route => League.ToString().ToLowerInvariant();
     }
 }

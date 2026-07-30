@@ -11,11 +11,13 @@ namespace SportsTracker.Frontend.Mapping
         {
             List<LeagueSectionViewModel> sections = [];
 
-            foreach (League league in LeagueConfiguration.All)
+            foreach (League league in LeagueConfiguration.All.OrderBy(l => LeagueConfiguration.Get(League.CFB).DisplayOrder))
             {
                 LeagueInfo info = LeagueConfiguration.Get(league);
 
                 scoreboards.TryGetValue(league, out IReadOnlyList<Game>? games);
+                
+                Console.WriteLine($"{league}: {(games?.Count ?? 0)} mapped games");
                 
                 sections.Add(new LeagueSectionViewModel
                 {
