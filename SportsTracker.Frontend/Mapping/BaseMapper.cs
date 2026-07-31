@@ -6,7 +6,7 @@ namespace SportsTracker.Frontend.Mapping
 {
     public abstract class BaseMapper
     {
-        protected static TeamViewModel MapTeam(Team team, int score)
+        protected TeamViewModel MapTeam(Team team, int score)
         {
             return new TeamViewModel
             {
@@ -22,7 +22,7 @@ namespace SportsTracker.Frontend.Mapping
             };
         }
 
-        protected static GameCardViewModel MapGame(Game game)
+        protected GameCardViewModel MapGame(Game game)
         {
             return new GameCardViewModel
             {
@@ -34,7 +34,7 @@ namespace SportsTracker.Frontend.Mapping
                 Status = game.StatusText,
 
                 IsLive = game.IsLive,
-                IsFinal = game.IsCompleted,
+                IsFinal = game.IsFinal,
                 IsUpcoming = game.IsUpcoming,
 
                 Venue = game.Venue?.Name,

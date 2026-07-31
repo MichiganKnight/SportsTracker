@@ -1,5 +1,4 @@
-﻿using SportsTracker.Frontend.ViewModels;
-using SportsTracker.Frontend.ViewModels.Dashboard;
+﻿using SportsTracker.Frontend.ViewModels.Dashboard;
 using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Models;
 

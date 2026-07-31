@@ -34,4 +34,13 @@
             }
         </div>
     }
+    
+    @if (Model.HasMoreGames)
+    {
+        <div class="text-center mt-3">
+            <small class="text-body-secondary">
+                Showing @Model.DisplayedGames of @Model.TotalGames Games
+            </small>
+        </div>
+    }
 </section>
