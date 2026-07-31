@@ -33,11 +33,6 @@ namespace SportsTracker.Frontend.Mapping
         private LeagueSectionViewModel BuildLeagueSection(League league, CachedScoreboard scoreboard)
         {
             LeagueInfo info = LeagueConfiguration.Get(league);
-            
-            Console.WriteLine($"League: {league}");
-            Console.WriteLine($"Info League: {info.League}");
-            Console.WriteLine($"Route: '{info.Route}'");
-            Console.WriteLine($"Display: '{info.DisplayName}'");
 
             return new LeagueSectionViewModel
             {
