@@ -29,7 +29,7 @@ namespace SportsTracker.Frontend.Controllers
             {
                 return NotFound();
             }
-            
+
             LeaguePageViewModel model = _mapper.Map(response.Data);
             
             return View(model);
