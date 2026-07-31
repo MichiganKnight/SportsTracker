@@ -12,6 +12,7 @@ builder.Services.Configure<SportsApiOptions>(builder.Configuration.GetSection(Sp
 builder.Services.AddHttpClient<ISportsApiClient, SportsApiClient>();
 
 builder.Services.AddScoped<IDashboardMapper, DashboardMapper>();
+builder.Services.AddScoped<ILeagueMapper, LeagueMapper>();
 
 WebApplication app = builder.Build();
 
