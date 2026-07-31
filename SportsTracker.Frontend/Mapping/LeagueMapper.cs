@@ -1,4 +1,5 @@
 ﻿using SportsTracker.Frontend.ViewModels.Dashboard;
+using SportsTracker.Frontend.ViewModels.Pages;
 using SportsTracker.Frontend.ViewModels.Shared;
 using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Metadata;
@@ -21,7 +22,6 @@ namespace SportsTracker.Frontend.Mapping
 
                 LeagueName = info.DisplayName,
                 Icon = info.Icon,
-                Route = info.Route,
 
                 LastUpdatedUtc = scoreboard.LastUpdatedUtc,
 

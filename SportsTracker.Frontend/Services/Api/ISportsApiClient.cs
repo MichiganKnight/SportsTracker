@@ -7,5 +7,7 @@ namespace SportsTracker.Frontend.Services.Api
     public interface ISportsApiClient
     {
         Task<ApiResponse<CachedScoreboard>?> GetScoreboardAsync(League league, CancellationToken cancellationToken = default);
+        
+        Task<ApiResponse<CachedScoreboard>?> GetLeagueAsync(League league, CancellationToken cancellationToken = default);
     }
 }

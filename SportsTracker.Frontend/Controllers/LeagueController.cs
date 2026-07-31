@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportsTracker.Frontend.Mapping;
 using SportsTracker.Frontend.Services.Api;
+using SportsTracker.Frontend.ViewModels.Pages;
 using SportsTracker.Frontend.ViewModels.Shared;
 using SportsTracker.Shared.Common;
 using SportsTracker.Shared.Enums;
@@ -8,7 +9,8 @@ using SportsTracker.Shared.Models;
 
 namespace SportsTracker.Frontend.Controllers
 {
-    public class LeagueController : Controller
+    [Route("league")]
+    public sealed class LeagueController : Controller
     {
         private readonly ISportsApiClient _api;
         private readonly ILeagueMapper _mapper;
@@ -19,7 +21,7 @@ namespace SportsTracker.Frontend.Controllers
             _mapper = mapper;
         }
         
-        [HttpGet("/league/{league}")]
+        [HttpGet("{league}")]
         public async Task<IActionResult> Index(League league, CancellationToken cancellationToken)
         {
             ApiResponse<CachedScoreboard>? response = await _api.GetScoreboardAsync(league, cancellationToken);

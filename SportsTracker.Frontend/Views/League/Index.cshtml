@@ -1,1 +1,27 @@
-﻿
+﻿@model SportsTracker.Frontend.ViewModels.Pages.LeaguePageViewModel
+
+<div class="mb-4">
+    <h1>
+        <i class="@Model.Icon me-2"></i>
+        
+        @Model.LeagueName
+    </h1>
+    
+    <div class="text-secondary">
+        Updated
+        
+        @Model.LastUpdatedUtc.ToLocalTime()
+    </div>
+</div>
+
+<hr />
+
+<h4>Live Games (@Model.LiveGames.Count)</h4>
+
+<hr />
+
+<h4>Upcoming Games (@Model.UpcomingGames.Count)</h4>
+
+<hr />
+
+<h4>Final Games (@Model.FinalGames.Count)</h4>
