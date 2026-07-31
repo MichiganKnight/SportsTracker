@@ -2,7 +2,6 @@
 using SportsTracker.Frontend.Mapping;
 using SportsTracker.Frontend.Services.Api;
 using SportsTracker.Frontend.ViewModels.Pages;
-using SportsTracker.Frontend.ViewModels.Shared;
 using SportsTracker.Shared.Common;
 using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Models;
