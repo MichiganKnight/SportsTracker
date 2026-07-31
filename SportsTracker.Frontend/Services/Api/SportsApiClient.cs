@@ -17,9 +17,9 @@ namespace SportsTracker.Frontend.Services.Api
             _httpClient.BaseAddress = new Uri(options.Value.BaseUrl);
         }
 
-        public Task<ApiResponse<IReadOnlyList<Game>>?> GetScoreboardAsync(League league, CancellationToken cancellationToken = default)
+        public Task<ApiResponse<CachedScoreboard>?> GetScoreboardAsync(League league, CancellationToken cancellationToken = default)
         {
-            return GetAsync<ApiResponse<IReadOnlyList<Game>>>($"scoreboard/{league}", cancellationToken);
+            return GetAsync<ApiResponse<CachedScoreboard>>($"scoreboard/{league}", cancellationToken);
         }
 
         private async Task<T?> GetAsync<T>(string relativeUrl, CancellationToken cancellationToken = default)

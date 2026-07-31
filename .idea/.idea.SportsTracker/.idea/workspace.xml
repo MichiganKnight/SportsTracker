@@ -17,16 +17,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/Dashboard/GameCardViewModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/ScoreboardController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/ScoreboardController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/EspnApiClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/EspnApiClient.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Services/Implementations/ScoreboardRefreshService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Services/Implementations/ScoreboardRefreshService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Services/Implementations/ScoreboardService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Services/Implementations/ScoreboardService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Services/Interfaces/IScoreboardService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Services/Interfaces/IScoreboardService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Controllers/DashboardController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Controllers/DashboardController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Controllers/LeagueController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Controllers/LeagueController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Mapping/DashboardMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Mapping/DashboardMapper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Mapping/IDashboardMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Mapping/IDashboardMapper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Services/Api/ISportsApiClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Services/Api/ISportsApiClient.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Services/Api/SportsApiClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Services/Api/SportsApiClient.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/LeagueSectionViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/LeagueSectionViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/DashboardViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/Dashboard/DashboardViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/GameCardViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/LeagueSectionViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/Dashboard/LeagueSectionViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/TeamViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/Shared/TeamViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_GameCard.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_GameCard.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_LeagueSection.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_LeagueSection.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Shared/Metadata/LeagueInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Shared/Metadata/LeagueInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Shared/Models/CachedScoreboard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Shared/Models/CachedScoreboard.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,13 +76,14 @@
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Services/Interfaces/IScoreboardRefreshService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Services/Interfaces/IScoreboardService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Workers/ScoreboardWorker.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Mapping/BaseMapper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Mapping/IDashboardMapper.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/DashboardViewModel.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/GameCardViewModel.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/LeagueSectionViewModel.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/TeamViewModel.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Mapping/ILeagueMapper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Mapping/LeagueMapper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/Navigation/NavigationItemViewModel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_GameCard.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_LeagueSection.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_TeamRow.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Common/ApiResponse.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Common/ApiResult.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Common/Error.cs" root0="FORCE_HIGHLIGHTING" />
@@ -225,7 +232,7 @@
       <workItem from="1785342855390" duration="5954000" />
       <workItem from="1785348873621" duration="17717000" />
       <workItem from="1785443368460" duration="5748000" />
-      <workItem from="1785457634027" duration="3525000" />
+      <workItem from="1785457634027" duration="7810000" />
     </task>
     <servers />
   </component>

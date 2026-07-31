@@ -1,0 +1,27 @@
+﻿@model SportsTracker.Frontend.ViewModels.Shared.TeamViewModel
+
+<div class="team-row">
+    <div class="d-flex align-items-center">
+        @if (!string.IsNullOrWhiteSpace(Model.Logo))
+        {
+            <img class="team-logo" src="@Model.Logo" alt="@Model.DisplayName" />
+        }
+        
+        <div>
+            <div class="fw-semibold">
+                @Model.Abbreviation
+            </div>
+            
+            @if (!string.IsNullOrWhiteSpace(Model.Record))
+            {
+                <small class="text-secondary">
+                    @Model.Record
+                </small>
+            }
+        </div>
+    </div>
+    
+    <div class="team-score">
+        @Model.Score
+    </div>
+</div>

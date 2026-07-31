@@ -27,9 +27,9 @@ namespace SportsTracker.Backend.Controllers
                 return NotFound();
             }
             
-            return Ok(new ApiResponse<IReadOnlyList<Game>>
+            return Ok(new ApiResponse<CachedScoreboard>
             {
-                Data = scoreboard.Games,
+                Data = scoreboard,
                 TimestampUtc = scoreboard.LastUpdatedUtc,
                 Version = "v1"
             });

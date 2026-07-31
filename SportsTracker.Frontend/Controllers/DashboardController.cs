@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SportsTracker.Frontend.Mapping;
 using SportsTracker.Frontend.Services.Api;
-using SportsTracker.Frontend.ViewModels;
+using SportsTracker.Frontend.ViewModels.Dashboard;
 using SportsTracker.Shared.Common;
 using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Metadata;
@@ -22,21 +22,22 @@ namespace SportsTracker.Frontend.Controllers
         
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            Dictionary<League, IReadOnlyList<Game>> scoreboards = new();
-
-            const int maxGamesPerLeague = 6;
+            Dictionary<League, CachedScoreboard> scoreboards = new();
 
             foreach (League league in LeagueConfiguration.All)
             {
                 try
                 {
-                    ApiResponse<IReadOnlyList<Game>>? response = await _api.GetScoreboardAsync(league, cancellationToken);
+                    ApiResponse<CachedScoreboard>? response = await _api.GetScoreboardAsync(league, cancellationToken);
 
-                    scoreboards[league] = response?.Data?.Take(maxGamesPerLeague).ToList() ?? [];
+                    if (response is not null)
+                    {
+                        scoreboards[league] = response.Data;
+                    }
                 }
-                catch (Exception ex)
+                catch
                 {
-                    scoreboards[league] = [];
+                    // Nothing
                 }
             }
             
