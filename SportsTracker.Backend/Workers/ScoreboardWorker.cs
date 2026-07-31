@@ -41,9 +41,9 @@ namespace SportsTracker.Backend.Workers
                 {
                     _logger.LogError(ex, "Unexpected Worker Error");
                 }
-                
-                _logger.LogInformation("Scoreboard Worker Stopped...");
             }
+            
+            _logger.LogInformation("Scoreboard Worker Stopped...");
         }
 
         private async Task RefreshAllLeagues(CancellationToken cancellationToken)

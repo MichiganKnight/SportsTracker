@@ -5,6 +5,6 @@ namespace SportsTracker.Backend.Services.Interfaces
 {
     public interface IScoreboardService
     {
-        Task<IReadOnlyList<Game>> GetScoreboardAsync(League league, CancellationToken cancellationToken = default);
+        Task<CachedScoreboard?> GetScoreboardAsync(League league, CancellationToken cancellationToken = default);
     }
 }

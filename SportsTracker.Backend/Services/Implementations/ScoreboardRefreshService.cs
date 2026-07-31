@@ -44,7 +44,11 @@ namespace SportsTracker.Backend.Services.Implementations
             
             IReadOnlyList<Game> games = ScoreboardMapper.ToGames(result.Value!, league).ToList();
 
-            await _cache.SetAsync(CacheKeys.Scoreboard(league), games, TimeSpan.FromMinutes(_cacheOptions.ScheduledScoreboardMinutes));
+            await _cache.SetAsync(CacheKeys.Scoreboard(league), new CachedScoreboard
+            {
+                Games = games,
+                LastUpdatedUtc = DateTime.UtcNow
+            }, TimeSpan.FromMinutes(_cacheOptions.ScheduledScoreboardMinutes));
             
             _logger.LogInformation("Cached {Count} Games for {League}", games.Count, league);
         }

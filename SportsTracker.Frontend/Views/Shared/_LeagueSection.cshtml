@@ -4,9 +4,10 @@
 <section class="mb-5">
     <div class="league-header d-flex justify-content-between align-items-center">
         <h3 class="mb-0">
-            @Model.Icon
-            
-            @Model.LeagueName
+            @Model.Icon @Model.LeagueName
+            <small class="text-secondary">
+                (@Model.GameCount)
+            </small>
         </h3>
         
         <a href="@Model.Route" class="btn btn-outline-secondary">

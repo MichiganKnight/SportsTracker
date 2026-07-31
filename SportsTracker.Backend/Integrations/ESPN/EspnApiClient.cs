@@ -54,7 +54,7 @@ namespace SportsTracker.Backend.Integrations.ESPN
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Unexpected EXPN Error");
+                _logger.LogError(ex, "Unexpected ESPN Error");
                 
                 return ApiResult<T>.Fail(new Error("EXCEPTION", ex.Message));
             }

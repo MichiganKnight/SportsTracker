@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SportsTracker.Shared.Enums;
 
 namespace SportsTracker.Frontend.Controllers
 {
     public class LeagueController : Controller
     {
-        // GET
-        public IActionResult Index()
+        public async Task<IActionResult> Index(League league)
         {
             return View();
         }

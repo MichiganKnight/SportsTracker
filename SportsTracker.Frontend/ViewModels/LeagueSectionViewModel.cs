@@ -12,5 +12,7 @@ namespace SportsTracker.Frontend.ViewModels
         public IReadOnlyList<GameCardViewModel> Games { get; init; } = [];
         
         public bool HasGames => Games.Count > 0;
+        
+        public int GameCount => Games.Count;
     }
 }

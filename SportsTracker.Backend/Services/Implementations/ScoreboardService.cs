@@ -8,17 +8,15 @@ namespace SportsTracker.Backend.Services.Implementations
     public class ScoreboardService : IScoreboardService
     {
         private readonly ICacheService _cache;
-        private readonly IScoreboardRefreshService _refreshService;
         
-        public ScoreboardService(ICacheService cache, IScoreboardRefreshService refreshService)
+        public ScoreboardService(ICacheService cache)
         {
             _cache = cache;
-            _refreshService = refreshService;
         }
         
-        public async Task<IReadOnlyList<Game>> GetScoreboardAsync(League league, CancellationToken cancellationToken = default)
+        public async Task<CachedScoreboard?> GetScoreboardAsync(League league, CancellationToken cancellationToken = default)
         {
-            return await _cache.GetAsync<IReadOnlyList<Game>>(CacheKeys.Scoreboard(league)) ?? [];
+            return await _cache.GetAsync<CachedScoreboard>(CacheKeys.Scoreboard(league));
         }
     }
 }

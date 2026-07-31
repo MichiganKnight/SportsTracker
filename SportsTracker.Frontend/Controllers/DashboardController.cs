@@ -24,7 +24,7 @@ namespace SportsTracker.Frontend.Controllers
         {
             Dictionary<League, IReadOnlyList<Game>> scoreboards = new();
 
-            const int maxGamesPerLeague = 3;
+            const int maxGamesPerLeague = 6;
 
             foreach (League league in LeagueConfiguration.All)
             {

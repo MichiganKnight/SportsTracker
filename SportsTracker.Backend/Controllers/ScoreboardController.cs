@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportsTracker.Backend.Services.Interfaces;
+using SportsTracker.Shared.Common;
 using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Models;
 
@@ -17,11 +18,21 @@ namespace SportsTracker.Backend.Controllers
         }
 
         [HttpGet("{league}")]
-        public async Task<IActionResult> GetScoreboard(League league, CancellationToken cancellationToken)
+        public async Task<ActionResult<ApiResponse<IReadOnlyList<Game>>>> GetScoreboard(League league, CancellationToken cancellationToken)
         {
-            IReadOnlyList<Game> games = await _scoreboardService.GetScoreboardAsync(league, cancellationToken);
+            CachedScoreboard? scoreboard = await _scoreboardService.GetScoreboardAsync(league, cancellationToken);
+
+            if (scoreboard is null)
+            {
+                return NotFound();
+            }
             
-            return Ok(games);
+            return Ok(new ApiResponse<IReadOnlyList<Game>>
+            {
+                Data = scoreboard.Games,
+                TimestampUtc = scoreboard.LastUpdatedUtc,
+                Version = "v1"
+            });
         }
     }
 }
