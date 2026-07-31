@@ -15,7 +15,7 @@
         <div class="container-fluid">
             <div class="row">
                 <aside class="col-md-2 sidebar">
-                    <partial name="_Sidebar" />
+                    @await Component.InvokeAsync("Sidebar")
                 </aside>
                 
                 <main class="col-md-10 py-3">

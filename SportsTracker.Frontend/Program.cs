@@ -13,6 +13,7 @@ builder.Services.AddHttpClient<ISportsApiClient, SportsApiClient>();
 
 builder.Services.AddScoped<IDashboardMapper, DashboardMapper>();
 builder.Services.AddScoped<ILeagueMapper, LeagueMapper>();
+builder.Services.AddScoped<INavigationMapper, NavigationMapper>();
 
 WebApplication app = builder.Build();
 

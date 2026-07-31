@@ -1,11 +1,12 @@
-﻿namespace SportsTracker.Frontend.ViewModels.Navigation
+﻿using SportsTracker.Shared.Enums;
+
+namespace SportsTracker.Frontend.ViewModels.Navigation
 {
     public sealed class NavigationItemViewModel
     {
-        public string Title { get; init; } = string.Empty;
-        public string Url { get; init; } = string.Empty;
-        public string Icon { get; init; } = string.Empty;
+        public League League { get; init; }
         
-        public bool Active { get; init; }
+        public string Name { get; init; } = string.Empty;
+        public string Icon { get; init; } = string.Empty;
     }
 }

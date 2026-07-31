@@ -14,7 +14,8 @@ namespace SportsTracker.Shared.Metadata
                     Sport = Sport.Football,
                     EspnSport = "football",
                     EspnLeague = "nfl",
-                    DisplayName = "NFL"
+                    DisplayName = "NFL",
+                    Icon = "🏈"
                 }
             },
             {
@@ -25,7 +26,8 @@ namespace SportsTracker.Shared.Metadata
                     Sport = Sport.Football,
                     EspnSport = "football",
                     EspnLeague = "college-football",
-                    DisplayName = "College Football"
+                    DisplayName = "College Football",
+                    Icon = "🎓"
                 }
             },
             {
@@ -36,7 +38,8 @@ namespace SportsTracker.Shared.Metadata
                     Sport = Sport.Basketball,
                     EspnSport = "basketball",
                     EspnLeague = "nba",
-                    DisplayName = "NBA"
+                    DisplayName = "NBA",
+                    Icon = "🏀"
                 }
             },
             {
@@ -47,7 +50,8 @@ namespace SportsTracker.Shared.Metadata
                     Sport = Sport.Basketball,
                     EspnSport = "basketball",
                     EspnLeague = "mens-college-basketball",
-                    DisplayName = "College Basketball"
+                    DisplayName = "College Basketball",
+                    Icon = "🎓"
                 }
             },
             {
@@ -58,7 +62,8 @@ namespace SportsTracker.Shared.Metadata
                     Sport = Sport.Baseball,
                     EspnSport = "baseball",
                     EspnLeague = "mlb",
-                    DisplayName = "MLB"
+                    DisplayName = "MLB",
+                    Icon = "⚾"
                 }
             },
             {
@@ -69,7 +74,8 @@ namespace SportsTracker.Shared.Metadata
                     Sport = Sport.Hockey,
                     EspnSport = "hockey",
                     EspnLeague = "nhl",
-                    DisplayName = "NHL"
+                    DisplayName = "NHL",
+                    Icon = "🏒"
                 }
             },
             {
@@ -80,7 +86,8 @@ namespace SportsTracker.Shared.Metadata
                     Sport = Sport.Golf,
                     EspnSport = "golf",
                     EspnLeague = "pga",
-                    DisplayName = "PGA Tour"
+                    DisplayName = "PGA Tour",
+                    Icon = "⛳"
                 }
             }
         };

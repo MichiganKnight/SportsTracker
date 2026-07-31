@@ -8,7 +8,6 @@ namespace SportsTracker.Frontend.ViewModels.Dashboard
         
         public string LeagueName { get; init; } = string.Empty;
         public string Icon { get; init; } = string.Empty;
-        public string Route { get; init; } = string.Empty;
 
         public IReadOnlyList<GameCardViewModel> Games { get; init; } = [];
         
