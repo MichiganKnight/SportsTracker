@@ -82,7 +82,7 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
                 Abbreviation = competitor.Team.Abbreviation,
                 Color = competitor.Team.Color,
                 AlternateColor = competitor.Team.AlternateColor,
-                Logo = competitor.Team.Logos.Select(MapLogo).FirstOrDefault(),
+                Logo = !string.IsNullOrEmpty(competitor.Team.Logo) ? new Logo(competitor.Team.Logo,500, 500, $"{competitor.Team.Logo} Logo") : competitor.Team.Logos.Select(MapLogo).FirstOrDefault(),
                 Record = competitor.Records.Select(MapRecord).FirstOrDefault()
             };
         }

@@ -1,27 +1,29 @@
 ﻿@model SportsTracker.Frontend.ViewModels.TeamInfo.TeamViewModel
 
-<div class="team-row">
-    <div class="d-flex align-items-center">
+<div class="d-flex justify-content-between align-items-center py-2">
+    <div class="d-flex align-items-center gap-3">
         @if (!string.IsNullOrWhiteSpace(Model.Logo))
         {
-            <img class="team-logo" src="@Model.Logo" alt="@Model.DisplayName" />
+            <img class="team-logo img-fluid" src="@Model.Logo" alt="@Model.DisplayName" />
+        }
+        else
+        {
+            <div class="team-logo-placeholder rounded-circle" style="width: 36px; height: 36px; background-color: #@Model.AlternateColor;"></div>
         }
         
         <div>
-            <div class="fw-semibold">
-                @Model.Abbreviation
+            <div class="fw-semibold" style="color: #@Model.PrimaryColor;">
+                @Model.DisplayName
             </div>
             
-            @if (!string.IsNullOrWhiteSpace(Model.Record))
-            {
+            @if (!string.IsNullOrWhiteSpace(Model.Record)) {
                 <small class="text-secondary">
                     @Model.Record
                 </small>
             }
         </div>
     </div>
-    
-    <div class="team-score">
+    <div class="fw-bold fs-4" style="color: #@Model.PrimaryColor;">
         @Model.Score
     </div>
 </div>

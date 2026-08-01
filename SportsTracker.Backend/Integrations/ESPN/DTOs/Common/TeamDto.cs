@@ -12,6 +12,7 @@
         
         public string? AlternateColor { get; init; }
         
+        public string? Logo { get; init; }
         public List<LogoDto> Logos { get; init; } = [];
     }
 }

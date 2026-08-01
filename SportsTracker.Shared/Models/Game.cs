@@ -13,11 +13,21 @@ namespace SportsTracker.Shared.Models
         public GameStatus Status { get; init; }
         public string StatusText { get; init; } = string.Empty;
 
-        public Team HomeTeam { get; init; } = null!;
-        public Team AwayTeam { get; init; } = null!;
+        #region Team Sports
+        
+        public Team? HomeTeam { get; init; } = null!;
+        public Team? AwayTeam { get; init; } = null!;
         
         public int HomeScore { get; init; }
         public int AwayScore { get; init; }
+        
+        #endregion
+        
+        #region Athletes
+        
+        public List<Athlete> Athletes { get; init; } = [];
+        
+        #endregion
         
         public Venue? Venue { get; init; }
         
