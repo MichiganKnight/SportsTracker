@@ -1,4 +1,6 @@
-﻿namespace SportsTracker.Frontend.ViewModels.Dashboard
+﻿using SportsTracker.Frontend.ViewModels.LeagueInfo;
+
+namespace SportsTracker.Frontend.ViewModels.DashboardInfo
 {
     public sealed class DashboardViewModel
     {

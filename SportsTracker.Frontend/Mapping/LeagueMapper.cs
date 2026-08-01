@@ -1,4 +1,5 @@
-﻿using SportsTracker.Frontend.ViewModels.Pages;
+﻿using SportsTracker.Frontend.ViewModels.GameInfo;
+using SportsTracker.Frontend.ViewModels.LeagueInfo;
 using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Metadata;
 using SportsTracker.Shared.Models;

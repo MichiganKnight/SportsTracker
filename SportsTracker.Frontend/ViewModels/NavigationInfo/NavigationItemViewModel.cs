@@ -1,6 +1,6 @@
 ﻿using SportsTracker.Shared.Enums;
 
-namespace SportsTracker.Frontend.ViewModels.Navigation
+namespace SportsTracker.Frontend.ViewModels.NavigationInfo
 {
     public sealed class NavigationItemViewModel
     {

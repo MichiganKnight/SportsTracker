@@ -1,6 +1,4 @@
-﻿using SportsTracker.Frontend.ViewModels.Dashboard;
-
-namespace SportsTracker.Frontend.ViewModels.Pages
+﻿namespace SportsTracker.Frontend.ViewModels.GameInfo
 {
     public sealed class GameSectionViewModel
     {

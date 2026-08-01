@@ -1,4 +1,4 @@
-﻿using SportsTracker.Frontend.ViewModels.Navigation;
+﻿using SportsTracker.Frontend.ViewModels.NavigationInfo;
 using SportsTracker.Shared.Metadata;
 
 namespace SportsTracker.Frontend.Mapping

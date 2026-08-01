@@ -1,5 +1,5 @@
-﻿using SportsTracker.Frontend.ViewModels.Dashboard;
-using SportsTracker.Frontend.ViewModels.Shared;
+﻿using SportsTracker.Frontend.ViewModels.GameInfo;
+using SportsTracker.Frontend.ViewModels.TeamInfo;
 using SportsTracker.Shared.Models;
 
 namespace SportsTracker.Frontend.Mapping

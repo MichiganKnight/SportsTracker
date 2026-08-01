@@ -1,6 +1,6 @@
-﻿using SportsTracker.Frontend.ViewModels.Shared;
+﻿using SportsTracker.Frontend.ViewModels.TeamInfo;
 
-namespace SportsTracker.Frontend.ViewModels.Dashboard
+namespace SportsTracker.Frontend.ViewModels.GameInfo
 {
     public sealed class GameCardViewModel
     {

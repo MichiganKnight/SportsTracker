@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SportsTracker.Frontend.Mapping;
 using SportsTracker.Frontend.Services.Api;
-using SportsTracker.Frontend.ViewModels.Dashboard;
+using SportsTracker.Frontend.ViewModels.DashboardInfo;
 using SportsTracker.Shared.Common;
 using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Metadata;

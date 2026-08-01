@@ -1,4 +1,4 @@
-﻿namespace SportsTracker.Frontend.ViewModels.Shared
+﻿namespace SportsTracker.Frontend.ViewModels.TeamInfo
 {
     public sealed class TeamViewModel
     {

@@ -1,6 +1,7 @@
-﻿using SportsTracker.Shared.Enums;
+﻿using SportsTracker.Frontend.ViewModels.GameInfo;
+using SportsTracker.Shared.Enums;
 
-namespace SportsTracker.Frontend.ViewModels.Pages
+namespace SportsTracker.Frontend.ViewModels.LeagueInfo
 {
     public sealed class LeaguePageViewModel
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportsTracker.Frontend.Mapping;
-using SportsTracker.Frontend.ViewModels.Navigation;
+using SportsTracker.Frontend.ViewModels.NavigationInfo;
 
 namespace SportsTracker.Frontend.ViewComponents
 {
