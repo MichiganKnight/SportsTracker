@@ -1,27 +1,23 @@
 ﻿@model SportsTracker.Frontend.ViewModels.Pages.LeaguePageViewModel
 
-<div class="mb-4">
-    <h1>
-        <i class="@Model.Icon me-2"></i>
+@{
+    ViewData["Title"] = Model.LeagueName;
+}
+
+<div class="container-fluid league-@Model.League.ToString().ToLowerInvariant()">
+    <div class="mb-4">
+        <h1>
+            <span class="me-2">@Model.Icon</span>
         
-        @Model.LeagueName
-    </h1>
+            @Model.LeagueName
+        </h1>
     
-    <div class="text-secondary">
-        Updated
-        
-        @Model.LastUpdatedUtc.ToLocalTime()
+        <div class="text-secondary">
+            Updated @Model.LastUpdatedUtc.ToLocalTime()
+        </div>
     </div>
+    
+    <partial name="_GameSection" model="Model.Live" />
+    <partial name="_GameSection" model="Model.Upcoming" />
+    <partial name="_GameSection" model="Model.Final" />
 </div>
-
-<hr />
-
-<h4>Live Games (@Model.LiveCount)</h4>
-
-<hr />
-
-<h4>Upcoming Games (@Model.UpcomingCount)</h4>
-
-<hr />
-
-<h4>Final Games (@Model.FinalCount)</h4>

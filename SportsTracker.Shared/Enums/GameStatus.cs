@@ -3,11 +3,18 @@
     public enum GameStatus
     {
         Scheduled,
+        Pregame,
+        
         InProgress,
         Halftime,
+        
         Final,
-        Postponed,
+        FinalOvertime,
+        FinalShootout,
+        
         Delayed,
+        Postponed,
+        Suspended,
         Cancelled
     }
 }

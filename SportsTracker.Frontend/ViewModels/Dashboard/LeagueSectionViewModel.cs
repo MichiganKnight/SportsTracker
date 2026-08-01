@@ -14,6 +14,7 @@ namespace SportsTracker.Frontend.ViewModels.Dashboard
         public int GameCount => Games.Count;
         public bool HasGames => Games.Count > 0;
         
+        public int LiveGames { get; init; }
         public int TotalGames { get; init; }
 
         public int DisplayedGames => Games.Count;

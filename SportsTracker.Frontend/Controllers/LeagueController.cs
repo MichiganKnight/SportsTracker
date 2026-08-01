@@ -36,7 +36,3 @@ namespace SportsTracker.Frontend.Controllers
         }
     }
 }
-
-/*
- * Sounds really good. I'm ready. Also, further down the line, I assume we'll add more to this page for standings, stats, past games, etc...? Anyways, let's add this.
-*/

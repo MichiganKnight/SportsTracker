@@ -31,7 +31,7 @@ namespace SportsTracker.Frontend.Mapping
                 AwayTeam = MapTeam(game.AwayTeam, game.AwayScore),
                 HomeTeam = MapTeam(game.HomeTeam, game.HomeScore),
 
-                Status = game.StatusText,
+                Status = game.StatusBadge,
 
                 IsLive = game.IsLive,
                 IsFinal = game.IsFinal,

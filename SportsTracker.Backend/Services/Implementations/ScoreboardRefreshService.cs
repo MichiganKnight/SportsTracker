@@ -46,6 +46,7 @@ namespace SportsTracker.Backend.Services.Implementations
 
             await _cache.SetAsync(CacheKeys.Scoreboard(league), new CachedScoreboard
             {
+                League = league,
                 Games = games,
                 LastUpdatedUtc = DateTime.UtcNow
             }, TimeSpan.FromMinutes(_cacheOptions.ScheduledScoreboardMinutes));

@@ -27,6 +27,7 @@ namespace SportsTracker.Frontend.Mapping
                     
                     Games = SelectDashboardGames(games ?? []),
                     
+                    LiveGames = (games ?? []).Count(g => g.IsLive),
                     TotalGames = (games ?? []).Count
                 });
             }
@@ -41,25 +42,29 @@ namespace SportsTracker.Frontend.Mapping
         {
             List<Game> selected = [];
             
-            selected.AddRange(games.Where(g => g.IsLive)
-                .OrderBy(g => g.StartTime)
-                .Take(MaxDashboardGames));
-            
-            if (selected.Count < MaxDashboardGames)
-            {
-                selected.AddRange(games.Where(g => g.IsUpcoming)
-                    .OrderBy(g => g.StartTime)
-                    .Take(MaxDashboardGames - selected.Count));
-            }
-            
-            if (selected.Count < MaxDashboardGames)
-            {
-                selected.AddRange(games.Where(g => g.IsFinal)
-                    .OrderByDescending(g => g.StartTime)
-                    .Take(MaxDashboardGames - selected.Count));
-            }
+            AddGames(selected, games.Where(g => g.IsLive).OrderBy(g => g.StartTime));
+            AddGames(selected, games.Where(g => g.IsUpcoming).OrderBy(g => g.StartTime));
+            AddGames(selected, games.Where(g => g.IsFinal).OrderByDescending(g => g.StartTime));
 
-            return selected.Select(MapGame).ToList();
+            return selected.Take(MaxDashboardGames).Select(MapGame).ToList();
+        }
+
+        private static void AddGames(List<Game> selected, IEnumerable<Game> source)
+        {
+            foreach (Game game in source)
+            {
+                if (selected.Count >= MaxDashboardGames)
+                {
+                    break;
+                }
+
+                if (selected.Any(g => g.Id == game.Id))
+                {
+                    continue;
+                }
+                
+                selected.Add(game);
+            }
         }
     }
 }
