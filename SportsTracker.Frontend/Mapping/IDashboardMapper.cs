@@ -6,6 +6,6 @@ namespace SportsTracker.Frontend.Mapping
 {
     public interface IDashboardMapper
     {
-        DashboardViewModel Map(IReadOnlyDictionary<League, CachedScoreboard> scoreboards);
+        DashboardViewModel Map(IReadOnlyDictionary<League, IReadOnlyList<Game>?> scoreboards);
     }
 }

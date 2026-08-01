@@ -10,15 +10,14 @@ namespace SportsTracker.Frontend.ViewModels.Pages
         public string LeagueName { get; init; } = string.Empty;
         public string Icon { get; init; } = string.Empty;
         public DateTime LastUpdatedUtc { get; init; }
+
+        public GameSectionViewModel Live { get; init; } = new();
+        public GameSectionViewModel Upcoming { get; init; } = new();
+        public GameSectionViewModel Final { get; init; } = new();
         
-        
-        public IReadOnlyList<GameCardViewModel> LiveGames { get; init; } = [];
-        public IReadOnlyList<GameCardViewModel> UpcomingGames { get; init; } = [];
-        public IReadOnlyList<GameCardViewModel> FinalGames { get; init; } = [];
-        
-        public int LiveCount => LiveGames.Count;
-        public int UpcomingCount => UpcomingGames.Count;
-        public int FinalCount => FinalGames.Count;
+        public int LiveCount => Live.Games.Count;
+        public int UpcomingCount => Upcoming.Games.Count;
+        public int FinalCount => Final.Games.Count;
         
         public int TotalGames => LiveCount + UpcomingCount + FinalCount;
         

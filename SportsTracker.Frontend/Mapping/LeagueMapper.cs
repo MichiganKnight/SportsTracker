@@ -23,10 +23,19 @@ namespace SportsTracker.Frontend.Mapping
                 Icon = info.Icon,
 
                 LastUpdatedUtc = scoreboard.LastUpdatedUtc,
-
-                LiveGames = games.Where(g => g.IsLive).ToList(),
-                UpcomingGames = games.Where(g => g.IsUpcoming).ToList(),
-                FinalGames = games.Where(g => g.IsFinal).ToList()
+                
+                Live = new GameSectionViewModel
+                {
+                    Games = games.Where(g => g.IsLive).ToList()
+                },
+                Upcoming = new GameSectionViewModel
+                {
+                    Games = games.Where(g => g.IsUpcoming).ToList()
+                },
+                Final = new GameSectionViewModel
+                {
+                    Games = games.Where(g => g.IsFinal).ToList()
+                }
             };
         }
     }

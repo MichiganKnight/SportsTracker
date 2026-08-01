@@ -23,7 +23,7 @@ namespace SportsTracker.Frontend.Controllers
         [HttpGet("{league}")]
         public async Task<IActionResult> Index(League league, CancellationToken cancellationToken)
         {
-            ApiResponse<CachedScoreboard>? response = await _api.GetScoreboardAsync(league, cancellationToken);
+            ApiResponse<CachedScoreboard>? response = await _api.GetLeagueAsync(league, cancellationToken);
 
             if (response is null)
             {
@@ -36,3 +36,7 @@ namespace SportsTracker.Frontend.Controllers
         }
     }
 }
+
+/*
+ * Sounds really good. I'm ready. Also, further down the line, I assume we'll add more to this page for standings, stats, past games, etc...? Anyways, let's add this.
+*/

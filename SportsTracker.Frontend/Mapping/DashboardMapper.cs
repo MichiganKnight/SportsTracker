@@ -9,78 +9,57 @@ namespace SportsTracker.Frontend.Mapping
     {
         private const int MaxDashboardGames = 3;
 
-        public DashboardViewModel Map(IReadOnlyDictionary<League, CachedScoreboard> scoreboards)
+        public DashboardViewModel Map(IReadOnlyDictionary<League, IReadOnlyList<Game>?> scoreboards)
         {
-            List<LeagueSectionViewModel> sections = LeagueConfiguration.All
-                .OrderBy(l => LeagueConfiguration.Get(l).DisplayOrder)
-                .Select(league =>
-                {
-                    scoreboards.TryGetValue(league, out CachedScoreboard? scoreboard);
+            List<LeagueSectionViewModel> sections = [];
 
-                    return BuildLeagueSection(
-                        league,
-                        scoreboard ?? CreateEmptyScoreboard(league));
-                })
-                .ToList();
+            foreach (League league in LeagueConfiguration.All.OrderBy(l => LeagueConfiguration.Get(l).DisplayOrder))
+            {
+                LeagueInfo info = LeagueConfiguration.Get(league);
+                
+                scoreboards.TryGetValue(league, out IReadOnlyList<Game>? games);
+
+                sections.Add(new LeagueSectionViewModel
+                {
+                    League = league,
+                    LeagueName = info.DisplayName,
+                    Icon = info.Icon,
+                    
+                    Games = SelectDashboardGames(games ?? []),
+                    
+                    TotalGames = (games ?? []).Count
+                });
+            }
 
             return new DashboardViewModel
             {
-                Leagues = sections,
-                LastUpdatedUtc = sections.Count > 0 ? sections.Max(s => s.LastUpdatedUtc) : DateTime.MinValue
+                Leagues = sections
             };
         }
-
-        private LeagueSectionViewModel BuildLeagueSection(League league, CachedScoreboard scoreboard)
-        {
-            LeagueInfo info = LeagueConfiguration.Get(league);
-
-            return new LeagueSectionViewModel
-            {
-                League = league,
-                LeagueName = info.DisplayName,
-                Icon = info.Icon,
-
-                Games = SelectDashboardGames(scoreboard.Games),
-
-                TotalGames = scoreboard.Games.Count,
-
-                LastUpdatedUtc = scoreboard.LastUpdatedUtc
-            };
-        }
-
+        
         private IReadOnlyList<GameCardViewModel> SelectDashboardGames(IReadOnlyList<Game> games)
         {
             List<Game> selected = [];
             
             selected.AddRange(games.Where(g => g.IsLive)
-                    .OrderBy(g => g.StartTime)
-                    .Take(MaxDashboardGames));
+                .OrderBy(g => g.StartTime)
+                .Take(MaxDashboardGames));
             
             if (selected.Count < MaxDashboardGames)
             {
                 selected.AddRange(games.Where(g => g.IsUpcoming)
-                        .OrderBy(g => g.StartTime)
-                        .Take(MaxDashboardGames - selected.Count));
+                    .OrderBy(g => g.StartTime)
+                    .Take(MaxDashboardGames - selected.Count));
             }
             
             if (selected.Count < MaxDashboardGames)
             {
                 selected.AddRange(games.Where(g => g.IsFinal)
-                        .OrderByDescending(g => g.StartTime)
-                        .Take(MaxDashboardGames - selected.Count));
+                    .OrderByDescending(g => g.StartTime)
+                    .Take(MaxDashboardGames - selected.Count));
             }
 
             return selected.Select(MapGame).ToList();
-        }
-
-        private static CachedScoreboard CreateEmptyScoreboard(League league)
-        {
-            return new CachedScoreboard
-            {
-                League = league,
-                Games = [],
-                LastUpdatedUtc = DateTime.MinValue
-            };
         }
     }
 }

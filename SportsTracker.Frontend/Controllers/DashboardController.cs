@@ -22,22 +22,22 @@ namespace SportsTracker.Frontend.Controllers
         
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            Dictionary<League, CachedScoreboard> scoreboards = new();
+            Dictionary<League, IReadOnlyList<Game>> scoreboards = new();
 
             foreach (League league in LeagueConfiguration.All)
             {
                 try
                 {
-                    ApiResponse<CachedScoreboard>? response = await _api.GetScoreboardAsync(league, cancellationToken);
+                    ApiResponse<IReadOnlyList<Game>>? response = await _api.GetScoreboardAsync(league, cancellationToken);
 
                     if (response is not null)
                     {
-                        scoreboards[league] = response.Data;
+                        scoreboards[league] = response?.Data ?? [];
                     }
                 }
                 catch
                 {
-                    // Nothing
+                    scoreboards[league] = [];
                 }
             }
             
