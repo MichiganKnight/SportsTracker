@@ -32,6 +32,10 @@ namespace SportsTracker.Frontend.Mapping
                 HomeTeam = MapTeam(game.HomeTeam, game.HomeScore),
 
                 Status = game.StatusText,
+                
+                SituationPrimary = game.Situation?.Primary,
+                SituationSecondary = game.Situation?.Secondary,
+                SituationDetail = game.Situation?.Detail,
 
                 IsLive = game.IsLive,
                 IsFinal = game.IsFinal,

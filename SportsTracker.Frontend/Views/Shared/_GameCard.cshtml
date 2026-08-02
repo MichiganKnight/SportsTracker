@@ -1,22 +1,63 @@
 ﻿@model SportsTracker.Frontend.ViewModels.GameInfo.GameCardViewModel
 
-<div class="card game-card shadow-sm">
+<div class="card game-card shadow-sm h-100">
     <div class="card-body">
-        <partial name="_TeamRow" model="Model.AwayTeam" />
-        <partial name="_TeamRow" model="Model.HomeTeam" />
-
-        <hr/>
-
-        <div class="d-flex justify-content-between align-items-center">
-            <small class="text-secondary">
-                @Model.Status
-            </small>
-
-            @if (Model.IsLive)
+        <!-- Teams -->
+        <div class="rounded-3 p-2 mb-3 bg-body-tertiary">
+            @await Html.PartialAsync("_TeamRow", Model.AwayTeam)
+            @await Html.PartialAsync("_TeamRow", Model.HomeTeam)
+        </div>
+    
+        <!-- Footer -->
+        <div class="border-top pt-3">
+            <!-- Status Row -->
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-2">
+                    @if (Model.IsLive)
+                    {
+                        <span class="badge bg-danger">
+                            LIVE
+                        </span>
+                    }
+                    else if (Model.IsFinal)
+                    {
+                        <span class="badge bg-dark">
+                            FINAL
+                        </span>
+                    }
+                    else if (Model.IsUpcoming)
+                    {
+                        <span class="badge bg-primary">
+                            SCHEDULED
+                        </span>
+                    }
+                
+                    <span class="fw-semibold">
+                        @(Model.SituationPrimary ?? Model.Status)
+                    </span>
+                </div>
+            
+                @if (!string.IsNullOrWhiteSpace(Model.SituationSecondary))
+                {
+                    <span class="text-secondary small">
+                        @Model.SituationSecondary
+                    </span>
+                }
+            </div>
+        
+            @if (!string.IsNullOrWhiteSpace(Model.SituationDetail))
             {
-                <span class="badge bg-danger">
-                    LIVE
-                </span>
+                <div class="small text-secondary mt-2">
+                    @Model.SituationDetail
+                </div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.Venue))
+            {
+                <div class="small text-secondary mt-2">
+                    <i class="bi bi-geo-alt-fill me-1"></i>
+                    @Model.Venue
+                </div>
             }
         </div>
     </div>

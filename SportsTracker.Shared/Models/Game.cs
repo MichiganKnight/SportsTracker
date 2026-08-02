@@ -12,6 +12,7 @@ namespace SportsTracker.Shared.Models
         
         public GameStatus Status { get; init; }
         public string StatusText { get; init; } = string.Empty;
+        public GameSituation? Situation { get; init; }
 
         #region Team Sports
         

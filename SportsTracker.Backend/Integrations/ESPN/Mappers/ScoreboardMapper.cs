@@ -33,6 +33,8 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
                     StartTime = @event.Date,
                     Status = MapStatus(competition.Status.Type.Name),
                     StatusText = competition.Status.Type.ShortDetail,
+                    
+                    Situation = SituationMapper.Map(competition, league),
 
                     HomeTeam = MapTeam(home, league),
                     AwayTeam = MapTeam(away, league),

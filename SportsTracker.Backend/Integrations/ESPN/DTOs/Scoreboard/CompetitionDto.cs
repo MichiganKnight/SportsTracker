@@ -7,6 +7,7 @@ namespace SportsTracker.Backend.Integrations.ESPN.DTOs.Scoreboard
         public List<CompetitorDto> Competitors { get; init; } = [];
 
         public StatusDto Status { get; init; } = new();
+        public SituationDto? Situation { get; init; }
         public VenueDto? Venue { get; init; }
     }
 
