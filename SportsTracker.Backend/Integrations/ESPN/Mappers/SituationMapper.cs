@@ -62,11 +62,35 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
         private static GameSituation MapBaseball(CompetitionDto competition)
         {
             StatusDto status = competition.Status;
+            SituationDto? situation = competition.Situation;
+
+            string secondaryText = string.Empty;
+            if (situation != null)
+            {
+                switch (situation.Balls)
+                {
+                    case int balls when situation.Strikes is int strikes && situation.Outs is int outs:
+                        secondaryText = $"{balls}-{strikes}, {outs} Out{(outs == 1 ? "" : "s")}";
+                        break;
+                    case int b when situation.Strikes is int s:
+                        secondaryText = $"{b}-{s}";
+                        break;
+                    default:
+                    {
+                        if (situation.Outs is int o)
+                        {
+                            secondaryText = $"{o} Out{(o == 1 ? "" : "s")}";
+                        }
+
+                        break;
+                    }
+                }
+            }
 
             return new GameSituation
             {
                 Primary = status.Type.ShortDetail,
-                Secondary = competition.Situation?.Outs is int outs ? $"{outs} Out{(outs == 1 ? "" : "s")}" : null
+                Secondary = secondaryText
             };
         }
     }

@@ -16,16 +16,7 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/Common/StatusDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/Common/StatusDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/Scoreboard/CompetitionDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/Scoreboard/CompetitionDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/Mappers/ScoreboardMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/Mappers/ScoreboardMapper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Mapping/BaseMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Mapping/BaseMapper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/GameInfo/GameCardViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/GameInfo/GameCardViewModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_GameCard.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_GameCard.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_LeagueSection.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_LeagueSection.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Shared/Models/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Shared/Models/Game.cs" afterDir="false" />
-    </list>
+    <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -236,7 +227,8 @@
       <workItem from="1785457634027" duration="16497000" />
       <workItem from="1785602973891" duration="13667000" />
       <workItem from="1785644451224" duration="1196000" />
-      <workItem from="1785688455315" duration="3216000" />
+      <workItem from="1785688455315" duration="3971000" />
+      <workItem from="1785796190112" duration="288000" />
     </task>
     <servers />
   </component>
