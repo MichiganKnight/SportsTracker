@@ -13,49 +13,27 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
             
             return league switch
             {
-                League.NFL => MapFootball(status),
-                League.CFB => MapFootball(status),
-
-                League.NBA => MapBasketball(status),
-                League.CBB => MapBasketball(status),
-
+                League.NFL or League.CFB => MapFootball(status),
+                League.NBA or League.CBB => MapBasketball(status),
                 League.MLB => MapBaseball(competition),
-
                 League.NHL => MapHockey(status),
-
                 League.PGA => null,
 
                 _ => null
             };
         }
 
-        private static GameSituation? MapFootball(StatusDto status)
-        {
-            return new GameSituation
-            {
-                Primary = $"Q{status.Period}",
-                Secondary = status.DisplayClock,
-                Detail = status.Type.ShortDetail
-            };
-        }
+        private static GameSituation MapFootball(StatusDto status) => MapTimedSport(status);
+        private static GameSituation MapBasketball(StatusDto status) => MapTimedSport(status);
+        private static GameSituation MapHockey(StatusDto status) => MapTimedSport(status);
 
-        private static GameSituation? MapBasketball(StatusDto status)
+        private static GameSituation MapTimedSport(StatusDto status)
         {
             return new GameSituation
             {
                 Primary = $"Q{status.Period}",
-                Secondary = status.DisplayClock,
-                Detail = status.Type.ShortDetail
-            };
-        }
-
-        private static GameSituation? MapHockey(StatusDto status)
-        {
-            return new GameSituation
-            {
-                Primary = $"Q{status.Period}",
-                Secondary = status.DisplayClock,
-                Detail = status.Type.ShortDetail
+                Secondary = status.DisplayClock ?? string.Empty,
+                Detail = status.Type.ShortDetail ?? string.Empty
             };
         }
 
@@ -63,33 +41,22 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
         {
             StatusDto status = competition.Status;
             SituationDto? situation = competition.Situation;
-
+            
             string secondaryText = string.Empty;
             if (situation != null)
             {
-                switch (situation.Balls)
+                secondaryText = situation switch
                 {
-                    case int balls when situation.Strikes is int strikes && situation.Outs is int outs:
-                        secondaryText = $"{balls}-{strikes}, {outs} Out{(outs == 1 ? "" : "s")}";
-                        break;
-                    case int b when situation.Strikes is int s:
-                        secondaryText = $"{b}-{s}";
-                        break;
-                    default:
-                    {
-                        if (situation.Outs is int o)
-                        {
-                            secondaryText = $"{o} Out{(o == 1 ? "" : "s")}";
-                        }
-
-                        break;
-                    }
-                }
+                    { Balls: int b, Strikes: int s, Outs: int o } => $"{b}-{s}, {o} Out{(o == 1 ? "" : "s")}",
+                    { Balls: int b, Strikes: int s } => $"{b}-{s}",
+                    { Outs: int o } => $"{o} Out{(o == 1 ? "" : "s")}",
+                    _ => string.Empty
+                };
             }
 
             return new GameSituation
             {
-                Primary = status.Type.ShortDetail,
+                Primary = status.Type.ShortDetail ?? string.Empty,
                 Secondary = secondaryText
             };
         }
