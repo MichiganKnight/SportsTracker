@@ -17,6 +17,8 @@
     
     @foreach (var league in Model.Leagues)
     {
-        <partial name="_LeagueSection" model="league" />
+        <div id="league-@league.League.ToString().ToLowerInvariant()">
+            <partial name="_LeagueSection" model="league" />
+        </div>
     }
 </div>
