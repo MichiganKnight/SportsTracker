@@ -57,7 +57,7 @@ namespace SportsTracker.Backend.Services.Implementations
             
             await _hub.Clients.All.SendAsync("ScoreboardUpdated", new ScoreboardUpdatedMessage
             {
-                League = league,
+                League = league.ToString(),
                 UpdatedUtc = DateTime.UtcNow
             }, cancellationToken);
             

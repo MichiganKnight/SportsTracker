@@ -71,3 +71,19 @@ body {
     font-size: 1.4rem;
     font-weight: 700;
 }
+
+@keyframes leagueUpdate {
+    0% {
+        opacity: .4;
+        transform: scale(.99);
+    }
+    
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.league-updated {
+    animation: leagueUpdate .35s ease-in-out;
+}

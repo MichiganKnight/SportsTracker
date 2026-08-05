@@ -11,7 +11,7 @@ namespace SportsTracker.Frontend.Mapping
     {
         private const int MaxDashboardGames = 3;
 
-        public DashboardViewModel Map(IReadOnlyDictionary<League, IReadOnlyList<Game>?> scoreboards)
+        public DashboardViewModel Map(Dictionary<League, IReadOnlyList<Game>> scoreboards)
         {
             List<LeagueSectionViewModel> sections = [];
 

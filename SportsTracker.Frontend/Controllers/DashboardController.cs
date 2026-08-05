@@ -52,9 +52,9 @@ namespace SportsTracker.Frontend.Controllers
         {
             ApiResponse<CachedScoreboard>? response = await _api.GetLeagueAsync(league, cancellationToken);
 
-            LeagueSectionViewModel section = _mapper.MapLeague(league, response?.Data?.Games);
+            LeagueSectionViewModel viewModel = _mapper.MapLeague(league, response?.Data?.Games);
             
-            return PartialView("_LeagueSection", section);
+            return PartialView("_LeagueSection", viewModel);
         }
     }
 }

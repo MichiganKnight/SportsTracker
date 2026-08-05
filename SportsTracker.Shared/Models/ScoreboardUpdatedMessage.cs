@@ -1,10 +1,8 @@
-﻿using SportsTracker.Shared.Enums;
-
-namespace SportsTracker.Shared.Models
+﻿namespace SportsTracker.Shared.Models
 {
     public sealed class ScoreboardUpdatedMessage
     {
-        public required League League { get; init; }
+        public string League { get; init; } = string.Empty;
         
         public DateTime UpdatedUtc { get; init; }
     }

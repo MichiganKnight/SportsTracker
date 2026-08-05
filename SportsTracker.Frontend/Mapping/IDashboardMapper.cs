@@ -7,8 +7,8 @@ namespace SportsTracker.Frontend.Mapping
 {
     public interface IDashboardMapper
     {
-        DashboardViewModel Map(IReadOnlyDictionary<League, IReadOnlyList<Game>?> scoreboards);
+        DashboardViewModel Map(Dictionary<League, IReadOnlyList<Game>> scoreboards);
 
-        LeagueSectionViewModel MapLeague(League league, IReadOnlyList<Game> games);
+        LeagueSectionViewModel MapLeague(League league, IReadOnlyList<Game>? games);
     }
 }

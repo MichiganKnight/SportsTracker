@@ -1,7 +1,7 @@
 ﻿@using SportsTracker.Frontend.ViewModels.GameInfo
 @model SportsTracker.Frontend.ViewModels.LeagueInfo.LeagueSectionViewModel
 
-<section class="league-@Model.League.ToString().ToLowerInvariant() mb-5 p-2">
+<section id="league-@Model.League.ToString().ToLowerInvariant()" class="mb-5 p-2">
     <div class="league-header d-flex justify-content-between align-items-center">
         <h3 class="mb-0">
             @Model.Icon @Model.LeagueName

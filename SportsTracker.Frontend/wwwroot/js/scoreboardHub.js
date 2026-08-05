@@ -3,8 +3,32 @@
     .withAutomaticReconnect()
     .build();
 
-connection.on("ScoreboardUpdated", message => {
-    console.log(`${message.league} Updated at ${message.updatedUtc}`);
+connection.on("ScoreboardUpdated", async league => {
+    console.log("Refreshing", league);
+    
+    const response = await fetch(`/Dashboard/LeagueSection?league=${league}`);
+    
+    if (!response.ok) {
+        return;
+    }
+    
+    const html = await response.text();    
+    
+    const parser = new DOMParser();    
+    const documentFragment = parser.parseFromString(html, "text/html");    
+    const replacement = documentFragment.body.firstElementChild;
+    
+    const current = document.getElementById(`league-${league.toLowerCase()}`);
+    
+    if (current && replacement) {
+        replacement.classList.add("league-updated");
+        
+        current.replaceWith(replacement);
+        
+        console.log(`${league} Section Updated`);
+    } else {
+        console.warn(`${league} Section Not Found`);
+    }
 });
 
 async function start() {
