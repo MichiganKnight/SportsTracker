@@ -1,6 +1,4 @@
 ﻿using System.Text.Json;
-using Microsoft.Extensions.Options;
-using SportsTracker.Backend.Config;
 using SportsTracker.Shared.Common;
 
 namespace SportsTracker.Backend.Integrations.ESPN
@@ -11,12 +9,10 @@ namespace SportsTracker.Backend.Integrations.ESPN
         private readonly JsonSerializerOptions _jsonOptions;
         private readonly ILogger<EspnApiClient> _logger;
 
-        public EspnApiClient(HttpClient httpClient, IOptions<EspnOptions> options, ILogger<EspnApiClient> logger)
+        public EspnApiClient(HttpClient httpClient, ILogger<EspnApiClient> logger)
         {
             _httpClient = httpClient;
             _logger = logger;
-            
-            _httpClient.BaseAddress = new Uri(options.Value.BaseUrl.TrimEnd('/') + "/");
             
             _jsonOptions = new JsonSerializerOptions
             {

@@ -17,26 +17,33 @@ namespace SportsTracker.Frontend.Mapping
 
             foreach (League league in LeagueConfiguration.All.OrderBy(l => LeagueConfiguration.Get(l).DisplayOrder))
             {
-                LeagueInfo info = LeagueConfiguration.Get(league);
-                
                 scoreboards.TryGetValue(league, out IReadOnlyList<Game>? games);
-
-                sections.Add(new LeagueSectionViewModel
-                {
-                    League = league,
-                    LeagueName = info.DisplayName,
-                    Icon = info.Icon,
-                    
-                    Games = SelectDashboardGames(games ?? []),
-                    
-                    LiveGames = (games ?? []).Count(g => g.IsLive),
-                    TotalGames = (games ?? []).Count
-                });
+                
+                sections.Add(MapLeague(league, games));
             }
 
             return new DashboardViewModel
             {
                 Leagues = sections
+            };
+        }
+
+        public LeagueSectionViewModel MapLeague(League league, IReadOnlyList<Game>? games)
+        {
+            LeagueInfo info = LeagueConfiguration.Get(league);
+
+            games ??= [];
+
+            return new LeagueSectionViewModel
+            {
+                League = league,
+                LeagueName = info.DisplayName,
+                Icon = info.Icon,
+
+                Games = SelectDashboardGames(games),
+
+                LiveGames = games.Count(g => g.IsLive),
+                TotalGames = games.Count
             };
         }
         
