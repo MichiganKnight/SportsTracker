@@ -32,8 +32,8 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
             return new GameSituation
             {
                 Primary = $"Q{status.Period}",
-                Secondary = status.DisplayClock ?? string.Empty,
-                Detail = status.Type.ShortDetail ?? string.Empty
+                Secondary = status.DisplayClock,
+                Detail = status.Type.ShortDetail
             };
         }
 
@@ -56,7 +56,7 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
 
             return new GameSituation
             {
-                Primary = status.Type.ShortDetail ?? string.Empty,
+                Primary = status.Type.ShortDetail,
                 Secondary = secondaryText
             };
         }

@@ -18,7 +18,7 @@ namespace SportsTracker.Backend.Controllers
         }
 
         [HttpGet("{league}")]
-        public async Task<ActionResult<ApiResponse<IReadOnlyList<Game>>>> GetScoreboard(League league, CancellationToken cancellationToken)
+        public async Task<ActionResult<ApiResponse<CachedScoreboard>>> GetScoreboard(League league, CancellationToken cancellationToken)
         {
             CachedScoreboard? scoreboard = await _scoreboardService.GetScoreboardAsync(league, cancellationToken);
 

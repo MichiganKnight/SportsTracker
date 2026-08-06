@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject IConfiguration Configuration
+
+<!DOCTYPE html>
 <html lang="en" data-theme="dark">
     <head>
         <meta charset="utf-8"/>
@@ -34,12 +36,19 @@
         
         <partial name="_Footer" />
         
+        <script>
+            window.sportsTracker = {
+                scoreboardHub: "@Configuration["SportsApi:HubUrl"]"
+            };
+        </script>
+        
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
 
         <script src="~/js/scoreboardHub.js" asp-append-version="true"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/js/theme.js"></script>
         
         @await RenderSectionAsync("Scripts", required: false)
     </body>

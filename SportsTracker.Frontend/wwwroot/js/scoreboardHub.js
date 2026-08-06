@@ -1,35 +1,36 @@
 ﻿const connection = new signalR.HubConnectionBuilder()
-    .withUrl('https://localhost:7096/scoreboardHub')
+    .withUrl(window.sportsTracker.scoreboardHub)
     .withAutomaticReconnect()
     .build();
 
-connection.on("ScoreboardUpdated", async league => {
-    console.log("Refreshing", league);
+connection.on("ScoreboardUpdated", refreshLeague);
+
+async function refreshLeague(payload) {
+    const league = payload.league;
+    const id = `league-${league.toLowerCase()}`;
     
-    const response = await fetch(`/Dashboard/LeagueSection?league=${league}`);
+    const response = await fetch(`/Dashboard/LeagueSection?league=${league}&t=${Date.now()}`, {
+        cache: "no-store"
+    });
     
-    if (!response.ok) {
+    if (!response.ok) {        
         return;
     }
     
-    const html = await response.text();    
+    const html = await response.text();
     
-    const parser = new DOMParser();    
-    const documentFragment = parser.parseFromString(html, "text/html");    
-    const replacement = documentFragment.body.firstElementChild;
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
     
-    const current = document.getElementById(`league-${league.toLowerCase()}`);
+    const current = document.getElementById(id);
+    const replacement = doc.getElementById(id);
     
-    if (current && replacement) {
-        replacement.classList.add("league-updated");
-        
-        current.replaceWith(replacement);
-        
-        console.log(`${league} Section Updated`);
-    } else {
-        console.warn(`${league} Section Not Found`);
+    if (!current || !replacement) {
+        return;
     }
-});
+    
+    current.replaceWith(replacement);
+}
 
 async function start() {
     try {

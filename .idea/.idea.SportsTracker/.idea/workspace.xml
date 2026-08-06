@@ -17,10 +17,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Controllers/DashboardController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Controllers/DashboardController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Mapping/DashboardMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Mapping/DashboardMapper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Mapping/IDashboardMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Mapping/IDashboardMapper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_LeagueSection.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_LeagueSection.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/ScoreboardController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/ScoreboardController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/Mappers/SituationMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/Mappers/SituationMapper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Dashboard/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Dashboard/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_Layout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_Navbar.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_Navbar.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/appsettings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/js/scoreboardHub.js" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/js/scoreboardHub.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -80,6 +82,7 @@
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_GameSection.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_LeagueSection.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_TeamRow.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Common/ApiResponse.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Common/ApiResult.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Shared/Common/Error.cs" root0="FORCE_HIGHLIGHTING" />
@@ -119,33 +122,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.SportsTracker.Backend: http.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Launch Settings Profile.SportsTracker.Backend: https.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Launch Settings Profile.SportsTracker.Frontend: https.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Launch Settings Profile.SportsTracker.Web: http.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;ml.llm.LLMConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.SportsTracker.Backend: http.executor": "Run",
+    ".NET Launch Settings Profile.SportsTracker.Backend: https.executor": "Run",
+    ".NET Launch Settings Profile.SportsTracker.Frontend: https.executor": "Run",
+    ".NET Launch Settings Profile.SportsTracker.Web: http.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "cidr.known.project.marker": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "master",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "ml.llm.LLMConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Compound.Run Application">
     <configuration name="Run Application" type="CompoundRunConfigurationType">
       <toRun name="SportsTracker.Backend: https" type="LaunchSettings" />
@@ -242,6 +245,9 @@
       <workItem from="1785796843115" duration="11526000" />
       <workItem from="1785875783199" duration="1319000" />
       <workItem from="1785893782845" duration="3610000" />
+      <workItem from="1785913400557" duration="2118000" />
+      <workItem from="1785955981274" duration="1863000" />
+      <workItem from="1785989452224" duration="1888000" />
     </task>
     <servers />
   </component>
