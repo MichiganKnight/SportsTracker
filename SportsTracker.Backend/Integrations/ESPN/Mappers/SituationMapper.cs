@@ -1,4 +1,5 @@
-﻿using SportsTracker.Backend.Integrations.ESPN.DTOs.Common;
+﻿using SportsTracker.Backend.Integrations.ESPN.DTOs.Baseball;
+using SportsTracker.Backend.Integrations.ESPN.DTOs.Common;
 using SportsTracker.Backend.Integrations.ESPN.DTOs.Scoreboard;
 using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Models;
@@ -31,8 +32,8 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
         {
             return new GameSituation
             {
-                Primary = $"Q{status.Period}",
-                Secondary = status.DisplayClock,
+                Headline = $"Q{status.Period}",
+                Subheadline = status.DisplayClock,
                 Detail = status.Type.ShortDetail
             };
         }
@@ -40,25 +41,71 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
         private static GameSituation MapBaseball(CompetitionDto competition)
         {
             StatusDto status = competition.Status;
-            SituationDto? situation = competition.Situation;
-            
-            string secondaryText = string.Empty;
-            if (situation != null)
+            BaseballSituationDto? situation = competition.BaseballSituation;
+
+            if (situation is null)
             {
-                secondaryText = situation switch
+                return new GameSituation
                 {
-                    { Balls: int b, Strikes: int s, Outs: int o } => $"{b}-{s}, {o} Out{(o == 1 ? "" : "s")}",
-                    { Balls: int b, Strikes: int s } => $"{b}-{s}",
-                    { Outs: int o } => $"{o} Out{(o == 1 ? "" : "s")}",
-                    _ => string.Empty
+                    Headline = status.Type.ShortDetail
                 };
             }
 
+            string countAndOuts = FormatBaseballCountAndOuts(situation);
+            string baseState = FormatBaseballBaseState(situation);
+            string lastPlay = situation.LastPlay?.Text ?? string.Empty;
+            
             return new GameSituation
             {
-                Primary = status.Type.ShortDetail,
-                Secondary = secondaryText
+                Headline = status.Type.ShortDetail,
+                Subheadline = countAndOuts,
+                Detail = lastPlay,
+                Badge = baseState
             };
+        }
+
+        private static string FormatBaseballCountAndOuts(BaseballSituationDto situation)
+        {
+            return situation switch
+            {
+                { Balls: int balls, Strikes: int strikes, Outs: int outs } =>
+                    $"{balls}-{strikes}, {FormatOuts(outs)}",
+
+                { Balls: int balls, Strikes: int strikes } =>
+                    $"{balls}-{strikes}",
+
+                { Outs: int outs } =>
+                    FormatOuts(outs),
+
+                _ => string.Empty
+            };
+        }
+        
+        private static string FormatOuts(int outs)
+        {
+            return $"{outs} Out{(outs == 1 ? "" : "s")}";
+        }
+
+        private static string FormatBaseballBaseState(BaseballSituationDto situation)
+        {
+            List<string> occupiedBases = [];
+
+            if (situation.OnFirst)
+            {
+                occupiedBases.Add("1st");
+            }
+
+            if (situation.OnSecond)
+            {
+                occupiedBases.Add("2nd");
+            }
+            
+            if (situation.OnThird)
+            {
+                occupiedBases.Add("3rd");
+            }
+            
+            return occupiedBases.Count == 0 ? string.Empty : $"On {string.Join(", ", occupiedBases)}";
         }
     }
 }

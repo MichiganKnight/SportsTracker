@@ -33,22 +33,34 @@
                     }
                 
                     <span class="fw-semibold">
-                        @(Model.SituationPrimary ?? Model.Status)
+                        @(Model.SituationHeadline ?? Model.Status)
                     </span>
                 </div>
             
-                @if (!string.IsNullOrWhiteSpace(Model.SituationSecondary))
+                @if (!string.IsNullOrWhiteSpace(Model.SituationSubheadline))
                 {
                     <span class="text-secondary small fw-semibold">
-                        @Model.SituationSecondary
+                        @Model.SituationSubheadline
                     </span>
                 }
             </div>
         
             @if (!string.IsNullOrWhiteSpace(Model.SituationDetail))
             {
-                <div class="small text-secondary mt-2">
-                    @Model.SituationDetail
+                <div class="d-flex justify-content-between align-items-start gap-3 small text-secondary fw-semibold mt-2">
+                    @if (!string.IsNullOrWhiteSpace(Model.SituationDetail))
+                    {
+                        <div>
+                            @Model.SituationDetail
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.SituationBadge))
+                    {
+                        <div class="text-nowrap">
+                            @Model.SituationBadge
+                        </div>
+                    }
                 </div>
             }
 

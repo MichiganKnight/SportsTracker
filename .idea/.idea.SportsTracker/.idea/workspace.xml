@@ -16,15 +16,7 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/ScoreboardController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/ScoreboardController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/Mappers/SituationMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/Mappers/SituationMapper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Dashboard/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Dashboard/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_Layout.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_Navbar.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_Navbar.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/js/scoreboardHub.js" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/js/scoreboardHub.js" afterDir="false" />
-    </list>
+    <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -247,7 +239,7 @@
       <workItem from="1785893782845" duration="3610000" />
       <workItem from="1785913400557" duration="2118000" />
       <workItem from="1785955981274" duration="1863000" />
-      <workItem from="1785989452224" duration="1888000" />
+      <workItem from="1785989452224" duration="2184000" />
     </task>
     <servers />
   </component>

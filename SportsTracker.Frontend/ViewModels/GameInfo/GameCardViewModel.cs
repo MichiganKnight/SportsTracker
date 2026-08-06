@@ -11,9 +11,10 @@ namespace SportsTracker.Frontend.ViewModels.GameInfo
         
         public string Status { get; init; } = string.Empty;
         
-        public string? SituationPrimary { get; init; }
-        public string? SituationSecondary { get; init; }
+        public string? SituationHeadline { get; init; }
+        public string? SituationSubheadline { get; init; }
         public string? SituationDetail { get; init; }
+        public string? SituationBadge { get; init; }
         
         public bool IsLive { get; init; }
         public bool IsFinal { get; init; }
