@@ -87,3 +87,29 @@ body {
 .league-updated {
     animation: leagueUpdate .35s ease-in-out;
 }
+
+.diamond {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .35rem;
+}
+
+.diamond .middle {
+    display: flex;
+    gap: 1rem;
+}
+
+.base {
+    width: 12px;
+    height: 12px;
+    border: 2px solid #adb5bd;
+    transform: rotate(45deg);
+    background: white;
+    transition: .2s;
+}
+
+.base .occupied {
+    background: #ffc107;
+    border-color: #ffc107;
+}

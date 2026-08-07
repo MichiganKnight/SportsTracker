@@ -41,7 +41,7 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
         private static GameSituation MapBaseball(CompetitionDto competition)
         {
             StatusDto status = competition.Status;
-            BaseballSituationDto? situation = competition.BaseballSituation;
+            SituationDto? situation = competition.BaseballSituation;
 
             if (situation is null)
             {
@@ -60,11 +60,21 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
                 Headline = status.Type.ShortDetail,
                 Subheadline = countAndOuts,
                 Detail = lastPlay,
-                Badge = baseState
+                
+                Baseball = new BaseballSituation
+                {
+                    Balls = situation.Balls,
+                    Strikes = situation.Strikes,
+                    Outs = situation.Outs,
+                    
+                    RunnerOnFirst = situation.OnFirst,
+                    RunnerOnSecond = situation.OnSecond,
+                    RunnerOnThird = situation.OnThird,
+                }
             };
         }
 
-        private static string FormatBaseballCountAndOuts(BaseballSituationDto situation)
+        private static string FormatBaseballCountAndOuts(SituationDto situation)
         {
             return situation switch
             {
@@ -86,7 +96,7 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
             return $"{outs} Out{(outs == 1 ? "" : "s")}";
         }
 
-        private static string FormatBaseballBaseState(BaseballSituationDto situation)
+        private static string FormatBaseballBaseState(SituationDto situation)
         {
             List<string> occupiedBases = [];
 

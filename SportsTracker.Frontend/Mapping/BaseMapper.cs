@@ -36,7 +36,8 @@ namespace SportsTracker.Frontend.Mapping
                 SituationHeadline = game.Situation?.Headline,
                 SituationSubheadline = game.Situation?.Subheadline,
                 SituationDetail = game.Situation?.Detail,
-                SituationBadge = game.Situation?.Badge,
+                
+                Baseball = game.Situation?.Baseball,
 
                 IsLive = game.IsLive,
                 IsFinal = game.IsFinal,

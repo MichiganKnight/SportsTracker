@@ -1,6 +1,6 @@
 ﻿namespace SportsTracker.Backend.Integrations.ESPN.DTOs.Baseball
 {
-    public sealed class BaseballSituationDto
+    public sealed class SituationDto
     {
         public int? Outs { get; init; }
         public int? Balls { get; init; }

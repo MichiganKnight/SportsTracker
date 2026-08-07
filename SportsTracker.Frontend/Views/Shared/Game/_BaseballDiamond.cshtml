@@ -1,0 +1,11 @@
+﻿@model SportsTracker.Shared.Models.BaseballSituation
+
+<div class="diamond">
+    <div class="base second @(Model.RunnerOnSecond ? "occupied" : "")"></div>)"
+    
+    <div class="middle">
+        <div class="base third @(Model.RunnerOnThird ? "occupied" : "")"></div>)"
+        
+        <div class="base first @(Model.RunnerOnFirst ? "occupied" : "")"></div>)"
+    </div>
+</div>

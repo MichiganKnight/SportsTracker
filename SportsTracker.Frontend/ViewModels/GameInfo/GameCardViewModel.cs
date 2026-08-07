@@ -1,4 +1,5 @@
 ﻿using SportsTracker.Frontend.ViewModels.TeamInfo;
+using SportsTracker.Shared.Models;
 
 namespace SportsTracker.Frontend.ViewModels.GameInfo
 {
@@ -14,7 +15,8 @@ namespace SportsTracker.Frontend.ViewModels.GameInfo
         public string? SituationHeadline { get; init; }
         public string? SituationSubheadline { get; init; }
         public string? SituationDetail { get; init; }
-        public string? SituationBadge { get; init; }
+        
+        public BaseballSituation? Baseball { get; init; }
         
         public bool IsLive { get; init; }
         public bool IsFinal { get; init; }

@@ -11,7 +11,7 @@ namespace SportsTracker.Backend.Integrations.ESPN.DTOs.Scoreboard
         public StatusDto Status { get; init; } = new();
         
         [JsonPropertyName("situation")]
-        public BaseballSituationDto? BaseballSituation { get; init; }
+        public SituationDto? BaseballSituation { get; init; }
         public VenueDto? Venue { get; init; }
     }
 
