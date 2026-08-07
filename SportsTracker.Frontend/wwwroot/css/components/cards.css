@@ -1,7 +1,9 @@
-﻿.card {
+﻿/* Cards  */
+
+.card {
     background: var(--st-surface);
-    border: 1px solid var(--st-border);
     color: var(--st-text);
+    border: 1px solid var(--st-border);    
     border-radius: .7rem;
 }
 
@@ -10,15 +12,46 @@
 }
 
 .game-card {
-    transition: all .2s ease;
-    border: 1px solid var(--st-border);
+    transition: transform .15s ease, box-shadow .15s ease;
 }
 
 .game-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.2);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+}
+
+.game-card .border-top {
+    border-color: var(--st-border) !important;
 }
 
 .game-card .badge {
-    font-size: .7rem;
+    letter-spacing: .05em;
+    font-size: .72rem;
+}
+
+/* Shared Situation Layout */
+
+.game-situation {
+    margin-top: 1rem;
+}
+
+.game-count-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.game-count {
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--st-text);
+}
+
+.game-last-play {
+    margin-top: .35rem;
+    font-size: .85rem;
+    line-height: 1.3;
+    color: rgba(255,255,255,.72);
+    font-style: italic;
 }

@@ -1,5 +1,9 @@
 ﻿@model SportsTracker.Frontend.ViewModels.GameInfo.GameCardViewModel
 
+@{
+    bool showVenue = !string.IsNullOrWhiteSpace(Model.Venue);
+}
+
 <div class="card game-card shadow-sm h-100">
     <div class="card-body">
         <!-- Teams -->
@@ -7,15 +11,14 @@
             @await Html.PartialAsync("_TeamRow", Model.AwayTeam)
             @await Html.PartialAsync("_TeamRow", Model.HomeTeam)
         </div>
-    
-        <!-- Footer -->
+        
         <div class="border-top pt-3">
-            <!-- Status Row -->
+            <!-- Status -->
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center gap-2">
                     @if (Model.IsLive)
                     {
-                        <span class="badge bg-danger">
+                        <span class="bg-danger">
                             LIVE
                         </span>
                     }
@@ -25,45 +28,36 @@
                             FINAL
                         </span>
                     }
-                    else if (Model.IsUpcoming)
+                    else
                     {
                         <span class="badge bg-primary">
                             SCHEDULED
                         </span>
                     }
-                
+                    
                     <span class="fw-semibold">
                         @(Model.SituationHeadline ?? Model.Status)
                     </span>
                 </div>
-            
+                
                 @if (!string.IsNullOrWhiteSpace(Model.SituationSubheadline))
                 {
-                    <span class="text-secondary small fw-semibold">
+                    <span class="small text-secondary fw-semibold">
                         @Model.SituationSubheadline
                     </span>
                 }
             </div>
-        
-            <div class="d-flex justify-content-between align-items-start mt-2">
-                <div>
-                    @if (!string.IsNullOrWhiteSpace(Model.SituationDetail))
-                    {
-                        <div class="small text-secondary">
-                            @Model.SituationDetail
-                        </div>
-                    }
-                </div>
-                
-                @if (Model.Baseball is not null)
-                {
-                    <partial name="Game/_BaseballDiamond" model="Model.Baseball" />
-                }
-            </div>
-
-            @if (!string.IsNullOrWhiteSpace(Model.Venue))
+            
+            @if (Model.Baseball is not null)
             {
-                <div class="small text-secondary mt-2">
+                <div class="game-situation">
+                    <partial name="Game/_BaseballSituation" model="Model" />
+                </div>
+            }
+            
+            @if (showVenue)
+            {
+                <div class="border-top mt-3 pt-2 small text-secondary">
                     <i class="bi bi-geo-alt-fill me-1"></i>
                     @Model.Venue
                 </div>

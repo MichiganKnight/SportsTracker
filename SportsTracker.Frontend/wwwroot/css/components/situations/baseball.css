@@ -1,0 +1,46 @@
+﻿/* Baseball Situation */
+
+.baseball-situation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 72px;
+}
+
+/* Baseball Diamond */
+
+.diamond {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .4rem;
+}
+
+.diamond .middle {
+    display: flex;
+    align-items: center;
+    gap: .9rem;
+}
+
+.base {
+    width: 12px;
+    height: 12px;
+    background: transparent;
+    border: 2px solid var(--st-border);
+    transform: rotate(45deg);
+    transition: background-color .2s ease, border-color .2s ease;
+}
+
+.base.occupied {
+    background: #ffc107;
+    border-color: #ffc107;
+}
+
+.base.home {
+    width: 11px;
+    height: 11px;
+    transform: none;
+    clip-path: polygon(50% 0%, 100% 45%, 80% 100%, 20% 100%, 0% 45%);
+    background: rgba(255,255,255,.9);
+    border: none;
+}
