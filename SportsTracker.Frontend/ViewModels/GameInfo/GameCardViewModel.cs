@@ -1,5 +1,5 @@
 ﻿using SportsTracker.Frontend.ViewModels.TeamInfo;
-using SportsTracker.Shared.Models;
+using SportsTracker.Shared.Models.Sport;
 
 namespace SportsTracker.Frontend.ViewModels.GameInfo
 {

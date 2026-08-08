@@ -33,11 +33,11 @@
                         <span class="badge bg-primary">
                             SCHEDULED
                         </span>
+                        
+                        <span class="fw-semibold">
+                            @(Model.SituationHeadline ?? Model.Status)
+                        </span>
                     }
-                    
-                    <span class="fw-semibold">
-                        @(Model.SituationHeadline ?? Model.Status)
-                    </span>
                 </div>
                 
                 @if (!string.IsNullOrWhiteSpace(Model.SituationSubheadline))

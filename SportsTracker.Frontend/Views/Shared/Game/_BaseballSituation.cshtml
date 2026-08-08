@@ -1,29 +1,42 @@
 ﻿@model SportsTracker.Frontend.ViewModels.GameInfo.GameCardViewModel
 
-@if (Model.IsLive && Model.Baseball is not null)
+@if (Model.Baseball is not null)
 {
-    <div class="game-count mt-3">
-        <div>
-            <div class="game-count">
-                Count
-                
-                @Model.Baseball.Balls-@Model.Baseball.Strikes
-                
-                •
-                
-                @Model.Baseball.Outs Out@(Model.Baseball.Outs == 1 ? "" : "s")
-            </div>
-            
-            @if (!string.IsNullOrWhiteSpace(Model.SituationDetail))
-            {
-                <div class="game-last-play mt-2">
-                    @Model.SituationDetail
+    <div class="game-situation baseball-situation">
+        @if (Model.IsLive)
+        {
+            <div class="baseball-live-info">
+                <div class="baseball-count-row">
+                    <div class="baseball-count">
+                        <span>
+                            @Model.Baseball.Balls-@Model.Baseball.Strikes
+                        </span>
+                        
+                        <span class="text-secondary">•</span>
+                        
+                        <span>
+                            @Model.Baseball.Outs
+                            Out@(Model.Baseball.Outs == 1 ? "" : "s")
+                        </span>
+                    </div>
+                    
+                    <partial name="_BaseballDiamond" model="Model.Baseball" />
                 </div>
-            }
-        </div>
-        
-        <div class="baseball-situation">
-            <partial name="Game/_BaseballDiamond" model="Model.Baseball" />
-        </div>
+                
+                @if (Model.Baseball.Batter is not null || Model.Baseball.Pitcher is not null)
+                {
+                    <div class="baseball-batter-pitcher">
+                        ...
+                    </div>
+                }
+                
+                @if (!string.IsNullOrWhiteSpace(Model.SituationDetail))
+                {
+                    <div class="game-last-play">
+                        @Model.SituationDetail
+                    </div>
+                }
+            </div>
+        }
     </div>
 }

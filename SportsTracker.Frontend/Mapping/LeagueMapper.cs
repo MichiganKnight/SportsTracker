@@ -3,6 +3,7 @@ using SportsTracker.Frontend.ViewModels.LeagueInfo;
 using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Metadata;
 using SportsTracker.Shared.Models;
+using SportsTracker.Shared.Models.GameInfo;
 
 namespace SportsTracker.Frontend.Mapping
 {

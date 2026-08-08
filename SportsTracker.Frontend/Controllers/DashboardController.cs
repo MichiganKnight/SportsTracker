@@ -7,6 +7,7 @@ using SportsTracker.Shared.Common;
 using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Metadata;
 using SportsTracker.Shared.Models;
+using SportsTracker.Shared.Models.GameInfo;
 
 namespace SportsTracker.Frontend.Controllers
 {
