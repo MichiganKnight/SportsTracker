@@ -10,5 +10,8 @@ namespace SportsTracker.Shared.Models.GameInfo
         public string Badge { get; set; } = string.Empty;
         
         public BaseballSituation? Baseball { get; init; }
+        public BasketballSituation? Basketball { get; init; }
+        public HockeySituation? Hockey { get; init; }
+        public FootballSituation? Football { get; init; }
     }
 }
