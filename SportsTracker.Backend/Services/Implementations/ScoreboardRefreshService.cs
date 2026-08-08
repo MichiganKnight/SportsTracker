@@ -11,6 +11,7 @@ using SportsTracker.Backend.Services.Interfaces;
 using SportsTracker.Shared.Common;
 using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Models;
+using SportsTracker.Shared.Models.GameInfo;
 
 namespace SportsTracker.Backend.Services.Implementations
 {

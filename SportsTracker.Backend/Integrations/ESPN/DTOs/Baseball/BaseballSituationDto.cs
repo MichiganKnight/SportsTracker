@@ -1,6 +1,8 @@
-﻿namespace SportsTracker.Backend.Integrations.ESPN.DTOs.Baseball
+﻿using SportsTracker.Backend.Integrations.ESPN.DTOs.Common;
+
+namespace SportsTracker.Backend.Integrations.ESPN.DTOs.Baseball
 {
-    public sealed class SituationDto
+    public sealed class BaseballSituationDto
     {
         public int? Outs { get; init; }
         public int? Balls { get; init; }
@@ -22,8 +24,13 @@
 
     public sealed class DueUpDto
     {
-        //public AthleteDto Athlete { get; init; } = new();
+        public string? PlayerId { get; init; }
+
+        public AthleteDto? Athlete { get; init; } = new();
         
-        public string Summary { get; init; } = string.Empty;
+        public string? Summary { get; init; }
+        
+        public int? BatOrder { get; init; }
+        public int? Period { get; init; }
     }
 }

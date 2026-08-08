@@ -1,6 +1,6 @@
 ﻿using SportsTracker.Shared.Enums;
 
-namespace SportsTracker.Shared.Models
+namespace SportsTracker.Shared.Models.GameInfo
 {
     public class Game
     {

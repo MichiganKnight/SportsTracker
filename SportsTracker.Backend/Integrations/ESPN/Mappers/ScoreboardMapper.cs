@@ -2,6 +2,7 @@
 using SportsTracker.Backend.Integrations.ESPN.DTOs.Scoreboard;
 using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Models;
+using SportsTracker.Shared.Models.GameInfo;
 
 namespace SportsTracker.Backend.Integrations.ESPN.Mappers
 {

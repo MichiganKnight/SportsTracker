@@ -1,4 +1,5 @@
 ﻿using SportsTracker.Shared.Enums;
+using SportsTracker.Shared.Models.GameInfo;
 
 namespace SportsTracker.Shared.Models
 {
