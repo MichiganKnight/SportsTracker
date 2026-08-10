@@ -4,8 +4,8 @@ namespace SportsTracker.Backend.Integrations.ESPN.DTOs.Baseball
 {
     public sealed class BaseballSituationDto
     {
-        public int? Outs { get; init; }
         public int? Balls { get; init; }
+        public int? Outs { get; init; }
         public int? Strikes { get; init; }
         
         public bool OnFirst { get; init; }
@@ -14,7 +14,10 @@ namespace SportsTracker.Backend.Integrations.ESPN.DTOs.Baseball
         
         public LastPlayDto? LastPlay { get; init; }
         
-        public List<DueUpDto> DueUp { get; init; } = [];
+        public AthleteDto? Batter { get; init; }
+        public AthleteDto? Pitcher { get; init; }
+        
+        public List<DueUpDto>? DueUp { get; init; } = [];
     }
 
     public sealed class LastPlayDto
@@ -24,13 +27,10 @@ namespace SportsTracker.Backend.Integrations.ESPN.DTOs.Baseball
 
     public sealed class DueUpDto
     {
-        public int? PlayerId { get; init; }
-
-        public AthleteDto? Athlete { get; init; } = new();
+        public AthleteDto? Athlete { get; init; }
         
         public string? Summary { get; init; }
         
         public int? BatOrder { get; init; }
-        public int? Period { get; init; }
     }
 }

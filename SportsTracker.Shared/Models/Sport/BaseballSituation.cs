@@ -2,19 +2,18 @@
 {
     public class BaseballSituation
     {
-        public int? Inning { get; init; }
-        public string? InningState { get; init; }
-        
         public int? Balls { get; init; }
         public int? Strikes { get; init; }
         public int? Outs { get; init; }
         
-        public bool RunnerOnFirst { get; init; }
-        public bool RunnerOnSecond { get; init; }
-        public bool RunnerOnThird { get; init; }
+        public bool OnFirst { get; init; }
+        public bool OnSecond { get; init; }
+        public bool OnThird { get; init; }
         
         public Athlete? Batter { get; init; }
         public Athlete? Pitcher { get; init; }
+        
+        public IReadOnlyList<Athlete> DueUp { get; init; } = [];
         
         public string? LastPlay { get; init; }
     }

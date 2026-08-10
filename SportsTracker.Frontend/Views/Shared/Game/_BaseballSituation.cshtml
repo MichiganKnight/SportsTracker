@@ -1,32 +1,62 @@
-﻿@model SportsTracker.Frontend.ViewModels.GameInfo.GameCardViewModel
+﻿@using SportsTracker.Shared.Models
+@using SportsTracker.Shared.Models.Sport
+@model SportsTracker.Frontend.ViewModels.GameInfo.GameCardViewModel
 
-@if (Model.Baseball is not null && Model.IsLive)
+@{
+    BaseballSituation? baseball = Model.Baseball;
+}
+
+@if (baseball is not null && Model.IsLive)
 {
     <div class="game-situation baseball-situation mt-3">
         <div class="baseball-live-info">
-            <partial name="Game/_BaseballDiamond" model="Model.Baseball" />
-                
-            <!--@if (Model.Baseball.Batter is not null || Model.Baseball.Pitcher is not null)
+            <partial name="Game/_BaseballDiamond" model="baseball"/>
+
+            @if (baseball.Batter is not null || baseball.Pitcher is not null)
             {
-                <div class="baseball-batter-pitcher">
-                    @if (Model.Baseball.Batter is not null)
+                <div class="baseball-batter-pitcher mt-3">
+                    @if (baseball.Batter is not null)
                     {
-                        <span>
-                            <strong>BAT</strong>
-                            @Model.Baseball.Batter.Name
-                        </span>
+                        <div class="baseball-player-now">
+                            <span class="baseball-player-role">BAT</span>
+
+                            <span class="baseball-player-name">
+                                @DisplayName(baseball.Batter)
+                            </span>
+                        </div>
                     }
-                    
-                    @if (Model.Baseball.Pitcher is not null)
+
+                    @if (baseball.Pitcher is not null)
                     {
-                        <span>
-                            <strong>P</strong>
-                            @Model.Baseball.Pitcher.Name
-                        </span>
+                        <div class="baseball-player-now">
+                            <span class="baseball-player-role">PIT</span>
+
+                            <span class="baseball-player-name">
+                                @DisplayName(baseball.Pitcher)
+                            </span>
+                        </div>
                     }
                 </div>
-            }-->
-                
+            }
+
+            @if (baseball.DueUp.Count > 0)
+            {
+                <div class="baseball-due-up mt-3">
+                    <div class="small text-secondary fw-semibold mb-1">
+                        DUE UP
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach (Athlete athlete in baseball.DueUp)
+                        {
+                            <span class="baseball-player">
+                                @DisplayName(athlete)
+                            </span>
+                        }
+                    </div>
+                </div>
+            }
+
             @if (!string.IsNullOrWhiteSpace(Model.SituationDetail))
             {
                 <div class="game-last-play mt-2 text-secondary">
@@ -35,4 +65,11 @@
             }
         </div>
     </div>
+}
+
+@functions {
+    private static string DisplayName(Athlete athlete)
+    {
+        return athlete.ShortName ?? athlete.Name;
+    }
 }

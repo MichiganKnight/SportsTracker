@@ -72,3 +72,16 @@ body {
 .league-updated {
     animation: leagueUpdate .35s ease-in-out;
 }
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #dee2e6;
+    box-shadow: none;
+    outline: 0;
+}
+
+.btn:focus,
+.btn:active.focus {
+    box-shadow: none;
+    outline: 0;
+}
