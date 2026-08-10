@@ -1,0 +1,89 @@
+﻿@using SportsTracker.Frontend.ViewModels.Standings
+@model SportsTracker.Frontend.ViewModels.Standings.StandingsViewModel
+
+@{
+    ViewData["Title"] = "Standings";
+}
+
+<div class="container-fluid">
+    <div class="mb-4">
+        <h1 class="mb-1">
+            @Model.LeagueName Standings
+        </h1>
+        
+        <div class="text-secondary">
+            @Model.Season Season
+        </div>
+    </div>
+    
+    @foreach (StandingsGroupViewModel group in Model.Groups)
+    {
+        <div class="card shadow-sm mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    @group.Name
+                </h4>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Team</th>
+                            <th class="text-end">W</th>
+                            <th class="text-end">L</th>
+                            <th class="text-end">PCT</th>
+                            <th class="text-end">GB</th>
+                            <th class="text-end">DIFF</th>
+                            <th class="text-end">STRK</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        @foreach (TeamStandingViewModel team in group.Teams)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        @if (!string.IsNullOrWhiteSpace(team.Logo))
+                                        {
+                                            <img src="@team.Logo" alt="@team.Name" width="28" height="28" class="rounded-circle">
+                                        }
+                                        
+                                        <span class="fw-semibold">
+                                            @team.Name
+                                        </span>
+                                    </div>
+                                </td>
+                                
+                                <td class="text-end">
+                                    @team.Wins
+                                </td>
+
+                                <td class="text-end">
+                                    @team.Losses
+                                </td>
+
+                                <td class="text-end">
+                                    @team.WinPercentageDisplay
+                                </td>
+
+                                <td class="text-end">
+                                    @team.GamesBackDisplay
+                                </td>
+
+                                <td class="text-end">
+                                    @(team.RunDifferential?.ToString("+0;-0;0") ?? "-")
+                                </td>
+
+                                <td class="text-end">
+                                    @(team.Streak ?? "-")
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>

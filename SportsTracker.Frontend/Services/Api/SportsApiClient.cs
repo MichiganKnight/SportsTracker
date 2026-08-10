@@ -4,6 +4,7 @@ using SportsTracker.Shared.Common;
 using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Models;
 using SportsTracker.Shared.Models.GameInfo;
+using SportsTracker.Shared.Models.Standings;
 
 namespace SportsTracker.Frontend.Services.Api
 {
@@ -38,6 +39,11 @@ namespace SportsTracker.Frontend.Services.Api
         public async Task<ApiResponse<CachedScoreboard>?> GetLeagueAsync(League league, CancellationToken cancellationToken = default)
         {
             return await GetAsync<ApiResponse<CachedScoreboard>>($"scoreboard/{league}", cancellationToken);
+        }
+
+        public async Task<ApiResponse<LeagueStandings>?> GetStandingsAsync(League league, CancellationToken cancellationToken = default)
+        {
+            return await GetAsync<ApiResponse<LeagueStandings>>($"standings/{league}", cancellationToken);
         }
 
         private async Task<T?> GetAsync<T>(string relativeUrl, CancellationToken cancellationToken = default)

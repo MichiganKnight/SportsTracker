@@ -9,21 +9,14 @@ namespace SportsTracker.Backend.Integrations.ESPN.Endpoints
         {
             LeagueInfo info = LeagueConfiguration.Leagues[league];
 
-            return $"{info.EspnSport}/{info.EspnLeague}/scoreboard";
-        }
-
-        public static string Teams(League league)
-        {
-            LeagueInfo info = LeagueConfiguration.Leagues[league];
-
-            return $"{info.EspnSport}/{info.EspnLeague}/teams";
+            return $"apis/site/v2/sports/{info.EspnSport}/{info.EspnLeague}/scoreboard";
         }
 
         public static string Standings(League league)
         {
             LeagueInfo info = LeagueConfiguration.Leagues[league];
 
-            return $"{info.EspnSport}/{info.EspnLeague}/standings";
+            return $"apis/v2/sports/{info.EspnSport}/{info.EspnLeague}/standings";
         }
     }
 }

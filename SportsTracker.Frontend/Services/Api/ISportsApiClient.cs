@@ -2,6 +2,7 @@
 using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Models;
 using SportsTracker.Shared.Models.GameInfo;
+using SportsTracker.Shared.Models.Standings;
 
 namespace SportsTracker.Frontend.Services.Api
 {
@@ -10,5 +11,7 @@ namespace SportsTracker.Frontend.Services.Api
         Task<ApiResponse<IReadOnlyList<Game>>?> GetScoreboardAsync(League league, CancellationToken cancellationToken = default);
         
         Task<ApiResponse<CachedScoreboard>?> GetLeagueAsync(League league, CancellationToken cancellationToken = default);
+        
+        Task<ApiResponse<LeagueStandings>?> GetStandingsAsync(League league, CancellationToken cancellationToken = default);
     }
 }
