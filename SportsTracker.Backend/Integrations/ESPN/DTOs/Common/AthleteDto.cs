@@ -11,15 +11,15 @@
         public string? Headshot { get; init; }
         public string? Jersey { get; init; }
         
-        public PositionDto? Position { get; init; }
+        //public PositionDto? Position { get; init; }
         public AthleteTeamDto Team { get; init; }
     }
 
-    public sealed class PositionDto
+    /*public sealed class PositionDto
     {
         public string Abbreviation { get; init; } = string.Empty;
         public string DisplayName { get; init; } = string.Empty;
-    }
+    }*/
     
     public sealed class AthleteTeamDto
     {

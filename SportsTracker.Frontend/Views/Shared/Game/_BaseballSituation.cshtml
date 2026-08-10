@@ -1,42 +1,38 @@
 ﻿@model SportsTracker.Frontend.ViewModels.GameInfo.GameCardViewModel
 
-@if (Model.Baseball is not null)
+@if (Model.Baseball is not null && Model.IsLive)
 {
-    <div class="game-situation baseball-situation">
-        @if (Model.IsLive)
-        {
-            <div class="baseball-live-info">
-                <div class="baseball-count-row">
-                    <div class="baseball-count">
+    <div class="game-situation baseball-situation mt-3">
+        <div class="baseball-live-info">
+            <partial name="Game/_BaseballDiamond" model="Model.Baseball" />
+                
+            <!--@if (Model.Baseball.Batter is not null || Model.Baseball.Pitcher is not null)
+            {
+                <div class="baseball-batter-pitcher">
+                    @if (Model.Baseball.Batter is not null)
+                    {
                         <span>
-                            @Model.Baseball.Balls-@Model.Baseball.Strikes
+                            <strong>BAT</strong>
+                            @Model.Baseball.Batter.Name
                         </span>
-                        
-                        <span class="text-secondary">•</span>
-                        
-                        <span>
-                            @Model.Baseball.Outs
-                            Out@(Model.Baseball.Outs == 1 ? "" : "s")
-                        </span>
-                    </div>
+                    }
                     
-                    <partial name="_BaseballDiamond" model="Model.Baseball" />
+                    @if (Model.Baseball.Pitcher is not null)
+                    {
+                        <span>
+                            <strong>P</strong>
+                            @Model.Baseball.Pitcher.Name
+                        </span>
+                    }
                 </div>
+            }-->
                 
-                @if (Model.Baseball.Batter is not null || Model.Baseball.Pitcher is not null)
-                {
-                    <div class="baseball-batter-pitcher">
-                        ...
-                    </div>
-                }
-                
-                @if (!string.IsNullOrWhiteSpace(Model.SituationDetail))
-                {
-                    <div class="game-last-play">
-                        @Model.SituationDetail
-                    </div>
-                }
-            </div>
-        }
+            @if (!string.IsNullOrWhiteSpace(Model.SituationDetail))
+            {
+                <div class="game-last-play mt-2 text-secondary">
+                    @Model.SituationDetail
+                </div>
+            }
+        </div>
     </div>
 }

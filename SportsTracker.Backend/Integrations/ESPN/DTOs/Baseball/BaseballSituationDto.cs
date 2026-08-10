@@ -24,7 +24,7 @@ namespace SportsTracker.Backend.Integrations.ESPN.DTOs.Baseball
 
     public sealed class DueUpDto
     {
-        public string? PlayerId { get; init; }
+        public int? PlayerId { get; init; }
 
         public AthleteDto? Athlete { get; init; } = new();
         

@@ -24,9 +24,10 @@
 
 .list-group-item:hover {
     background: var(--st-surface-alt);
-    color: white;
+    color: var(--st-text);
+    border-radius: 8px;
 }
 
-.list-group-item.active {
+.list-group-item-active {
     background: var(--st-primary);
 }

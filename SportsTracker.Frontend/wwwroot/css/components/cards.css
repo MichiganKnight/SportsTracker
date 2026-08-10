@@ -3,7 +3,7 @@
 .card {
     background: var(--st-surface);
     color: var(--st-text);
-    border: 1px solid var(--st-border);    
+    border: 1px solid var(--st-border);
     border-radius: .7rem;
 }
 
@@ -17,7 +17,7 @@
 
 .game-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
 }
 
 .game-card .border-top {
@@ -29,29 +29,102 @@
     font-size: .72rem;
 }
 
-/* Shared Situation Layout */
+/* Live Indicator */
 
-.game-situation {
-    margin-top: 1rem;
+.game-live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    animation: live-badge-pulse 2s ease-in-out infinite;
 }
 
-.game-count-row {
+.game-live-dot {
+    width: 6px;
+    height: 6px;
+    flex: 0 0 6px;
+    border-radius: 50%;
+    background: #fff;
+    animation: live-dot-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes live-badge-pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    
+    50% {
+        opacity: .75;
+    }
+}
+
+@keyframes live-dot-pulse {
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    
+    50% {
+        opacity: .4;
+        transform: scale(.75);
+    }
+}
+
+/* Score Change */
+
+.game-card.score-changed {
+    animation: game-score-change .9s ease-out;
+}
+
+@keyframes game-score-change {
+    0% {
+        box-shadow: 0 0 0 0 rgba(25, 135, 84, .55);
+    }
+
+    40% {
+        box-shadow: 0 0 0 4px rgba(25, 135, 84, .25);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(25, 135, 84, 0);
+    }
+}
+
+/* Shared Situation */
+
+.game-last-play {
+    margin-top: .35rem;
+    font-size: .85rem;
+    line-height: 1.3;
+    color: rgba(255, 255, 255, .72);
+    font-style: italic;
+    font-weight: bold;
+}
+
+.game-status-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
 }
 
-.game-count {
-    font-size: .9rem;
-    font-weight: 600;
-    color: var(--st-text);
+.game-status-main {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    min-width: 0;
 }
 
-.game-last-play {
-    margin-top: .35rem;
-    font-size: .85rem;
-    line-height: 1.3;
-    color: rgba(255,255,255,.72);
-    font-style: italic;
+/* Baseball */
+
+.baseball-count-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    white-space: nowrap;
+}
+
+.baseball-count-separator {
+    opacity: .5;
 }

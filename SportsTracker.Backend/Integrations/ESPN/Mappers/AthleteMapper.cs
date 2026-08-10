@@ -19,7 +19,7 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
                 ShortName = athlete.ShortName,
                 Headshot = athlete.Headshot,
                 Jersey = athlete.Jersey,
-                Position = athlete.Position?.Abbreviation,
+                //Position = athlete.Position?.Abbreviation,
                 TeamId = athlete.Team?.Id
             };
         }

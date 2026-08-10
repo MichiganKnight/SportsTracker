@@ -24,6 +24,8 @@ namespace SportsTracker.Frontend.Controllers
         public async Task<IActionResult> Index(League league, CancellationToken cancellationToken)
         {
             ApiResponse<CachedScoreboard>? response = await _api.GetLeagueAsync(league, cancellationToken);
+            
+            Console.WriteLine(response);
 
             if (response is null)
             {
