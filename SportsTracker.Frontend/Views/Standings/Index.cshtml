@@ -1,4 +1,5 @@
-﻿@using SportsTracker.Frontend.ViewModels.Standings
+﻿@using SportsTracker.Frontend.ViewModels.LeagueInfo
+@using SportsTracker.Frontend.ViewModels.Standings
 @using SportsTracker.Shared.Enums
 
 @model StandingsViewModel
@@ -20,17 +21,12 @@
             </div>
         </div>
 
-        <div class="btn-group" role="group" aria-label="League Navigation">
-            <a asp-controller="League" asp-action="Index" asp-route-league="@Model.League" class="btn btn-outline-secondary">
-                <i class="bi bi-calendar-event me-1"></i>
-                Games
-            </a>
-
-            <a asp-controller="Standings" asp-action="Index" asp-route-league="@Model.League" asp-route-view="@Model.SelectedView" class="btn btn-primary">
-                <i class="bi bi-list-ol me-1"></i>
-                Standings
-            </a>
-        </div>
+        <partial name="_LeagueNavigation" model="new LeagueNavigationViewModel
+                 {
+                     League = Model.League,
+                     LeagueName = Model.LeagueName,
+                     ActivePage = LeaguePage.Standings
+                 }"/>
     </div>
 
     <!-- Standings View Filter -->
