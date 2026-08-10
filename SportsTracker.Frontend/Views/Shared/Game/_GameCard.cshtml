@@ -14,8 +14,8 @@
     <div class="card-body">
         <!-- Teams -->
         <div class="rounded-3 p-2 mb-3 bg-body-tertiary">
-            @await Html.PartialAsync("_TeamRow", Model.AwayTeam)
-            @await Html.PartialAsync("_TeamRow", Model.HomeTeam)
+            <partial name="_TeamRow" model="Model.AwayTeam" />
+            <partial name="_TeamRow" model="Model.HomeTeam" />
         </div>
         
         <!-- Game Status -->
