@@ -1,0 +1,24 @@
+﻿.standings-rank {
+    width: 48px;
+    text-align: center;
+}
+
+.standings-team-logo {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.standings-table th {
+    font-size: .8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.standings-table td {
+    white-space: nowrap;
+}
+
+.standings-table tbody tr:last-child td {
+    border-bottom: 0;
+}

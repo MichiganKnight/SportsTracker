@@ -2,6 +2,7 @@
 using SportsTracker.Backend.Services.Interfaces;
 using SportsTracker.Shared.Common;
 using SportsTracker.Shared.Enums;
+using SportsTracker.Shared.Models.Groups;
 using SportsTracker.Shared.Models.Standings;
 
 namespace SportsTracker.Backend.Controllers
@@ -11,10 +12,14 @@ namespace SportsTracker.Backend.Controllers
     public sealed class StandingsController : Controller
     {
         private readonly IStandingsService _standingsService;
-        
-        public StandingsController(IStandingsService standingsService)
+        private readonly IGroupsService _groupsService;
+        private readonly IStandingsGroupingService _groupingService;
+
+        public StandingsController(IStandingsService standingsService, IGroupsService groupsService, IStandingsGroupingService groupingService)
         {
             _standingsService = standingsService;
+            _groupsService = groupsService;
+            _groupingService = groupingService;
         }
 
         [HttpGet("{league}")]
@@ -25,6 +30,13 @@ namespace SportsTracker.Backend.Controllers
             if (standings is null)
             {
                 return NotFound();
+            }
+            
+            IReadOnlyList<SportsGroup>? groups = await _groupsService.GetGroupsAsync(league, cancellationToken);
+
+            if (groups is not null)
+            {
+                standings = _groupingService.AddDivisionGroups(standings, groups);
             }
             
             return Ok(new ApiResponse<LeagueStandings>

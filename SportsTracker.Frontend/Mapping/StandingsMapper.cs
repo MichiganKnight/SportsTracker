@@ -30,13 +30,15 @@ namespace SportsTracker.Frontend.Mapping
                 League.MLB =>
                 [
                     StandingsView.Overall,
-                    StandingsView.League
+                    StandingsView.League,
+                    StandingsView.Division
                 ],
 
                 League.NFL or League.NBA or League.NHL =>
                 [
                     StandingsView.Overall,
-                    StandingsView.Conference
+                    StandingsView.Conference,
+                    StandingsView.Division
                 ],
 
                 League.CFB =>

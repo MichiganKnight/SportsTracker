@@ -5,9 +5,9 @@
 @import url("layout/navbar.css");
 @import url("layout/sidebar.css");
 
-@import url("components/badges.css");
 @import url("components/buttons.css");
 @import url("components/cards.css");
+@import url("components/standings.css");
 @import url("components/tables.css");
 @import url("components/team-row.css");
 

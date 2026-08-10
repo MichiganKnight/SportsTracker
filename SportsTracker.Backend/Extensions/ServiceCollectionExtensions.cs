@@ -33,7 +33,10 @@ namespace SportsTracker.Backend.Extensions
 
             services.AddScoped<IScoreboardService, ScoreboardService>();
             services.AddScoped<IScoreboardRefreshService, ScoreboardRefreshService>();
+            
             services.AddScoped<IStandingsService, StandingsService>();
+            services.AddScoped<IGroupsService, GroupsService>();
+            services.AddScoped<IStandingsGroupingService, StandingsGroupingService>();
             
             services.AddSingleton<ICacheService, MemoryCacheService>();
 

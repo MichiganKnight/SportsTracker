@@ -6,5 +6,6 @@ namespace SportsTracker.Backend.Cache
     {
         public static string Scoreboard(League league) => $"scoreboard:{league}";
         public static string Standings(League league) => $"standings:{league}";
+        public static string Groups(League league) => $"groups:{league}";
     }
 }

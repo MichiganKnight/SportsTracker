@@ -10,5 +10,6 @@
         public int FinalScoreboardMinutes { get; init; } = 30;
         public int TeamMinutes { get; init; } = 60;
         public int StandingsMinutes { get; init; } = 60;
+        public int GroupsMinutes { get; init; } = 1440;
     }
 }
