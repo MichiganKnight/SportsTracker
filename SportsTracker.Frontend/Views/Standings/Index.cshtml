@@ -1,56 +1,103 @@
 ﻿@using SportsTracker.Frontend.ViewModels.Standings
 @using SportsTracker.Shared.Enums
-@model SportsTracker.Frontend.ViewModels.Standings.StandingsViewModel
+
+@model StandingsViewModel
 
 @{
-    ViewData["Title"] = "Standings";
+    ViewData["Title"] = $"{Model.LeagueName} Standings";
 }
 
 <div class="container-fluid">
+    <!-- League Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h1 class="mb-1">
-                @Model.LeagueName Standings
+                @Model.LeagueName
             </h1>
 
             <div class="text-secondary">
-                @Model.Season Season
+                @Model.Season Standings
             </div>
         </div>
-        
+
+        <div class="btn-group" role="group" aria-label="League Navigation">
+            <a asp-controller="League" asp-action="Index" asp-route-league="@Model.League" class="btn btn-outline-secondary">
+                <i class="bi bi-calendar-event me-1"></i>
+                Games
+            </a>
+
+            <a asp-controller="Standings" asp-action="Index" asp-route-league="@Model.League" asp-route-view="@Model.SelectedView" class="btn btn-primary">
+                <i class="bi bi-list-ol me-1"></i>
+                Standings
+            </a>
+        </div>
+    </div>
+
+    <!-- Standings View Filter -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">
+            Standings
+        </h4>
+
         <div class="btn-group" role="group" aria-label="Standings View">
+
             @foreach (StandingsView standingsView in Model.AvailableViews)
             {
                 bool active = standingsView == Model.SelectedView;
-                
-                <a asp-controller="Standings" asp-action="Index" asp-route-league="@Model.League" asp-route-view="@standingsView" class="btn @(active ? "btn-primary" : "btn-outline-secondary")">
+
+                <a asp-controller="Standings" asp-action="Index" asp-route-league="@Model.League" asp-route-view="@standingsView" class="btn btn-sm @(active ? "btn-primary" : "btn-outline-secondary")">
                     @GetViewLabel(standingsView, Model.League)
                 </a>
             }
         </div>
     </div>
 
+    <!-- Standings Groups -->
     @foreach (StandingsGroupViewModel group in Model.Groups)
     {
         <div class="card shadow-sm mb-4">
+
             <div class="card-header">
-                <h4 class="mb-0">
+                <h5 class="mb-0">
                     @group.Name
-                </h4>
+                </h5>
             </div>
 
             <div class="table-responsive">
+
                 <table class="table table-hover align-middle mb-0 standings-table">
+
                     <thead>
                         <tr>
                             <th class="standings-rank">#</th>
+
                             <th>Team</th>
+
                             <th class="text-end">W</th>
+
                             <th class="text-end">L</th>
+
+                            @if (Model.ShowTies)
+                            {
+                                <th class="text-end">T</th>
+                            }
+
                             <th class="text-end">PCT</th>
-                            <th class="text-end">GB</th>
-                            <th class="text-end">DIFF</th>
-                            <th class="text-end">STRK</th>
+
+                            @if (Model.ShowGamesBack)
+                            {
+                                <th class="text-end">GB</th>
+                            }
+
+                            @if (Model.ShowDifferential)
+                            {
+                                <th class="text-end">DIFF</th>
+                            }
+
+                            @if (Model.ShowStreak)
+                            {
+                                <th class="text-end">STRK</th>
+                            }
                         </tr>
                     </thead>
 
@@ -58,7 +105,7 @@
                         @for (int i = 0; i < group.Teams.Count; i++)
                         {
                             TeamStandingViewModel team = group.Teams[i];
-                            
+
                             <tr>
                                 <td class="text-secondary standings-rank">
                                     @(i + 1)
@@ -66,10 +113,13 @@
 
                                 <td class="standings-team">
                                     <div class="d-flex align-items-center gap-2">
+
                                         @if (!string.IsNullOrWhiteSpace(team.Logo))
                                         {
                                             <span class="standings-team-logo-wrap">
-                                                <img class="standings-team-logo" src="@team.Logo" alt="@team.Name">
+                                                <img class="standings-team-logo"
+                                                     src="@team.Logo"
+                                                     alt="@team.Name" />
                                             </span>
                                         }
 
@@ -87,21 +137,37 @@
                                     @team.Losses
                                 </td>
 
+                                @if (Model.ShowTies)
+                                {
+                                    <td class="text-end">
+                                        @(team.Ties ?? 0)
+                                    </td>
+                                }
+
                                 <td class="text-end">
                                     @team.WinPercentageDisplay
                                 </td>
 
-                                <td class="text-end">
-                                    @team.GamesBackDisplay
-                                </td>
+                                @if (Model.ShowGamesBack)
+                                {
+                                    <td class="text-end">
+                                        @team.GamesBackDisplay
+                                    </td>
+                                }
 
-                                <td class="text-end">
-                                    @(team.RunDifferential?.ToString("+0;-0;0") ?? "-")
-                                </td>
+                                @if (Model.ShowDifferential)
+                                {
+                                    <td class="text-end">
+                                        @(team.PointDifferential?.ToString("+0;-0;0") ?? "-")
+                                    </td>
+                                }
 
-                                <td class="text-end">
-                                    @(team.Streak ?? "-")
-                                </td>
+                                @if (Model.ShowStreak)
+                                {
+                                    <td class="text-end">
+                                        @(team.Streak ?? "-")
+                                    </td>
+                                }
                             </tr>
                         }
                     </tbody>
@@ -111,8 +177,11 @@
     }
 </div>
 
-@functions {
-    private static string GetViewLabel(StandingsView view, League league)
+@functions
+{
+    private static string GetViewLabel(
+        StandingsView view,
+        League league)
     {
         return view switch
         {
@@ -120,7 +189,7 @@
             StandingsView.League when league == League.MLB => "League",
             StandingsView.Conference => "Conference",
             StandingsView.Division => "Division",
-                
+
             _ => view.ToString()
         };
     }

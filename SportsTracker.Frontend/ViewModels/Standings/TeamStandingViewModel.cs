@@ -10,13 +10,14 @@
         
         public int Wins { get; init; }
         public int Losses { get; init; }
+        public int? Ties { get; init; }
         
         public double WinPercentage { get; init; }
         public double? GamesBack { get; init; }
         
-        public int? RunsScored { get; init; }
-        public int? RunsAllowed { get; init; }
-        public int? RunDifferential { get; init; }
+        public int? PointsFor { get; init; }
+        public int? PointsAgainst { get; init; }
+        public int? PointDifferential { get; init; }
         
         public string? Streak { get; init; }
         

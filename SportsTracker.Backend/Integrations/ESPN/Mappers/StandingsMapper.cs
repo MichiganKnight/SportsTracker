@@ -55,12 +55,14 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
 
                 Wins = GetIntStat(entry, "wins"),
                 Losses = GetIntStat(entry, "losses"),
+                Ties = GetNullableIntStat(entry, "ties"),
+                
                 WinPercentage = GetDoubleStat(entry, "winpercent"),
                 GamesBack = GetNullableDoubleStat(entry, "gamesbehind"),
 
-                RunsScored = GetNullableIntStat(entry, "pointsfor"),
-                RunsAllowed = GetNullableIntStat(entry, "pointsagainst"),
-                RunDifferential = GetNullableIntStat(entry, "pointdifferential"),
+                PointsFor = GetNullableIntStat(entry, "pointsfor"),
+                PointsAgainst = GetNullableIntStat(entry, "pointsagainst"),
+                PointDifferential = GetNullableIntStat(entry, "pointdifferential"),
 
                 Streak = GetDisplayStat(entry, "streak"),
                 PlayoffSeed = GetNullableIntStat(entry, "playoffSeed")

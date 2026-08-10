@@ -10,6 +10,11 @@ namespace SportsTracker.Frontend.ViewModels.Standings
         
         public int Season { get; init; }
         
+        public bool ShowTies { get; init; }
+        public bool ShowGamesBack { get; init; }
+        public bool ShowDifferential { get; init; }
+        public bool ShowStreak { get; init; } = true;
+        
         public DateTime? LastUpdatedUtc { get; init; }
         
         public StandingsView SelectedView { get; init; }

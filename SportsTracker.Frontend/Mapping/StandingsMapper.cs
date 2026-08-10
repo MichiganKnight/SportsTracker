@@ -19,6 +19,10 @@ namespace SportsTracker.Frontend.Mapping
                 LastUpdatedUtc = lastUpdatedUtc,
                 SelectedView = view,
                 AvailableViews = availableViews,
+                ShowTies = standings.League is League.NFL,
+                ShowGamesBack = standings.League is League.MLB or League.NBA,
+                ShowDifferential = standings.League is League.NFL or League.MLB,
+                ShowStreak = true,
                 Groups = MapGroups(standings, view)
             };
         }
@@ -108,12 +112,14 @@ namespace SportsTracker.Frontend.Mapping
 
                 Wins = team.Wins,
                 Losses = team.Losses,
+                Ties = team.Ties,
+                
                 WinPercentage = team.WinPercentage,
                 GamesBack = team.GamesBack,
 
-                RunsScored = team.RunsScored,
-                RunsAllowed = team.RunsAllowed,
-                RunDifferential = team.RunDifferential,
+                PointsFor = team.PointsFor,
+                PointsAgainst = team.PointsAgainst,
+                PointDifferential = team.PointDifferential,
 
                 Streak = team.Streak,
                 PlayoffSeed = team.PlayoffSeed
