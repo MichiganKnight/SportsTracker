@@ -20,7 +20,7 @@ namespace SportsTracker.Frontend.Controllers
         }
         
         [HttpGet]
-        public async Task<IActionResult> Index(League league, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Index(League league, StandingsView view, CancellationToken cancellationToken = default)
         {
             ApiResponse<LeagueStandings>? response = await _api.GetStandingsAsync(league, cancellationToken);
 
@@ -29,7 +29,7 @@ namespace SportsTracker.Frontend.Controllers
                 return NotFound();
             }
             
-            StandingsViewModel viewModel = _mapper.Map(response.Data, response.TimestampUtc);
+            StandingsViewModel viewModel = _mapper.Map(response.Data, view, response.TimestampUtc);
             
             return View(viewModel);
         }

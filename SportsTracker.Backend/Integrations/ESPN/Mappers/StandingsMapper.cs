@@ -8,9 +8,14 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
     {
         public static LeagueStandings Map(StandingsResponseDto response, League league)
         {
-            List<StandingsGroup> groups = response?.Children?.Where(group => group.Standings is not null).Select(MapGroup).ToList() ?? [];
-            
-            int season = response?.Children?.Select(group => group.Standings?.Season).FirstOrDefault(value => value.HasValue) ?? DateTime.UtcNow.Year;
+            List<StandingsGroup> groups = response.Children?
+                .Where(group => group.Standings is not null)
+                .Select(group => MapGroup(group, league))
+                .ToList() ?? [];
+
+            int season = response.Children?
+                .Select(group => group.Standings?.Season)
+                .FirstOrDefault(value => value.HasValue) ?? DateTime.UtcNow.Year;
 
             return new LeagueStandings
             {
@@ -20,25 +25,19 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
             };
         }
 
-        private static StandingsGroup MapGroup(StandingsGroupDto dto)
+        private static StandingsGroup MapGroup(StandingsGroupDto dto, League league)
         {
-            StandingsDto? standings = dto.Standings;
-
-            if (standings is null)
-            {
-                return new StandingsGroup
-                {
-                    Name = dto.Name ?? string.Empty,
-                    Abbreviation = dto.Abbreviation ?? string.Empty,
-                };
-            }
-
-            List<TeamStanding> teams = standings.Entries?.Where(entry => entry.Team is not null).Select(MapTeam).ToList() ?? [];
+            List<TeamStanding> teams = dto.Standings?.Entries?
+                .Where(entry => entry.Team is not null)
+                .Select(MapTeam)
+                .ToList() ?? [];
 
             return new StandingsGroup
             {
+                Id = dto.Id ?? string.Empty,
                 Name = dto.Name ?? string.Empty,
                 Abbreviation = dto.Abbreviation ?? string.Empty,
+                Type = GetGroupType(league),
                 Teams = teams
             };
         }
@@ -52,8 +51,8 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
                 TeamId = team.Id ?? string.Empty,
                 Name = team.DisplayName ?? team.Name ?? string.Empty,
                 Abbreviation = team.Abbreviation ?? string.Empty,
-
                 Logo = GetPrimaryLogo(team),
+
                 Wins = GetIntStat(entry, "wins"),
                 Losses = GetIntStat(entry, "losses"),
                 WinPercentage = GetDoubleStat(entry, "winpercent"),
@@ -64,8 +63,18 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
                 RunDifferential = GetNullableIntStat(entry, "pointdifferential"),
 
                 Streak = GetDisplayStat(entry, "streak"),
-
                 PlayoffSeed = GetNullableIntStat(entry, "playoffSeed")
+            };
+        }
+
+        private static StandingsGroupType GetGroupType(League league)
+        {
+            return league switch
+            {
+                League.MLB => StandingsGroupType.League,
+                League.NFL or League.NBA or League.NHL => StandingsGroupType.Conference,
+                League.CFB or League.CBB => StandingsGroupType.Conference,
+                _ => StandingsGroupType.Overall
             };
         }
 
@@ -76,7 +85,8 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
 
         private static StandingStatDto? GetStat(StandingsEntryDto entry, string type)
         {
-            return entry.Stats?.FirstOrDefault(stat => string.Equals(stat.Type, type, StringComparison.OrdinalIgnoreCase));
+            return entry.Stats?.FirstOrDefault(stat =>
+                string.Equals(stat.Type, type, StringComparison.OrdinalIgnoreCase));
         }
 
         private static int GetIntStat(StandingsEntryDto entry, string type)
@@ -86,9 +96,11 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
 
         private static int? GetNullableIntStat(StandingsEntryDto entry, string type)
         {
-            double? value = GetStat(entry, type)?.Value;
+            double? value = GetNullableDoubleStat(entry, type);
 
-            return value.HasValue ? Convert.ToInt32(value.Value) : null;
+            return value.HasValue
+                ? Convert.ToInt32(value.Value)
+                : null;
         }
 
         private static double GetDoubleStat(StandingsEntryDto entry, string type)

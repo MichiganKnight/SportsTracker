@@ -12,6 +12,9 @@ namespace SportsTracker.Frontend.ViewModels.Standings
         
         public DateTime? LastUpdatedUtc { get; init; }
         
+        public StandingsView SelectedView { get; init; }
+        
+        public IReadOnlyList<StandingsView> AvailableViews { get; init; } = [];
         public IReadOnlyList<StandingsGroupViewModel> Groups { get; init; } = [];
     }
 }

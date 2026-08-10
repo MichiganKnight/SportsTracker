@@ -1,4 +1,5 @@
 ﻿using SportsTracker.Frontend.ViewModels.Standings;
+using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Metadata;
 using SportsTracker.Shared.Models.Standings;
 
@@ -6,18 +7,84 @@ namespace SportsTracker.Frontend.Mapping
 {
     public sealed class StandingsMapper : IStandingsMapper
     {
-        public StandingsViewModel Map(LeagueStandings standings, DateTime? lastUpdatedUtc = null)
+        public StandingsViewModel Map(LeagueStandings standings, StandingsView view, DateTime? lastUpdatedUtc = null)
         {
+            IReadOnlyList<StandingsView> availableViews = GetAvailableViews(standings.League);
+
             return new StandingsViewModel
             {
                 League = standings.League,
                 LeagueName = LeagueConfiguration.Get(standings.League).DisplayName,
                 Season = standings.Season,
                 LastUpdatedUtc = lastUpdatedUtc,
-                Groups = standings.Groups.Select(MapGroup).ToList()
+                SelectedView = view,
+                AvailableViews = availableViews,
+                Groups = MapGroups(standings, view)
             };
         }
 
+        private static IReadOnlyList<StandingsView> GetAvailableViews(League league)
+        {
+            return league switch
+            {
+                League.MLB =>
+                [
+                    StandingsView.Overall,
+                    StandingsView.League
+                ],
+
+                League.NFL or League.NBA or League.NHL =>
+                [
+                    StandingsView.Overall,
+                    StandingsView.Conference
+                ],
+
+                League.CFB =>
+                [
+                    StandingsView.Overall,
+                    StandingsView.Conference
+                ],
+
+                _ =>
+                [
+                    StandingsView.Overall
+                ]
+            };
+        }
+
+        private static IReadOnlyList<StandingsGroupViewModel> MapGroups(LeagueStandings standings, StandingsView view)
+        {
+            return view switch
+            {
+                StandingsView.Overall => [MapOverallGroup(standings)],
+                StandingsView.League => standings.Groups.Where(group => group.Type == StandingsGroupType.League).Select(MapGroup).ToList(),
+                StandingsView.Conference => standings.Groups.Where(group => group.Type == StandingsGroupType.Conference).Select(MapGroup).ToList(),
+                StandingsView.Division => standings.Groups.Where(group => group.Type == StandingsGroupType.Division).Select(MapGroup).ToList(),
+                _ => []
+            };
+        }
+
+        private static StandingsGroupViewModel MapOverallGroup(LeagueStandings standings)
+        {
+            List<TeamStandingViewModel> teams = standings.Groups
+                .SelectMany(group => group.Teams)
+                .GroupBy(team => team.TeamId)
+                .Select(group => group.First())
+                .OrderByDescending(team => team.WinPercentage)
+                .ThenByDescending(team => team.Wins)
+                .Select(MapTeam)
+                .ToList();
+            
+            return new StandingsGroupViewModel
+            {
+                Id = "overall",
+                Name = "Overall",
+                Abbreviation = "Overall",
+                Type = StandingsGroupType.Overall,
+                Teams = teams
+            };
+        }
+        
         private static StandingsGroupViewModel  MapGroup(StandingsGroup group)
         {
             return new StandingsGroupViewModel
