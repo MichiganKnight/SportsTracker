@@ -23,18 +23,34 @@ namespace SportsTracker.Frontend.Controllers
         [HttpGet("{league}")]
         public async Task<IActionResult> Index(League league, CancellationToken cancellationToken)
         {
-            ApiResponse<CachedScoreboard>? response = await _api.GetLeagueAsync(league, cancellationToken);
+            LeaguePageViewModel? viewModel = await GetLeaguePageViewModelAsync(league, cancellationToken);
             
-            Console.WriteLine(response);
-
-            if (response is null)
+            if (viewModel is null)
             {
                 return NotFound();
             }
-
-            LeaguePageViewModel model = _mapper.Map(response.Data);
             
-            return View(model);
+            return View(viewModel);
+        }
+
+        [HttpGet("GameSections")]
+        public async Task<IActionResult> GameSections(League league, CancellationToken cancellationToken)
+        {
+            LeaguePageViewModel? viewModel = await GetLeaguePageViewModelAsync(league, cancellationToken);
+            
+            if (viewModel is null)
+            {
+                return NotFound();
+            }
+            
+            return PartialView("Game/_LeagueGameSections", viewModel);
+        }
+
+        private async Task<LeaguePageViewModel?> GetLeaguePageViewModelAsync(League league, CancellationToken cancellationToken)
+        {
+            ApiResponse<CachedScoreboard>? response = await _api.GetLeagueAsync(league, cancellationToken);
+            
+            return _mapper.Map(response?.Data);
         }
     }
 }

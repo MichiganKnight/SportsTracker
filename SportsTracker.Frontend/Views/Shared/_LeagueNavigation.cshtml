@@ -6,7 +6,7 @@
     bool standingsActive = Model.ActivePage == LeaguePage.Standings;
 }
 
-<div class="btn-group" role="group" aria-label="@Model.LeagueName Navigation">
+<div class="btn-group standings-view-filter" role="group" aria-label="@Model.LeagueName Navigation">
     <a asp-controller="League" asp-action="Index" asp-route-league="@Model.League" class="btn @(gamesActive ? "btn-primary" : "btn-outline-secondary")">
         <i class="bi bi-calendar-event me-1"></i>
         Games

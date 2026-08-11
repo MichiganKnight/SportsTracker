@@ -32,7 +32,7 @@ namespace SportsTracker.Backend.Services.Implementations
             _logger = logger;
         }
 
-        public async Task RefreshAsync(League league, CancellationToken cancellationToken = default)
+        public async Task<TimeSpan?> RefreshAsync(League league, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Refreshing {League} Scoreboard...", league);
 
@@ -40,31 +40,60 @@ namespace SportsTracker.Backend.Services.Implementations
             
             ApiResult<ScoreboardResponseDto> result = await _espnApiClient.GetAsync<ScoreboardResponseDto>(endpoint, cancellationToken);
 
-            if (!result.Success)
+            if (!result.Success || result.Value is null)
             {
                 _logger.LogWarning("Unable to Refresh {League}: {Message}", league, result.Error?.Message);
                 
-                return;
+                return null;
             }
             
             IReadOnlyList<Game> games = ScoreboardMapper.ToGames(result.Value!, league).ToList();
+            
+            DateTime updatedUtc = DateTime.UtcNow;
+            TimeSpan refreshInterval = GetRefreshInterval(games);
+            TimeSpan cacheLifetime = GetCacheLifetime(refreshInterval);
 
             await _cache.SetAsync(CacheKeys.Scoreboard(league), new CachedScoreboard
             {
                 League = league,
                 Games = games,
-                LastUpdatedUtc = DateTime.UtcNow
-            }, TimeSpan.FromMinutes(_cacheOptions.ScheduledScoreboardMinutes));
+                LastUpdatedUtc = updatedUtc
+            }, cacheLifetime);
             
             await _hub.Clients.All.SendAsync("ScoreboardUpdated", new ScoreboardUpdatedMessage
             {
                 League = league.ToString(),
-                UpdatedUtc = DateTime.UtcNow
+                UpdatedUtc = updatedUtc
             }, cancellationToken);
             
-            _logger.LogInformation("Broadcast ScoreboardUpdated for {league}", league);
+            _logger.LogInformation("Cached {Count} Games for {League} | Next Refresh in {Interval}", games.Count, league, refreshInterval);
             
-            _logger.LogInformation("Cached {Count} Games for {League}", games.Count, league);
+            return refreshInterval;
+        }
+
+        private TimeSpan GetRefreshInterval(IReadOnlyList<Game> games)
+        {
+            if (games.Any(game => game.IsLive))
+            {
+                return TimeSpan.FromSeconds(_cacheOptions.LiveScoreboardSeconds);
+            }
+
+            if (games.Any(game => game.IsUpcoming))
+            {
+                return TimeSpan.FromMinutes(_cacheOptions.ScheduledScoreboardMinutes);
+            }
+
+            if (games.Count > 0 && games.All(game => game.IsFinal))
+            {
+                return TimeSpan.FromMinutes(_cacheOptions.FinalScoreboardMinutes);
+            }
+
+            return TimeSpan.FromMinutes(_cacheOptions.ScheduledScoreboardMinutes);
+        }
+
+        private static TimeSpan GetCacheLifetime(TimeSpan refreshInterval)
+        {
+            return TimeSpan.FromTicks(refreshInterval.Ticks * 2);
         }
     }
 }

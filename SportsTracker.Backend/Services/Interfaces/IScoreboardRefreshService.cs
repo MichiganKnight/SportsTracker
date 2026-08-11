@@ -4,6 +4,6 @@ namespace SportsTracker.Backend.Services.Interfaces
 {
     public interface IScoreboardRefreshService
     {
-        Task RefreshAsync(League league, CancellationToken cancellationToken = default);
+        Task<TimeSpan?> RefreshAsync(League league, CancellationToken cancellationToken = default);
     }
 }

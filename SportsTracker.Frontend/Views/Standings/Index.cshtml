@@ -52,17 +52,23 @@
     @foreach (StandingsGroupViewModel group in Model.Groups)
     {
         <div class="card shadow-sm mb-4">
+            <div class="card-header standings-group-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        @group.Name
+                    </h5>
 
-            <div class="card-header">
-                <h5 class="mb-0">
-                    @group.Name
-                </h5>
+                    @if (!string.IsNullOrWhiteSpace(group.Abbreviation))
+                    {
+                        <span class="standings-group-abbreviation">
+                            @group.Abbreviation
+                        </span>
+                    }
+                </div>
             </div>
 
             <div class="table-responsive">
-
                 <table class="table table-hover align-middle mb-0 standings-table">
-
                     <thead>
                         <tr>
                             <th class="standings-rank">#</th>
@@ -113,15 +119,19 @@
                                         @if (!string.IsNullOrWhiteSpace(team.Logo))
                                         {
                                             <span class="standings-team-logo-wrap">
-                                                <img class="standings-team-logo"
-                                                     src="@team.Logo"
-                                                     alt="@team.Name" />
+                                                <img class="standings-team-logo" src="@team.Logo" alt="@team.Name" />
                                             </span>
                                         }
 
-                                        <span class="fw-semibold standings-team-name">
-                                            @team.Name
-                                        </span>
+                                        <div class="standings-team-info">
+                                            <span class="standings-team-name">
+                                                @team.Name
+                                            </span>
+
+                                            <span class="standings-team-abbreviation">
+                                                @team.Abbreviation
+                                            </span>
+                                        </div>
                                     </div>
                                 </td>
 
@@ -154,7 +164,16 @@
                                 @if (Model.ShowDifferential)
                                 {
                                     <td class="text-end">
-                                        @(team.PointDifferential?.ToString("+0;-0;0") ?? "-")
+                                        @if (team.PointDifferential is not null)
+                                        {
+                                            <span class="@GetDifferentialClass(team.PointDifferential.Value)">
+                                                @team.PointDifferential.Value.ToString("+0;-0;0")
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-secondary">-</span>
+                                        }
                                     </td>
                                 }
 
@@ -175,9 +194,7 @@
 
 @functions
 {
-    private static string GetViewLabel(
-        StandingsView view,
-        League league)
+    private static string GetViewLabel(StandingsView view, League league)
     {
         return view switch
         {
@@ -187,6 +204,16 @@
             StandingsView.Division => "Division",
 
             _ => view.ToString()
+        };
+    }
+
+    private static string GetDifferentialClass(int differential)
+    {
+        return differential switch
+        {
+            > 0 => "standings-positive",
+            < 0 => "standings-negative",
+            _ => "text-secondary"
         };
     }
 }

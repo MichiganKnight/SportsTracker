@@ -7,12 +7,28 @@ connection.on("ScoreboardUpdated", refreshLeague);
 
 async function refreshLeague(payload) {
     const league = payload.league;
-    const id = `league-${league.toLowerCase()}`;
+    const leagueKey = league.toLowerCase();
+    
+    const dashboardId = `league-${leagueKey}`;
+    const leaguePageId = `league-games-${leagueKey}`;
+    
+    const dashboardSection = document.getElementById(dashboardId);
+    const leaguePageSection = document.getElementById(leaguePageId);
+    
+    if (dashboardSection) {
+        await refreshDashboardLeague(league, dashboardId);
+    }
+    
+    if (leaguePageSection) {
+        await refreshLeaguePage(league, leaguePageId);
+    }
+}
 
+async function refreshDashboardLeague(league, id) {
     const current = document.getElementById(id);
+    
     if (!current) {
-        console.warn(`League Section Not Found: ${id}`)
-        return;       
+        return;
     }
     
     const oldScores = captureScores(current);
@@ -21,20 +37,16 @@ async function refreshLeague(payload) {
         cache: "no-store"
     });
     
-    if (!response.ok) {    
-        console.error(`Failed to Refresh League:`, response.status);
+    if (!response.ok) {
         return;
     }
-    
+
     const html = await response.text();
-    
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, "text/html");    
-    
+
+    const doc = new DOMParser().parseFromString(html, "text/html");
     const replacement = doc.getElementById(id);
-    
+
     if (!replacement) {
-        console.error(`Replacement League Section Not Found: ${id}`);
         return;
     }
     
@@ -42,6 +54,39 @@ async function refreshLeague(payload) {
     
     current.replaceWith(replacement);
     
+    animateScoreChanges(changedGames);
+}
+
+async function refreshLeaguePage(league, id) {    
+    const current = document.getElementById(id);
+
+    if (!current) {        
+        return;
+    }
+
+    const oldScores = captureScores(current);
+
+    const response = await fetch(`/League/GameSections?league=${league}&t=${Date.now()}`, {
+        cache: "no-store"
+    });
+
+    if (!response.ok) {        
+        return;
+    }
+
+    const html = await response.text();
+
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const replacement = doc.getElementById(id);
+
+    if (!replacement) {        
+        return;
+    }
+
+    const changedGames = findScoreChanges(oldScores, replacement);
+
+    current.replaceWith(replacement);
+
     animateScoreChanges(changedGames);
 }
 
@@ -104,20 +149,22 @@ function findScoreChanges(oldScores, replacementSection) {
     return changedGames;
 }
 
-function animateScoreChanges(gameIds) {
-    gameIds.forEach(gameId => {
-        const card = document.querySelector(`[data-game-id="${gameId}"]`);
-        
+function animateScoreChanges(changedGames) {
+    changedGames.forEach(change => {
+        const card = document.querySelector(
+            `[data-game-id="${change.gameId}"]`
+        );
+
         if (!card) {
             return;
         }
-        
+
         card.classList.remove("score-changed");
-        
+
         void card.offsetWidth;
-        
-        card.classList.add("score-changed");       
-        
+
+        card.classList.add("score-changed");
+
         setTimeout(() => {
             card.classList.remove("score-changed");
         }, 1200);

@@ -5,6 +5,6 @@ namespace SportsTracker.Frontend.Mapping
 {
     public interface ILeagueMapper
     {
-        LeaguePageViewModel Map(CachedScoreboard scoreboard);
+        LeaguePageViewModel Map(CachedScoreboard? scoreboard);
     }
 }
