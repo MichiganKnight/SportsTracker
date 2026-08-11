@@ -100,7 +100,6 @@
 
 .game-last-play-label {
     flex: 0 0 auto;
-    color: var(--st-text-secondary);
     font-size: .66rem;
     font-weight: 800;
     letter-spacing: .06em;
@@ -111,7 +110,6 @@
 .game-last-play-text {
     min-width: 0;
     max-width: 100%;
-    color: var(--st-text-secondary);
     font-size: .8rem;
     font-weight: 500;
     line-height: 1.35;

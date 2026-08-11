@@ -59,7 +59,6 @@
 
 .baseball-section-label {
     flex: 0 0 auto;
-    color: var(--st-text-secondary);
     font-size: .66rem;
     font-weight: 800;
     letter-spacing: .06em;
@@ -95,7 +94,6 @@
 .baseball-due-up-player:not(:last-child)::after {
     content: "•";
     margin-left: .3rem;
-    color: var(--st-text-secondary);
 }
 
 @media (max-width: 575.98px) {
