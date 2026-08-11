@@ -8,7 +8,6 @@
 .standings-table thead th {
     padding-top: .65rem;
     padding-bottom: .65rem;
-    color: var(--st-text-secondary);
     border-bottom: 1px solid var(--st-border);
     font-size: .72rem;
     font-weight: 800;
@@ -45,13 +44,11 @@
 }
 
 .standings-group-hader h5 {
-    color: var(--st-text);
     font-size: .95rem;
     font-weight: 700;
 }
 
 .standings-group-abbreviation {
-    color: var(--st-text-secondary);
     font-size: .7rem;
     font-weight: 800;
     letter-spacing: .08em;
@@ -62,7 +59,6 @@
 .standings-rank {
     width: 48px;
     text-align: center;
-    color: var(--st-text-secondary);
     font-size: .8rem;
 }
 
@@ -94,7 +90,6 @@
 }
 
 .standings-team-name {
-    color: var(--st-text);
     font-size: .86rem;
     font-weight: 650;
     line-height: 1.15;
@@ -102,7 +97,6 @@
 
 .standings-team-abbreviation {
     margin-top: .1rem;
-    color: var(--st-text-secondary);
     font-size: .68rem;
     font-weight: 600;
     letter-spacing: .06em;
