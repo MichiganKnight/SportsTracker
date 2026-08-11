@@ -18,10 +18,7 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/League/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/League/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Standings/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Standings/Index.cshtml" afterDir="false" />
-    </list>
+    <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -184,43 +181,11 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Compound.Run Application">
+  <component name="RunManager" selected=".NET Launch Settings Profile.SportsTracker.Backend: http">
     <configuration name="Run Application" type="CompoundRunConfigurationType">
       <toRun name="SportsTracker.Backend: https" type="LaunchSettings" />
       <toRun name="SportsTracker.Frontend: https" type="LaunchSettings" />
       <method v="2" />
-    </configuration>
-    <configuration name="SportTracker.Test: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/SportsTracker.Test/SportsTracker.Test.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value="net10.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="http" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <option name="AUTO_ATTACH_CHILDREN" value="0" />
-      <option name="MIXED_MODE_DEBUG" value="0" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-    <configuration name="SportTracker.Test: https" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/SportsTracker.Test/SportsTracker.Test.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value="net10.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="https" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <option name="AUTO_ATTACH_CHILDREN" value="0" />
-      <option name="MIXED_MODE_DEBUG" value="0" />
-      <method v="2">
-        <option name="Build" />
-      </method>
     </configuration>
     <configuration name="SportsTracker.Backend: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/SportsTracker.Backend/SportsTracker.Backend.csproj" />
@@ -287,8 +252,6 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue=".NET Launch Settings Profile.SportTracker.Test: http" />
-      <item itemvalue=".NET Launch Settings Profile.SportTracker.Test: https" />
       <item itemvalue=".NET Launch Settings Profile.SportsTracker.Backend: http" />
       <item itemvalue=".NET Launch Settings Profile.SportsTracker.Backend: https" />
       <item itemvalue=".NET Launch Settings Profile.SportsTracker.Frontend: http" />
@@ -318,7 +281,7 @@
       <workItem from="1785955981274" duration="1863000" />
       <workItem from="1785989452224" duration="2184000" />
       <workItem from="1786033849767" duration="21209000" />
-      <workItem from="1786348963169" duration="27649000" />
+      <workItem from="1786348963169" duration="28423000" />
     </task>
     <servers />
   </component>
