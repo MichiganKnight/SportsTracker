@@ -12,12 +12,19 @@
 }
 
 .game-card {
-    transition: transform .15s ease, box-shadow .15s ease;
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
 }
 
 .game-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+    border-color: rgba(255, 255, 255, .18);
+}
+
+.game-card:has(.stretched-link:focus-visible) {
+    outline: 2px solid var(--st-primary);
+    outline-offset: 2px;
 }
 
 .game-card .border-top {

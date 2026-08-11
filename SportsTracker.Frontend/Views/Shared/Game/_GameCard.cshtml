@@ -10,7 +10,7 @@
     string situationText = Model.SituationHeadline ?? Model.Status;
 }
 
-<div class="card game-card shadow-sm h-100" id="game-@Model.GameId" data-game-id="@Model.GameId">
+<div class="card game-card shadow-sm h-100 position-relative" id="game-@Model.GameId" data-game-id="@Model.GameId">
     <div class="card-body">
         <!-- Teams -->
         <div class="rounded-3 p-2 mb-3 bg-body-tertiary">
@@ -84,5 +84,7 @@
                 </div>
             }
         </div>
+        
+        <a asp-controller="Game" asp-action="Index" asp-route-league="@Model.League" asp-route-gameId="@Model.GameId" class="stretched-link" aria-label="View @Model.AwayTeam.DisplayName at @Model.HomeTeam.DisplayName"></a>
     </div>
 </div>

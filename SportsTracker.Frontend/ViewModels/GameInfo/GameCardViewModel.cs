@@ -1,4 +1,5 @@
 ﻿using SportsTracker.Frontend.ViewModels.TeamInfo;
+using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Models.Sport;
 
 namespace SportsTracker.Frontend.ViewModels.GameInfo
@@ -6,6 +7,8 @@ namespace SportsTracker.Frontend.ViewModels.GameInfo
     public sealed class GameCardViewModel
     {
         public string GameId { get; init; } = string.Empty;
+        
+        public League League { get; init; }
         
         public TeamViewModel HomeTeam { get; init; } = null!;
         public TeamViewModel AwayTeam { get; init; } = null!;

@@ -28,6 +28,7 @@ namespace SportsTracker.Frontend.Mapping
             return new GameCardViewModel
             {
                 GameId = game.Id,
+                League = game.League,
 
                 AwayTeam = MapTeam(game.AwayTeam, game.AwayScore),
                 HomeTeam = MapTeam(game.HomeTeam, game.HomeScore),
