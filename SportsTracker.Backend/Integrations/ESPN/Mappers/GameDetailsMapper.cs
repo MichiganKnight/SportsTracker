@@ -34,7 +34,8 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
                 
                 Status = competition.Status?.Type?.ShortDetail ?? response.Status?.Type?.ShortDetail ?? string.Empty,
                 
-                IsLive = competition.Status?.Type?.State == "in",
+                IsLive = string.Equals(competition.Status?.Type?.State, "in", StringComparison.OrdinalIgnoreCase),
+                IsFinal = competition.Status?.Type?.Completed == true,
                 
                 AwayTeam = MapTeam(away),
                 HomeTeam = MapTeam(home),
@@ -48,7 +49,7 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
                 
                 Headline = competition.Headlines?.FirstOrDefault()?.ShortLinkText,
                 
-                Recap = competition.Headlines?.FirstOrDefault()?.Description,
+                Recap = CleanRecap(competition.Headlines?.FirstOrDefault()?.Description),
                 
                 Baseball = league == League.MLB ? MapBaseball(away, home) : null
             };
@@ -113,8 +114,18 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
         {
             RecordDto? record = competitor.Records?
                 .FirstOrDefault(x => string.Equals(x.Type, "total", StringComparison.OrdinalIgnoreCase)) ?? competitor.Records?.FirstOrDefault();
+
+            if (record is null)
+            {
+                return null;
+            }
+
+            if (!string.IsNullOrWhiteSpace(record.Summary))
+            {
+                return record.Summary;
+            }
             
-            return record?.Summary;
+            return record.DisplayValue;
         }
 
         private static IReadOnlyList<string> MapBroadcasts(GameDetailsCompetitionDto competition)
@@ -183,7 +194,39 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
 
         private static IReadOnlyList<FeaturedAthlete> MapFeaturedAthletes(GameDetailsCompetitionDto competition)
         {
-            return [];
+            if (competition.Status?.FeaturedAthletes is null)
+            {
+                return [];
+            }
+            
+            return competition.Status.FeaturedAthletes
+                .Where(featured => featured.Athlete is not null)
+                .Select(featured => new FeaturedAthlete
+                {
+                    Type = featured.Name ?? string.Empty,
+                    Label = featured.DisplayName ?? featured.ShortDisplayName ?? featured.Name ?? string.Empty,
+                    Athlete = MapAthlete(featured.Athlete)!,
+                    
+                    TeamId = featured.Team?.Id ?? featured.Athlete?.Team?.Id
+                })
+                .ToList();
+        }
+
+        private static string? CleanRecap(string? recap)
+        {
+            if (string.IsNullOrWhiteSpace(recap))
+            {
+                return null;
+            }
+
+            string cleaned = recap.Trim();
+
+            if (cleaned.StartsWith("—"))
+            {
+                cleaned = cleaned[1..].TrimStart();
+            }
+            
+            return cleaned;
         }
     }
 }

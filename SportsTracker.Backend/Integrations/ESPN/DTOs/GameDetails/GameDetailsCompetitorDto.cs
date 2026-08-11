@@ -21,6 +21,6 @@ namespace SportsTracker.Backend.Integrations.ESPN.DTOs.GameDetails
         public int? Hits { get; init; }
         public int? Errors { get; init; }
         
-        public List<RecordDto>? Records { get; init; } = [];
+        public List<RecordDto>? Records { get; init; }
     }
 }

@@ -1,0 +1,49 @@
+﻿@using SportsTracker.Frontend.ViewModels.GameDetails
+@model SportsTracker.Frontend.ViewModels.GameDetails.BaseballLineScoreRowViewModel
+
+<tr>
+    <td class="fw-semibold">
+        <div class="d-flex align-items-center gap-2">
+            @if (!string.IsNullOrWhiteSpace(Model.Team.Logo))
+            {
+                <img src="@Model.Team.Logo" alt="@Model.Team.Abbreviation" class="game-linescore-logo" />
+            }
+            
+            <span>
+                @Model.Team.Abbreviation
+            </span>
+        </div>
+    </td>
+    
+    @for (int inning = 1; inning <= Model.MaxInning; inning++)
+    {
+        LineScoreViewModel? lineScore = Model.Team.LineScores.FirstOrDefault(x => x.Period == inning);
+        
+        <td class="text-center">
+            @if (lineScore is not null)
+            {
+                @lineScore.DisplayValue
+            }
+            else if (Model.IsHomeTeam && inning == Model.MaxInning)
+            {
+                <span class="text-secondary">-</span>
+            }
+            else
+            {
+                <span class="text-secondary">-</span>
+            }
+        </td>
+    }
+    
+    <td class="text-center fw-bold">
+        @Model.Team.Score
+    </td>
+    
+    <td class="text-center">
+        @(Model.Team.Hits?.ToString() ?? "-")
+    </td>
+    
+    <td class="text-center">
+        @(Model.Team.Errors?.ToString() ?? "-")
+    </td>
+</tr>

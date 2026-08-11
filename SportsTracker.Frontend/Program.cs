@@ -15,6 +15,7 @@ builder.Services.AddScoped<IDashboardMapper, DashboardMapper>();
 builder.Services.AddScoped<ILeagueMapper, LeagueMapper>();
 builder.Services.AddScoped<INavigationMapper, NavigationMapper>();
 builder.Services.AddScoped<IStandingsMapper, StandingsMapper>();
+builder.Services.AddScoped<IGameDetailsMapper, GameDetailsMapper>();
 
 WebApplication app = builder.Build();
 

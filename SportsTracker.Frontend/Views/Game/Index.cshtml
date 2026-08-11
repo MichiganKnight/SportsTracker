@@ -1,0 +1,289 @@
+﻿@using System.Text
+@using Microsoft.AspNetCore.Html
+@using SportsTracker.Frontend.ViewModels.GameDetails
+@model SportsTracker.Frontend.ViewModels.GameDetails.GameDetailsViewModel
+
+@{
+    ViewData["Title"] = $"{Model.AwayTeam.Abbreviation} at {Model.HomeTeam.Abbreviation}";
+}
+
+<div class="container-fluid">
+    <!-- Game Header -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="text-center text-secondary small mb-3">
+                @Model.LeagueName
+            </div>
+            
+            <div class="row align-items-center">
+                <!-- Away -->
+                <div class="col text-center">
+                    @if (!string.IsNullOrWhiteSpace(Model.AwayTeam.Logo))
+                    {
+                        <img src="@Model.AwayTeam.Logo" alt="@Model.AwayTeam.DisplayName" class="game-details-logo mb-2" />
+                    }
+                    
+                    <h4 class="mb-1">
+                        @Model.AwayTeam.DisplayName
+                    </h4>
+                    
+                    @if (!string.IsNullOrWhiteSpace(Model.AwayTeam.Record))
+                    {
+                        <div class="text-secondary small">
+                            @Model.AwayTeam.Record
+                        </div>
+                    }
+                </div>
+                
+                <!-- Score -->
+                <div class="col-auto text-center px-4">
+                    <div class="game-details-status mb-2">
+                        @if (Model.IsLive)
+                        {
+                            <span class="badge bg-danger">
+                                LIVE
+                            </span>
+                        }
+                        else if (Model.IsFinal)
+                        {
+                            <span class="badge bg-dark">
+                                FINAL
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-primary">
+                                SCHEDULED
+                            </span>
+                        }
+                    </div>
+                    
+                    <div class="game-details-score">
+                        <span>@Model.AwayTeam.Score</span>
+                        
+                        <span class="text-secondary mx-2">-</span>
+                        
+                        <span>@Model.HomeTeam.Score</span>
+                    </div>
+                </div>
+                
+                <!-- Away -->
+                <div class="col text-center">
+                    @if (!string.IsNullOrWhiteSpace(Model.HomeTeam.Logo))
+                    {
+                        <img src="@Model.HomeTeam.Logo" alt="@Model.HomeTeam.DisplayName" class="game-details-logo mb-2" />
+                    }
+                    
+                    <h4 class="mb-1">
+                        @Model.HomeTeam.DisplayName
+                    </h4>
+                    
+                    @if (!string.IsNullOrWhiteSpace(Model.HomeTeam.Record))
+                    {
+                        <div class="text-secondary small">
+                            @Model.HomeTeam.Record
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Baseball Linescore -->
+    @if (Model.Baseball is not null)
+    {
+        <partial name="Game/_BaseballLineScore" model="Model" />
+    }
+    
+    <!-- Game Information -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        Game Information
+                    </h5>
+                </div>
+                
+                <div class="card-body">
+                    @if (!string.IsNullOrWhiteSpace(Model.Venue))
+                    {
+                        <div class="game-detail-info-row">
+                            <span class="text-secondary">
+                                Venue
+                            </span>
+                            
+                            <span>
+                                @Model.Venue
+                            </span>
+                        </div>
+                    }
+                    
+                    @if (!string.IsNullOrWhiteSpace(Model.Location))
+                    {
+                        <div class="game-detail-info-row">
+                            <span class="text-secondary">
+                                Location
+                            </span>
+                            
+                            <span>
+                                @Model.Location
+                            </span>
+                        </div>
+                    }
+                    
+                    <div class="game-detail-info-row">
+                        <span class="text-secondary">
+                            Date
+                        </span>
+                            
+                        <span>
+                            @Model.StartTime.ToString("g")
+                        </span>
+                    </div>
+                    
+                    @if (Model.Attendance.HasValue)
+                    {
+                        <div class="game-detail-info-row">
+                            <span class="text-secondary">
+                                Attendance
+                            </span>
+                            
+                            <span>
+                                @Model.Attendance.Value.ToString("N0")
+                            </span>
+                        </div>
+                    }
+                    
+                    @if (Model.Broadcasts.Count > 0)
+                    {
+                        <div class="game-detail-info-row">
+                            <span class="text-secondary">
+                                Broadcast
+                            </span>
+
+                            <span>
+                                @string.Join(", ", Model.Broadcasts)
+                            </span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        
+        @if (Model.Baseball is not null)
+        {
+            <div class="col-lg-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            Starting Pitchers
+                        </h5>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="game-detail-info-row">
+                            <span class="text-secondary">
+                                @Model.AwayTeam.Abbreviation
+                            </span>
+                            
+                            <span>
+                                @(Model.Baseball.AwayProbablePitcherName ?? "-")
+                                
+                                @if (!string.IsNullOrWhiteSpace(Model.Baseball.AwayProbablePitcherRecord))
+                                {
+                                    <span class="text-secondary ms-1">
+                                        @Model.Baseball.AwayProbablePitcherRecord
+                                    </span>
+                                }
+                            </span>
+                        </div>
+                        
+                        <div class="game-detail-info-row">
+                            <span class="text-secondary">
+                                @Model.HomeTeam.Abbreviation
+                            </span>
+                            
+                            <span>
+                                @(Model.Baseball.HomeProbablePitcherName ?? "-")
+                                
+                                @if (!string.IsNullOrWhiteSpace(Model.Baseball.HomeProbablePitcherRecord))
+                                {
+                                    <span class="text-secondary ms-1">
+                                        @Model.Baseball.HomeProbablePitcherRecord
+                                    </span>
+                                }
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    
+    <!-- Featured Athletes -->
+    @if (Model.FeaturedAthletes.Count > 0)
+    {
+        <div class="card shadow-sm mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    Game Leaders
+                </h5>
+            </div>
+            
+            <div class="card-body">
+                <div class="row g-3">
+                    @foreach (FeaturedAthleteViewModel athlete in Model.FeaturedAthletes)
+                    {
+                        <div class="col-md-4">
+                            <div class="game-featured-athlete">
+                                @if (!string.IsNullOrWhiteSpace(athlete.Headshot))
+                                {
+                                    <img src="@athlete.Headshot" alt="@athlete.Name" class="game-featured-athlete-image" />
+                                }
+                                
+                                <div>
+                                    <div class="text-secondary smal">
+                                        @athlete.Label
+                                    </div>
+                                    
+                                    <div class="fw-semibold">
+                                        @athlete.Name
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    
+    <!-- Recap -->
+    @if (!string.IsNullOrWhiteSpace(Model.Headline) || !string.IsNullOrWhiteSpace(Model.Recap))
+    {
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    Game Summary
+                </h5>
+            </div>   
+            
+            <div class="card-body">
+                @if (!string.IsNullOrWhiteSpace(Model.Headline))
+                {
+                    <div class="game-summary-headline">
+                        @Model.Headline
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.Recap))
+                {
+                    <div class="game-summary-text mt-2">
+                        @Model.Recap
+                    </div>
+                }
+            </div>
+        </div>
+    }   
+</div>
