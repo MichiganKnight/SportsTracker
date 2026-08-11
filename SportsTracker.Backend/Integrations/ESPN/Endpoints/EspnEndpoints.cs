@@ -25,5 +25,12 @@ namespace SportsTracker.Backend.Integrations.ESPN.Endpoints
 
             return $"apis/site/v2/sports/{info.EspnSport}/{info.EspnLeague}/groups";
         }
+
+        public static string GameDetails(League league, string gameId)
+        {
+            LeagueInfo info = LeagueConfiguration.Leagues[league];
+
+            return $"apis/site/v2/sports/{info.EspnSport}/{info.EspnLeague}/scoreboard/{gameId}";
+        }
     }
 }

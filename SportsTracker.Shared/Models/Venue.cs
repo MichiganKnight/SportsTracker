@@ -8,6 +8,6 @@
         public string? City { get; init; }
         public string? State { get; init; }
         
-        public bool IsIndoor { get; init; }
+        public bool? IsIndoor { get; init; }
     }
 }

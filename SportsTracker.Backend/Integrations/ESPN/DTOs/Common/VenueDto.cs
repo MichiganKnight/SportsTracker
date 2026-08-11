@@ -7,6 +7,6 @@
         
         public AddressDto? Address { get; init; }
         
-        public bool Indoor { get; init; }
+        public bool? Indoor { get; init; }
     }
 }
