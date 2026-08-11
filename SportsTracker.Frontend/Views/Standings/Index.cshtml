@@ -84,6 +84,10 @@
                                 <th class="text-end">T</th>
                             }
 
+                            <th class="text-end">PF</th>
+                            
+                            <th class="text-end">PA</th>
+                            
                             <th class="text-end">PCT</th>
 
                             @if (Model.ShowGamesBack)
@@ -149,6 +153,14 @@
                                         @(team.Ties ?? 0)
                                     </td>
                                 }
+                                
+                                <td class="text-end">
+                                    @team.PointsFor
+                                </td>
+                                
+                                <td class="text-end">
+                                    @team.PointsAgainst
+                                </td>
 
                                 <td class="text-end">
                                     @team.WinPercentageDisplay
