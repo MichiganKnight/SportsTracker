@@ -4,52 +4,31 @@
 
 @{
     BaseballSituation? baseball = Model.Baseball;
+
+    bool hasDueUp = baseball?.DueUp.Count > 0;
+    bool hasLastPlay = !string.IsNullOrWhiteSpace(Model.SituationDetail);
 }
 
 @if (baseball is not null && Model.IsLive)
 {
     <div class="game-situation baseball-situation mt-3">
         <div class="baseball-live-info">
-            <partial name="Game/_BaseballDiamond" model="baseball"/>
+            <div class="baseball-diamond-wrap">
+                <partial name="Game/_BaseballDiamond" model="baseball" />
+            </div>
 
-            @if (baseball.Batter is not null || baseball.Pitcher is not null)
+            <!-- Due Up -->
+            @if (hasDueUp)
             {
-                <div class="baseball-batter-pitcher mt-3">
-                    @if (baseball.Batter is not null)
-                    {
-                        <div class="baseball-player-now">
-                            <span class="baseball-player-role">BAT</span>
+                <div class="baseball-due-up">
+                    <span class="baseball-section-label text-secondary">
+                        Due Up
+                    </span>
 
-                            <span class="baseball-player-name">
-                                @DisplayName(baseball.Batter)
-                            </span>
-                        </div>
-                    }
-
-                    @if (baseball.Pitcher is not null)
-                    {
-                        <div class="baseball-player-now">
-                            <span class="baseball-player-role">PIT</span>
-
-                            <span class="baseball-player-name">
-                                @DisplayName(baseball.Pitcher)
-                            </span>
-                        </div>
-                    }
-                </div>
-            }
-
-            @if (baseball.DueUp.Count > 0)
-            {
-                <div class="baseball-due-up mt-3">
-                    <div class="small text-secondary fw-semibold mb-1">
-                        DUE UP
-                    </div>
-
-                    <div class="d-flex flex-wrap gap-2">
-                        @foreach (Athlete athlete in baseball.DueUp)
+                    <div class="baseball-due-up-list">
+                        @foreach (Athlete athlete in baseball.DueUp.Take(3))
                         {
-                            <span class="baseball-player">
+                            <span class="baseball-due-up-player text-secondary">
                                 @DisplayName(athlete)
                             </span>
                         }
@@ -57,17 +36,25 @@
                 </div>
             }
 
-            @if (!string.IsNullOrWhiteSpace(Model.SituationDetail))
+            <!-- Last Play -->
+            @if (hasLastPlay)
             {
-                <div class="game-last-play mt-2 text-secondary">
-                    @Model.SituationDetail
+                <div class="game-last-play">
+                    <span class="baseball-section-label text-secondary">
+                        Last Play
+                    </span>
+
+                    <span class="game-last-play-text text-secondary">
+                        @Model.SituationDetail
+                    </span>
                 </div>
             }
         </div>
     </div>
 }
 
-@functions {
+@functions
+{
     private static string DisplayName(Athlete athlete)
     {
         return athlete.ShortName ?? athlete.Name;

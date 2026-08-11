@@ -18,7 +18,11 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="" />
+    <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_BaseballSituation.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_BaseballSituation.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/css/components/cards.css" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/css/components/cards.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/css/components/situations/baseball.css" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/css/components/situations/baseball.css" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -181,7 +185,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.SportsTracker.Backend: http">
+  <component name="RunManager" selected="Compound.Run Application">
     <configuration name="Run Application" type="CompoundRunConfigurationType">
       <toRun name="SportsTracker.Backend: https" type="LaunchSettings" />
       <toRun name="SportsTracker.Frontend: https" type="LaunchSettings" />
@@ -281,7 +285,7 @@
       <workItem from="1785955981274" duration="1863000" />
       <workItem from="1785989452224" duration="2184000" />
       <workItem from="1786033849767" duration="21209000" />
-      <workItem from="1786348963169" duration="28423000" />
+      <workItem from="1786348963169" duration="29934000" />
     </task>
     <servers />
   </component>

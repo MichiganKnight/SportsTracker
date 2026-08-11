@@ -29,6 +29,22 @@
     font-size: .72rem;
 }
 
+/* Game Status */
+
+.game-status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.game-status-main {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    min-width: 0;
+}
+
 /* Live Indicator */
 
 .game-live-badge {
@@ -71,6 +87,37 @@
     }
 }
 
+/* Last Play */
+
+.game-last-play {
+    display: flex;
+    align-items: flex-start;
+    gap: .65rem;
+    min-width: 0;
+    padding-top: .65rem;
+    border-top: 1px solid var(--st-border);
+}
+
+.game-last-play-label {
+    flex: 0 0 auto;
+    color: var(--st-text-secondary);
+    font-size: .66rem;
+    font-weight: 800;
+    letter-spacing: .06em;
+    line-height: 1.35;
+    text-transform: uppercase;
+}
+
+.game-last-play-text {
+    min-width: 0;
+    max-width: 100%;
+    color: var(--st-text-secondary);
+    font-size: .8rem;
+    font-weight: 500;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
 /* Score Change */
 
 .game-card.score-changed {
@@ -91,40 +138,25 @@
     }
 }
 
-/* Shared Situation */
+/* Responsive */
 
-.game-last-play {
-    margin-top: .35rem;
-    font-size: .85rem;
-    line-height: 1.3;
-    color: rgba(255, 255, 255, .72);
-    font-style: italic;
-    font-weight: bold;
-}
+@media (max-width: 575.98px) {
+    .game-status-row {
+        align-items: flex-start;
+        gap: .65rem;
+    }
 
-.game-status-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-}
+    .game-status-main {
+        flex-wrap: wrap;
+        gap: .45rem;
+    }
 
-.game-status-main {
-    display: flex;
-    align-items: center;
-    gap: .6rem;
-    min-width: 0;
-}
+    .game-last-play {
+        flex-direction: column;
+        gap: .3rem;
+    }
 
-/* Baseball */
-
-.baseball-count-inline {
-    display: inline-flex;
-    align-items: center;
-    gap: .45rem;
-    white-space: nowrap;
-}
-
-.baseball-count-separator {
-    opacity: .5;
+    .game-last-play-text {
+        font-size: .8rem;
+    }
 }
