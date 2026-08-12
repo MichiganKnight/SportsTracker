@@ -12,6 +12,8 @@
         
         public BoxScorePositionDto? Position { get; init; }
         
+        public List<BoxScoreNoteDto>? Notes { get; init; }
+        
         public List<string>? Stats { get; init; } = [];
     }
 }

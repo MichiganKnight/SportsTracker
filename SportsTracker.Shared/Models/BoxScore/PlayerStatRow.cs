@@ -13,6 +13,8 @@
         
         public int? BatOrder { get; init; }
         
+        public string? Note { get; init; }
+        
         public IReadOnlyList<string> Stats { get; init; } = [];
     }
 }

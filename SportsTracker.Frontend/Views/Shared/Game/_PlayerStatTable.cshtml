@@ -46,6 +46,13 @@
                                         <span class="boxscore-player-name">
                                             @player.Name
                                         </span>
+                                        
+                                        @if (Model.Type == "pitching" && !string.IsNullOrWhiteSpace(player.Note))
+                                        {
+                                            <span class="boxscore-player-note">
+                                                @player.Note
+                                            </span>
+                                        }
                                     </div>
 
                                     @if (!string.IsNullOrWhiteSpace(player.Position))

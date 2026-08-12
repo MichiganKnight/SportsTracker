@@ -54,6 +54,7 @@ namespace SportsTracker.Frontend.Mapping
                         Position = player.Position,
                         Starter = player.Starter,
                         BatOrder = player.BatOrder,
+                        Note = player.Note,
                         Stats = player.Stats
                     }).ToList(),
                 

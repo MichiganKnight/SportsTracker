@@ -110,12 +110,14 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
                 Starter = dto.Starter == true,
 
                 BatOrder = dto.BatOrder,
+                
+                Note = dto.Notes?.FirstOrDefault(note => string.Equals(note.Type, "pitchingDecision", StringComparison.OrdinalIgnoreCase))?.Text, 
 
                 Stats = NormalizeStats(dto.Stats, columnCount)
             };
         }
 
-        private static IReadOnlyList<string> NormalizeStats(IReadOnlyList<string>? stats, int columnCount)
+        private static List<string> NormalizeStats(IReadOnlyList<string>? stats, int columnCount)
         {
             if (columnCount <= 0)
             {
