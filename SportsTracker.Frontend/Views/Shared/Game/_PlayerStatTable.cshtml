@@ -1,0 +1,79 @@
+﻿@using SportsTracker.Frontend.ViewModels.BoxScore
+@model SportsTracker.Frontend.ViewModels.BoxScore.PlayerStatTableViewModel
+
+<section class="boxscore-stat-section">
+    <div class="boxscore-stat-heading">
+        @Model.DisplayName
+    </div>
+    
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 boxscore-table">
+            <thead>
+                <tr>
+                    <th class="boxscore-player-column">
+                        Player
+                    </th>
+                    
+                    @foreach (BoxScoreColumnViewModel column in Model.Columns)
+                    {
+                        <th class="text-end" title="@column.Description">
+                            @column.Label
+                        </th>
+                    }
+                </tr>
+            </thead>
+            
+            <tbody>
+                @foreach (PlayerStatRowViewModel player in Model.Players)
+                {
+                    <tr>
+                        <td class="boxscore-player-column">
+                            <div class="d-flex align-items-center gap-2">
+                                @if (!string.IsNullOrWhiteSpace(player.Headshot))
+                                {
+                                    <img src="@player.Headshot" alt="@player.Name" class="boxscore-player-image" />
+                                }
+                                
+                                <div class="boxscore-player-info">
+                                    <div class="boxscore-player-name">
+                                        @player.Name
+                                    </div>
+                                    
+                                    @if (!string.IsNullOrWhiteSpace(player.Position))
+                                    {
+                                        <div class="boxscore-player-position">
+                                            @player.Position
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                        
+                        @for (int i = 0; i < Model.Columns.Count; i++)
+                        {
+                            <td class="text-end">
+                                @(i < player.Stats.Count ? player.Stats[i] : string.Empty)
+                            </td>
+                        }
+                    </tr>
+                }
+                
+                @if (Model.Totals.Count > 0)
+                {
+                    <tr class="boxscore-totals-row">
+                        <td class="fw-semibold">
+                            Totals
+                        </td>
+                        
+                        @for (int i = 0; i < Model.Totals.Count; i++)
+                        {
+                            <td class="text-end fw-semibold">
+                                @(i < Model.Totals.Count ? Model.Totals[i] : string.Empty)
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

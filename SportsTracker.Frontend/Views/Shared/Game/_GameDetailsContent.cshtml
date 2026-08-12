@@ -5,13 +5,13 @@
 <!-- Game Navigation -->
 <div class="mb-4">
     <div class="btn-group" role="group" aria-label="Game Navigation">
-        <a href="#summary" class="btn btn-primary">
+        <a asp-controller="Game" asp-action="Index" asp-route-league="@Model.League" asp-route-gameId="@Model.GameId" class="btn btn-primary">
             Summary
         </a>
             
-        <button type="button" class="btn btn-outline-secondary" disabled>
+        <a asp-controller="Game" asp-action="BoxScore" asp-route-league="@Model.League" asp-route-gameId="@Model.GameId" class="btn btn-outline-secondary">
             Box Score
-        </button>
+        </a>
             
         <button type="button" class="btn btn-outline-secondary" disabled>
             Play-by-Play

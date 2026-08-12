@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportsTracker.Frontend.Mapping;
 using SportsTracker.Frontend.Services.Api;
+using SportsTracker.Frontend.ViewModels.BoxScore;
 using SportsTracker.Frontend.ViewModels.GameDetails;
 using SportsTracker.Shared.Common;
 using SportsTracker.Shared.Enums;
+using SportsTracker.Shared.Models.BoxScore;
 using SportsTracker.Shared.Models.GameDetails;
 
 namespace SportsTracker.Frontend.Controllers
@@ -13,11 +15,13 @@ namespace SportsTracker.Frontend.Controllers
     {
         private readonly ISportsApiClient _api;
         private readonly IGameDetailsMapper _mapper;
+        private readonly IBoxScoreMapper _boxScoreMapper;
         
-        public GameController(ISportsApiClient api, IGameDetailsMapper mapper)
+        public GameController(ISportsApiClient api, IGameDetailsMapper mapper, IBoxScoreMapper boxScoreMapper)
         {
             _api = api;
             _mapper = mapper;
+            _boxScoreMapper = boxScoreMapper;
         }
 
         [HttpGet("{league}/{gameId}")]
@@ -46,6 +50,21 @@ namespace SportsTracker.Frontend.Controllers
             }
             
             return PartialView("Game/_GameDetailsContent", viewModel);
+        }
+
+        [HttpGet("{league}/{gameId}/boxscore")]
+        public async Task<IActionResult> BoxScore(League league, string gameId, CancellationToken cancellationToken)
+        {
+            ApiResponse<GameBoxScore>? response = await _api.GetBoxScoreAsync(league, gameId, cancellationToken);
+
+            if (response?.Data is null)
+            {
+                return NotFound();
+            }
+            
+            BoxScoreViewModel viewModel = _boxScoreMapper.Map(response.Data);
+            
+            return View(viewModel);
         }
 
         private async Task<GameDetailsViewModel?> GetGameDetailsViewModelAsync(League league, string gameId, CancellationToken cancellationToken)

@@ -1,0 +1,57 @@
+﻿@using SportsTracker.Frontend.ViewModels.BoxScore
+@model SportsTracker.Frontend.ViewModels.BoxScore.BoxScoreViewModel
+
+@{
+    ViewData["Title"] = "Box Score";
+}
+
+<div class="container-fluid">
+    <!-- Game Navigation -->
+    <div class="mb-4">
+        <div class="btn-group" role="group" aria-label="Game Navigation">
+            <a asp-controller="Game" asp-action="Index" asp-route-league="@Model.League" asp-route-gameId="@Model.GameId" class="btn btn-outline-secondary">
+                Summary
+            </a>
+            
+            <a asp-controller="Game" asp-action="BoxScore" asp-route-league="@Model.League" asp-route-gameId="@Model.GameId" class="btn btn-primary">
+                Box Score
+            </a>
+            
+            <button type="button" class="btn btn-outline-secondary" disabled>
+                Play-by-Play
+            </button>
+        </div>
+    </div>
+    
+    @foreach (TeamBoxScoreViewModel team in Model.Teams)
+    {
+        <div class="card shadow-sm mb-4">
+            <!-- Team Header -->
+            <div class="card-header boxscore-team-header">
+                <div class="d-flex align-items-center gap-2">
+                    @if (!string.IsNullOrWhiteSpace(team.Logo))
+                    {
+                        <img src="@team.Logo" alt="@team.TeamName" class="boxscore-team-logo" />
+                    }
+                
+                    <div>
+                        <h4 class="mb-0">
+                            @team.TeamName
+                        </h4>
+                    
+                        <div class="text-secondary small">
+                            @team.Abbreviation
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body p-0">
+                @foreach (PlayerStatTableViewModel table in team.Tables)
+                {
+                    <partial name="Game/_PlayerStatTable" model="table" />
+                }
+            </div>
+        </div>
+    }
+</div>
