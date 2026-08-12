@@ -11,6 +11,7 @@
         public string? Position { get; init; }
         
         public bool Starter { get; init; }
+        public bool IsSubstitute => !Starter;
         
         public int? BatOrder { get; init; }
         

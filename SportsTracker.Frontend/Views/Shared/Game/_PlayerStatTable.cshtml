@@ -34,11 +34,20 @@
                                     <img src="@player.Headshot" alt="@player.Name" class="boxscore-player-image" />
                                 }
                                 
-                                <div class="boxscore-player-info">
-                                    <div class="boxscore-player-name">
-                                        @player.Name
+                                <div class="boxscore-player-info @(player.IsSubstitute ? "boxscore-player-substitute" : "")">
+                                    <div class="d-flex align-items-center gap-2">
+                                        @if (Model.Type == "batting" && player.BatOrder.HasValue && player.Starter)
+                                        {
+                                            <span class="boxscore-bat-order">
+                                                @player.BatOrder
+                                            </span>
+                                        }
+                                        
+                                        <span class="boxscore-player-name">
+                                            @player.Name
+                                        </span>
                                     </div>
-                                    
+
                                     @if (!string.IsNullOrWhiteSpace(player.Position))
                                     {
                                         <div class="boxscore-player-position">
