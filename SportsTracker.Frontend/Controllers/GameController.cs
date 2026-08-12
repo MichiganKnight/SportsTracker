@@ -34,5 +34,30 @@ namespace SportsTracker.Frontend.Controllers
             
             return View(viewModel);
         }
+
+        [HttpGet("content/{league}/{gameId}")]
+        public async Task<IActionResult> Content(League league, string gameId, CancellationToken cancellationToken)
+        {
+            GameDetailsViewModel? viewModel = await GetGameDetailsViewModelAsync(league, gameId, cancellationToken);
+            
+            if (viewModel is null)
+            {
+                return NotFound();
+            }
+            
+            return PartialView("Game/_GameDetailsContent", viewModel);
+        }
+
+        private async Task<GameDetailsViewModel?> GetGameDetailsViewModelAsync(League league, string gameId, CancellationToken cancellationToken)
+        {
+            ApiResponse<GameDetails>? response = await _api.GetGameDetailsAsync(league, gameId, cancellationToken);
+
+            if (response?.Data is null)
+            {
+                return null;
+            }
+            
+            return _mapper.Map(response.Data);
+        }
     }
 }

@@ -1,0 +1,73 @@
+﻿@model SportsTracker.Frontend.ViewModels.GameDetails.GameDetailsViewModel
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="text-center text-secondary small mb-3">
+            @Model.LeagueName
+        </div>
+
+        <div class="row align-items-center">
+            <!-- Away -->
+            <div class="col text-center">
+                @if (!string.IsNullOrWhiteSpace(Model.AwayTeam.Logo))
+                {
+                    <img src="@Model.AwayTeam.Logo" alt="@Model.AwayTeam.DisplayName" class="game-details-logo mb-2"/>
+                }
+
+                <h4 class="mb-1">
+                    @Model.AwayTeam.DisplayName
+                </h4>
+
+                @if (!string.IsNullOrWhiteSpace(Model.AwayTeam.Record))
+                {
+                    <div class="text-secondary small">
+                        @Model.AwayTeam.Record
+                    </div>
+                }
+            </div>
+
+            <!-- Score -->
+            <div class="col-auto text-center px-4">
+                <div class="game-details-status mb-2">
+                    @if (Model.IsLive)
+                    {
+                        <span class="badge bg-danger">LIVE</span>
+                    }
+                    else if (Model.IsFinal)
+                    {
+                        <span class="badge bg-dark">FINAL</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-primary">SCHEDULED</span>
+                    }
+                </div>
+
+                <div class="game-details-score">
+                    <span>@Model.AwayTeam.Score</span>
+                    <span class="text-secondary mx-2">-</span>
+                    <span>@Model.HomeTeam.Score</span>
+                </div>
+            </div>
+
+            <!-- Away -->
+            <div class="col text-center">
+                @if (!string.IsNullOrWhiteSpace(Model.HomeTeam.Logo))
+                {
+                    <img src="@Model.HomeTeam.Logo" alt="@Model.HomeTeam.DisplayName" class="game-details-logo mb-2"/>
+                }
+
+                <h4 class="mb-1">
+                    @Model.HomeTeam.DisplayName
+                </h4>
+
+                @if (!string.IsNullOrWhiteSpace(Model.HomeTeam.Record))
+                {
+                    <div class="text-secondary small">
+                        @Model.HomeTeam.Record
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

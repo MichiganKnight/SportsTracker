@@ -1,0 +1,39 @@
+﻿@model SportsTracker.Frontend.ViewModels.GameDetails.GameDetailsViewModel
+
+<partial name="Game/_GameHeader" model="Model" />
+    
+<!-- Game Navigation -->
+<div class="mb-4">
+    <div class="btn-group" role="group" aria-label="Game Navigation">
+        <a href="#summary" class="btn btn-primary">
+            Summary
+        </a>
+            
+        <button type="button" class="btn btn-outline-secondary" disabled>
+            Box Score
+        </button>
+            
+        <button type="button" class="btn btn-outline-secondary" disabled>
+            Play-by-Play
+        </button>
+    </div>
+</div>
+    
+<div id="summary">
+    @if (Model.Baseball is not null)
+    {
+        <partial name="Game/_BaseballLineScore" model="Model" />    
+    }
+        
+    <partial name="Game/_GameInformation" model="Model" />
+        
+    @if (Model.FeaturedAthletes.Count > 0)
+    {
+        <partial name="Game/_FeaturedAthletes" model="Model" />        
+    }
+        
+    @if (!string.IsNullOrWhiteSpace(Model.Headline) || !string.IsNullOrWhiteSpace(Model.Recap))
+    {
+        <partial name="Game/_GameSummary" model="Model" />
+    }
+</div>

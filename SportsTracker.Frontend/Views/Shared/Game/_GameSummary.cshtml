@@ -1,0 +1,23 @@
+﻿<div class="card shadow-sm">
+    <div class="card-header">
+        <h5 class="mb-0">
+            Game Summary
+        </h5>
+    </div>   
+            
+    <div class="card-body">
+        @if (!string.IsNullOrWhiteSpace(Model.Headline))
+        {
+            <div class="game-summary-headline">
+                @Model.Headline
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Model.Recap))
+        {
+            <div class="game-summary-text mt-2">
+                @Model.Recap
+            </div>
+        }
+    </div>
+</div>
