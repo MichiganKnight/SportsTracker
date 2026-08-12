@@ -106,6 +106,30 @@
     border-top: 1px solid var(--st-border);
 }
 
+.boxscore-sortable {
+    cursor: pointer;
+    user-select: none;
+}
+
+.boxscore-sortable:hover {
+    color: var(--st-text);
+}
+
+.boxscore-sort-header {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+}
+
+.boxscore-sort-icon {
+    font-size: .65rem;
+    opacity: .55;
+}
+
+.boxscore-sortable:hover .boxscore-sort-icon {
+    opacity: 1;
+}
+
 @media (max-width: 767.98px) {
     .boxscore-player-column {
         min-width: 160px;
