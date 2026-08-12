@@ -15,5 +15,7 @@
         public int GameDetailsFinalMinutes { get; init; } = 60;
         public int BoxScoreLiveSeconds { get; init; } = 15;
         public int BoxScoreFinalMinutes { get; init; } = 60;
+        public int PlayByPlayLiveSeconds { get; init; } = 15;
+        public int PlayByPlayFinalMinutes { get; init; } = 60;
     }
 }
