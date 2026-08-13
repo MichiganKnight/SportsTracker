@@ -11,7 +11,7 @@ using SportsTracker.Shared.Models.GameInfo;
 
 namespace SportsTracker.Frontend.Controllers
 {
-    public class DashboardController(ISportsApiClient api, IDashboardMapper mapper) : Controller
+    public class DashboardController(IScoreboardApiClient api, IDashboardMapper mapper) : Controller
     {
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {

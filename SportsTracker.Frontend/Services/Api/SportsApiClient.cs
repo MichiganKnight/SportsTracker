@@ -11,7 +11,7 @@ using SportsTracker.Shared.Models.Standings;
 
 namespace SportsTracker.Frontend.Services.Api
 {
-    public class SportsApiClient : ISportsApiClient
+    public class SportsApiClient : IScoreboardApiClient, IGameApiClient, IStandingsApiClient
     {
         private readonly HttpClient _httpClient;
 
@@ -26,7 +26,7 @@ namespace SportsTracker.Frontend.Services.Api
         {
             ApiResponse<CachedScoreboard>? response = await GetLeagueAsync(league, cancellationToken);
 
-            if (response is null)
+            if (response?.Data is null)
             {
                 return null;
             }
@@ -39,34 +39,34 @@ namespace SportsTracker.Frontend.Services.Api
             };
         }
 
-        public async Task<ApiResponse<CachedScoreboard>?> GetLeagueAsync(League league, CancellationToken cancellationToken = default)
+        public Task<ApiResponse<CachedScoreboard>?> GetLeagueAsync(League league, CancellationToken cancellationToken = default)
         {
-            return await GetAsync<ApiResponse<CachedScoreboard>>($"scoreboard/{league}", cancellationToken);
+            return GetAsync<ApiResponse<CachedScoreboard>>((SportsApiEndpoints.League(league)), cancellationToken);
         }
 
-        public async Task<ApiResponse<LeagueStandings>?> GetStandingsAsync(League league, CancellationToken cancellationToken = default)
+        public Task<ApiResponse<LeagueStandings>?> GetStandingsAsync(League league, CancellationToken cancellationToken = default)
         {
-            return await GetAsync<ApiResponse<LeagueStandings>>($"standings/{league}", cancellationToken);
+            return GetAsync<ApiResponse<LeagueStandings>>((SportsApiEndpoints.Standings(league)), cancellationToken);
         }
 
-        public async Task<ApiResponse<GameDetails>?> GetGameDetailsAsync(League league, string gameId, CancellationToken cancellationToken = default)
+        public Task<ApiResponse<GameDetails>?> GetGameDetailsAsync(League league, string gameId, CancellationToken cancellationToken = default)
         {
-            return await GetAsync<ApiResponse<GameDetails>>($"games/{league}/{gameId}", cancellationToken);
+            return GetAsync<ApiResponse<GameDetails>>((SportsApiEndpoints.Game(league, gameId)), cancellationToken);
         }
 
-        public async Task<ApiResponse<GameBoxScore>?> GetBoxScoreAsync(League league, string gameId, CancellationToken cancellationToken = default)
+        public Task<ApiResponse<GameBoxScore>?> GetBoxScoreAsync(League league, string gameId, CancellationToken cancellationToken = default)
         {
-            return await GetAsync<ApiResponse<GameBoxScore>>($"games/{league}/{gameId}/boxscore", cancellationToken);
+            return GetAsync<ApiResponse<GameBoxScore>>((SportsApiEndpoints.BoxScore(league, gameId)), cancellationToken);
         }
 
-        public async Task<ApiResponse<GamePlayByPlay>?> GetPlayByPlayAsync(League league, string gameId, CancellationToken cancellationToken = default)
+        public Task<ApiResponse<GamePlayByPlay>?> GetPlayByPlayAsync(League league, string gameId, CancellationToken cancellationToken = default)
         {
-            return await GetAsync<ApiResponse<GamePlayByPlay>>($"games/{league}/{gameId}/playbyplay", cancellationToken);       
+            return GetAsync<ApiResponse<GamePlayByPlay>>((SportsApiEndpoints.PlayByPlay(league, gameId)), cancellationToken);       
         }
 
-        private async Task<T?> GetAsync<T>(string relativeUrl, CancellationToken cancellationToken = default)
+        private Task<T?> GetAsync<T>(string relativeUrl, CancellationToken cancellationToken = default)
         {
-            return await _httpClient.GetFromJsonAsync<T>(relativeUrl, cancellationToken);
+            return _httpClient.GetFromJsonAsync<T>(relativeUrl, cancellationToken);
         }
     }
 }

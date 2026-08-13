@@ -9,7 +9,11 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.Configure<SportsApiOptions>(builder.Configuration.GetSection(SportsApiOptions.SectionName));
 
-builder.Services.AddHttpClient<ISportsApiClient, SportsApiClient>();
+builder.Services.AddHttpClient<SportsApiClient>();
+
+builder.Services.AddScoped<IScoreboardApiClient>(provider => provider.GetRequiredService<SportsApiClient>());
+builder.Services.AddScoped<IGameApiClient>(provider => provider.GetRequiredService<SportsApiClient>());
+builder.Services.AddScoped<IStandingsApiClient>(provider => provider.GetRequiredService<SportsApiClient>());
 
 builder.Services.AddScoped<IDashboardMapper, DashboardMapper>();
 builder.Services.AddScoped<ILeagueMapper, LeagueMapper>();

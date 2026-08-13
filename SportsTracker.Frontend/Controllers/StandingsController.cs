@@ -8,7 +8,7 @@ using SportsTracker.Shared.Models.Standings;
 
 namespace SportsTracker.Frontend.Controllers
 {
-    public sealed class StandingsController(ISportsApiClient api, IStandingsMapper mapper) : Controller
+    public sealed class StandingsController(IStandingsApiClient api, IStandingsMapper mapper) : Controller
     {
         [HttpGet]
         public async Task<IActionResult> Index(League league, StandingsView view, CancellationToken cancellationToken = default)

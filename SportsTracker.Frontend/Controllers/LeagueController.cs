@@ -9,7 +9,7 @@ using SportsTracker.Shared.Models;
 namespace SportsTracker.Frontend.Controllers
 {
     [Route("league")]
-    public sealed class LeagueController(ISportsApiClient api, ILeagueMapper mapper) : Controller
+    public sealed class LeagueController(IScoreboardApiClient api, ILeagueMapper mapper) : Controller
     {
         [HttpGet("{league}")]
         public async Task<IActionResult> Index(League league, CancellationToken cancellationToken)
