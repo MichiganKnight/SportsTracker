@@ -5,8 +5,12 @@
     ViewData["ActiveGameTab"] = "PlayByPlay";
 }
 
-<partial name="Game/_GameHeader" model="Model.Game"/>
+<div id="game-playbyplay-@Model.Game.GameId" data-game-playbyplay-page data-league="@Model.Game.League" data-game-id="@Model.Game.GameId">
+    <div class="game-page-sticky-header">
+        <partial name="Game/_GameHeader" model="Model.Game"/>
 
-<partial name="Game/_GameNavigation" model="Model.Game" />
+        <partial name="Game/_GameNavigation" model="Model.Game" />
+    </div>
 
-<partial name="Game/_PlayByPlayContent" model="Model"/>
+    <partial name="Game/_PlayByPlayContent" model="Model"/>
+</div>

@@ -1,4 +1,4 @@
-﻿async function partialRefresh({selector, url, replacementSelector = selector, beforeReplace = null, afterReplace = null}) {
+﻿async function refreshPartial({selector, url, replacementSelector = selector, beforeReplace = null, afterReplace = null}) {
     const current = document.querySelector(selector);
     
     if (!current) {
@@ -28,6 +28,8 @@
     if (afterReplace) {
         afterReplace(replacement, state);
     }
+    
+    updateLastRefresh();
     
     return true;
 }

@@ -4,7 +4,7 @@
     .build();
 
 connection.on("ScoreboardUpdated", async payload => {
-    handleScoreboardUpdated
+    await handleScoreboardUpdated(payload)
 });
 
 async function handleScoreboardUpdated(payload) {
@@ -29,7 +29,7 @@ async function refreshDashboardLeague(payload) {
 
     const oldScores = captureScores(current);
 
-    await partialRefresh({
+    await refreshPartial({
         selector: selector,
         url: `/Dashboard/LeagueSection?league=${encodeURIComponent(league)}&t=${Date.now()}`,
         afterReplace: replacement => {
@@ -123,13 +123,21 @@ async function refreshPlayByPlay(payload) {
     await partialRefresh({
         selector: "[data-game-playbyplay-page]",
         url: `/game/playbyplay/content/${encodeURIComponent(league)}/${encodeURIComponent(gameId)}?t=${Date.now()}`,
-        beforeReplace: () => {
-            return document.querySelector("[data-play-filter].active")?.dataset.playFilter ?? "all";
-        },
-        afterReplace: (replacement, activeFilter) => {
+        beforeReplace: () => ({
+            filter: document.querySelector("[data-play-filter].active")?.dataset.playFilter ?? "all",
+            followLatest: isNearLatestPlay(),
+            playIds: getPlayIds()
+        }),
+        afterReplace: (replacement, state) => {
             initializePlayByPlayFilters();
             
-            restorePlayFilter(activeFilter);
+            restorePlayFilter(state.filter);
+            
+            highlightNewPlays(state.playIds);
+            
+            if (state.followLatest) {
+                scrollToLatestPlay();
+            }
         }
     });
 }

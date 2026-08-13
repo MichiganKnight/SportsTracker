@@ -1,0 +1,19 @@
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace SportsTracker.Backend.Controllers
+{
+    [ApiController]
+    [Route("api/v1/health")]
+    public sealed class HealthController : ControllerBase
+    {
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok(new
+            {
+                status = "Healthy",
+                timestampUtc = DateTime.UtcNow
+            });
+        }
+    }
+}

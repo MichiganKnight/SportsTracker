@@ -19,6 +19,51 @@ function initializePlayByPlayFilters() {
     });
 }
 
+function getPlayIds() {
+    return new Set(Array.from(document.querySelectorAll("[data-game-play]")).map(play => play.dataset.playId).filter(Boolean));   
+}
+
+function isNearLatestPlay() {
+    const threshold = 300;
+    
+    const distanceFromBottom = document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+    
+    return distanceFromBottom <= threshold;
+}
+
+function scrollToLatestPlay(behavior = "smooth") {
+    const plays = document.querySelectorAll("[data-game-play]");
+    
+    if (plays.length === 0) {
+        return;
+    }
+    
+    const latestPlay = plays[plays.length - 1];
+    
+    latestPlay.scrollIntoView({
+        behavior: behavior,
+        block: "center"
+    });
+}
+
+function highlightNewPlays(previousPlayIds) {
+    const plays = document.querySelectorAll("[data-game-play]");
+    
+    plays.forEach(play => {
+        const playId = play.dataset.playId;
+        
+        if (!playId || previousPlayIds.has(playId)) {
+            return;
+        }
+        
+        play.classList.add("game-play-new");
+        
+        setTimeout(() => {
+            play.classList.remove("game-play-new");       
+        }, 2500);
+    });
+}
+
 function setActivePlayFilter(buttons, activeButton) {
     buttons.forEach(button => {
         const active = button === activeButton;

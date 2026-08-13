@@ -19,13 +19,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/BoxScoreController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/BoxScoreController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/PlayByPlayController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/PlayByPlayController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Extensions/ServiceCollectionExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Extensions/ServiceCollectionExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Services/Implementations/BoxScoreService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Services/Implementations/PlayByPlayService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Services/Interfaces/IBoxScoreService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Services/Interfaces/IPlayByPlayService.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Services/Api/SportsApiClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Services/Api/SportsApiClient.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Services/Api/SportsApiEndpoints.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Services/Api/SportsApiEndpoints.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Game/PlayByPlay.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Game/PlayByPlay.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_GamePlay.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_GamePlay.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_PlayByPlayPageContent.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_PlayByPlayPageContent.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_Footer.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_Footer.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/_Layout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/css/components/playbyplay.css" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/css/components/playbyplay.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/css/layout/footer.css" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/css/layout/footer.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/js/partialRefresh.js" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/js/partialRefresh.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/js/playbyplay.js" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/js/playbyplay.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/js/scoreboardHub.js" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/js/scoreboardHub.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,6 +140,7 @@
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Services/Interfaces/IStandingsService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Services/StandingsGrouping.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Workers/ScoreboardWorker.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Controllers/HomeController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Controllers/StandingsController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Mapping/BaseMapper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Mapping/BoxScoreMapper.cs" root0="FORCE_HIGHLIGHTING" />
@@ -257,8 +263,8 @@
   "keyToString": {
     ".NET Launch Settings Profile.SportTracker.Test: https.executor": "Run",
     ".NET Launch Settings Profile.SportsTracker.Backend: http.executor": "Run",
-    ".NET Launch Settings Profile.SportsTracker.Backend: https.executor": "Debug",
-    ".NET Launch Settings Profile.SportsTracker.Frontend: https.executor": "Debug",
+    ".NET Launch Settings Profile.SportsTracker.Backend: https.executor": "Run",
+    ".NET Launch Settings Profile.SportsTracker.Frontend: https.executor": "Run",
     ".NET Launch Settings Profile.SportsTracker.Web: http.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.MCP Project settings loaded": "true",
@@ -384,7 +390,7 @@
       <workItem from="1786348963169" duration="34989000" />
       <workItem from="1786464449510" duration="18570000" />
       <workItem from="1786567823436" duration="16565000" />
-      <workItem from="1786632806011" duration="10742000" />
+      <workItem from="1786632806011" duration="14432000" />
     </task>
     <servers />
   </component>

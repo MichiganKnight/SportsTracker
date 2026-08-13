@@ -1,7 +1,7 @@
 ﻿@using SportsTracker.Frontend.ViewModels.PlayByPlay
 @model SportsTracker.Frontend.ViewModels.PlayByPlay.GamePlayViewModel
 
-<div class="game-play @(Model.ScoringPlay ? "game-play-scoring" : "")" data-game-play data-play-category="@Model.Category.ToLowerInvariant()">
+<div class="game-play @(Model.ScoringPlay ? "game-play-scoring" : "")" data-game-play data-play-id="@Model.Id" data-play-category="@Model.Category.ToLowerInvariant()">
     <div class="game-play-main">
         <div class="game-play-marker">
             @if (Model.ScoringPlay)

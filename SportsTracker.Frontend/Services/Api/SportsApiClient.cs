@@ -65,6 +65,24 @@ namespace SportsTracker.Frontend.Services.Api
             return GetAsync<ApiResponse<GamePlayByPlay>>((SportsApiEndpoints.PlayByPlay(league, gameId)), cancellationToken);       
         }
 
+        public async Task<bool> IsHealthyAsync(CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                using HttpResponseMessage response = await _httpClient.GetAsync(SportsApiEndpoints.Health, cancellationToken);
+                
+                Console.WriteLine($"Health Check: {_httpClient.BaseAddress}{SportsApiEndpoints.Health} -> {(int)response.StatusCode}");
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Health Check Failed: {ex.Message}");
+                
+                return false;
+            }
+        }
+
         private async Task<T?> GetAsync<T>(string relativeUrl, CancellationToken cancellationToken = default)
         {
             using HttpResponseMessage response = await _httpClient.GetAsync(relativeUrl, cancellationToken);

@@ -33,5 +33,7 @@ namespace SportsTracker.Frontend.Services.Api
         {
             return $"teams/{league}/{teamId}";
         }
+        
+        public static string Health => "health";
     }
 }
