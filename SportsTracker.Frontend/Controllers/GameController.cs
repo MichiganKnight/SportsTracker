@@ -14,19 +14,17 @@ using SportsTracker.Shared.Models.PlayByPlay;
 namespace SportsTracker.Frontend.Controllers
 {
     [Route("game")]
-    public sealed class GameController(ISportsApiClient api, IGameDetailsMapper mapper, IBoxScoreMapper boxScoreMapper, IPlayByPlayMapper playByPlayMapper) : Controller
+    public sealed class GameController(ISportsApiClient api, IGameDetailsMapper gameDetailsMapper, IBoxScoreMapper boxScoreMapper, IPlayByPlayMapper playByPlayMapper) : Controller
     {
         [HttpGet("{league}/{gameId}")]
         public async Task<IActionResult> Index(League league, string gameId, CancellationToken cancellationToken)
         {
-            ApiResponse<GameDetails>? response = await api.GetGameDetailsAsync(league, gameId, cancellationToken);
+            GameDetailsViewModel? viewModel = await GetGameDetailsAsync(league, gameId, cancellationToken);
 
-            if (response?.Data is null)
+            if (viewModel is null)
             {
                 return NotFound();
             }
-            
-            GameDetailsViewModel viewModel = mapper.Map(response.Data);
             
             return View(viewModel);
         }
@@ -34,7 +32,7 @@ namespace SportsTracker.Frontend.Controllers
         [HttpGet("content/{league}/{gameId}")]
         public async Task<IActionResult> Content(League league, string gameId, CancellationToken cancellationToken)
         {
-            GameDetailsViewModel? viewModel = await GetGameDetailsViewModelAsync(league, gameId, cancellationToken);
+            GameDetailsViewModel? viewModel = await GetGameDetailsAsync(league, gameId, cancellationToken);
             
             if (viewModel is null)
             {
@@ -47,25 +45,12 @@ namespace SportsTracker.Frontend.Controllers
         [HttpGet("{league}/{gameId}/boxscore")]
         public async Task<IActionResult> BoxScore(League league, string gameId, CancellationToken cancellationToken)
         {
-            ApiResponse<GameBoxScore>? response = await api.GetBoxScoreAsync(league, gameId, cancellationToken);
+            GamePageViewModel<BoxScoreViewModel>? viewModel = await GetBoxScorePageAsync(league, gameId, cancellationToken);
 
-            if (response?.Data is null)
+            if (viewModel is null)
             {
                 return NotFound();
             }
-            
-            GameDetailsViewModel? game = await GetGameDetailsViewModelAsync(league, gameId, cancellationToken);
-
-            if (game is null)
-            {
-                return NotFound();
-            }
-
-            GamePageViewModel<BoxScoreViewModel> viewModel = new()
-            {
-                Game = game,
-                Content = boxScoreMapper.Map(response.Data)
-            };
             
             return View(viewModel);
         }
@@ -73,25 +58,12 @@ namespace SportsTracker.Frontend.Controllers
         [HttpGet("boxscore/content/{league}/{gameId}")]
         public async Task<IActionResult> BoxScoreContent(League league, string gameId, CancellationToken cancellationToken)
         {
-            ApiResponse<GameBoxScore>? response = await api.GetBoxScoreAsync(league, gameId, cancellationToken);
-            
-            if (response?.Data is null)
+            GamePageViewModel<BoxScoreViewModel>? viewModel = await GetBoxScorePageAsync(league, gameId, cancellationToken);
+
+            if (viewModel is null)
             {
                 return NotFound();
             }
-            
-            GameDetailsViewModel? game = await GetGameDetailsViewModelAsync(league, gameId, cancellationToken);
-            
-            if (game is null)
-            {
-                return NotFound();
-            }
-            
-            GamePageViewModel<BoxScoreViewModel> viewModel = new()
-            {
-                Game = game,
-                Content = boxScoreMapper.Map(response.Data)
-            };
             
             return PartialView("Game/_BoxScorePageContent", viewModel);
         }
@@ -99,25 +71,12 @@ namespace SportsTracker.Frontend.Controllers
         [HttpGet("{league}/{gameId}/playbyplay")]
         public async Task<IActionResult> PlayByPlay(League league, string gameId, CancellationToken cancellationToken)
         {
-            ApiResponse<GamePlayByPlay>? response = await api.GetPlayByPlayAsync(league, gameId, cancellationToken);
+            GamePageViewModel<PlayByPlayViewModel>? viewModel = await GetPlayByPlayPageAsync(league, gameId, cancellationToken);
 
-            if (response?.Data is null)
+            if (viewModel is null)
             {
                 return NotFound();
             }
-            
-            GameDetailsViewModel game = await GetGameDetailsViewModelAsync(league, gameId, cancellationToken) ?? new GameDetailsViewModel();
-
-            if (game is null)
-            {
-                return NotFound();
-            }
-            
-            GamePageViewModel<PlayByPlayViewModel> viewModel = new()
-            {
-                Game = game,
-                Content = playByPlayMapper.Map(response.Data)
-            };
             
             return View(viewModel);
         }
@@ -125,30 +84,17 @@ namespace SportsTracker.Frontend.Controllers
         [HttpGet("playbyplay/content/{league}/{gameId}")]
         public async Task<IActionResult> PlayByPlayContent(League league, string gameId, CancellationToken cancellationToken)
         {
-            ApiResponse<GamePlayByPlay>? response = await api.GetPlayByPlayAsync(league, gameId, cancellationToken);
-            
-            if (response?.Data is null)
+            GamePageViewModel<PlayByPlayViewModel>? viewModel = await GetPlayByPlayPageAsync(league, gameId, cancellationToken);
+
+            if (viewModel is null)
             {
                 return NotFound();
             }
-            
-            GameDetailsViewModel? game = await GetGameDetailsViewModelAsync(league, gameId, cancellationToken);
-
-            if (game is null)
-            {
-                return NotFound();
-            }
-
-            GamePageViewModel<PlayByPlayViewModel> viewModel = new()
-            {
-                Game = game,
-                Content = playByPlayMapper.Map(response.Data)
-            };
             
             return PartialView("Game/_PlayByPlayPageContent", viewModel);
         }
 
-        private async Task<GameDetailsViewModel?> GetGameDetailsViewModelAsync(League league, string gameId, CancellationToken cancellationToken)
+        private async Task<GameDetailsViewModel?> GetGameDetailsAsync(League league, string gameId, CancellationToken cancellationToken)
         {
             ApiResponse<GameDetails>? response = await api.GetGameDetailsAsync(league, gameId, cancellationToken);
 
@@ -157,7 +103,53 @@ namespace SportsTracker.Frontend.Controllers
                 return null;
             }
             
-            return mapper.Map(response.Data);
+            return gameDetailsMapper.Map(response.Data);
+        }
+
+        private async Task<GamePageViewModel<BoxScoreViewModel>?> GetBoxScorePageAsync(League league, string gameId, CancellationToken cancellationToken)
+        {
+            ApiResponse<GameBoxScore>? response = await api.GetBoxScoreAsync(league, gameId, cancellationToken);
+
+            if (response?.Data is null)
+            {
+                return null;
+            }
+
+            GameDetailsViewModel? game = await GetGameDetailsAsync(league, gameId, cancellationToken);
+
+            if (game is null)
+            {
+                return null;
+            }
+
+            return new GamePageViewModel<BoxScoreViewModel>
+            {
+                Game = game,
+                Content = boxScoreMapper.Map(response.Data)
+            };
+        }
+
+        private async Task<GamePageViewModel<PlayByPlayViewModel>?> GetPlayByPlayPageAsync(League league, string gameId, CancellationToken cancellationToken)
+        {
+            ApiResponse<GamePlayByPlay>? response = await api.GetPlayByPlayAsync(league, gameId, cancellationToken);
+
+            if (response?.Data is null)
+            {
+                return null;
+            }
+
+            GameDetailsViewModel? game = await GetGameDetailsAsync(league, gameId, cancellationToken);
+            
+            if (game is null)
+            {
+                return null;
+            }
+            
+            return new GamePageViewModel<PlayByPlayViewModel>
+            {
+                Game = game,
+                Content = playByPlayMapper.Map(response.Data)
+            };
         }
     }
 }
