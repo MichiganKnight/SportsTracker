@@ -17,6 +17,7 @@ builder.Services.AddScoped<INavigationMapper, NavigationMapper>();
 builder.Services.AddScoped<IStandingsMapper, StandingsMapper>();
 builder.Services.AddScoped<IGameDetailsMapper, GameDetailsMapper>();
 builder.Services.AddScoped<IBoxScoreMapper, BoxScoreMapper>();
+builder.Services.AddScoped<IPlayByPlayMapper, PlayByPlayMapper>();
 
 WebApplication app = builder.Build();
 

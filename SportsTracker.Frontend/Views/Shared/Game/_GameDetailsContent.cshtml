@@ -13,9 +13,9 @@
             Box Score
         </a>
             
-        <button type="button" class="btn btn-outline-secondary" disabled>
+        <a asp-controller="Game" asp-action="PlayByPlay" asp-route-league="@Model.League" asp-route-gameId="@Model.GameId" class="btn btn-outline-secondary">
             Play-by-Play
-        </button>
+        </a>
     </div>
 </div>
     

@@ -47,7 +47,25 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
 
                 ScoringPlay = dto.ScoringPlay == true,
 
-                TeamId = dto.Team?.Id
+                TeamId = dto.Team?.Id,
+                
+                Category = MapCategory(dto),
+                
+                GroupId = dto.AtBatId
+            };
+        }
+
+        private static string MapCategory(PlayDto dto)
+        {
+            return dto.SummaryType?.ToUpperInvariant() switch
+            {
+                "P" => "pitch",
+                "N" => "atbat",
+                "S" => "atbat scoring",
+
+                _ when dto.ScoringPlay == true => "scoring",
+
+                _ => "other"
             };
         }
 
@@ -84,7 +102,21 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
 
         private static bool ShouldIncludePlay(PlayDto play)
         {
-            return !string.IsNullOrWhiteSpace(play.Text);
+            if (string.IsNullOrWhiteSpace(play.Text))
+            {
+                return false;
+            }
+
+            return play.Type?.Type switch
+            {
+                "start-inning" => false,
+                "end-inning" => false,
+                
+                "start-batterpitcher" => false,
+                "end-batterpitcher" => false,
+                
+                _ => true
+            };
         }
     }
 }

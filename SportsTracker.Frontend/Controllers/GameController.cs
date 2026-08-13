@@ -3,10 +3,12 @@ using SportsTracker.Frontend.Mapping;
 using SportsTracker.Frontend.Services.Api;
 using SportsTracker.Frontend.ViewModels.BoxScore;
 using SportsTracker.Frontend.ViewModels.GameDetails;
+using SportsTracker.Frontend.ViewModels.PlayByPlay;
 using SportsTracker.Shared.Common;
 using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Models.BoxScore;
 using SportsTracker.Shared.Models.GameDetails;
+using SportsTracker.Shared.Models.PlayByPlay;
 
 namespace SportsTracker.Frontend.Controllers
 {
@@ -16,12 +18,14 @@ namespace SportsTracker.Frontend.Controllers
         private readonly ISportsApiClient _api;
         private readonly IGameDetailsMapper _mapper;
         private readonly IBoxScoreMapper _boxScoreMapper;
+        private readonly IPlayByPlayMapper _playByPlayMapper;
         
-        public GameController(ISportsApiClient api, IGameDetailsMapper mapper, IBoxScoreMapper boxScoreMapper)
+        public GameController(ISportsApiClient api, IGameDetailsMapper mapper, IBoxScoreMapper boxScoreMapper, IPlayByPlayMapper playByPlayMapper)
         {
             _api = api;
             _mapper = mapper;
             _boxScoreMapper = boxScoreMapper;
+            _playByPlayMapper = playByPlayMapper;
         }
 
         [HttpGet("{league}/{gameId}")]
@@ -62,7 +66,44 @@ namespace SportsTracker.Frontend.Controllers
                 return NotFound();
             }
             
-            BoxScoreViewModel viewModel = _boxScoreMapper.Map(response.Data);
+            GameDetailsViewModel? game = await GetGameDetailsViewModelAsync(league, gameId, cancellationToken);
+
+            if (game is null)
+            {
+                return NotFound();
+            }
+
+            BoxScorePageViewModel viewModel = new()
+            {
+                Game = game,
+                BoxScore = _boxScoreMapper.Map(response.Data)
+            };
+            
+            return View(viewModel);
+        }
+
+        [HttpGet("{league}/{gameId}/playbyplay")]
+        public async Task<IActionResult> PlayByPlay(League league, string gameId, CancellationToken cancellationToken)
+        {
+            ApiResponse<GamePlayByPlay>? response = await _api.GetPlayByPlayAsync(league, gameId, cancellationToken);
+
+            if (response?.Data is null)
+            {
+                return NotFound();
+            }
+            
+            GameDetailsViewModel game = await GetGameDetailsViewModelAsync(league, gameId, cancellationToken) ?? new GameDetailsViewModel();
+
+            if (game is null)
+            {
+                return NotFound();
+            }
+            
+            PlayByPlayPageViewModel viewModel = new()
+            {
+                Game = game,
+                PlayByPlay = _playByPlayMapper.Map(response.Data)
+            };
             
             return View(viewModel);
         }

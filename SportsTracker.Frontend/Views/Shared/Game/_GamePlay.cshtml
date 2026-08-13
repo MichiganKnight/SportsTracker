@@ -1,0 +1,56 @@
+﻿@model SportsTracker.Frontend.ViewModels.PlayByPlay.GamePlayViewModel
+
+<div class="game-play @(Model.ScoringPlay ? "game-play-scoring" : "")" data-game-play data-play-category="@Model.Category.ToLowerInvariant()">
+    <div class="game-play-main">
+        <div class="game-play-marker">
+            @if (Model.ScoringPlay)
+            {
+                <i class="bi bi-circle-fill"></i>
+            }
+            else
+            {
+                <span class="game-play-marker-dot"></span>
+            }
+        </div>
+        
+        <div class="game-play-content">
+            @if (!string.IsNullOrWhiteSpace(Model.Text))
+            {
+                <div class="game-play-text">
+                    @Model.Text
+                </div>
+            }
+            
+            <div class="game-play-meta">
+                @if (!string.IsNullOrWhiteSpace(Model.Clock))
+                {
+                    <span>
+                        @Model.Clock
+                    </span>
+                }
+                
+                @if (!string.IsNullOrWhiteSpace(Model.Type))
+                {
+                    <span class="game-play-type">
+                        @FormatPlayType(Model.Type)
+                    </span>
+                }
+            </div>
+        </div>
+        
+        @if (Model.AwayScore.HasValue && Model.HomeScore.HasValue && Model.ScoringPlay)
+        {
+            <div class="game-play-score">
+                @Model.AwayScore - @Model.HomeScore
+            </div>
+        }
+    </div>
+</div>
+
+@functions
+{
+    private static string FormatPlayType(string type)
+    {
+        return type.Replace("-", " ").Replace("_", " ");
+    }   
+}

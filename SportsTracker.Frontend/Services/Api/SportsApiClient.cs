@@ -6,6 +6,7 @@ using SportsTracker.Shared.Models;
 using SportsTracker.Shared.Models.BoxScore;
 using SportsTracker.Shared.Models.GameDetails;
 using SportsTracker.Shared.Models.GameInfo;
+using SportsTracker.Shared.Models.PlayByPlay;
 using SportsTracker.Shared.Models.Standings;
 
 namespace SportsTracker.Frontend.Services.Api
@@ -56,6 +57,11 @@ namespace SportsTracker.Frontend.Services.Api
         public async Task<ApiResponse<GameBoxScore>?> GetBoxScoreAsync(League league, string gameId, CancellationToken cancellationToken = default)
         {
             return await GetAsync<ApiResponse<GameBoxScore>>($"games/{league}/{gameId}/boxscore", cancellationToken);
+        }
+
+        public async Task<ApiResponse<GamePlayByPlay>?> GetPlayByPlayAsync(League league, string gameId, CancellationToken cancellationToken = default)
+        {
+            return await GetAsync<ApiResponse<GamePlayByPlay>>($"games/{league}/{gameId}/playbyplay", cancellationToken);       
         }
 
         private async Task<T?> GetAsync<T>(string relativeUrl, CancellationToken cancellationToken = default)

@@ -1,0 +1,90 @@
+﻿@using SportsTracker.Frontend.ViewModels.PlayByPlay
+@model SportsTracker.Frontend.ViewModels.PlayByPlay.PlayByPlayPageViewModel
+
+@{
+    ViewData["Title"] = "Play-by-Play";
+    
+    PlayByPlayViewModel playByPlay = Model.PlayByPlay;
+    
+    List<IGrouping<string?, GamePlayViewModel>> periods = playByPlay.Plays.Where(play => !string.IsNullOrWhiteSpace(play.Period)).GroupBy(play => play.Period).ToList();
+}
+
+<div class="container-fluid">
+    <partial name="Game/_GameHeader" model="Model.Game" />
+    
+    <!-- Game Navigation -->
+    <div class="mb-4">
+        <div class="btn-group" role="group" aria-label="Game Navigation">
+            <a asp-controller="Game" asp-action="Index" asp-route-league="@Model.Game.League" asp-route-gameId="@Model.Game.GameId" class="btn btn-outline-secondary">
+                Summary
+            </a>
+
+            <a asp-controller="Game" asp-action="BoxScore" asp-route-league="@Model.Game.League" asp-route-gameId="@Model.Game.GameId" class="btn btn-outline-secondary">
+                Box Score
+            </a>
+
+            <a asp-controller="Game" asp-action="PlayByPlay" asp-route-league="@Model.Game.League" asp-route-gameId="@Model.Game.GameId" class="btn btn-primary">
+                Play-by-Play
+            </a>
+        </div>
+    </div>
+
+    <!-- Filter -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body py-3">
+            <div class="d-flex flex-wrap align-items-center gap-2">
+                <span class="text-secondary small fw-semibold me-1">
+                    Show:
+                </span>
+
+                <button type="button" class="btn btn-sm btn-primary play-filter active" data-play-filter="all">
+                    All
+                </button>
+
+                <button type="button" class="btn btn-sm btn-outline-secondary play-filter" data-play-filter="atbat">
+                    At-Bats
+                </button>
+
+                <button type="button" class="btn btn-sm btn-outline-secondary play-filter" data-play-filter="pitch">
+                    Pitches
+                </button>
+
+                <button type="button" class="btn btn-sm btn-outline-secondary play-filter" data-play-filter="scoring">
+                    Scoring
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plays -->
+    <div id="play-by-play" data-play-by-play>
+        @if (playByPlay.Plays.Count == 0)
+        {
+            <div class="card shadow-sm">
+                <div class="card-body text-secondary">
+                    No Play-by-Play Data Available
+                </div>
+            </div>
+        }
+        else
+        {
+            foreach (IGrouping<string?, GamePlayViewModel> period in periods)
+            {
+                <section class="play-period" data-play-period>
+                    <div class="play-period-header">
+                        @period.Key
+                    </div>
+
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body p-0">
+                            @foreach (GamePlayViewModel play in period)
+                            {
+                                <partial name="Game/_GamePlay" model="play"/>
+                            }
+                        </div>
+                    </div>
+                </section>
+            }
+        }
+    </div>
+</div>
