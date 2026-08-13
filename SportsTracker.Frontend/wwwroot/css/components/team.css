@@ -1,0 +1,86 @@
+﻿.team-header-card {
+    overflow: hidden;
+}
+
+.team-header-logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    flex: 0 0 120px;
+}
+
+.team-header-logo {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.team-overall-record {
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.team-color-bar {
+    height: .4rem;
+    background: linear-gradient(90deg, var(--team-primary) 0 70%, var(--team-secondary) 70% 100%);
+}
+
+.team-stat-value {
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.team-stat-label {
+    margin-top: .2rem;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.team-venue-card {
+    overflow: hidden;
+}
+
+.team-venue-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-bottom: 1px solid var(--st-border);
+}
+
+.team-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.team-link:hover,
+.team-link:focus {
+    color: inherit;
+    text-decoration: none;
+}
+
+.team-link h4,
+.team-link .fw-semibold {
+    transition: opacity .15s ease;
+}
+
+.team-link:hover h4,
+.team-link:hover .fw-semibold {
+    opacity: .75;
+}
+
+@media (min-width: 768px) {
+    .team-header-logo-wrap {
+        width: 96px;
+        height: 96px;
+        flex-basis: 96px;
+    }
+    
+    .team-venue-image {
+        height: 180px;
+    }
+}

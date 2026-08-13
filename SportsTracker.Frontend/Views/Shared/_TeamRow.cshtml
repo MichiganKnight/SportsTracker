@@ -1,7 +1,7 @@
 ﻿@model SportsTracker.Frontend.ViewModels.TeamInfo.TeamViewModel
 
 <div class="d-flex justify-content-between align-items-center py-2">
-    <div class="d-flex align-items-center gap-3">
+    <a asp-controller="Team" asp-action="Index" asp-route-league="@Model.League" asp-route-teamId="@Model.Id" class="team-link d-flex align-items-center gap-2 position-relative z-2">
         @if (!string.IsNullOrWhiteSpace(Model.Logo))
         {
             <img class="team-logo img-fluid" src="@Model.Logo" alt="@Model.DisplayName" />
@@ -22,7 +22,8 @@
                 </small>
             }
         </div>
-    </div>
+    </a>
+    
     <div class="fw-bold fs-4" style="color: #@Model.PrimaryColor;">
         <div class="team-score" data-team-score>
             @Model.Score

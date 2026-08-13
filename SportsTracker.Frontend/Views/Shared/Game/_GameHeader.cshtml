@@ -9,21 +9,23 @@
         <div class="row align-items-center">
             <!-- Away -->
             <div class="col text-center">
-                @if (!string.IsNullOrWhiteSpace(Model.AwayTeam.Logo))
-                {
-                    <img src="@Model.AwayTeam.Logo" alt="@Model.AwayTeam.DisplayName" class="game-details-logo mb-2"/>
-                }
+                <a asp-controller="Team" asp-action="Index" asp-route-league="@Model.League" asp-route-teamId="@Model.AwayTeam.Id" class="team-link d-inline-block">
+                    @if (!string.IsNullOrWhiteSpace(Model.AwayTeam.Logo))
+                    {
+                        <img src="@Model.AwayTeam.Logo" alt="@Model.AwayTeam.DisplayName" class="game-details-logo mb-2"/>
+                    }
 
-                <h4 class="mb-1">
-                    @Model.AwayTeam.DisplayName
-                </h4>
+                    <h4 class="mb-1">
+                        @Model.AwayTeam.DisplayName
+                    </h4>
 
-                @if (!string.IsNullOrWhiteSpace(Model.AwayTeam.Record))
-                {
-                    <div class="text-secondary small">
-                        @Model.AwayTeam.Record
-                    </div>
-                }
+                    @if (!string.IsNullOrWhiteSpace(Model.AwayTeam.Record))
+                    {
+                        <div class="text-secondary small">
+                            @Model.AwayTeam.Record
+                        </div>
+                    }
+                </a>
             </div>
 
             <!-- Score -->
@@ -50,23 +52,25 @@
                 </div>
             </div>
 
-            <!-- Away -->
+            <!-- Home -->
             <div class="col text-center">
-                @if (!string.IsNullOrWhiteSpace(Model.HomeTeam.Logo))
-                {
-                    <img src="@Model.HomeTeam.Logo" alt="@Model.HomeTeam.DisplayName" class="game-details-logo mb-2"/>
-                }
+                <a asp-controller="Team" asp-action="Index" asp-route-league="@Model.League" asp-route-teamId="@Model.HomeTeam.Id" class="team-link d-inline-block">
+                    @if (!string.IsNullOrWhiteSpace(Model.HomeTeam.Logo))
+                    {
+                        <img src="@Model.HomeTeam.Logo" alt="@Model.HomeTeam.DisplayName" class="game-details-logo mb-2"/>
+                    }
 
-                <h4 class="mb-1">
-                    @Model.HomeTeam.DisplayName
-                </h4>
+                    <h4 class="mb-1">
+                        @Model.HomeTeam.DisplayName
+                    </h4>
 
-                @if (!string.IsNullOrWhiteSpace(Model.HomeTeam.Record))
-                {
-                    <div class="text-secondary small">
-                        @Model.HomeTeam.Record
-                    </div>
-                }
+                    @if (!string.IsNullOrWhiteSpace(Model.HomeTeam.Record))
+                    {
+                        <div class="text-secondary small">
+                            @Model.HomeTeam.Record
+                        </div>
+                    }
+                </a>
             </div>
         </div>
     </div>

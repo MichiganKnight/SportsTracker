@@ -1,0 +1,143 @@
+﻿@model SportsTracker.Frontend.ViewModels.TeamInfo.TeamDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Team.DisplayName;
+}
+
+<div class="container-fluid">
+    <!-- Team Header -->
+    <div class="card shadow-sm team-header-card mb-4">
+        <div class="card-body">
+            <div class="d-flex flex-column flex-md-row align-items-md-center gap-4">
+                <div class="team-header-logo-wrap">
+                    @if (!string.IsNullOrWhiteSpace(Model.Team.Logo))
+                    {
+                        <picture>
+                            @if (!string.IsNullOrWhiteSpace(Model.DarkLogo))
+                            {
+                                <source media="all(prefers-color-scheme: dark)" srcset="@Model.DarkLogo" />
+                            }
+                            
+                            <img src="@Model.Team.Logo" alt="@Model.Team.DisplayName" class="team-header-logo" />
+                        </picture>
+                    }
+                </div>
+                
+                <div class="flex-grow-1">
+                    <div class="text-secondary small fw-semibold text-uppercase">
+                        @Model.League
+                    </div>
+                    
+                    <h1 class="mb-1">
+                        @Model.Team.DisplayName
+                    </h1>
+                    
+                    <div class="text-secondary">
+                        @Model.Team.Abbreviation
+                    </div>
+                    
+                    @if (!string.IsNullOrWhiteSpace(Model.OverallRecord))
+                    {
+                        <div class="team-overall-record mt-3">
+                            @Model.OverallRecord
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        
+        @if (!string.IsNullOrWhiteSpace(Model.Team.PrimaryColor))
+        {
+            <div class="team-color-bar" style="--team-primary: @Model.Team.PrimaryColor; --team-secondary: @(Model.Team.AlternateColor ?? Model.Team.PrimaryColor)"></div>
+        }
+    </div>
+    
+    <div class="row g-4">
+        <!-- Records -->
+        <div class="col-xl-5">
+            <div class="card shadow-sm h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        Record
+                    </h5>
+                </div>
+                
+                <div class="card-body">
+                    <div class="row text-center g-3">
+                        <div class="col-4">
+                            <div class="team-stat-value">
+                                @(Model.OverallRecord ?? "-")
+                            </div>
+                            
+                            <div class="team-stat-label">
+                                Overall
+                            </div>
+                        </div>
+                        
+                        <div class="col-4">
+                            <div class="team-stat-value">
+                                @(Model.HomeRecord ?? "-")
+                            </div>
+
+                            <div class="team-stat-label">
+                                Home
+                            </div>
+                        </div>
+                        
+                        <div class="col-4">
+                            <div class="team-stat-value">
+                                @(Model.AwayRecord ?? "-")
+                            </div>
+
+                            <div class="team-stat-label">
+                                Away
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Venue -->
+        <div class="col-xl-7">
+            @if (Model.Venue is not null)
+            {
+                <div class="card shadow-sm h-100 team-venue-card">
+                    @if (!string.IsNullOrWhiteSpace(Model.Venue.Image))
+                    {
+                        <img src="@Model.Venue.Image" alt="@Model.Venue.Name" class="team-venue-image" />
+                    }
+                    
+                    <div class="card-body">
+                        <h5 class="mb-1">
+                            @Model.Venue.Name
+                        </h5>
+                        
+                        @if (!string.IsNullOrWhiteSpace(Model.Venue.LocationDisplay))
+                        {
+                            <div class="text-secondary mb-3">
+                                @Model.Venue.LocationDisplay
+                            </div>
+                        }
+                        
+                        <div class="d-flex flex-wrap gap-2">
+                            @if (Model.Venue.Indoor.HasValue)
+                            {
+                                <span class="badge text-bg-secondary">
+                                    @(Model.Venue.Indoor.Value ? "Indoor" : "Outdoor")
+                                </span>
+                            }
+                            
+                            @if (Model.Venue.Grass.HasValue)
+                            {
+                                <span class="badge text-bg-secondary">
+                                    @(Model.Venue.Grass.Value ? "Grass" : "Artifical Surface")
+                                </span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

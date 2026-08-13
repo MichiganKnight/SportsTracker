@@ -12,6 +12,7 @@ namespace SportsTracker.Frontend.Mapping
             return new TeamViewModel
             {
                 Id = team.Id,
+                League = team.League,
                 Name = team.Abbreviation,
                 DisplayName = team.DisplayName,
                 Abbreviation = team.Abbreviation,

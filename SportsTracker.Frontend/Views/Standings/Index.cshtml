@@ -118,25 +118,26 @@
                                 </td>
 
                                 <td class="standings-team">
-                                    <div class="d-flex align-items-center gap-2">
+                                    <a asp-controller="Team" asp-action="Index" asp-route-league="@Model.League" asp-route-teamId="@team.TeamId" class="team-link">
+                                        <div class="d-flex align-items-center gap-2">
+                                            @if (!string.IsNullOrWhiteSpace(team.Logo))
+                                            {
+                                                <span class="standings-team-logo-wrap">
+                                                    <img class="standings-team-logo" src="@team.Logo" alt="@team.Name" />
+                                                </span>
+                                            }
+                                            
+                                            <div class="standings-team-info">
+                                                <span class="standings-team-name">
+                                                    @team.Name
+                                                </span>
 
-                                        @if (!string.IsNullOrWhiteSpace(team.Logo))
-                                        {
-                                            <span class="standings-team-logo-wrap">
-                                                <img class="standings-team-logo" src="@team.Logo" alt="@team.Name" />
-                                            </span>
-                                        }
-
-                                        <div class="standings-team-info">
-                                            <span class="standings-team-name">
-                                                @team.Name
-                                            </span>
-
-                                            <span class="standings-team-abbreviation">
-                                                @team.Abbreviation
-                                            </span>
+                                                <span class="standings-team-abbreviation">
+                                                    @team.Abbreviation
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </td>
 
                                 <td class="text-end">

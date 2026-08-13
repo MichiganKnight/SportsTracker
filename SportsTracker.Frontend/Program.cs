@@ -14,6 +14,7 @@ builder.Services.AddHttpClient<SportsApiClient>();
 builder.Services.AddScoped<IScoreboardApiClient>(provider => provider.GetRequiredService<SportsApiClient>());
 builder.Services.AddScoped<IGameApiClient>(provider => provider.GetRequiredService<SportsApiClient>());
 builder.Services.AddScoped<IStandingsApiClient>(provider => provider.GetRequiredService<SportsApiClient>());
+builder.Services.AddScoped<ITeamApiClient>(provider => provider.GetRequiredService<SportsApiClient>());
 
 builder.Services.AddScoped<IDashboardMapper, DashboardMapper>();
 builder.Services.AddScoped<ILeagueMapper, LeagueMapper>();
@@ -22,6 +23,7 @@ builder.Services.AddScoped<IStandingsMapper, StandingsMapper>();
 builder.Services.AddScoped<IGameDetailsMapper, GameDetailsMapper>();
 builder.Services.AddScoped<IBoxScoreMapper, BoxScoreMapper>();
 builder.Services.AddScoped<IPlayByPlayMapper, PlayByPlayMapper>();
+builder.Services.AddScoped<ITeamDetailsMapper, TeamDetailsMapper>();
 
 WebApplication app = builder.Build();
 

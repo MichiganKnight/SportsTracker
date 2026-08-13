@@ -14,7 +14,7 @@
     <div class="card shadow-sm mb-4">
         <!-- Team Header -->
         <div class="card-header boxscore-team-header">
-            <div class="d-flex align-items-center gap-2">
+            <a asp-controller="Team" asp-action="Index" asp-route-league="@Model.Game.League" asp-route-teamId="@team.TeamId" class="team-link d-inline-flex align-items-center gap-2">
                 @if (!string.IsNullOrWhiteSpace(team.Logo))
                 {
                     <img src="@team.Logo" alt="@team.TeamName" class="boxscore-team-logo"/>
@@ -29,7 +29,7 @@
                         @team.Abbreviation
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <div class="card-body p-0">

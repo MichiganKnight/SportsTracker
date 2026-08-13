@@ -9,10 +9,11 @@ using SportsTracker.Shared.Models.GameDetails;
 using SportsTracker.Shared.Models.GameInfo;
 using SportsTracker.Shared.Models.PlayByPlay;
 using SportsTracker.Shared.Models.Standings;
+using SportsTracker.Shared.Models.TeamInfo;
 
 namespace SportsTracker.Frontend.Services.Api
 {
-    public class SportsApiClient : IScoreboardApiClient, IGameApiClient, IStandingsApiClient
+    public class SportsApiClient : IScoreboardApiClient, IGameApiClient, IStandingsApiClient, ITeamApiClient
     {
         private readonly HttpClient _httpClient;
 
@@ -63,6 +64,11 @@ namespace SportsTracker.Frontend.Services.Api
         public Task<ApiResponse<GamePlayByPlay>?> GetPlayByPlayAsync(League league, string gameId, CancellationToken cancellationToken = default)
         {
             return GetAsync<ApiResponse<GamePlayByPlay>>((SportsApiEndpoints.PlayByPlay(league, gameId)), cancellationToken);       
+        }
+
+        public Task<ApiResponse<TeamDetails>?> GetTeamDetailsAsync(League league, string teamId, CancellationToken cancellationToken = default)
+        {
+            return GetAsync<ApiResponse<TeamDetails>>((SportsApiEndpoints.Team(league, teamId)), cancellationToken);      
         }
 
         public async Task<bool> IsHealthyAsync(CancellationToken cancellationToken = default)
