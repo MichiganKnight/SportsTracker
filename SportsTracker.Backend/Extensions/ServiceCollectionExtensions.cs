@@ -13,36 +13,59 @@ namespace SportsTracker.Backend.Extensions
     {
         public static void AddSportsTrackerServices(this IServiceCollection services, IConfiguration configuration)
         {
+            AddOptions(services, configuration);
+            AddCaching(services);
+            AddEspnIntegration(services);
+            AddApplicationServices(services);
+            AddBackgroundServices(services);
+        }
+
+        private static void AddOptions(IServiceCollection services, IConfiguration configuration)
+        {
             services.Configure<EspnOptions>(configuration.GetSection(EspnOptions.SectionName));
             services.Configure<CacheOptions>(configuration.GetSection(CacheOptions.SectionName));
+        }
 
+        private static void AddCaching(IServiceCollection services)
+        {
             services.AddMemoryCache();
             
+            services.AddSingleton<ICacheService, MemoryCacheService>();
+        }
+        
+        private static void AddEspnIntegration(IServiceCollection services)
+        {
             services.AddHttpClient<IEspnApiClient, EspnApiClient>((serviceProvider, client) =>
-            {
-                EspnOptions options = serviceProvider.GetRequiredService<IOptions<EspnOptions>>().Value;
+                {
+                    EspnOptions options = serviceProvider.GetRequiredService<IOptions<EspnOptions>>().Value;
                 
-                client.BaseAddress = new Uri(options.BaseUrl.TrimEnd('/') + "/");
-                client.DefaultRequestHeaders.Accept.ParseAdd("*/*");
-                client.DefaultRequestHeaders.UserAgent.ParseAdd("PostmanRuntime/7.53.0");
-            })
-            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-            {
-                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate | DecompressionMethods.Brotli
-            });
+                    client.BaseAddress = new Uri(options.BaseUrl.TrimEnd('/') + "/");
+                    client.DefaultRequestHeaders.Accept.ParseAdd("*/*");
+                    client.DefaultRequestHeaders.UserAgent.ParseAdd("PostmanRuntime/7.53.0");
+                })
+                .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+                {
+                    AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate | DecompressionMethods.Brotli
+                });
+        }
 
+        private static void AddApplicationServices(IServiceCollection services)
+        {
             services.AddScoped<IScoreboardService, ScoreboardService>();
             services.AddScoped<IScoreboardRefreshService, ScoreboardRefreshService>();
             
             services.AddScoped<IStandingsService, StandingsService>();
             services.AddScoped<IGroupsService, GroupsService>();
+            
             services.AddScoped<IGameDetailsService, GameDetailsService>();
-            services.AddScoped<IBoxScoreService, BoxScoreService>();
-            services.AddScoped<IPlayByPlayService, PlayByPlayService>();
             services.AddScoped<IGameSummaryService, GameSummaryService>();
             
-            services.AddSingleton<ICacheService, MemoryCacheService>();
+            services.AddScoped<IBoxScoreService, BoxScoreService>();
+            services.AddScoped<IPlayByPlayService, PlayByPlayService>();
+        }
 
+        private static void AddBackgroundServices(IServiceCollection services)
+        {
             services.AddHostedService<ScoreboardWorker>();
         }
     }
