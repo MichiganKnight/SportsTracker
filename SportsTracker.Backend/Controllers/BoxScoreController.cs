@@ -7,12 +7,12 @@ using SportsTracker.Shared.Models.BoxScore;
 namespace SportsTracker.Backend.Controllers
 {
     [Route("api/v1/games")]
-    public sealed class BoxScoreController(IBoxScoreService boxScoreService) : ApiControllerBase
+    public sealed class BoxScoreController(IGameContentService gameContentService) : ApiControllerBase
     {
         [HttpGet("{league}/{gameId}/boxscore")]
         public async Task<ActionResult<ApiResponse<GameBoxScore>>> GetBoxScore(League league, string gameId, CancellationToken cancellationToken)
         {
-            GameBoxScore? boxScore = await boxScoreService.GetBoxScoreAsync(league, gameId, cancellationToken);
+            GameBoxScore? boxScore = await gameContentService.GetBoxScoreAsync(league, gameId, cancellationToken);
             
             return boxScore is null ? NotFound() : ApiOk(boxScore);
         }

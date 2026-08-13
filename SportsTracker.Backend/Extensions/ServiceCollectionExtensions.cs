@@ -11,13 +11,15 @@ namespace SportsTracker.Backend.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddSportsTrackerServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddSportsTrackerServices(this IServiceCollection services, IConfiguration configuration)
         {
             AddOptions(services, configuration);
             AddCaching(services);
             AddEspnIntegration(services);
             AddApplicationServices(services);
             AddBackgroundServices(services);
+            
+            return services;
         }
 
         private static void AddOptions(IServiceCollection services, IConfiguration configuration)
@@ -60,8 +62,7 @@ namespace SportsTracker.Backend.Extensions
             services.AddScoped<IGameDetailsService, GameDetailsService>();
             services.AddScoped<IGameSummaryService, GameSummaryService>();
             
-            services.AddScoped<IBoxScoreService, BoxScoreService>();
-            services.AddScoped<IPlayByPlayService, PlayByPlayService>();
+            services.AddScoped<IGameContentService, GameContentService>();
         }
 
         private static void AddBackgroundServices(IServiceCollection services)

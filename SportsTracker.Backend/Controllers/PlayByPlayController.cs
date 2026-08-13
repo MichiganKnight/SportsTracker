@@ -7,12 +7,12 @@ using SportsTracker.Shared.Models.PlayByPlay;
 namespace SportsTracker.Backend.Controllers
 {
     [Route("api/v1/games")]
-    public sealed class PlayByPlayController(IPlayByPlayService playByPlayService) : ApiControllerBase
+    public sealed class PlayByPlayController(IGameContentService gameContentService) : ApiControllerBase
     {
         [HttpGet("{league}/{gameId}/playbyplay")]
         public async Task<ActionResult<ApiResponse<GamePlayByPlay>>> GetPlayByPlay(League league, string gameId, CancellationToken cancellationToken)
         {
-            GamePlayByPlay? playByPlay = await playByPlayService.GetPlayByPlayAsync(league, gameId, cancellationToken);
+            GamePlayByPlay? playByPlay = await gameContentService.GetPlayByPlayAsync(league, gameId, cancellationToken);
 
             return playByPlay is null ? NotFound() : ApiOk(playByPlay);
         }
