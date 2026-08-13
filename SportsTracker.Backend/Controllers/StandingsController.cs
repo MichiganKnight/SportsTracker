@@ -7,21 +7,24 @@ using SportsTracker.Shared.Models.Standings;
 
 namespace SportsTracker.Backend.Controllers
 {
-    [ApiController]
     [Route("api/v1/standings")]
     public sealed class StandingsController(IStandingsService standingsService, IGroupsService groupsService, IStandingsGroupingService groupingService) : ApiControllerBase
     {
         [HttpGet("{league}")]
         public async Task<ActionResult<ApiResponse<LeagueStandings>>> GetStandings(League league, CancellationToken cancellationToken)
         {
-            LeagueStandings? standings = await standingsService.GetStandingsAsync(league, cancellationToken);
+            Task<LeagueStandings?> standingsTask = standingsService.GetStandingsAsync(league, cancellationToken);
+            Task<IReadOnlyList<SportsGroup>?> groupsTask = groupsService.GetGroupsAsync(league, cancellationToken);
+            
+            await Task.WhenAll(standingsTask, groupsTask);
+            
+            LeagueStandings? standings = await standingsTask;
+            IReadOnlyList<SportsGroup>? groups = await groupsTask;
 
             if (standings is null)
             {
                 return NotFound();
             }
-            
-            IReadOnlyList<SportsGroup>? groups = await groupsService.GetGroupsAsync(league, cancellationToken);
 
             if (groups is not null)
             {
