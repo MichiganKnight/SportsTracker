@@ -13,12 +13,13 @@
         public int GameDetailsFinalMinutes { get; init; } = 60;
         public int GameDetailsScheduledMinutes { get; init; } = 2;
         
-        public int TeamMinutes { get; init; } = 60;
         public int StandingsMinutes { get; init; } = 60;
         public int GroupsMinutes { get; init; } = 1440;
         
         public int GameSummaryLiveSeconds { get; init; } = 15;
         public int GameSummaryScheduledMinutes { get; init; } = 2;
         public int GameSummaryFinalMinutes { get; init; } = 60;
+        
+        public int TeamMinutes { get; init; } = 60;
     }
 }

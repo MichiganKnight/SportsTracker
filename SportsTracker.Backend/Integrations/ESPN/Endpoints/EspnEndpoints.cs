@@ -39,6 +39,13 @@ namespace SportsTracker.Backend.Integrations.ESPN.Endpoints
             
             return Site(info, $"summary?event={Uri.EscapeDataString(gameId)}");
         }
+        
+        public static string TeamDetails(League league, string teamId)
+        {
+            LeagueInfo info = GetLeagueInfo(league);
+            
+            return Site(info, $"teams/{Uri.EscapeDataString(teamId)}");
+        }
 
         private static LeagueInfo GetLeagueInfo(League league)
         {

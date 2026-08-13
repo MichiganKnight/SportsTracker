@@ -9,5 +9,6 @@ namespace SportsTracker.Backend.Cache
         public static string Groups(League league) => $"groups:{league}";
         public static string GameDetails(League league, string gameId) => $"game-details:{league}:{gameId}";
         public static string GameSummary(League league, string gameId) => $"game-summary:{league}:{gameId}";
+        public static string TeamDetails(League league, string teamId) => $"team-details:{league}:{teamId}";
     }
 }
