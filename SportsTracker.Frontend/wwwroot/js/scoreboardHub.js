@@ -4,284 +4,142 @@
     .build();
 
 connection.on("ScoreboardUpdated", async payload => {
-    await refreshLeague(payload);
-    await refreshGameDetails(payload);
-    await refreshPlayByPlay(payload);
-    await refreshBoxScore(payload);
+    handleScoreboardUpdated
 });
 
-async function refreshLeague(payload) {
+async function handleScoreboardUpdated(payload) {
+    await Promise.all([
+        refreshDashboardLeague(payload),
+        refreshLeaguePage(payload),
+        refreshGameDetails(payload),
+        refreshBoxScore(payload),
+        refreshPlayByPlay(payload)
+    ]);
+}
+
+async function refreshDashboardLeague(payload) {
     const league = payload.league;
     const leagueKey = league.toLowerCase();
+    const selector = `#league-${leagueKey}`;
+    const current = document.querySelector(selector);
 
-    const dashboardId = `league-${leagueKey}`;
-    const leaguePageId = `league-games-${leagueKey}`;
-
-    const dashboardSection = document.getElementById(dashboardId);
-    const leaguePageSection = document.getElementById(leaguePageId);
-
-    if (dashboardSection) {
-        await refreshDashboardLeague(league, dashboardId);
+    if (!current) {
+        return;
     }
 
-    if (leaguePageSection) {
-        await refreshLeaguePage(league, leaguePageId);
+    const oldScores = captureScores(current);
+
+    await partialRefresh({
+        selector: selector,
+        url: `/Dashboard/LeagueSection?league=${encodeURIComponent(league)}&t=${Date.now()}`,
+        afterReplace: replacement => {
+            const changedGames = findScoreChanges(oldScores, replacement);
+
+            animateScoreChanges(changedGames);
+        }
+    });
+}
+
+async function refreshLeaguePage(payload) {
+    const league = payload.league;
+    const leagueKey = league.toLowerCase();
+    const selector = `#league-games-${leagueKey}`;
+    const current = document.querySelector(selector);
+
+    if (!current) {
+        return;
     }
+
+    const oldScores = captureScores(current);
+
+    await partialRefresh({
+        selector: selector,
+        url: `/league/GameSections?league=${encodeURIComponent(league)}&t=${Date.now()}`,
+        afterReplace: replacement => {
+            const changedGames = findScoreChanges(oldScores, replacement);
+
+            animateScoreChanges(changedGames);
+        }
+    });
 }
 
 async function refreshGameDetails(payload) {
-    const container = document.querySelector("[data-game-details]");
+    const page = document.querySelector("[data-game-details]");
 
-    if (!container) {
+    if (!page) {
         return;
     }
 
-    const pageLeague = container.dataset.league;
-    const gameId = container.dataset.gameId;
+    const league = page.dataset.league;
+    const gameId = page.dataset.gameId;
 
-    if (!pageLeague || !gameId) {
+    if (!isMatchingLeague(league, payload.league)) {
         return;
     }
 
-    if (pageLeague.toLowerCase() !== payload.league.toLowerCase()) {
-        return;
-    }
-
-    const response = await fetch(`/game/content/${encodeURIComponent(pageLeague)}/${encodeURIComponent(gameId)}?t=${Date.now()}`, {
-        cache: "no-store"
+    await partialRefresh({
+        selector: "[data-game-details]",
+        url: `/game/content/${encodeURIComponent(league)}/${encodeURIComponent(gameId)}?t=${Date.now()}`,
     });
-
-    if (!response.ok) {
-        console.error(`Unable to Refresh Game: ${gameId}`, response.status);
-
-        return;
-    }
-
-    const html = await response.text();
-
-    container.innerHTML = html;
-
-    console.log(`Refreshed Game: ${gameId}`);
-}
-
-async function refreshPlayByPlay(payload) {
-    const current = document.querySelector("[data-playbyplay-page]");
-
-    if (!current) {
-        return;
-    }
-
-    const league = current.dataset.league;
-    const gameId = current.dataset.gameId;
-
-    if (!league || !gameId) {
-        return;
-    }
-
-    if (league.toLowerCase() !== payload.league.toLowerCase()) {
-        return;
-    }
-
-    const activeFilter = document.querySelector("[data-play-filter].active")?.dataset.playFilter ?? "all";
-
-    const response = await fetch(`/game/playbyplay/content/${encodeURIComponent(league)}/${encodeURIComponent(gameId)}?t=${Date.now()}`, {
-        cache: "no-store"
-    });
-    
-    if (!response.ok) {
-        console.error(`Unable to Refresh Play-By-Play: ${gameId}`);
-        
-        return;
-    }
-    
-    const html = await response.text();
-    
-    current.innerHTML = html;
-    
-    initializePlayByPlayFilters();    
-    restorePlayFilter(activeFilter);
 }
 
 async function refreshBoxScore(payload) {
-    const current = document.querySelector("[data-game-boxscore-page]");
-    
-    if (!current) {
-        return;
-    }
-    
-    const league = current.dataset.league;
-    const gameId = current.dataset.gameId;
-    
-    if (!league || !gameId) {
-        return;
-    }
-    
-    if (league.toLowerCase() !== payload.league.toLowerCase()) {
-        return;
-    }
-    
-    const response = await fetch(`/game/boxscore/content/${encodeURIComponent(league)}/${encodeURIComponent(gameId)}?t=${Date.now()}`, {
-        cache: "no-store"
-    });
-    
-    if (!response.ok) {
-        console.error(`Unable to Refresh Box-Score: ${gameId}`);
-        
-        return;
-    }
-    
-    const html = await response.text();
-    
-    current.innerHTML = html;
-    
-    initializeBoxScoreSorting();
-}
+    const page = document.querySelector("[data-game-boxscore-page]");
 
-async function refreshDashboardLeague(league, id) {
-    const current = document.getElementById(id);
-
-    if (!current) {
+    if (!page) {
         return;
     }
 
-    const oldScores = captureScores(current);
+    const league = page.dataset.league;
+    const gameId = page.dataset.gameId;
 
-    const response = await fetch(`/Dashboard/LeagueSection?league=${league}&t=${Date.now()}`, {
-        cache: "no-store"
-    });
-
-    if (!response.ok) {
+    if (!isMatchingLeague(league, payload.league)) {
         return;
     }
 
-    const html = await response.text();
-
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    const replacement = doc.getElementById(id);
-
-    if (!replacement) {
-        return;
-    }
-
-    const changedGames = findScoreChanges(oldScores, replacement);
-
-    current.replaceWith(replacement);
-
-    animateScoreChanges(changedGames);
-}
-
-async function refreshLeaguePage(league, id) {
-    const current = document.getElementById(id);
-
-    if (!current) {
-        return;
-    }
-
-    const oldScores = captureScores(current);
-
-    const response = await fetch(`/League/GameSections?league=${league}&t=${Date.now()}`, {
-        cache: "no-store"
-    });
-
-    if (!response.ok) {
-        return;
-    }
-
-    const html = await response.text();
-
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    const replacement = doc.getElementById(id);
-
-    if (!replacement) {
-        return;
-    }
-
-    const changedGames = findScoreChanges(oldScores, replacement);
-
-    current.replaceWith(replacement);
-
-    animateScoreChanges(changedGames);
-}
-
-function captureScores(leagueSection) {
-    const scores = new Map();
-
-    const games = leagueSection.querySelectorAll("[data-game-id]");
-
-    games.forEach(game => {
-        const gameId = game.dataset.gameId;
-        const scoreElements = game.querySelectorAll("[data-team-score]");
-
-        const gameScores = Array.from(scoreElements).map(element => Number.parseInt(element.textContent.trim(), 10) || 0);
-
-        scores.set(gameId, gameScores);
-    });
-
-    return scores;
-}
-
-function findScoreChanges(oldScores, replacementSection) {
-    const changedGames = [];
-    const games = replacementSection.querySelectorAll("[data-game-id]");
-
-    games.forEach(game => {
-        const gameId = game.dataset.gameId;
-        const oldScore = oldScores.get(gameId);
-
-        if (!oldScore) {
-            return;
+    await partialRefresh({
+        selector: "[data-game-boxscore-page]",
+        url: `/game/boxscore/content/${encodeURIComponent(league)}/${encodeURIComponent(gameId)}?t=${Date.now()}`,
+        afterReplace: () => {
+            initializeBoxScoreSorting();
         }
+    })
+}
 
-        const newScore = Array.from(game.querySelectorAll("[data-team-score]")).map(element => Number.parseInt(element.textContent.trim(), 10) || 0);
+async function refreshPlayByPlay(payload) {
+    const page = document.querySelector("[data-game-playbyplay-page]");
 
-        if (oldScore.length !== newScore.length) {
-            return;
-        }
+    if (!page) {
+        return;
+    }
 
-        const changedTeams = [];
+    const league = page.dataset.league;
+    const gameId = page.dataset.gameId;
 
-        newScore.forEach((score, index) => {
-            const previousScore = oldScore[index];
+    if (!isMatchingLeague(league, payload.league)) {
+        return;
+    }
 
-            if (score > previousScore) {
-                changedTeams.push({
-                    index: index,
-                    difference: score - previousScore
-                });
-            }
-        });
-
-        if (changedTeams.length > 0) {
-            changedGames.push({
-                gameId: gameId,
-                teams: changedTeams
-            });
+    await partialRefresh({
+        selector: "[data-game-playbyplay-page]",
+        url: `/game/playbyplay/content/${encodeURIComponent(league)}/${encodeURIComponent(gameId)}?t=${Date.now()}`,
+        beforeReplace: () => {
+            return document.querySelector("[data-play-filter].active")?.dataset.playFilter ?? "all";
+        },
+        afterReplace: (replacement, activeFilter) => {
+            initializePlayByPlayFilters();
+            
+            restorePlayFilter(activeFilter);
         }
     });
-
-    return changedGames;
 }
 
-function animateScoreChanges(changedGames) {
-    changedGames.forEach(change => {
-        const card = document.querySelector(
-            `[data-game-id="${change.gameId}"]`
-        );
-
-        if (!card) {
-            return;
-        }
-
-        card.classList.remove("score-changed");
-
-        void card.offsetWidth;
-
-        card.classList.add("score-changed");
-
-        setTimeout(() => {
-            card.classList.remove("score-changed");
-        }, 1200);
-    });
+function isMatchingLeague(pageLeague, updatedLeague) {
+    if (!pageLeague || !updatedLeague) {
+        return false;
+    }
+    
+    return pageLeague.toLowerCase() === updatedLeague.toLowerCase();
 }
 
 async function start() {
