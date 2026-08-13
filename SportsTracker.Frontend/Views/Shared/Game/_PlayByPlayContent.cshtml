@@ -1,8 +1,8 @@
 ﻿@using SportsTracker.Frontend.ViewModels.PlayByPlay
-@model SportsTracker.Frontend.ViewModels.PlayByPlay.PlayByPlayViewModel
+@model SportsTracker.Frontend.ViewModels.GameInfo.GamePageViewModel<PlayByPlayViewModel>
 
 @{
-    List<IGrouping<string?, GamePlayViewModel>> periods = Model.Plays.Where(play => !string.IsNullOrWhiteSpace(play.Period)).GroupBy(play => play.Period).ToList();
+    List<IGrouping<string?, GamePlayViewModel>> periods = Model.Content.Plays.Where(play => !string.IsNullOrWhiteSpace(play.Period)).GroupBy(play => play.Period).ToList();
 }
 
 <div id="play-by-play-content" data-play-by-play-content>
@@ -35,7 +35,7 @@
     
     <!-- Plays -->
     <div id="play-by-play" data-play-by-play>
-        @if (Model.Plays.Count == 0)
+        @if (Model.Content.Plays.Count == 0)
         {
             <div class="card shadow-sm">
                 <div class="card-body text-secondary">

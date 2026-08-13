@@ -1,5 +1,5 @@
 ﻿@using SportsTracker.Frontend.ViewModels.BoxScore
-@model SportsTracker.Frontend.ViewModels.BoxScore.BoxScorePageViewModel
+@model SportsTracker.Frontend.ViewModels.GameInfo.GamePageViewModel<BoxScoreViewModel>
 
 <partial name="Game/_GameHeader" model="Model.Game" />
     
@@ -20,7 +20,7 @@
     </div>
 </div>
 
-@foreach (TeamBoxScoreViewModel team in Model.BoxScore.Teams)
+@foreach (TeamBoxScoreViewModel team in Model.Content.Teams)
 {
     <div class="card shadow-sm mb-4">
         <!-- Team Header -->

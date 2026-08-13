@@ -1,4 +1,5 @@
-﻿@model SportsTracker.Frontend.ViewModels.PlayByPlay.PlayByPlayPageViewModel
+﻿@using SportsTracker.Frontend.ViewModels.PlayByPlay
+@model SportsTracker.Frontend.ViewModels.GameInfo.GamePageViewModel<PlayByPlayViewModel>
 
 <partial name="Game/_GameHeader" model="Model.Game"/>
 
@@ -19,4 +20,4 @@
     </div>
 </div>
 
-<partial name="Game/_PlayByPlayContent" model="Model.PlayByPlay"/>
+<partial name="Game/_PlayByPlayContent" model="Model.Content"/>

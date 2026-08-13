@@ -3,6 +3,7 @@ using SportsTracker.Frontend.Mapping;
 using SportsTracker.Frontend.Services.Api;
 using SportsTracker.Frontend.ViewModels.BoxScore;
 using SportsTracker.Frontend.ViewModels.GameDetails;
+using SportsTracker.Frontend.ViewModels.GameInfo;
 using SportsTracker.Frontend.ViewModels.PlayByPlay;
 using SportsTracker.Shared.Common;
 using SportsTracker.Shared.Enums;
@@ -13,8 +14,7 @@ using SportsTracker.Shared.Models.PlayByPlay;
 namespace SportsTracker.Frontend.Controllers
 {
     [Route("game")]
-    public sealed class GameController(ISportsApiClient api, IGameDetailsMapper mapper, IBoxScoreMapper boxScoreMapper, IPlayByPlayMapper playByPlayMapper)
-        : Controller
+    public sealed class GameController(ISportsApiClient api, IGameDetailsMapper mapper, IBoxScoreMapper boxScoreMapper, IPlayByPlayMapper playByPlayMapper) : Controller
     {
         [HttpGet("{league}/{gameId}")]
         public async Task<IActionResult> Index(League league, string gameId, CancellationToken cancellationToken)
@@ -61,10 +61,10 @@ namespace SportsTracker.Frontend.Controllers
                 return NotFound();
             }
 
-            BoxScorePageViewModel viewModel = new()
+            GamePageViewModel<BoxScoreViewModel> viewModel = new()
             {
                 Game = game,
-                BoxScore = boxScoreMapper.Map(response.Data)
+                Content = boxScoreMapper.Map(response.Data)
             };
             
             return View(viewModel);
@@ -87,10 +87,10 @@ namespace SportsTracker.Frontend.Controllers
                 return NotFound();
             }
             
-            BoxScorePageViewModel viewModel = new()
+            GamePageViewModel<BoxScoreViewModel> viewModel = new()
             {
                 Game = game,
-                BoxScore = boxScoreMapper.Map(response.Data)
+                Content = boxScoreMapper.Map(response.Data)
             };
             
             return PartialView("Game/_BoxScorePageContent", viewModel);
@@ -113,10 +113,10 @@ namespace SportsTracker.Frontend.Controllers
                 return NotFound();
             }
             
-            PlayByPlayPageViewModel viewModel = new()
+            GamePageViewModel<PlayByPlayViewModel> viewModel = new()
             {
                 Game = game,
-                PlayByPlay = playByPlayMapper.Map(response.Data)
+                Content = playByPlayMapper.Map(response.Data)
             };
             
             return View(viewModel);
@@ -139,10 +139,10 @@ namespace SportsTracker.Frontend.Controllers
                 return NotFound();
             }
 
-            PlayByPlayPageViewModel viewModel = new()
+            GamePageViewModel<PlayByPlayViewModel> viewModel = new()
             {
                 Game = game,
-                PlayByPlay = playByPlayMapper.Map(response.Data)
+                Content = playByPlayMapper.Map(response.Data)
             };
             
             return PartialView("Game/_PlayByPlayPageContent", viewModel);
