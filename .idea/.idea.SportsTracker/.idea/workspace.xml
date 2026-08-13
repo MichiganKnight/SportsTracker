@@ -19,13 +19,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Controllers/GameController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Controllers/GameController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Services/Api/SportsApiClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Services/Api/SportsApiClient.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Game/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Game/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_GameDetailsContent.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_GameDetailsContent.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_PlayByPlayContent.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_PlayByPlayContent.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_PlayByPlayPageContent.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_PlayByPlayPageContent.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/js/scoreboardHub.js" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/js/scoreboardHub.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/BoxScoreController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/BoxScoreController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/GameDetailsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/GameDetailsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/GroupsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/GroupsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/PlayByPlayController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/PlayByPlayController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/ScoreboardController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Controllers/ScoreboardController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +58,7 @@
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Cache/MemoryCacheService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Config/CacheOptions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Config/EspnOptions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Controllers/ApiControllerBase.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Controllers/BoxScoreController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Controllers/GameDetailsController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Controllers/GroupsController.cs" root0="FORCE_HIGHLIGHTING" />
@@ -384,7 +383,7 @@
       <workItem from="1786348963169" duration="34989000" />
       <workItem from="1786464449510" duration="18570000" />
       <workItem from="1786567823436" duration="16565000" />
-      <workItem from="1786632806011" duration="5886000" />
+      <workItem from="1786632806011" duration="6995000" />
     </task>
     <servers />
   </component>

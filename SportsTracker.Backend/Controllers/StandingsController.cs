@@ -9,7 +9,7 @@ namespace SportsTracker.Backend.Controllers
 {
     [ApiController]
     [Route("api/v1/standings")]
-    public sealed class StandingsController(IStandingsService standingsService, IGroupsService groupsService, IStandingsGroupingService groupingService) : Controller
+    public sealed class StandingsController(IStandingsService standingsService, IGroupsService groupsService, IStandingsGroupingService groupingService) : ApiControllerBase
     {
         [HttpGet("{league}")]
         public async Task<ActionResult<ApiResponse<LeagueStandings>>> GetStandings(League league, CancellationToken cancellationToken)
@@ -28,12 +28,7 @@ namespace SportsTracker.Backend.Controllers
                 standings = groupingService.AddDivisionGroups(standings, groups);
             }
             
-            return Ok(new ApiResponse<LeagueStandings>
-            {
-                Data = standings,
-                TimestampUtc = DateTime.UtcNow,
-                Version = "v1"
-            });
+            return ApiOk(standings);
         }
     }
 }
