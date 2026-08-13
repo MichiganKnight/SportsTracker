@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SportsTracker.Backend.Services;
 using SportsTracker.Backend.Services.Interfaces;
 using SportsTracker.Shared.Common;
 using SportsTracker.Shared.Enums;
@@ -8,7 +9,7 @@ using SportsTracker.Shared.Models.Standings;
 namespace SportsTracker.Backend.Controllers
 {
     [Route("api/v1/standings")]
-    public sealed class StandingsController(IStandingsService standingsService, IGroupsService groupsService, IStandingsGroupingService groupingService) : ApiControllerBase
+    public sealed class StandingsController(IStandingsService standingsService, IGroupsService groupsService) : ApiControllerBase
     {
         [HttpGet("{league}")]
         public async Task<ActionResult<ApiResponse<LeagueStandings>>> GetStandings(League league, CancellationToken cancellationToken)
@@ -28,7 +29,7 @@ namespace SportsTracker.Backend.Controllers
 
             if (groups is not null)
             {
-                standings = groupingService.AddDivisionGroups(standings, groups);
+                standings = StandingsGrouping.AddDivisionGroups(standings, groups);
             }
             
             return ApiOk(standings);

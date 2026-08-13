@@ -36,6 +36,7 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
                 
                 IsLive = string.Equals(competition.Status?.Type?.State, "in", StringComparison.OrdinalIgnoreCase),
                 IsFinal = competition.Status?.Type?.Completed == true,
+                IsScheduled = string.Equals(competition.Status?.Type?.State, "scheduled", StringComparison.OrdinalIgnoreCase),
                 
                 AwayTeam = MapTeam(away),
                 HomeTeam = MapTeam(home),

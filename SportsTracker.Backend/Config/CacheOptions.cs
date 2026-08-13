@@ -11,6 +11,7 @@
         
         public int GameDetailsLiveSeconds { get; init; } = 15;
         public int GameDetailsFinalMinutes { get; init; } = 60;
+        public int GameDetailsScheduledMinutes { get; init; } = 2;
         
         public int TeamMinutes { get; init; } = 60;
         public int StandingsMinutes { get; init; } = 60;

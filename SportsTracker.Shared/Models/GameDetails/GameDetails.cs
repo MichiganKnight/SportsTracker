@@ -14,6 +14,7 @@ namespace SportsTracker.Shared.Models.GameDetails
         
         public bool IsLive { get; init; }
         public bool IsFinal { get; init; }
+        public bool IsScheduled { get; init; }
 
         public GameDetailsTeam AwayTeam { get; init; } = null!;
         public GameDetailsTeam HomeTeam { get; init; } = null!;

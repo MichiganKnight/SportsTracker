@@ -1,31 +1,30 @@
-﻿using SportsTracker.Backend.Services.Interfaces;
-using SportsTracker.Shared.Enums;
+﻿using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Models.Groups;
 using SportsTracker.Shared.Models.Standings;
 
-namespace SportsTracker.Backend.Services.Implementations
+namespace SportsTracker.Backend.Services
 {
-    public sealed class StandingsGroupingService : IStandingsGroupingService
+    public static class StandingsGrouping
     {
-        public LeagueStandings AddDivisionGroups(LeagueStandings standings, IReadOnlyList<SportsGroup> groups)
+        public static LeagueStandings AddDivisionGroups(LeagueStandings standings, IReadOnlyList<SportsGroup> groups)
         {
             Dictionary<string, TeamStanding> teamsById = standings.Groups
                 .SelectMany(group => group.Teams)
                 .GroupBy(team => team.TeamId)
                 .ToDictionary(group => group.Key, group => group.First());
-            
+
             List<StandingsGroup> divisionGroups = groups
                 .SelectMany(group => group.Children)
                 .Where(group => group.TeamIds.Count > 0)
                 .Select(group => MapDivisionGroup(group, teamsById))
                 .Where(group => group.Teams.Count > 0)
                 .ToList();
-            
+
             return new LeagueStandings
             {
                 League = standings.League,
                 Season = standings.Season,
-                
+
                 Groups = standings.Groups.Concat(divisionGroups).ToList()
             };
         }
@@ -38,7 +37,7 @@ namespace SportsTracker.Backend.Services.Implementations
                 .OrderBy(team => team.GamesBack ?? double.MaxValue)
                 .ThenByDescending(team => team.WinPercentage)
                 .ToList();
-
+            
             return new StandingsGroup
             {
                 Id = group.Abbreviation,

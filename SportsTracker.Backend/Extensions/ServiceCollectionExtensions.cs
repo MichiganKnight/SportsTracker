@@ -36,7 +36,6 @@ namespace SportsTracker.Backend.Extensions
             
             services.AddScoped<IStandingsService, StandingsService>();
             services.AddScoped<IGroupsService, GroupsService>();
-            services.AddScoped<IStandingsGroupingService, StandingsGroupingService>();
             services.AddScoped<IGameDetailsService, GameDetailsService>();
             services.AddScoped<IBoxScoreService, BoxScoreService>();
             services.AddScoped<IPlayByPlayService, PlayByPlayService>();
