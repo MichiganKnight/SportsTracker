@@ -7,9 +7,9 @@ namespace SportsTracker.Backend.Integrations.ESPN.Endpoints
     {
         public static string Scoreboard(League league)
         {
-            LeagueInfo info = LeagueConfiguration.Leagues[league];
+            LeagueInfo info = GetLeagueInfo(league);
 
-            return $"apis/site/v2/sports/{info.EspnSport}/{info.EspnLeague}/scoreboard";
+            return Site(info, "scoreboard");
         }
 
         public static string Standings(League league)
@@ -21,23 +21,33 @@ namespace SportsTracker.Backend.Integrations.ESPN.Endpoints
 
         public static string Groups(League league)
         {
-            LeagueInfo info = LeagueConfiguration.Leagues[league];
+            LeagueInfo info = GetLeagueInfo(league);
 
-            return $"apis/site/v2/sports/{info.EspnSport}/{info.EspnLeague}/groups";
+            return Site(info, "groups");
         }
 
         public static string GameDetails(League league, string gameId)
         {
-            LeagueInfo info = LeagueConfiguration.Leagues[league];
+            LeagueInfo info = GetLeagueInfo(league);
 
-            return $"apis/site/v2/sports/{info.EspnSport}/{info.EspnLeague}/scoreboard/{gameId}";
+            return Site(info, $"scoreboard/{gameId}");
         }
 
         public static string GameSummary(League league, string gameId)
         {
-            LeagueInfo info = LeagueConfiguration.Leagues[league];
+            LeagueInfo info = GetLeagueInfo(league);
             
-            return $"apis/site/v2/sports/{info.EspnSport}/{info.EspnLeague}/summary?event={gameId}";
+            return Site(info, $"summary?event={Uri.EscapeDataString(gameId)}");
+        }
+
+        private static LeagueInfo GetLeagueInfo(League league)
+        {
+            return !LeagueConfiguration.Leagues.TryGetValue(league, out LeagueInfo? info) ? throw new NotSupportedException($"ESPN Endpoints Not Configured for {league}") : info;
+        }
+
+        private static string Site(LeagueInfo info, string path)
+        {
+            return $"apis/site/v2/sports/{info.EspnSport}/{info.EspnLeague}/{path}";
         }
     }
 }
