@@ -138,15 +138,22 @@ namespace SportsTracker.Frontend.Controllers
             ApiResponse<GamePlayByPlay>? playByPlayResponse = await playByPlayTask;
             GameDetailsViewModel? game = await gameTask;
 
-            if (playByPlayResponse?.Data is null || game is null)
+            if (game is null)
             {
                 return null;
             }
+            
+            PlayByPlayViewModel playByPlay = playByPlayResponse?.Data is not null ? playByPlayMapper.Map(playByPlayResponse.Data) : new PlayByPlayViewModel
+            {
+                GameId = gameId,
+                League = league,
+                Plays = []
+            };
 
             return new GamePageViewModel<PlayByPlayViewModel>
             {
                 Game = game,
-                Content = playByPlayMapper.Map(playByPlayResponse.Data)
+                Content = playByPlay
             };
         }
     }

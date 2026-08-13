@@ -64,7 +64,7 @@ async function refreshLeaguePage(payload) {
 }
 
 async function refreshGameDetails(payload) {
-    const page = document.querySelector("[data-game-details]");
+    const page = document.querySelector("[data-game-summary-page]");
 
     if (!page) {
         return;
@@ -78,7 +78,7 @@ async function refreshGameDetails(payload) {
     }
 
     await partialRefresh({
-        selector: "[data-game-details]",
+        selector: "[data-game-summary-page]",
         url: `/game/content/${encodeURIComponent(league)}/${encodeURIComponent(gameId)}?t=${Date.now()}`,
     });
 }
@@ -161,7 +161,7 @@ connection.onreconnecting(() => {
 connection.onreconnected(async () => {
     console.log("Reconnected");
 
-    const gameDetails = document.querySelector("[data-game-details]");
+    const gameDetails = document.querySelector("[data-game-summary-page]");
 
     if (gameDetails) {
         await refreshGameDetails({

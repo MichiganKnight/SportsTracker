@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System.Net;
+using Microsoft.Extensions.Options;
 using SportsTracker.Frontend.Config;
 using SportsTracker.Shared.Common;
 using SportsTracker.Shared.Enums;
@@ -64,9 +65,18 @@ namespace SportsTracker.Frontend.Services.Api
             return GetAsync<ApiResponse<GamePlayByPlay>>((SportsApiEndpoints.PlayByPlay(league, gameId)), cancellationToken);       
         }
 
-        private Task<T?> GetAsync<T>(string relativeUrl, CancellationToken cancellationToken = default)
+        private async Task<T?> GetAsync<T>(string relativeUrl, CancellationToken cancellationToken = default)
         {
-            return _httpClient.GetFromJsonAsync<T>(relativeUrl, cancellationToken);
+            using HttpResponseMessage response = await _httpClient.GetAsync(relativeUrl, cancellationToken);
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return default;
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<T>(cancellationToken: cancellationToken);
         }
     }
 }

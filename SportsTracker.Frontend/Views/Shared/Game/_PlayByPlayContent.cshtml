@@ -6,46 +6,54 @@
 }
 
 <div id="play-by-play-content" data-play-by-play-content>
-    <!-- Filters -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-body py-3">
-            <div class="d-flex flex-wrap align-items-center gap-2">
+    @if (Model.Content.Plays.Count == 0)
+    {
+        <div class="card shadow-sm">
+            <div class="card-body text-center py-5">
+                <i class="bi bi-list-ul fs-2 text-secondary"></i>
+                
+                <h5 class="mt-3  mb-2">
+                    Play-by-Play Data Not Available
+                </h5>
+
+                <div class="text-secondary">
+                    Play-by-Play Will be Available Once the Game Begins
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Filters -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-body py-3">
+                <div class="d-flex flex-wrap align-items-center gap-2">
                 <span class="text-secondary small fw-semibold me-1">
                     Show:
                 </span>
 
-                <button type="button" class="btn btn-sm btn-primary play-filter active" data-play-filter="all">
-                    All
-                </button>
+                    <button type="button" class="btn btn-sm btn-primary play-filter active" data-play-filter="all">
+                        All
+                    </button>
 
-                <button type="button" class="btn btn-sm btn-outline-secondary play-filter" data-play-filter="atbat">
-                    At-Bats
-                </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary play-filter" data-play-filter="atbat">
+                        At-Bats
+                    </button>
 
-                <button type="button" class="btn btn-sm btn-outline-secondary play-filter" data-play-filter="pitch">
-                    Pitches
-                </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary play-filter" data-play-filter="pitch">
+                        Pitches
+                    </button>
 
-                <button type="button" class="btn btn-sm btn-outline-secondary play-filter" data-play-filter="scoring">
-                    Scoring
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Plays -->
-    <div id="play-by-play" data-play-by-play>
-        @if (Model.Content.Plays.Count == 0)
-        {
-            <div class="card shadow-sm">
-                <div class="card-body text-secondary">
-                    No Play-by-Play Data Available
+                    <button type="button" class="btn btn-sm btn-outline-secondary play-filter" data-play-filter="scoring">
+                        Scoring
+                    </button>
                 </div>
             </div>
-        }
-        else
-        {
-            foreach (IGrouping<string?, GamePlayViewModel> period in periods)
+        </div>
+
+        <!-- Plays -->
+        <div id="play-by-play" data-play-by-play>
+            @foreach (IGrouping<string?, GamePlayViewModel> period in periods)
             {
                 <section class="play-period" data-play-period>
                     <div class="play-period-header">
@@ -62,6 +70,6 @@
                     </div>
                 </section>
             }
-        }
-    </div>
+        </div>
+    }
 </div>

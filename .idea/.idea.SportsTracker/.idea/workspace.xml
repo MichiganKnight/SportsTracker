@@ -18,7 +18,15 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="" />
+    <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Controllers/GameController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Controllers/GameController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Services/Api/SportsApiClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Services/Api/SportsApiClient.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Game/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Game/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_GameDetailsContent.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_GameDetailsContent.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_PlayByPlayContent.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_PlayByPlayContent.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_PlayByPlayPageContent.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_PlayByPlayPageContent.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/js/scoreboardHub.js" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/js/scoreboardHub.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -141,8 +149,11 @@
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Mapping/NavigationMapper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Mapping/PlayByPlayMapper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Mapping/StandingsMapper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Services/Api/IGameApiClient.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Services/Api/IScoreboardApiClient.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Services/Api/IStandingsApiClient.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Services/Api/SportsApiEndpoints.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewComponents/SidebarViewComponent.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/BoxScore/BoxScorePageViewModel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/BoxScore/BoxScoreViewModel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/BoxScore/PlayerStatRowViewModel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/BoxScore/PlayerStatTableViewModel.cs" root0="FORCE_HIGHLIGHTING" />
@@ -153,9 +164,9 @@
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/GameDetails/GameDetailsTeamViewModel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/GameDetails/GameDetailsViewModel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/GameDetails/LineScoreViewModel.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/GameInfo/GamePageViewModel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/LeagueInfo/LeagueNavigationViewModel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/PlayByPlay/GamePlayViewModel.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/PlayByPlay/PlayByPlayPageViewModel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/PlayByPlay/PlayByPlayViewModel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/Standings/StandingsGroupViewModel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/Standings/StandingsViewModel.cs" root0="FORCE_HIGHLIGHTING" />
@@ -169,6 +180,7 @@
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_GameDetailsContent.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_GameHeader.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_GameInformation.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_GameNavigation.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_GamePlay.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_GameSummary.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_LeagueGameSections.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
@@ -245,8 +257,8 @@
   "keyToString": {
     ".NET Launch Settings Profile.SportTracker.Test: https.executor": "Run",
     ".NET Launch Settings Profile.SportsTracker.Backend: http.executor": "Run",
-    ".NET Launch Settings Profile.SportsTracker.Backend: https.executor": "Run",
-    ".NET Launch Settings Profile.SportsTracker.Frontend: https.executor": "Run",
+    ".NET Launch Settings Profile.SportsTracker.Backend: https.executor": "Debug",
+    ".NET Launch Settings Profile.SportsTracker.Frontend: https.executor": "Debug",
     ".NET Launch Settings Profile.SportsTracker.Web: http.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.MCP Project settings loaded": "true",
@@ -372,6 +384,7 @@
       <workItem from="1786348963169" duration="34989000" />
       <workItem from="1786464449510" duration="18570000" />
       <workItem from="1786567823436" duration="16565000" />
+      <workItem from="1786632806011" duration="5886000" />
     </task>
     <servers />
   </component>

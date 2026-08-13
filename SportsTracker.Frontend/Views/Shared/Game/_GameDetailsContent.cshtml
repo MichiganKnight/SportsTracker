@@ -4,25 +4,27 @@
     ViewData["ActiveGameTab"] = "Summary";
 }
 
-<partial name="Game/_GameHeader" model="Model" />
+<div id="game-summary-@Model.GameId" data-game-summary data-league="@Model.League" data-game-id="@Model.GameId">
+    <partial name="Game/_GameHeader" model="Model" />
     
-<partial name="Game/_GameNavigation" model="Model" />
+    <partial name="Game/_GameNavigation" model="Model" />
     
-<div id="summary">
-    @if (Model.Baseball is not null)
-    {
-        <partial name="Game/_BaseballLineScore" model="Model" />    
-    }
+    <div id="summary">
+        @if (Model.Baseball is not null)
+        {
+            <partial name="Game/_BaseballLineScore" model="Model" />    
+        }
         
-    <partial name="Game/_GameInformation" model="Model" />
+        <partial name="Game/_GameInformation" model="Model" />
         
-    @if (Model.FeaturedAthletes.Count > 0)
-    {
-        <partial name="Game/_FeaturedAthletes" model="Model" />        
-    }
+        @if (Model.FeaturedAthletes.Count > 0)
+        {
+            <partial name="Game/_FeaturedAthletes" model="Model" />        
+        }
         
-    @if (!string.IsNullOrWhiteSpace(Model.Headline) || !string.IsNullOrWhiteSpace(Model.Recap))
-    {
-        <partial name="Game/_GameSummary" model="Model" />
-    }
+        @if (!string.IsNullOrWhiteSpace(Model.Headline) || !string.IsNullOrWhiteSpace(Model.Recap))
+        {
+            <partial name="Game/_GameSummary" model="Model" />
+        }
+    </div>
 </div>
