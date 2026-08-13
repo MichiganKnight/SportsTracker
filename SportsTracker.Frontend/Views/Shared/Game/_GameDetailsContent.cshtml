@@ -1,23 +1,12 @@
 ﻿@model SportsTracker.Frontend.ViewModels.GameDetails.GameDetailsViewModel
 
+@{
+    ViewData["ActiveGameTab"] = "Summary";
+}
+
 <partial name="Game/_GameHeader" model="Model" />
     
-<!-- Game Navigation -->
-<div class="mb-4">
-    <div class="btn-group" role="group" aria-label="Game Navigation">
-        <a asp-controller="Game" asp-action="Index" asp-route-league="@Model.League" asp-route-gameId="@Model.GameId" class="btn btn-primary">
-            Summary
-        </a>
-            
-        <a asp-controller="Game" asp-action="BoxScore" asp-route-league="@Model.League" asp-route-gameId="@Model.GameId" class="btn btn-outline-secondary">
-            Box Score
-        </a>
-            
-        <a asp-controller="Game" asp-action="PlayByPlay" asp-route-league="@Model.League" asp-route-gameId="@Model.GameId" class="btn btn-outline-secondary">
-            Play-by-Play
-        </a>
-    </div>
-</div>
+<partial name="Game/_GameNavigation" model="Model" />
     
 <div id="summary">
     @if (Model.Baseball is not null)
