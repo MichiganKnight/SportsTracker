@@ -1,4 +1,5 @@
-﻿@model SportsTracker.Frontend.ViewModels.PlayByPlay.GamePlayViewModel
+﻿@using SportsTracker.Frontend.ViewModels.PlayByPlay
+@model SportsTracker.Frontend.ViewModels.PlayByPlay.GamePlayViewModel
 
 <div class="game-play @(Model.ScoringPlay ? "game-play-scoring" : "")" data-game-play data-play-category="@Model.Category.ToLowerInvariant()">
     <div class="game-play-main">
@@ -29,10 +30,10 @@
                     </span>
                 }
                 
-                @if (!string.IsNullOrWhiteSpace(Model.Type))
+                @if (ShouldTypeShow(Model))
                 {
                     <span class="game-play-type">
-                        @FormatPlayType(Model.Type)
+                        @FormatPlayType(Model.Type!)
                     </span>
                 }
             </div>
@@ -52,5 +53,17 @@
     private static string FormatPlayType(string type)
     {
         return type.Replace("-", " ").Replace("_", " ");
-    }   
+    }
+
+    private static bool ShouldTypeShow(GamePlayViewModel play)
+    {
+        if (string.IsNullOrWhiteSpace(play.Type))
+        {
+            return false;
+        }
+        
+        string[] categories = play.Category.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+        return !categories.Contains("atbat", StringComparer.OrdinalIgnoreCase);
+    }
 }

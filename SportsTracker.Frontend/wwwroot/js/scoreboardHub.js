@@ -6,6 +6,8 @@
 connection.on("ScoreboardUpdated", async payload => {
     await refreshLeague(payload);
     await refreshGameDetails(payload);
+    await refreshPlayByPlay(payload);
+    await refreshBoxScore(payload);
 });
 
 async function refreshLeague(payload) {
@@ -58,8 +60,81 @@ async function refreshGameDetails(payload) {
     const html = await response.text();
 
     container.innerHTML = html;
-    
+
     console.log(`Refreshed Game: ${gameId}`);
+}
+
+async function refreshPlayByPlay(payload) {
+    const current = document.querySelector("[data-playbyplay-page]");
+
+    if (!current) {
+        return;
+    }
+
+    const league = current.dataset.league;
+    const gameId = current.dataset.gameId;
+
+    if (!league || !gameId) {
+        return;
+    }
+
+    if (league.toLowerCase() !== payload.league.toLowerCase()) {
+        return;
+    }
+
+    const activeFilter = document.querySelector("[data-play-filter].active")?.dataset.playFilter ?? "all";
+
+    const response = await fetch(`/game/playbyplay/content/${encodeURIComponent(league)}/${encodeURIComponent(gameId)}?t=${Date.now()}`, {
+        cache: "no-store"
+    });
+    
+    if (!response.ok) {
+        console.error(`Unable to Refresh Play-By-Play: ${gameId}`);
+        
+        return;
+    }
+    
+    const html = await response.text();
+    
+    current.innerHTML = html;
+    
+    initializePlayByPlayFilters();    
+    restorePlayFilter(activeFilter);
+}
+
+async function refreshBoxScore(payload) {
+    const current = document.querySelector("[data-game-boxscore-page]");
+    
+    if (!current) {
+        return;
+    }
+    
+    const league = current.dataset.league;
+    const gameId = current.dataset.gameId;
+    
+    if (!league || !gameId) {
+        return;
+    }
+    
+    if (league.toLowerCase() !== payload.league.toLowerCase()) {
+        return;
+    }
+    
+    const response = await fetch(`/game/boxscore/content/${encodeURIComponent(league)}/${encodeURIComponent(gameId)}?t=${Date.now()}`, {
+        cache: "no-store"
+    });
+    
+    if (!response.ok) {
+        console.error(`Unable to Refresh Box-Score: ${gameId}`);
+        
+        return;
+    }
+    
+    const html = await response.text();
+    
+    current.innerHTML = html;
+    
+    initializeBoxScoreSorting();
 }
 
 async function refreshDashboardLeague(league, id) {

@@ -1,0 +1,22 @@
+﻿@model SportsTracker.Frontend.ViewModels.PlayByPlay.PlayByPlayPageViewModel
+
+<partial name="Game/_GameHeader" model="Model.Game"/>
+
+<!-- Game Navigation -->
+<div class="mb-4">
+    <div class="btn-group" role="group" aria-label="Game Navigation">
+        <a asp-controller="Game" asp-action="Index" asp-route-league="@Model.Game.League" asp-route-gameId="@Model.Game.GameId" class="btn btn-outline-secondary">
+            Summary
+        </a>
+
+        <a asp-controller="Game" asp-action="BoxScore" asp-route-league="@Model.Game.League" asp-route-gameId="@Model.Game.GameId" class="btn btn-outline-secondary">
+            Box Score
+        </a>
+
+        <a asp-controller="Game" asp-action="PlayByPlay" asp-route-league="@Model.Game.League" asp-route-gameId="@Model.Game.GameId" class="btn btn-primary">
+            Play-by-Play
+        </a>
+    </div>
+</div>
+
+<partial name="Game/_PlayByPlayContent" model="Model.PlayByPlay"/>

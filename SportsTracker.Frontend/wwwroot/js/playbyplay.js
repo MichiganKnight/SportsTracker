@@ -55,3 +55,19 @@ function updateVisiblePeriods() {
         period.classList.toggle("play-period-hidden", !visiblePlay);
     });
 }
+
+function restorePlayFilter(filter) {
+    const buttons = document.querySelectorAll("[data-play-filter]");
+    
+    const button = Array.from(buttons).find(button => button.dataset.playFilter === filter);
+    
+    if (!button) {
+        filterPlays("all");
+        
+        return;
+    }
+    
+    setActivePlayFilter(buttons, button);
+    
+    filterPlays(filter);
+}
