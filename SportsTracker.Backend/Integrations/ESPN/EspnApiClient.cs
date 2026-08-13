@@ -3,30 +3,20 @@ using SportsTracker.Shared.Common;
 
 namespace SportsTracker.Backend.Integrations.ESPN
 {
-    public sealed class EspnApiClient : IEspnApiClient
+    public sealed class EspnApiClient(HttpClient httpClient, ILogger<EspnApiClient> logger) : IEspnApiClient
     {
-        private readonly HttpClient _httpClient;
-        private readonly JsonSerializerOptions _jsonOptions;
-        private readonly ILogger<EspnApiClient> _logger;
-
-        public EspnApiClient(HttpClient httpClient, ILogger<EspnApiClient> logger)
+        private readonly JsonSerializerOptions _jsonOptions = new()
         {
-            _httpClient = httpClient;
-            _logger = logger;
-            
-            _jsonOptions = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
-        }
+            PropertyNameCaseInsensitive = true
+        };
 
         public async Task<ApiResult<T>> GetAsync<T>(string endpoint, CancellationToken cancellationToken = default)
         {
             try
             {
-                _logger.LogInformation("GET {Endpoint}", endpoint);
+                logger.LogInformation("GET {Endpoint}", endpoint);
 
-                using HttpResponseMessage response = await _httpClient.GetAsync(endpoint, cancellationToken);
+                using HttpResponseMessage response = await httpClient.GetAsync(endpoint, cancellationToken);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -50,7 +40,7 @@ namespace SportsTracker.Backend.Integrations.ESPN
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Unexpected ESPN Error");
+                logger.LogError(ex, "Unexpected ESPN Error");
                 
                 return ApiResult<T>.Fail(new Error("EXCEPTION", ex.Message));
             }

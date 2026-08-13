@@ -9,19 +9,12 @@ namespace SportsTracker.Backend.Controllers
 {
     [ApiController]
     [Route("api/v1/groups")]
-    public sealed class GroupsController : Controller
+    public sealed class GroupsController(IGroupsService groupsService) : Controller
     {
-        private readonly IGroupsService _groupsService;
-        
-        public GroupsController(IGroupsService groupsService)
-        {
-            _groupsService = groupsService;
-        }
-
         [HttpGet("{league}")]
         public async Task<ActionResult<ApiResponse<IReadOnlyList<Group>>>> GetGroups(League league, CancellationToken cancellationToken)
         {
-            IReadOnlyList<SportsGroup>? groups = await _groupsService.GetGroupsAsync(league, cancellationToken);
+            IReadOnlyList<SportsGroup>? groups = await groupsService.GetGroupsAsync(league, cancellationToken);
             
             if (groups is null)
             {

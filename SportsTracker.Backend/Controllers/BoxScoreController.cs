@@ -8,19 +8,12 @@ namespace SportsTracker.Backend.Controllers
 {
     [ApiController]
     [Route("api/v1/games")]
-    public sealed class BoxScoreController : Controller
+    public sealed class BoxScoreController(IBoxScoreService boxScoreService) : Controller
     {
-        private readonly IBoxScoreService _boxScoreService;
-        
-        public BoxScoreController(IBoxScoreService boxScoreService)
-        {
-            _boxScoreService = boxScoreService;
-        }
-
         [HttpGet("{league}/{gameId}/boxscore")]
         public async Task<ActionResult<ApiResponse<GameBoxScore>>> GetBoxScore(League league, string gameId, CancellationToken cancellationToken)
         {
-            GameBoxScore? boxScore = await _boxScoreService.GetBoxScoreAsync(league, gameId, cancellationToken);
+            GameBoxScore? boxScore = await boxScoreService.GetBoxScoreAsync(league, gameId, cancellationToken);
             
             if (boxScore is null)
             {

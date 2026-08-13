@@ -12,26 +12,15 @@ using SportsTracker.Shared.Models.GameDetails;
 
 namespace SportsTracker.Backend.Services.Implementations
 {
-    public sealed class GameDetailsService : IGameDetailsService
+    public sealed class GameDetailsService(IEspnApiClient espnApiClient, ICacheService cache, IOptions<CacheOptions> cacheOptions, ILogger<GameDetailsService> logger) : IGameDetailsService
     {
-        private readonly IEspnApiClient _espnApiClient;
-        private readonly ICacheService _cache;
-        private readonly CacheOptions _cacheOptions;
-        private readonly ILogger<GameDetailsService> _logger;
-
-        public GameDetailsService(IEspnApiClient espnApiClient, ICacheService cache, IOptions<CacheOptions> cacheOptions, ILogger<GameDetailsService> logger)
-        {
-            _espnApiClient = espnApiClient;
-            _cache = cache;
-            _cacheOptions = cacheOptions.Value;
-            _logger = logger;
-        }
+        private readonly CacheOptions _cacheOptions = cacheOptions.Value;
 
         public async Task<GameDetails?> GetGameDetailsAsync(League league, string gameId, CancellationToken cancellationToken = default)
         {
             string cacheKey = CacheKeys.GameDetails(league, gameId);
             
-            GameDetails? cached = await _cache.GetAsync<GameDetails>(cacheKey);
+            GameDetails? cached = await cache.GetAsync<GameDetails>(cacheKey);
 
             if (cached is not null)
             {
@@ -40,13 +29,13 @@ namespace SportsTracker.Backend.Services.Implementations
             
             string endpoint = EspnEndpoints.GameDetails(league, gameId);
             
-            _logger.LogInformation("Fetching {League} Game Details for {GameId}", league, gameId);
+            logger.LogInformation("Fetching {League} Game Details for {GameId}", league, gameId);
 
-            ApiResult<GameDetailsResponseDto> result = await _espnApiClient.GetAsync<GameDetailsResponseDto>(endpoint, cancellationToken);
+            ApiResult<GameDetailsResponseDto> result = await espnApiClient.GetAsync<GameDetailsResponseDto>(endpoint, cancellationToken);
 
             if (!result.Success || result.Value is null)
             {
-                _logger.LogWarning("Unable to Fetch Game Details for {League} {GameId}: {Message}", league, gameId, result.Error?.Message);
+                logger.LogWarning("Unable to Fetch Game Details for {League} {GameId}: {Message}", league, gameId, result.Error?.Message);
 
                 return null;
             }
@@ -60,7 +49,7 @@ namespace SportsTracker.Backend.Services.Implementations
 
             TimeSpan cachedLifetime = gameDetails.IsLive ? TimeSpan.FromSeconds(_cacheOptions.GameDetailsLiveSeconds) : TimeSpan.FromMinutes(_cacheOptions.GameDetailsFinalMinutes);
             
-            await _cache.SetAsync(cacheKey, gameDetails, cachedLifetime);
+            await cache.SetAsync(cacheKey, gameDetails, cachedLifetime);
             
             return gameDetails;
         }

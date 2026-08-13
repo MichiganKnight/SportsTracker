@@ -9,17 +9,8 @@ using SportsTracker.Shared.Models;
 namespace SportsTracker.Frontend.Controllers
 {
     [Route("league")]
-    public sealed class LeagueController : Controller
+    public sealed class LeagueController(ISportsApiClient api, ILeagueMapper mapper) : Controller
     {
-        private readonly ISportsApiClient _api;
-        private readonly ILeagueMapper _mapper;
-        
-        public LeagueController(ISportsApiClient api, ILeagueMapper mapper)
-        {
-            _api = api;
-            _mapper = mapper;
-        }
-        
         [HttpGet("{league}")]
         public async Task<IActionResult> Index(League league, CancellationToken cancellationToken)
         {
@@ -48,9 +39,9 @@ namespace SportsTracker.Frontend.Controllers
 
         private async Task<LeaguePageViewModel?> GetLeaguePageViewModelAsync(League league, CancellationToken cancellationToken)
         {
-            ApiResponse<CachedScoreboard>? response = await _api.GetLeagueAsync(league, cancellationToken);
+            ApiResponse<CachedScoreboard>? response = await api.GetLeagueAsync(league, cancellationToken);
             
-            return _mapper.Map(response?.Data);
+            return mapper.Map(response?.Data);
         }
     }
 }

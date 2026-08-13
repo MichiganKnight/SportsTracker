@@ -6,24 +6,15 @@ using SportsTracker.Shared.Metadata;
 
 namespace SportsTracker.Backend.Workers
 {
-    public sealed class ScoreboardWorker : BackgroundService
+    public sealed class ScoreboardWorker(IServiceProvider serviceProvider, IOptions<CacheOptions> cacheOptions, ILogger<ScoreboardWorker> logger) : BackgroundService
     {
-        private readonly IServiceProvider _serviceProvider;
-        private readonly CacheOptions _cacheOptions;
-        private readonly ILogger<ScoreboardWorker> _logger;
-        
-        private readonly Dictionary<League, DateTime> _nextRefreshUtc = [];
+        private readonly CacheOptions _cacheOptions = cacheOptions.Value;
 
-        public ScoreboardWorker(IServiceProvider serviceProvider, IOptions<CacheOptions> cacheOptions, ILogger<ScoreboardWorker> logger)
-        {
-            _serviceProvider = serviceProvider;
-            _cacheOptions = cacheOptions.Value;
-            _logger = logger;
-        }
+        private readonly Dictionary<League, DateTime> _nextRefreshUtc = [];
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Scoreboard Worker Started...");
+            logger.LogInformation("Scoreboard Worker Started...");
 
             InitializeRefreshSchedule();
 
@@ -41,11 +32,11 @@ namespace SportsTracker.Backend.Workers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Unexpected Worker Error");
+                    logger.LogError(ex, "Unexpected Worker Error");
                 }
             }
             
-            _logger.LogInformation("Scoreboard Worker Stopped...");
+            logger.LogInformation("Scoreboard Worker Stopped...");
         }
 
         private void InitializeRefreshSchedule()
@@ -60,7 +51,7 @@ namespace SportsTracker.Backend.Workers
 
         private async Task RefreshDueLeagues(CancellationToken cancellationToken)
         {
-            using IServiceScope scope = _serviceProvider.CreateScope();
+            using IServiceScope scope = serviceProvider.CreateScope();
             
             IScoreboardRefreshService refreshService = scope.ServiceProvider.GetRequiredService<IScoreboardRefreshService>();
             
@@ -93,7 +84,7 @@ namespace SportsTracker.Backend.Workers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError("Failed Refreshing {League}", league);
+                    logger.LogError("Failed Refreshing {League}", league);
                     
                     ScheduleRetry(league);
                 }
@@ -106,7 +97,7 @@ namespace SportsTracker.Backend.Workers
             
             _nextRefreshUtc[league] = DateTime.UtcNow + retryInterval;
             
-            _logger.LogWarning("{League} Refresh Failed | Retring in {Interval}", league, retryInterval);
+            logger.LogWarning("{League} Refresh Failed | Retring in {Interval}", league, retryInterval);
         }
     }
 }

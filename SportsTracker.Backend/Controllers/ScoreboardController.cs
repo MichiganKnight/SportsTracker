@@ -8,19 +8,12 @@ namespace SportsTracker.Backend.Controllers
 {
     [ApiController]
     [Route("api/v1/scoreboard")]
-    public class ScoreboardController : ControllerBase
+    public class ScoreboardController(IScoreboardService scoreboardService) : ControllerBase
     {
-        private readonly IScoreboardService _scoreboardService;
-        
-        public ScoreboardController(IScoreboardService scoreboardService)
-        {
-            _scoreboardService = scoreboardService;
-        }
-
         [HttpGet("{league}")]
         public async Task<ActionResult<ApiResponse<CachedScoreboard>>> GetScoreboard(League league, CancellationToken cancellationToken)
         {
-            CachedScoreboard? scoreboard = await _scoreboardService.GetScoreboardAsync(league, cancellationToken);
+            CachedScoreboard? scoreboard = await scoreboardService.GetScoreboardAsync(league, cancellationToken);
 
             if (scoreboard is null)
             {

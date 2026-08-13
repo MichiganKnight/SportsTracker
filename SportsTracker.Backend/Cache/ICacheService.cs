@@ -6,8 +6,6 @@
         
         Task SetAsync<T>(string key, T value, TimeSpan expiration);
         
-        Task<T?> GetOrCreateAsync<T>(string key, TimeSpan expiration, Func<Task<T>> factory);
-        
-        void Remove(string key);
+        Task RemoveAsync(string key);
     }
 }

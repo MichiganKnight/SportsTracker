@@ -9,34 +9,23 @@ namespace SportsTracker.Backend.Controllers
 {
     [ApiController]
     [Route("api/v1/standings")]
-    public sealed class StandingsController : Controller
+    public sealed class StandingsController(IStandingsService standingsService, IGroupsService groupsService, IStandingsGroupingService groupingService) : Controller
     {
-        private readonly IStandingsService _standingsService;
-        private readonly IGroupsService _groupsService;
-        private readonly IStandingsGroupingService _groupingService;
-
-        public StandingsController(IStandingsService standingsService, IGroupsService groupsService, IStandingsGroupingService groupingService)
-        {
-            _standingsService = standingsService;
-            _groupsService = groupsService;
-            _groupingService = groupingService;
-        }
-
         [HttpGet("{league}")]
         public async Task<ActionResult<ApiResponse<LeagueStandings>>> GetStandings(League league, CancellationToken cancellationToken)
         {
-            LeagueStandings? standings = await _standingsService.GetStandingsAsync(league, cancellationToken);
+            LeagueStandings? standings = await standingsService.GetStandingsAsync(league, cancellationToken);
 
             if (standings is null)
             {
                 return NotFound();
             }
             
-            IReadOnlyList<SportsGroup>? groups = await _groupsService.GetGroupsAsync(league, cancellationToken);
+            IReadOnlyList<SportsGroup>? groups = await groupsService.GetGroupsAsync(league, cancellationToken);
 
             if (groups is not null)
             {
-                standings = _groupingService.AddDivisionGroups(standings, groups);
+                standings = groupingService.AddDivisionGroups(standings, groups);
             }
             
             return Ok(new ApiResponse<LeagueStandings>

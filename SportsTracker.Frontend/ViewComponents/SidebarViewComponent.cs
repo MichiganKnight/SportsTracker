@@ -4,18 +4,11 @@ using SportsTracker.Frontend.ViewModels.NavigationInfo;
 
 namespace SportsTracker.Frontend.ViewComponents
 {
-    public sealed class SidebarViewComponent : ViewComponent
+    public sealed class SidebarViewComponent(INavigationMapper mapper) : ViewComponent
     {
-        private readonly INavigationMapper _mapper;
-        
-        public SidebarViewComponent(INavigationMapper mapper)
-        {
-            _mapper = mapper;
-        }
-        
         public IViewComponentResult Invoke()
         {
-            IReadOnlyList<NavigationItemViewModel> model = _mapper.Map();
+            IReadOnlyList<NavigationItemViewModel> model = mapper.Map();
             
             return View(model);
         }

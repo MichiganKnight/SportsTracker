@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System.Collections.Concurrent;
+using Microsoft.Extensions.Options;
 using SportsTracker.Backend.Cache;
 using SportsTracker.Backend.Config;
 using SportsTracker.Backend.Integrations.ESPN;
@@ -10,48 +11,80 @@ using SportsTracker.Shared.Enums;
 
 namespace SportsTracker.Backend.Services.Implementations
 {
-    public sealed class GameSummaryService : IGameSummaryService
+    public sealed class GameSummaryService(IEspnApiClient espnApiClient, ICacheService cache, IOptions<CacheOptions> cacheOptions, ILogger<GameSummaryService> logger) : IGameSummaryService
     {
-        private readonly IEspnApiClient _espnApiClient;
-        private readonly ICacheService _cache;
-        private readonly CacheOptions _cacheOptions;
-        private readonly ILogger<GameSummaryService> _logger;
+        private static readonly ConcurrentDictionary<string, SemaphoreSlim> Locks = new();
 
-        public GameSummaryService(IEspnApiClient espnApiClient, ICacheService cache, IOptions<CacheOptions> cacheOptions, ILogger<GameSummaryService> logger)
-        {
-            _espnApiClient = espnApiClient;
-            _cache = cache;
-            _cacheOptions = cacheOptions.Value;
-            _logger = logger;
-        }
+        private readonly CacheOptions _cacheOptions = cacheOptions.Value;
 
         public async Task<GameSummaryResponseDto?> GetGameSummaryAsync(League league, string gameId, CancellationToken cancellationToken = default)
         {
             string cacheKey = CacheKeys.GameSummary(league, gameId);
             
-            GameSummaryResponseDto? cached = await _cache.GetAsync<GameSummaryResponseDto>(cacheKey);
+            GameSummaryResponseDto? cached = await cache.GetAsync<GameSummaryResponseDto>(cacheKey);
 
             if (cached is not null)
             {
                 return cached;
             }
-
-            string endpoint = EspnEndpoints.GameSummary(league, gameId);
             
-            _logger.LogInformation("Fetching {League} Game Summary for {GameId}", league, gameId);
+            SemaphoreSlim gameLock = Locks.GetOrAdd(cacheKey, _ => new SemaphoreSlim(1, 1));
+            
+            await gameLock.WaitAsync(cancellationToken);
 
-            ApiResult<GameSummaryResponseDto> result = await _espnApiClient.GetAsync<GameSummaryResponseDto>(endpoint, cancellationToken);
-
-            if (!result.Success || result.Value is null)
+            try
             {
-                _logger.LogWarning("Unable to Fetch Game Summary for {League} {GameId}: {Message}", league, gameId, result.Error?.Message);
-                
-                return null;
-            }
+                cached = await cache.GetAsync<GameSummaryResponseDto>(cacheKey);
 
-            await _cache.SetAsync(cacheKey, result.Value, TimeSpan.FromSeconds(_cacheOptions.GameSummaryLiveSeconds));
+                if (cached is not null)
+                {
+                    return cached;
+                }
+
+                string endpoint = EspnEndpoints.GameSummary(league, gameId);
+
+                logger.LogInformation("Fetching Fresh {League} Game Summary for {GameId}", league, gameId);
+
+                ApiResult<GameSummaryResponseDto> result = await espnApiClient.GetAsync<GameSummaryResponseDto>(endpoint, cancellationToken);
+
+                if (!result.Success || result.Value is null)
+                {
+                    logger.LogWarning("Unable to Fetch Game Summary for {League} {GameId}: {Message}", league, gameId, result.Error?.Message);
+
+                    return null;
+                }
+
+                TimeSpan lifeTime = GetCacheLifetime(result.Value);
+
+                await cache.SetAsync(cacheKey, result.Value, lifeTime);
+                
+                return result.Value;
+            }
+            finally
+            {
+                gameLock.Release();
+            }
+        }
+
+        public async Task InvalidateAsync(League league, string gameId)
+        {
+            string cacheKey = CacheKeys.GameSummary(league, gameId);
             
-            return result.Value;
+            await cache.RemoveAsync(cacheKey);
+        }
+
+        private TimeSpan GetCacheLifetime(GameSummaryResponseDto summary)
+        {
+            string? gameState = summary.Meta?.GameState?.Trim().ToLowerInvariant();
+
+            return gameState switch
+            {
+                "post" => TimeSpan.FromMinutes(_cacheOptions.GameSummaryFinalMinutes),
+                "pre" => TimeSpan.FromMinutes(_cacheOptions.GameSummaryScheduledMinutes),
+                "in" => TimeSpan.FromSeconds(_cacheOptions.GameSummaryLiveSeconds),
+
+                _ => TimeSpan.FromSeconds(_cacheOptions.GameSummaryLiveSeconds)
+            };
         }
     }
 }

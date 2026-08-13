@@ -8,19 +8,12 @@ namespace SportsTracker.Backend.Controllers
 {
     [ApiController]
     [Route("api/v1/games")]
-    public sealed class PlayByPlayController : Controller
+    public sealed class PlayByPlayController(IPlayByPlayService playByPlayService) : Controller
     {
-        private readonly IPlayByPlayService _playByPlayService;
-        
-        public PlayByPlayController(IPlayByPlayService playByPlayService)
-        {
-            _playByPlayService = playByPlayService;
-        }
-
         [HttpGet("{league}/{gameId}/playbyplay")]
         public async Task<ActionResult<ApiResponse<GamePlayByPlay>>> GetPlayByPlay(League league, string gameId, CancellationToken cancellationToken)
         {
-            GamePlayByPlay? playByPlay = await _playByPlayService.GetPlayByPlayAsync(league, gameId, cancellationToken);
+            GamePlayByPlay? playByPlay = await playByPlayService.GetPlayByPlayAsync(league, gameId, cancellationToken);
 
             if (playByPlay is null)
             {

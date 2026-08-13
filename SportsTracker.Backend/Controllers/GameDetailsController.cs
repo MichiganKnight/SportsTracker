@@ -8,19 +8,12 @@ namespace SportsTracker.Backend.Controllers
 {
     [ApiController]
     [Route("api/v1/games")]
-    public sealed class GameDetailsController : Controller
+    public sealed class GameDetailsController(IGameDetailsService gameDetailsService) : Controller
     {
-        private readonly IGameDetailsService _gameDetailsService;
-        
-        public GameDetailsController(IGameDetailsService gameDetailsService)
-        {
-            _gameDetailsService = gameDetailsService;
-        }
-
         [HttpGet("{league}/{gameId}")]
         public async Task<ActionResult<ApiResponse<GameDetails>>> GetGame(League league, string gameId, CancellationToken cancellationToken)
         {
-            GameDetails? details = await _gameDetailsService.GetGameDetailsAsync(league, gameId, cancellationToken);
+            GameDetails? details = await gameDetailsService.GetGameDetailsAsync(league, gameId, cancellationToken);
 
             if (details is null)
             {

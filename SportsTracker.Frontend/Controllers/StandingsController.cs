@@ -8,28 +8,19 @@ using SportsTracker.Shared.Models.Standings;
 
 namespace SportsTracker.Frontend.Controllers
 {
-    public sealed class StandingsController : Controller
+    public sealed class StandingsController(ISportsApiClient api, IStandingsMapper mapper) : Controller
     {
-        private readonly ISportsApiClient _api;
-        private readonly IStandingsMapper _mapper;
-        
-        public StandingsController(ISportsApiClient api, IStandingsMapper mapper)
-        {
-            _api = api;
-            _mapper = mapper;
-        }
-        
         [HttpGet]
         public async Task<IActionResult> Index(League league, StandingsView view, CancellationToken cancellationToken = default)
         {
-            ApiResponse<LeagueStandings>? response = await _api.GetStandingsAsync(league, cancellationToken);
+            ApiResponse<LeagueStandings>? response = await api.GetStandingsAsync(league, cancellationToken);
 
             if (response?.Data is null)
             {
                 return NotFound();
             }
             
-            StandingsViewModel viewModel = _mapper.Map(response.Data, view, response.TimestampUtc);
+            StandingsViewModel viewModel = mapper.Map(response.Data, view, response.TimestampUtc);
             
             return View(viewModel);
         }

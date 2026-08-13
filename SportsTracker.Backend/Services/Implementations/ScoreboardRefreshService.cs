@@ -15,60 +15,68 @@ using SportsTracker.Shared.Models.GameInfo;
 
 namespace SportsTracker.Backend.Services.Implementations
 {
-    public sealed class ScoreboardRefreshService : IScoreboardRefreshService
+    public sealed class ScoreboardRefreshService(IEspnApiClient espnApiClient, ICacheService cache, IOptions<CacheOptions> cacheOptions, IHubContext<ScoreboardHub> hub, IGameSummaryService gameSummaryService, ILogger<ScoreboardRefreshService> logger) : IScoreboardRefreshService
     {
-        private readonly IEspnApiClient _espnApiClient;
-        private readonly ICacheService _cache;
-        private readonly CacheOptions _cacheOptions;
-        private readonly IHubContext<ScoreboardHub> _hub;
-        private ILogger<ScoreboardRefreshService> _logger;
-
-        public ScoreboardRefreshService(IEspnApiClient espnApiClient, ICacheService cache, IOptions<CacheOptions> cacheOptions, IHubContext<ScoreboardHub> hub, ILogger<ScoreboardRefreshService> logger)
-        {
-            _espnApiClient = espnApiClient;
-            _cache = cache;
-            _cacheOptions = cacheOptions.Value;
-            _hub = hub;
-            _logger = logger;
-        }
+        private readonly CacheOptions _cacheOptions = cacheOptions.Value;
 
         public async Task<TimeSpan?> RefreshAsync(League league, CancellationToken cancellationToken = default)
         {
-            _logger.LogInformation("Refreshing {League} Scoreboard...", league);
+            logger.LogInformation("Refreshing {League} Scoreboard...", league);
 
             string endpoint = EspnEndpoints.Scoreboard(league);
             
-            ApiResult<ScoreboardResponseDto> result = await _espnApiClient.GetAsync<ScoreboardResponseDto>(endpoint, cancellationToken);
+            ApiResult<ScoreboardResponseDto> result = await espnApiClient.GetAsync<ScoreboardResponseDto>(endpoint, cancellationToken);
 
             if (!result.Success || result.Value is null)
             {
-                _logger.LogWarning("Unable to Refresh {League}: {Message}", league, result.Error?.Message);
+                logger.LogWarning("Unable to Refresh {League}: {Message}", league, result.Error?.Message);
                 
                 return null;
             }
             
-            IReadOnlyList<Game> games = ScoreboardMapper.ToGames(result.Value!, league).ToList();
+            CachedScoreboard? previousScoreboard = await cache.GetAsync<CachedScoreboard>(CacheKeys.Scoreboard(league));
+            
+            IReadOnlyList<Game> games = ScoreboardMapper.ToGames(result.Value, league).ToList();
             
             DateTime updatedUtc = DateTime.UtcNow;
             TimeSpan refreshInterval = GetRefreshInterval(games);
             TimeSpan cacheLifetime = GetCacheLifetime(refreshInterval);
 
-            await _cache.SetAsync(CacheKeys.Scoreboard(league), new CachedScoreboard
+            await cache.SetAsync(CacheKeys.Scoreboard(league), new CachedScoreboard
             {
                 League = league,
                 Games = games,
                 LastUpdatedUtc = updatedUtc
             }, cacheLifetime);
+
+            await InvalidateGameSummariesAsync(league, games, previousScoreboard);
             
-            await _hub.Clients.All.SendAsync("ScoreboardUpdated", new ScoreboardUpdatedMessage
+            await hub.Clients.All.SendAsync("ScoreboardUpdated", new ScoreboardUpdatedMessage
             {
                 League = league.ToString(),
                 UpdatedUtc = updatedUtc
             }, cancellationToken);
             
-            _logger.LogInformation("Cached {Count} Games for {League} | Next Refresh in {Interval}", games.Count, league, refreshInterval);
+            logger.LogInformation("Cached {Count} Games for {League} | Next Refresh in {Interval}", games.Count, league, refreshInterval);
             
             return refreshInterval;
+        }
+
+        private async Task InvalidateGameSummariesAsync(League league, IReadOnlyList<Game> games, CachedScoreboard? previousScoreboard)
+        {
+            foreach (Game game in games)
+            {
+                Game? previousGame = previousScoreboard?.Games.FirstOrDefault(g => g.Id == game.Id);
+                
+                bool justFinished = game.IsFinal && previousGame is not null && !previousGame.IsFinal;
+
+                if (!game.IsLive && !justFinished)
+                {
+                    continue;
+                }
+                
+                await gameSummaryService.InvalidateAsync(league, game.Id);
+            }
         }
 
         private TimeSpan GetRefreshInterval(IReadOnlyList<Game> games)

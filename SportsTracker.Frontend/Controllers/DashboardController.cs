@@ -11,17 +11,8 @@ using SportsTracker.Shared.Models.GameInfo;
 
 namespace SportsTracker.Frontend.Controllers
 {
-    public class DashboardController : Controller
+    public class DashboardController(ISportsApiClient api, IDashboardMapper mapper) : Controller
     {
-        private readonly ISportsApiClient _api;
-        private readonly IDashboardMapper _mapper;
-        
-        public DashboardController(ISportsApiClient api, IDashboardMapper mapper)
-        {
-            _api = api;
-            _mapper = mapper;
-        }
-        
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             Dictionary<League, IReadOnlyList<Game>> scoreboards = new();
@@ -30,7 +21,7 @@ namespace SportsTracker.Frontend.Controllers
             {
                 try
                 {
-                    ApiResponse<IReadOnlyList<Game>>? response = await _api.GetScoreboardAsync(league, cancellationToken);
+                    ApiResponse<IReadOnlyList<Game>>? response = await api.GetScoreboardAsync(league, cancellationToken);
 
                     if (response is not null)
                     {
@@ -43,7 +34,7 @@ namespace SportsTracker.Frontend.Controllers
                 }
             }
             
-            DashboardViewModel model = _mapper.Map(scoreboards);
+            DashboardViewModel model = mapper.Map(scoreboards);
 
             return View(model);
         }
@@ -51,9 +42,9 @@ namespace SportsTracker.Frontend.Controllers
         [HttpGet]
         public async Task<IActionResult> LeagueSection(League league, CancellationToken cancellationToken)
         {
-            ApiResponse<CachedScoreboard>? response = await _api.GetLeagueAsync(league, cancellationToken);
+            ApiResponse<CachedScoreboard>? response = await api.GetLeagueAsync(league, cancellationToken);
 
-            LeagueSectionViewModel viewModel = _mapper.MapLeague(league, response?.Data?.Games);
+            LeagueSectionViewModel viewModel = mapper.MapLeague(league, response?.Data?.Games);
             
             return PartialView("_LeagueSection", viewModel);
         }

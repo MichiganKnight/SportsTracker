@@ -1,7 +1,7 @@
-﻿using SportsTracker.Backend.Integrations.ESPN.DTOs.GameSummary;
+﻿using SportsTracker.Backend.Integrations.ESPN.DTOs.BoxScore;
 using SportsTracker.Backend.Integrations.ESPN.DTOs.PlayByPlay;
 
-namespace SportsTracker.Backend.Integrations.ESPN.DTOs.BoxScore
+namespace SportsTracker.Backend.Integrations.ESPN.DTOs.GameSummary
 {
     public sealed class GameSummaryResponseDto
     {
