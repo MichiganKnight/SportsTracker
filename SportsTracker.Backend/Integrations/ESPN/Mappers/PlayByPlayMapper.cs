@@ -67,7 +67,12 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
 
                 ScoringPlay = dto.ScoringPlay == true,
 
-                TeamId = dto.Team?.Id,
+                TeamId = league switch
+                {
+                    League.NFL or League.CFB => dto.Start?.Team?.Id ?? dto.Team?.Id,
+                    
+                    _ => dto.Team?.Id
+                },
                 
                 Category = MapCategory(dto, league),
                 

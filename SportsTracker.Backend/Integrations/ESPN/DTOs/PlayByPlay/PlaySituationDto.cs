@@ -1,6 +1,4 @@
-﻿using SportsTracker.Backend.Integrations.ESPN.DTOs.Common;
-
-namespace SportsTracker.Backend.Integrations.ESPN.DTOs.PlayByPlay
+﻿namespace SportsTracker.Backend.Integrations.ESPN.DTOs.PlayByPlay
 {
     public sealed class PlaySituationDto
     {
@@ -14,6 +12,11 @@ namespace SportsTracker.Backend.Integrations.ESPN.DTOs.PlayByPlay
         public string? ShortDownDistanceText { get; init; }
         public string? PossessionText { get; init; }
 
-        public TeamDto? Team { get; init; }
+        public PlayTeamDto? Team { get; init; }
+    }
+
+    public sealed class PlayTeamDto
+    {
+        public string? Id { get; init; }
     }
 }

@@ -8,7 +8,7 @@
         public string Abbreviation { get; init; } = string.Empty;
         
         public string? Logo { get; init; }
-        public string? Color { get; init; }
+        public string? PrimaryColor { get; init; }
         public string? AlternateColor { get; init; }
         
         public int Score { get; init; }

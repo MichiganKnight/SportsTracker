@@ -28,7 +28,26 @@
 .game-play {
     padding: .8rem 1rem;
     border-bottom: 1px solid var(--st-border);
-    transition: background-color .6s ease, box-shadow .6s ease;
+    transition: background-color .6s ease, box-shadow .6s ease;    
+}
+
+.game-play-team {
+    border-left: 6px solid var(--play-team-color);
+    border-right: 6px solid var(--play-team-color);
+    border-radius: .4rem;
+}
+
+.game-play-team::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: .035;
+    pointer-events: none;
+}
+
+.game-play-team > * {
+    position: relative;
+    z-index: 1;
 }
 
 .game-play-new {

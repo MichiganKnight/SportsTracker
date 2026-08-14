@@ -53,7 +53,7 @@ namespace SportsTracker.Frontend.Mapping
 
                 Logo = team.Logo,
 
-                Color = team.Color,
+                PrimaryColor = team.Color,
                 AlternateColor = team.AlternateColor,
 
                 Score = team.Score,

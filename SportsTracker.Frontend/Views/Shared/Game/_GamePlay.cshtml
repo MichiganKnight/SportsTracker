@@ -1,6 +1,13 @@
 ﻿@model SportsTracker.Frontend.ViewModels.PlayByPlay.GamePlayViewModel
 
-<div class="game-play @(Model.ScoringPlay ? "game-play-scoring" : "")" data-game-play data-play-id="@Model.Id" data-play-category="@Model.Category.ToLowerInvariant()">
+@{
+    string? teamColor = ViewData["TeamColor"] as string;
+    string? teamSide = ViewData["TeamSide"] as string;
+    
+    string? playStyle = !string.IsNullOrWhiteSpace(teamColor) ? $"--play-team-color: #{teamColor};" : null;
+}
+
+<div class="game-play @(Model.ScoringPlay ? "game-play-scoring" : "") @(teamSide is not null ? "game-play-team" : "")" style="@playStyle" data-game-play data-play-id="@Model.Id" data-play-category="@Model.Category.ToLowerInvariant()" data-play-team="@teamSide">
     <div class="game-play-main">
         <div class="game-play-marker">
             @if (Model.ScoringPlay)

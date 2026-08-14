@@ -60,7 +60,30 @@
                         <div class="card-body p-0">
                             @foreach (GamePlayViewModel play in period)
                             {
-                                <partial name="Game/_GamePlay" model="play"/>
+                                string? teamColor = null;
+                                string? teamSide = null;
+                                
+                                @if (!string.IsNullOrWhiteSpace(play.TeamId))
+                                {
+                                    if (play.TeamId == Model.Game.HomeTeam.Id)
+                                    {
+                                        teamColor = Model.Game.HomeTeam.PrimaryColor;
+                                        teamSide = "home";
+                                    }
+                                    else if (play.TeamId == Model.Game.AwayTeam.Id)
+                                    {
+                                        teamColor = Model.Game.AwayTeam.PrimaryColor;
+                                        teamSide = "away";
+                                    }
+                                }
+
+                                ViewDataDictionary<GamePlayViewModel> playViewData = new(ViewData, play)
+                                {
+                                    ["TeamColor"] = teamColor,
+                                    ["TeamSide"] = teamSide
+                                };
+                                
+                                <partial name="Game/_GamePlay" model="play" view-data="playViewData" />
                             }
                         </div>
                     </div>
