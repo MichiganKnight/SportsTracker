@@ -19,8 +19,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/BoxScore/BoxScoreStatTableDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/BoxScore/BoxScoreStatTableDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/Mappers/BoxScoreMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/Mappers/BoxScoreMapper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/BoxScore/GameSummaryResponseDto.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/GameSummary/GameSummaryResponseDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/GameSummary/GameSummaryResponseDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/PlayByPlay/PlayDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/PlayByPlay/PlayDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/PlayByPlay/PlayTypeDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/PlayByPlay/PlayTypeDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/Mappers/PlayByPlayMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/Mappers/PlayByPlayMapper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Services/Implementations/GameContentService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Services/Implementations/GameContentService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Services/Implementations/GameSummaryService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Services/Implementations/GameSummaryService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Backend/Services/Interfaces/IGameSummaryService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Backend/Services/Interfaces/IGameSummaryService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Mapping/PlayByPlayMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Mapping/PlayByPlayMapper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/PlayByPlay/GamePlayViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/ViewModels/PlayByPlay/GamePlayViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_GamePlay.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/Views/Shared/Game/_GamePlay.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/css/components/playbyplay.css" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Frontend/wwwroot/css/components/playbyplay.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.Shared/Models/PlayByPlay/GamePlay.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.Shared/Models/PlayByPlay/GamePlay.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +42,7 @@
     <option name="firstShow" value="false" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="12" />
+    <option name="cachedIndexableFilesCount" value="14" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -72,7 +83,6 @@
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/BoxScore/BoxScorePositionDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/BoxScore/BoxScoreStatTableDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/BoxScore/BoxScoreTeamDto.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/BoxScore/GameSummaryResponseDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/Common/AddressDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/Common/AthleteDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/Common/LogoDto.cs" root0="FORCE_HIGHLIGHTING" />
@@ -88,13 +98,17 @@
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/GameDetails/HeadlineDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/GameDetails/LineScoreDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/GameDetails/ProbablePitcherDto.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/GameSummary/DriveDto.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/GameSummary/DrivesDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/GameSummary/GameSummaryMetaDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/GameSummary/GameSummaryResponseDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/Groups/GroupDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/Groups/GroupTeamDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/Groups/GroupsResponseDto.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/PlayByPlay/PlayClockDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/PlayByPlay/PlayDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/PlayByPlay/PlayPeriodDto.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/PlayByPlay/PlaySituationDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/PlayByPlay/PlayTeamReferenceDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/PlayByPlay/PlayTypeDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.Backend/Integrations/ESPN/DTOs/Scoreboard/CompetitionDto.cs" root0="FORCE_HIGHLIGHTING" />
@@ -431,7 +445,7 @@
       <workItem from="1786348963169" duration="34989000" />
       <workItem from="1786464449510" duration="18570000" />
       <workItem from="1786567823436" duration="16565000" />
-      <workItem from="1786632806011" duration="38384000" />
+      <workItem from="1786632806011" duration="42706000" />
     </task>
     <servers />
   </component>

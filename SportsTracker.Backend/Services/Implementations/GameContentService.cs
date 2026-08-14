@@ -1,4 +1,4 @@
-﻿using SportsTracker.Backend.Integrations.ESPN.DTOs.BoxScore;
+﻿using SportsTracker.Backend.Integrations.ESPN.DTOs.GameSummary;
 using SportsTracker.Backend.Integrations.ESPN.Mappers;
 using SportsTracker.Backend.Services.Interfaces;
 using SportsTracker.Shared.Enums;
@@ -25,7 +25,7 @@ namespace SportsTracker.Backend.Services.Implementations
         {
             GameSummaryResponseDto? summary = await gameSummaryService.GetGameSummaryAsync(league, gameId, cancellationToken);
 
-            if (summary?.Plays is null)
+            if (summary is null)
             {
                 return null;
             }

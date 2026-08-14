@@ -1,4 +1,4 @@
-﻿using SportsTracker.Backend.Integrations.ESPN.DTOs.BoxScore;
+﻿using SportsTracker.Backend.Integrations.ESPN.DTOs.GameSummary;
 using SportsTracker.Shared.Enums;
 
 namespace SportsTracker.Backend.Services.Interfaces

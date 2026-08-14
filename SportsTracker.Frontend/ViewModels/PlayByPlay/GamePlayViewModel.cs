@@ -19,5 +19,9 @@
         public int? HomeScore { get; init; }
         
         public string? GroupId { get; init; }
+        
+        public string? Situation { get; init; }
+        
+        public string? Context { get; init; }
     }
 }

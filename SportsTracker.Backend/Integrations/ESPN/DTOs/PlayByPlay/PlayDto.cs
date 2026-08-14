@@ -21,12 +21,15 @@
         
         public PlayTeamReferenceDto? Team { get; init; }
         
-        public DateTime? Wallclock { get; init; }
+        public PlayClockDto? Clock { get; init; }
         
         public string? AtBatId { get; init; }
         
         public string? SummaryType { get; init; }
         
         public int? Outs { get; init; }
+        
+        public PlaySituationDto? Start { get; init; }
+        public PlaySituationDto? End { get; init; }
     }
 }

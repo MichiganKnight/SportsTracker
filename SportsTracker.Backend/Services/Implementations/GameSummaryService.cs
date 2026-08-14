@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using SportsTracker.Backend.Cache;
 using SportsTracker.Backend.Config;
 using SportsTracker.Backend.Integrations.ESPN;
-using SportsTracker.Backend.Integrations.ESPN.DTOs.BoxScore;
+using SportsTracker.Backend.Integrations.ESPN.DTOs.GameSummary;
 using SportsTracker.Backend.Integrations.ESPN.Endpoints;
 using SportsTracker.Backend.Services.Interfaces;
 using SportsTracker.Shared.Common;

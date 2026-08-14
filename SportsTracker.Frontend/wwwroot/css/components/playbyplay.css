@@ -62,35 +62,39 @@
     font-size: .48rem;
 }
 
-.game-play-marker-dot {
-    width: 6px;
-    height: 6px;
-    display: block;
-    border-radius: 50%;
-    background: var(--st-border);
-}
-
 /* Content */
 
 .game-play-content {
-    min-width: 0;
     flex: 1;
-}
-
-.game-play-text {
-    color: var(--st-text);
-    font-size: .86rem;
-    font-weight: 500;
-    line-height: 1.4;
+    min-width: 0;    
 }
 
 .game-play-meta {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: .5rem;
-    margin-top: .2rem;
-    font-size: .68rem;
+    justify-content: flex-start;
+    gap: .75rem;
+}
+
+.game-play-clock {
+    min-width: 3rem;
+}
+
+.game-play-situation {
+    flex: initial;
+}
+
+.game-play-context {
+    font-weight: 400;
+    opacity: .75;
+}
+
+.game-play-context::before {
+    content: "•";
+    margin-right: .5rem;
+}
+
+.game-play-text {
+    line-height: 1.4;
 }
 
 .game-play-type {

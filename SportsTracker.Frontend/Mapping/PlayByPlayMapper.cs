@@ -25,7 +25,9 @@ namespace SportsTracker.Frontend.Mapping
                         TeamId = play.TeamId,
                         AwayScore = play.AwayScore,
                         HomeScore = play.HomeScore,
-                        GroupId = play.GroupId
+                        GroupId = play.GroupId,
+                        Situation = play.Situation,
+                        Context = play.Context
                     }).ToList()
             };
         }

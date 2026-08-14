@@ -1,4 +1,4 @@
-﻿using SportsTracker.Backend.Integrations.ESPN.DTOs.BoxScore;
+﻿using SportsTracker.Backend.Integrations.ESPN.DTOs.GameSummary;
 using SportsTracker.Backend.Integrations.ESPN.DTOs.PlayByPlay;
 using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Models.PlayByPlay;
@@ -9,12 +9,8 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
     {
         public static GamePlayByPlay Map(GameSummaryResponseDto response, string gameId, League league)
         {
-            if (response?.Plays is null)
-            {
-                return null;
-            }
-
-            List<GamePlay> plays = response.Plays.Where(ShouldIncludePlay).Select(MapPlay).ToList();
+            List<PlayDto> sourcePlays = GetPlays(response);
+            List<GamePlay> plays = sourcePlays.Where(ShouldIncludePlay).Select(play => MapPlay(play, league)).ToList();
 
             return new GamePlayByPlay
             {
@@ -24,21 +20,45 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
             };
         }
 
-        private static GamePlay MapPlay(PlayDto dto)
+        private static List<PlayDto> GetPlays(GameSummaryResponseDto response)
         {
+            if (response.Plays is { Count: > 0 })
+            {
+                return response.Plays;
+            }
+
+            if (response.Drives is null)
+            {
+                return [];
+            }
+            
+            List<PlayDto> plays = response.Drives.Previous?.SelectMany(drive => drive.Plays ?? []).ToList() ?? [];
+
+            if (response.Drives.Current?.Plays is { Count: > 0 })
+            {
+                plays.AddRange(response.Drives.Current.Plays);
+            }
+            
+            return plays;
+        }
+
+        private static GamePlay MapPlay(PlayDto dto, League league)
+        {
+            (string? context, string? text) = ExtractPlayContext(dto.Text, league);
+            
             return new GamePlay
             {
                 Id = dto.Id ?? string.Empty,
 
-                Type = dto.Type?.Type ?? dto.Type?.Text,
+                Type = dto.Type?.Type ?? dto.Type?.Text ?? dto.Type?.Abbreviation ?? dto.Type?.AlternativeText,
 
-                Text = dto.Text,
+                Text = text,
 
                 ShortText = dto.Type?.AlternativeText,
 
-                Period = FormatPeriod(dto.Period),
+                Period = FormatPeriod(dto.Period, league),
 
-                Clock = null,
+                Clock = dto?.Clock?.DisplayValue,
 
                 SequenceNumber = ParseSequenceNumber(dto.SequenceNumber),
                 
@@ -49,31 +69,93 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
 
                 TeamId = dto.Team?.Id,
                 
-                Category = MapCategory(dto),
+                Category = MapCategory(dto, league),
                 
-                GroupId = dto.AtBatId
+                GroupId = league == League.MLB ? dto.AtBatId : null,
+                
+                Situation = league switch
+                {
+                    League.NFL or League.CFB => dto.Start?.DownDistanceText,
+                    
+                    _ => null
+                },
+                
+                Context = context
             };
         }
 
-        private static string MapCategory(PlayDto dto)
+        private static string MapCategory(PlayDto dto, League league)
         {
-            return dto.SummaryType?.ToUpperInvariant() switch
+            if (dto.ScoringPlay == true)
             {
-                "P" => "pitch",
-                "N" => "atbat",
-                "S" => "atbat scoring",
+                return "scoring";
+            }
 
-                _ when dto.ScoringPlay == true => "scoring",
+            if (league == League.MLB)
+            {
+                return dto.SummaryType?.ToUpperInvariant() switch
+                {
+                    "P" => "pitch",
+                    "N" => "atbat",
+                    "S" => "atbat scoring",
 
-                _ => "other"
-            };
+                    _ => "other"
+                };
+            }
+
+            return "other";
+        }
+        
+        private static (string? context, string? text) ExtractPlayContext(string? text, League league)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return (null, text);
+            }
+
+            if (league is not (League.NFL or League.CFB))
+            {
+                return (null, text);
+            }
+
+            if (!text.StartsWith("("))
+            {
+                return (null, text);
+            }
+            
+            int closingParenthesis = text.IndexOf(')');
+
+            if (closingParenthesis <= 1)
+            {
+                return (null, text);
+            }
+            
+            string context = text[1..closingParenthesis].Trim();
+            string playText = text[(closingParenthesis + 1)..].TrimStart();
+            
+            return (context, playText);
         }
 
-        private static string? FormatPeriod(PlayPeriodDto? period)
+        private static string? FormatPeriod(PlayPeriodDto? period, League league)
         {
             if (period is null)
             {
                 return null;
+            }
+
+            if (league == League.NFL || league == League.CFB)
+            {
+                return period.Number switch
+                {
+                    1 => "1st Quarter",
+                    2 => "2nd Quarter",
+                    3 => "3rd Quarter",
+                    4 => "4th Quarter",
+
+                    > 4 => $"Overtime {period.Number - 4}",
+
+                    _ => null
+                };
             }
 
             if (!string.IsNullOrWhiteSpace(period.DisplayValue))
