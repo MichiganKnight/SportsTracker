@@ -54,11 +54,10 @@
 }
 
 .boxscore-player-image {
-    width: 30px;
-    height: 30px;
-    flex: 0 0 30px;
-    border-radius: 50%;
-    object-fit: cover;
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    border-radius: 50%;    
 }
 
 .boxscore-bat-order {
