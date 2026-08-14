@@ -54,6 +54,13 @@ namespace SportsTracker.Backend.Integrations.ESPN.Endpoints
             return Site(info, $"teams/{Uri.EscapeDataString(teamId)}/schedule");
         }
 
+        public static string TeamRoster(League league, string teamId)
+        {
+            LeagueInfo info = GetLeagueInfo(league);
+            
+            return Site(info, $"teams/{Uri.EscapeDataString(teamId)}/roster");
+        }
+
         private static LeagueInfo GetLeagueInfo(League league)
         {
             return !LeagueConfiguration.Leagues.TryGetValue(league, out LeagueInfo? info) ? throw new NotSupportedException($"ESPN Endpoints Not Configured for {league}") : info;
