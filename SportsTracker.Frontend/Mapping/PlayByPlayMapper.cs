@@ -1,4 +1,5 @@
 ﻿using SportsTracker.Frontend.ViewModels.PlayByPlay;
+using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Models.PlayByPlay;
 
 namespace SportsTracker.Frontend.Mapping
@@ -11,6 +12,8 @@ namespace SportsTracker.Frontend.Mapping
             {
                 GameId = playByPlay.GameId,
                 League = playByPlay.League,
+
+                Filters = GetFilters(playByPlay.League),
 
                 Plays = playByPlay.Plays
                     .Select(play => new GamePlayViewModel
@@ -30,6 +33,83 @@ namespace SportsTracker.Frontend.Mapping
                         Context = play.Context
                     }).ToList()
             };
+        }
+
+        private static IReadOnlyList<PlayFilterViewModel> GetFilters(League league)
+        {
+            List<PlayFilterViewModel> filters =
+            [
+                new()
+                {
+                    Key = "all",
+                    Label = "All"
+                }
+            ];
+
+            switch (league)
+            {
+                case League.MLB:
+                    filters.AddRange(
+                    [
+                        new PlayFilterViewModel
+                        {
+                            Key = "atbat",
+                            Label = "At-Bats"
+                        },
+                        new PlayFilterViewModel
+                        {
+                            Key = "pitch",
+                            Label = "Pitches"
+                        },
+                        new PlayFilterViewModel
+                        {
+                            Key = "scoring",
+                            Label = "Scoring"
+                        }
+                    ]);
+
+                    break;
+
+                case League.NFL:
+                case League.CFB:
+                    filters.AddRange(
+                    [
+                        new PlayFilterViewModel
+                        {
+                            Key = "scoring",
+                            Label = "Scoring"
+                        },
+                        new PlayFilterViewModel
+                        {
+                            Key = "pass",
+                            Label = "Passing"
+                        },
+                        new PlayFilterViewModel
+                        {
+                            Key = "rush",
+                            Label = "Rushing"
+                        },
+                        new PlayFilterViewModel
+                        {
+                            Key = "turnover",
+                            Label = "Turnovers"
+                        }
+                    ]);
+
+                    break;
+
+                default:
+                    filters.Add(
+                        new PlayFilterViewModel
+                        {
+                            Key = "scoring",
+                            Label = "Scoring"
+                        });
+
+                    break;
+            }
+
+            return filters;
         }
     }
 }

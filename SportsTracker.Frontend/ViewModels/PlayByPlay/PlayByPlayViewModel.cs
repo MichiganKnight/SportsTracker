@@ -8,6 +8,7 @@ namespace SportsTracker.Frontend.ViewModels.PlayByPlay
         
         public League League { get; init; }
         
+        public IReadOnlyList<PlayFilterViewModel> Filters { get; init; } = [];
         public IReadOnlyList<GamePlayViewModel> Plays { get; init; } = [];
     }
 }

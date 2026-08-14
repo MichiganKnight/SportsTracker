@@ -102,6 +102,27 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
                     _ => "other"
                 };
             }
+            
+            if (league is League.NFL or League.CFB)
+            {
+                string? type = dto.Type?.Text ?? dto.Type?.Abbreviation;
+
+                return type?.ToLowerInvariant() switch
+                {
+                    "rush" => "rush",
+
+                    "pass reception" => "pass",
+                    "pass incompletion" => "pass",
+                    "pass complete" => "pass",
+                    "pass" => "pass",
+
+                    "interception" => "turnover",
+                    "fumble recovery" => "turnover",
+                    "fumble" => "turnover",
+
+                    _ => "other"
+                };
+            }
 
             return "other";
         }
