@@ -1,5 +1,4 @@
-﻿using SportsTracker.Backend.Integrations.ESPN.DTOs.Common;
-using SportsTracker.Backend.Integrations.ESPN.DTOs.Team;
+﻿using SportsTracker.Backend.Integrations.ESPN.DTOs.Team;
 using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Models.TeamInfo;
 

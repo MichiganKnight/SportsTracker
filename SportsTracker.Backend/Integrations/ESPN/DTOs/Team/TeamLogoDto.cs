@@ -7,6 +7,8 @@
         public int? Width { get; init; }
         public int? Height { get; init; }
         
+        public string? Alt { get; init; }
+        
         public List<string> Rel { get; init; } = [];
     }
 }

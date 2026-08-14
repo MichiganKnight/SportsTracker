@@ -21,5 +21,6 @@
         public int GameSummaryFinalMinutes { get; init; } = 60;
         
         public int TeamMinutes { get; init; } = 60;
+        public int TeamScheduleMinutes { get; init; } = 2;
     }
 }

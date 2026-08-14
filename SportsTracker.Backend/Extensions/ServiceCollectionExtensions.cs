@@ -65,6 +65,7 @@ namespace SportsTracker.Backend.Extensions
             services.AddScoped<IGameContentService, GameContentService>();
             
             services.AddScoped<ITeamDetailsService, TeamDetailsService>();
+            services.AddScoped<ITeamScheduleService, TeamScheduleService>();
         }
 
         private static void AddBackgroundServices(IServiceCollection services)
