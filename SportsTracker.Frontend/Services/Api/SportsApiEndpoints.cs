@@ -34,6 +34,11 @@ namespace SportsTracker.Frontend.Services.Api
             return $"teams/{league}/{Uri.EscapeDataString(teamId)}";
         }
         
+        public static string TeamSchedule(League league, string teamId)
+        {
+            return $"teams/{league}/{Uri.EscapeDataString(teamId)}/schedule";
+        }
+        
         public static string Health => "health";
     }
 }

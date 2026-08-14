@@ -16,6 +16,7 @@ builder.Services.AddScoped<IGameApiClient>(provider => provider.GetRequiredServi
 builder.Services.AddScoped<IStandingsApiClient>(provider => provider.GetRequiredService<SportsApiClient>());
 builder.Services.AddScoped<ITeamApiClient>(provider => provider.GetRequiredService<SportsApiClient>());
 
+builder.Services.AddScoped<IGameCardMapper, GameCardMapper>();
 builder.Services.AddScoped<IDashboardMapper, DashboardMapper>();
 builder.Services.AddScoped<ILeagueMapper, LeagueMapper>();
 builder.Services.AddScoped<INavigationMapper, NavigationMapper>();

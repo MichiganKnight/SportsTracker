@@ -7,7 +7,7 @@ using SportsTracker.Shared.Models.GameInfo;
 
 namespace SportsTracker.Frontend.Mapping
 {
-    public sealed class LeagueMapper : BaseMapper, ILeagueMapper
+    public sealed class LeagueMapper(IGameCardMapper gameCardMapper) : ILeagueMapper
     {
         public LeaguePageViewModel Map(CachedScoreboard scoreboard)
         {
@@ -33,7 +33,7 @@ namespace SportsTracker.Frontend.Mapping
             {
                 Title = title,
                 Icon = icon,
-                Games = games.Select(MapGame).ToList()
+                Games = games.Select(gameCardMapper.Map).ToList()
             };
         }
 

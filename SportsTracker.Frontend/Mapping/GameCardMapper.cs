@@ -5,26 +5,9 @@ using SportsTracker.Shared.Models.GameInfo;
 
 namespace SportsTracker.Frontend.Mapping
 {
-    public abstract class BaseMapper
+    public sealed class GameCardMapper : IGameCardMapper
     {
-        protected TeamViewModel MapTeam(Team team, int score)
-        {
-            return new TeamViewModel
-            {
-                Id = team.Id,
-                League = team.League,
-                Name = team.Abbreviation,
-                DisplayName = team.DisplayName,
-                Abbreviation = team.Abbreviation,
-                Logo = team.Logo?.Href,
-                Record = team.Record?.Summary,
-                Score = score,
-                PrimaryColor = team.Color,
-                AlternateColor = team.AlternateColor
-            };
-        }
-
-        protected GameCardViewModel MapGame(Game game)
+        public GameCardViewModel Map(Game game)
         {
             return new GameCardViewModel
             {
@@ -49,6 +32,23 @@ namespace SportsTracker.Frontend.Mapping
                 Venue = game.Venue?.Name,
                 StartTime = game.StartTime,
                 IsNeutralSite = game.IsNeutralSite
+            };
+        }
+        
+        private TeamViewModel MapTeam(Team team, int score)
+        {
+            return new TeamViewModel
+            {
+                Id = team.Id,
+                League = team.League,
+                Name = team.Abbreviation,
+                DisplayName = team.DisplayName,
+                Abbreviation = team.Abbreviation,
+                Logo = team.Logo?.Href,
+                Record = team.Record?.Summary,
+                Score = score,
+                PrimaryColor = team.Color,
+                AlternateColor = team.AlternateColor
             };
         }
     }

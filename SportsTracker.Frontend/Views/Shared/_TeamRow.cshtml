@@ -1,22 +1,30 @@
 ﻿@model SportsTracker.Frontend.ViewModels.TeamInfo.TeamViewModel
 
+@{
+    string? primaryColor = string.IsNullOrWhiteSpace(Model.PrimaryColor) ? null : $"#{Model.PrimaryColor}";
+    string? alternateColor = string.IsNullOrWhiteSpace(Model.AlternateColor) ? null : $"#{Model.AlternateColor}";
+}
+
 <div class="d-flex justify-content-between align-items-center py-2">
     <a asp-controller="Team" asp-action="Index" asp-route-league="@Model.League" asp-route-teamId="@Model.Id" class="team-link d-flex align-items-center gap-2 position-relative z-2">
         @if (!string.IsNullOrWhiteSpace(Model.Logo))
         {
-            <img class="team-logo img-fluid" src="@Model.Logo" alt="@Model.DisplayName" />
+            <div class="team-row-logo-wrapper" style="@(primaryColor is not null ? $"--team-accent: {primaryColor};" : null)">
+                <img class="team-logo img-fluid" src="@Model.Logo" alt="@Model.DisplayName" />
+            </div>
         }
         else
         {
-            <div class="team-logo-placeholder rounded-circle" style="width: 36px; height: 36px; background-color: #@Model.AlternateColor;"></div>
+            <div class="team-logo-placeholder rounded-circle" style="@(alternateColor is not null ? $"background-color: {alternateColor};" : null)"></div>
         }
         
         <div>
-            <div class="fw-semibold" style="color: #@Model.PrimaryColor;">
+            <div class="fw-bold team-row-name">
                 @Model.DisplayName
             </div>
             
-            @if (!string.IsNullOrWhiteSpace(Model.Record)) {
+            @if (!string.IsNullOrWhiteSpace(Model.Record))
+            {
                 <small class="text-secondary">
                     @Model.Record
                 </small>
@@ -24,7 +32,7 @@
         </div>
     </a>
     
-    <div class="fw-bold fs-4" style="color: #@Model.PrimaryColor;">
+    <div class="fw-bold fs-4">
         <div class="team-score" data-team-score>
             @Model.Score
         </div>

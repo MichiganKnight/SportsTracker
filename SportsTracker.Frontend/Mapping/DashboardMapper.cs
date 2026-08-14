@@ -7,7 +7,7 @@ using SportsTracker.Shared.Models.GameInfo;
 
 namespace SportsTracker.Frontend.Mapping
 {
-    public sealed class DashboardMapper : BaseMapper, IDashboardMapper
+    public sealed class DashboardMapper(IGameCardMapper gameCardMapper) : IDashboardMapper
     {
         private const int MaxDashboardGames = 3;
 
@@ -55,7 +55,7 @@ namespace SportsTracker.Frontend.Mapping
             AddGames(selected, games.Where(g => g.IsUpcoming).OrderBy(g => g.StartTime));
             AddGames(selected, games.Where(g => g.IsFinal).OrderByDescending(g => g.StartTime));
 
-            return selected.Take(MaxDashboardGames).Select(MapGame).ToList();
+            return selected.Take(MaxDashboardGames).Select(gameCardMapper.Map).ToList();
         }
 
         private static void AddGames(List<Game> selected, IEnumerable<Game> source)

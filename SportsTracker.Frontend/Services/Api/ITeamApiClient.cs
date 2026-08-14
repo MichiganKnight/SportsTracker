@@ -7,5 +7,7 @@ namespace SportsTracker.Frontend.Services.Api
     public interface ITeamApiClient
     {
         Task<ApiResponse<TeamDetails>?> GetTeamDetailsAsync(League league, string teamId, CancellationToken cancellationToken = default);
+        
+        Task<ApiResponse<TeamSchedule>?> GetTeamScheduleAsync(League league, string teamId, CancellationToken cancellationToken = default);
     }
 }
