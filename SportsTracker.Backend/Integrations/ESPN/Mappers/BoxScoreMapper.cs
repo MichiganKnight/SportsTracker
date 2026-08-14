@@ -1,4 +1,5 @@
-﻿using SportsTracker.Backend.Integrations.ESPN.DTOs.BoxScore;
+﻿using System.Text;
+using SportsTracker.Backend.Integrations.ESPN.DTOs.BoxScore;
 using SportsTracker.Shared.Enums;
 using SportsTracker.Shared.Models.BoxScore;
 
@@ -41,18 +42,37 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
 
         private static bool ShouldIncludeTable(BoxScoreStatTableDto table)
         {
-            return table.Type is "batting" or "pitching";
+            string? type = GetTableType(table);
+            
+            if (string.IsNullOrWhiteSpace(type))
+            {
+                return false;
+            }
+
+            if (table.Athletes is null || table.Athletes.Count == 0)
+            {
+                return false;
+            }
+            
+            return true;
+        }
+
+        private static string? GetTableType(BoxScoreStatTableDto dto)
+        {
+            return !string.IsNullOrWhiteSpace(dto.Type) ? dto.Type : dto.Name;
         }
 
         private static PlayerStatTable MapTable(BoxScoreStatTableDto dto)
         {
             IReadOnlyList<BoxScoreColumn> columns = MapColumns(dto);
+            
+            string type = GetTableType(dto) ?? string.Empty;
 
             return new PlayerStatTable
             {
-                Type = dto.Type ?? string.Empty,
+                Type = type,
 
-                DisplayName = FormatTableName(dto.Type),
+                DisplayName = GetTableDisplayName(dto),
 
                 Columns = columns,
 
@@ -139,14 +159,71 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
             return values;
         }
 
+        private static string GetTableDisplayName(BoxScoreStatTableDto dto)
+        {
+            /*if (!string.IsNullOrWhiteSpace(dto.Text))
+            {
+                string text = dto.Text;
+
+                int spaceIndex = text.IndexOf(' ');
+
+                if (spaceIndex >= 0 && spaceIndex < text.Length - 1)
+                {
+                    return text[(spaceIndex + 1)..];
+                }
+                
+                return text;
+            }*/
+            
+            return FormatTableName(GetTableType(dto));
+        }
+
         private static string FormatTableName(string? type)
         {
             return type?.ToLowerInvariant() switch
             {
                 "batting" => "Batting",
                 "pitching" => "Pitching",
-                _ => type ?? string.Empty
+                
+                "passing" => "Passing",
+                "rushing" => "Rushing",
+                "receiving" => "Receiving",
+                "fumbles" => "Fumbles",
+                "defensive" => "Defense",
+                "interceptions" => "Interceptions",
+                "kickreturns" => "Kick Returns",
+                "puntreturns" => "Punt Returns",
+                "kicking" => "Kicking",
+                "punting" => "Punting",
+                
+                _ => FormatPascalCase(type)
             };
+        }
+
+        private static string FormatPascalCase(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return string.Empty;
+            }
+
+            StringBuilder builder = new();
+
+            for (int i = 0; i < value.Length; i++)
+            {
+                char current = value[i];
+
+                if (i > 0 && char.IsUpper(current) && char.IsLower(value[i - 1]))
+                {
+                    builder.Append(' ');
+                }
+                
+                builder.Append(current);
+            }
+            
+            string formatted = builder.ToString();
+            
+            return char.ToUpperInvariant(formatted[0]) + formatted[1..];
         }
     }
 }
