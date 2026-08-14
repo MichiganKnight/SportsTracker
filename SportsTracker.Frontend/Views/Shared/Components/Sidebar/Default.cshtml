@@ -21,7 +21,17 @@
     @foreach (NavigationItemViewModel league in Model)
     {
         <a asp-controller="League" asp-action="Index" asp-route-league="@league.League" class="list-group-item list-group-item-action">
-            <span class="me-2">@league.Icon</span>
+            <span class="me-2">
+                @if (!string.IsNullOrWhiteSpace(league.Logo))
+                {
+                    <img src="@league.Logo" alt="@league.Name" class="league-logo league-logo-light" />
+                }
+                
+                @if (!string.IsNullOrWhiteSpace(league.DarkLogo))
+                {
+                    <img src="@league.DarkLogo" alt="@league.Name" class="league-logo league-logo-dark" />
+                }
+            </span>
             
             @league.Name
         </a>

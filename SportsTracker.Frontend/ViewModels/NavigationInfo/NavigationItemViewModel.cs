@@ -8,5 +8,8 @@ namespace SportsTracker.Frontend.ViewModels.NavigationInfo
         
         public string Name { get; init; } = string.Empty;
         public string Icon { get; init; } = string.Empty;
+        
+        public string? Logo { get; init; }
+        public string? DarkLogo { get; init; }
     }
 }

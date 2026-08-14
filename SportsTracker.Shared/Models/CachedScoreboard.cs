@@ -8,6 +8,9 @@ namespace SportsTracker.Shared.Models
         public League League { get; init; }
 
         public IReadOnlyList<Game> Games { get; init; } = [];
+        
+        public string? LeagueLogo { get; init; }
+        public string? LeagueDarkLogo { get; init; }
 
         public DateTime LastUpdatedUtc { get; init; }
     }

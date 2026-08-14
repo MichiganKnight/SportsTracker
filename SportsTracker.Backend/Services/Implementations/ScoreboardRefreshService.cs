@@ -5,6 +5,7 @@ using SportsTracker.Backend.Config;
 using SportsTracker.Backend.Hubs;
 using SportsTracker.Backend.Integrations.ESPN;
 using SportsTracker.Backend.Integrations.ESPN.DTOs.Scoreboard;
+using SportsTracker.Backend.Integrations.ESPN.DTOs.Team;
 using SportsTracker.Backend.Integrations.ESPN.Endpoints;
 using SportsTracker.Backend.Integrations.ESPN.Mappers;
 using SportsTracker.Backend.Services.Interfaces;
@@ -42,10 +43,19 @@ namespace SportsTracker.Backend.Services.Implementations
             TimeSpan refreshInterval = GetRefreshInterval(games);
             TimeSpan cacheLifetime = GetCacheLifetime(refreshInterval);
 
+            ScoreboardLeagueDto? leagueInfo = result.Value.Leagues.FirstOrDefault();
+            
+            string? leagueLogo = GetLeagueLogo(leagueInfo?.Logos, "default");
+            string? leagueDarkLogo = GetLeagueLogo(leagueInfo?.Logos, "dark");
+
             await cache.SetAsync(CacheKeys.Scoreboard(league), new CachedScoreboard
             {
                 League = league,
                 Games = games,
+                
+                LeagueLogo = leagueLogo,
+                LeagueDarkLogo = leagueDarkLogo,
+                
                 LastUpdatedUtc = updatedUtc
             }, cacheLifetime);
 
@@ -102,6 +112,16 @@ namespace SportsTracker.Backend.Services.Implementations
         private static TimeSpan GetCacheLifetime(TimeSpan refreshInterval)
         {
             return TimeSpan.FromTicks(refreshInterval.Ticks * 2);
+        }
+
+        private static string? GetLeagueLogo(IReadOnlyList<TeamLogoDto>? logos, string relation)
+        {
+            if (logos is null)
+            {
+                return null;
+            }
+            
+            return logos.FirstOrDefault(logo => logo.Rel.Any(rel => rel.Equals(relation, StringComparison.OrdinalIgnoreCase)))?.Href;
         }
     }
 }
