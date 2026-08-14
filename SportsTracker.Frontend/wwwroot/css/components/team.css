@@ -91,6 +91,25 @@
     opacity: .75;
 }
 
+/* Roster */
+.roster-table th {
+    white-space: nowrap;
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.roster-player-headshot {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.roster-table td {
+    vertical-align: middle;
+}
+
 @media (min-width: 768px) {
     .team-header-logo-wrap {
         width: 96px;

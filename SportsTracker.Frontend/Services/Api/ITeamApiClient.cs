@@ -9,5 +9,7 @@ namespace SportsTracker.Frontend.Services.Api
         Task<ApiResponse<TeamDetails>?> GetTeamDetailsAsync(League league, string teamId, CancellationToken cancellationToken = default);
         
         Task<ApiResponse<TeamSchedule>?> GetTeamScheduleAsync(League league, string teamId, CancellationToken cancellationToken = default);
+        
+        Task<ApiResponse<TeamRoster>?> GetTeamRosterAsync(League league, string teamId, CancellationToken cancellationToken = default);
     }
 }

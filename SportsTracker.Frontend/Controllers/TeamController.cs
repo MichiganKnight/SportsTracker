@@ -10,7 +10,7 @@ using SportsTracker.Shared.Models.TeamInfo;
 namespace SportsTracker.Frontend.Controllers
 {
     [Route("team")]
-    public sealed class TeamController(ITeamApiClient api, ITeamDetailsMapper teamDetailsMapper, IGameCardMapper gameCardMapper) : Controller
+    public sealed class TeamController(ITeamApiClient api, ITeamDetailsMapper teamDetailsMapper, IGameCardMapper gameCardMapper, ITeamRosterMapper teamRosterMapper) : Controller
     {
         [HttpGet("{league}/{teamId}")]
         public async Task<IActionResult> Index(League league, string teamId, CancellationToken cancellationToken)
@@ -52,6 +52,28 @@ namespace SportsTracker.Frontend.Controllers
                 Team = team,
                 Games = games
             });
+        }
+
+        [HttpGet("{league}/{teamId}/roster")]
+        public async Task<IActionResult> Roster(League league, string teamId, CancellationToken cancellationToken)
+        {
+            Task<ApiResponse<TeamDetails>?> teamTask = api.GetTeamDetailsAsync(league, teamId, cancellationToken);
+            Task<ApiResponse<TeamRoster>?> rosterTask = api.GetTeamRosterAsync(league, teamId, cancellationToken);
+
+            await Task.WhenAll(teamTask, rosterTask);
+
+            ApiResponse<TeamDetails>? teamResponse = await teamTask;
+            ApiResponse<TeamRoster>? rosterResponse = await rosterTask;
+
+            if (teamResponse?.Data is null || rosterResponse?.Data is null)
+            {
+                return NotFound();
+            }
+
+            TeamDetailsViewModel team = teamDetailsMapper.Map(teamResponse.Data);
+            TeamRosterPageViewModel viewModel = teamRosterMapper.Map(team, rosterResponse.Data);
+            
+            return View(viewModel);
         }
     }
 }

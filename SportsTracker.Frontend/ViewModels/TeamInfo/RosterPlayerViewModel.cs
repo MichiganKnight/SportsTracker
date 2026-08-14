@@ -1,13 +1,10 @@
-﻿namespace SportsTracker.Shared.Models.TeamInfo
+﻿namespace SportsTracker.Frontend.ViewModels.TeamInfo
 {
-    public sealed class RosterPlayer
+    public sealed class RosterPlayerViewModel
     {
         public string Id { get; init; } = string.Empty;
         
-        public string FirstName { get; init; } = string.Empty;
-        public string LastName { get; init; } = string.Empty;
         public string DisplayName { get; init; } = string.Empty;
-        public string ShortName { get; init; } = string.Empty;
         
         public string? Jersey { get; init; }
         public string? Headshot { get; init; }
@@ -15,8 +12,6 @@
         public string? PositionAbbreviation { get; init; }
         
         public int? Age { get; init; }
-        
-        public DateTime? DateOfBirth { get; init; }
         
         public string? Height { get; init; }
         public string? Weight { get; init; }
