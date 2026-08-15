@@ -2,7 +2,7 @@
 
 <div class="card shadow-sm mb-4">
     <div class="card-body">
-        <div class="text-center text-secondary small mb-3">
+        <div class="text-center text-secondary mb-3">
             @Model.LeagueName
         </div>
 
@@ -44,6 +44,13 @@
                         <span class="badge bg-primary">SCHEDULED</span>
                     }
                 </div>
+                
+                @if (Model.IsLive && !string.IsNullOrWhiteSpace(Model.Status))
+                {
+                    <div class="game-details-live-status mb-2">
+                        @Model.Status
+                    </div>
+                }
 
                 <div class="game-details-score">
                     <span>@Model.AwayTeam.Score</span>
