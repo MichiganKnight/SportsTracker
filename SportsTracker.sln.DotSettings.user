@@ -7,4 +7,5 @@
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=NBA/@EntryIndexedValue">NBA</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=NHL/@EntryIndexedValue">NHL</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=PGA/@EntryIndexedValue">PGA</s:String>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=endzone/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Espn/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

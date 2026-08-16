@@ -52,20 +52,6 @@
                                     @Model.SituationHeadline
                                 </span>
                             }
-                            
-                            @if (!isBaseball && !string.IsNullOrWhiteSpace(Model.SituationSubheadline) && !string.IsNullOrWhiteSpace(Model.SituationHeadline))
-                            {
-                                <span class="game-status-separator">
-                                    •
-                                </span>
-                            }
-                            
-                            @if (!isBaseball && !string.IsNullOrWhiteSpace(Model.SituationSubheadline))
-                            {
-                                <span>
-                                    @Model.SituationSubheadline
-                                </span>
-                            }
                         </span>
                     }
                 </div>
@@ -86,7 +72,7 @@
                 else if (showFootballSituation)
                 {
                     <div class="game-situation-inline text-secondary fw-semibold">
-                        @Model.Football!.DownDistanceText
+                        @Model.SituationSubheadline
                     </div>
                 }
             </div>
@@ -97,7 +83,11 @@
             {
                 <partial name="Game/_BaseballSituation" model="Model"/>
             }
-            else if (Model.Football is null && !string.IsNullOrWhiteSpace(Model.SituationDetail) && Model.IsLive)
+            else if (Model.Football is not null)
+            {
+                <partial name="Game/_FootballSituation" model="Model"/>
+            }
+            else if (!string.IsNullOrWhiteSpace(Model.SituationDetail) && Model.IsLive)
             {
                 <div class="game-last-play mt-3 text-secondary">
                     @Model.SituationDetail

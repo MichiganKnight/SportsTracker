@@ -99,9 +99,17 @@ namespace SportsTracker.Backend.Integrations.ESPN.Mappers
                 {
                     Down = situation.Down,
                     Distance = situation.Distance,
+                    
+                    YardLine = situation.YardLine,
+                    YardsToEndzone = situation.YardsToEndzone,
+                    
                     DownDistanceText = situation.DownDistanceText,
+                    ShortDownDistanceText = situation.ShortDownDistanceText,
+                    
                     PossessionTeamId = situation.PossessionTeamId,
-                    PossessionText = situation.PossessionText
+                    PossessionText = situation.PossessionText,
+                    
+                    IsRedZone = situation.IsRedZone == true
                 }
             };
         }

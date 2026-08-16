@@ -16,6 +16,7 @@
 @import url("components/team-row.css");
 
 @import url("components/situations/baseball.css");
+@import url("components/situations/football.css");
 
 html,
 body {
