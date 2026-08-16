@@ -20,6 +20,9 @@ namespace SportsTracker.Frontend.ViewModels.GameInfo
         public string? SituationDetail { get; init; }
         
         public BaseballSituation? Baseball { get; init; }
+        public FootballSituation? Football { get; init; }
+        public BasketballSituation? Basketball { get; init; }
+        public HockeySituation? Hockey { get; init; }
         
         public bool IsLive { get; init; }
         public bool IsFinal { get; init; }

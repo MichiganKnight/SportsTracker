@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using SportsTracker.Backend.Integrations.ESPN.DTOs.Baseball;
+﻿using System.Text.Json;
 using SportsTracker.Backend.Integrations.ESPN.DTOs.Common;
 
 namespace SportsTracker.Backend.Integrations.ESPN.DTOs.Scoreboard
@@ -10,8 +9,8 @@ namespace SportsTracker.Backend.Integrations.ESPN.DTOs.Scoreboard
 
         public StatusDto Status { get; init; } = new();
         
-        [JsonPropertyName("situation")]
-        public BaseballSituationDto? BaseballSituation { get; init; }
+        public JsonElement? Situation { get; init; }
+        
         public VenueDto? Venue { get; init; }
     }
 

@@ -2,12 +2,17 @@
 
 @{
     bool showVenue = !string.IsNullOrWhiteSpace(Model.Venue);
-    bool isBaseball = Model.Baseball is not null;
-    bool showBaseballSituation = isBaseball && Model.IsLive;
     
+    bool isBaseball = Model.Baseball is not null;
+    bool isFootball = Model.Football is not null;
+    
+    bool showBaseballSituation = isBaseball && Model.IsLive;
+    bool showFootballSituation = isFootball && Model.IsLive && !string.IsNullOrWhiteSpace(Model.Football!.DownDistanceText);
+
+    bool showLiveSituation = Model.IsLive && (!string.IsNullOrWhiteSpace(Model.SituationHeadline) || !string.IsNullOrWhiteSpace(Model.SituationSubheadline));
+        
     string gameStatusLabel = Model.IsLive ? "LIVE" : Model.IsFinal ? "FINAL" : "SCHEDULED";
     string gameStatusClass = Model.IsLive ? "bg-danger game-live-badge" : Model.IsFinal ? "bg-dark" : "bg-primary";
-    string situationText = Model.SituationHeadline ?? Model.Status;
 }
 
 <div class="card game-card shadow-sm h-100 position-relative" id="game-@Model.GameId" data-game-id="@Model.GameId">
@@ -38,25 +43,50 @@
                         </span>
                     }
                     
-                    @if (showBaseballSituation)
+                    @if (showLiveSituation)
                     {
                         <span class="fw-semibold text-secondary">
-                            @situationText
+                            @if (!string.IsNullOrWhiteSpace(Model.SituationHeadline))
+                            {
+                                <span>
+                                    @Model.SituationHeadline
+                                </span>
+                            }
+                            
+                            @if (!isBaseball && !string.IsNullOrWhiteSpace(Model.SituationSubheadline) && !string.IsNullOrWhiteSpace(Model.SituationHeadline))
+                            {
+                                <span class="game-status-separator">
+                                    •
+                                </span>
+                            }
+                            
+                            @if (!isBaseball && !string.IsNullOrWhiteSpace(Model.SituationSubheadline))
+                            {
+                                <span>
+                                    @Model.SituationSubheadline
+                                </span>
+                            }
                         </span>
                     }
                 </div>
                 
                 @if (showBaseballSituation)
                 {
-                    <div class="baseball-count-inline text-secondary fw-semibold">
+                    <div class="game-situation-inline text-secondary fw-semibold">
                         <span>
                             @Model.Baseball!.Balls-@Model.Baseball.Strikes
                         
-                            <span class="baseball-count-separator">•</span>
+                            <span class="game-situation-inline">•</span>
                         
                             @Model.Baseball.Outs
                             Out@(Model.Baseball.Outs == 1 ? "" : "s")
-                        </span> 
+                        </span>
+                    </div>
+                }
+                else if (showFootballSituation)
+                {
+                    <div class="game-situation-inline text-secondary fw-semibold">
+                        @Model.Football!.DownDistanceText
                     </div>
                 }
             </div>
@@ -67,7 +97,7 @@
             {
                 <partial name="Game/_BaseballSituation" model="Model"/>
             }
-            else if (!string.IsNullOrWhiteSpace(Model.SituationDetail) && Model.IsLive)
+            else if (Model.Football is null && !string.IsNullOrWhiteSpace(Model.SituationDetail) && Model.IsLive)
             {
                 <div class="game-last-play mt-3 text-secondary">
                     @Model.SituationDetail

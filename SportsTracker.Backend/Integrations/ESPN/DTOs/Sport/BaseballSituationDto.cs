@@ -1,6 +1,6 @@
 ﻿using SportsTracker.Backend.Integrations.ESPN.DTOs.Common;
 
-namespace SportsTracker.Backend.Integrations.ESPN.DTOs.Baseball
+namespace SportsTracker.Backend.Integrations.ESPN.DTOs.Sport
 {
     public sealed class BaseballSituationDto
     {

@@ -1,6 +1,6 @@
-﻿namespace SportsTracker.Shared.Models.Sport
+﻿namespace SportsTracker.Backend.Integrations.ESPN.DTOs.Sport
 {
-    public sealed class FootballSituation
+    public sealed class FootballSituationDto
     {
         public int? Down { get; init; }
         public int? Distance { get; init; }

@@ -52,6 +52,19 @@
     min-width: 0;
 }
 
+.game-status-separator {
+    margin: 0 .3rem;
+}
+
+.game-situation-inline {
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+.game-situation-separator {
+    margin: 0 .25rem;
+}
+
 /* Live Indicator */
 
 .game-live-badge {

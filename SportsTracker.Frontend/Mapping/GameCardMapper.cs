@@ -24,6 +24,7 @@ namespace SportsTracker.Frontend.Mapping
                 SituationDetail = game.Situation?.Detail,
                 
                 Baseball = game.Situation?.Baseball,
+                Football = game.Situation?.Football,
 
                 IsLive = game.IsLive,
                 IsFinal = game.IsFinal,
