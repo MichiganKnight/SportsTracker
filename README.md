@@ -6,9 +6,5 @@
 
 ## Solution Documentation
 
----
-
-## 📱 Applications in this Repository
-
 ### [SportsTracker Backend](/SportsTracker.App/)
 > SportsTracker Application
