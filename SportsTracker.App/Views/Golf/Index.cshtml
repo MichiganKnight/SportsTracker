@@ -1,0 +1,159 @@
+﻿@using SportsTracker.App.ViewModels.Golf
+@model SportsTracker.App.ViewModels.Golf.GolfTournamentViewModel
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container-fluid">
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="text-secondary small mb-1">
+                        PGA TOUR
+                    </div>
+                    
+                    <h2 class="mb-1">
+                        @Model.Name
+                    </h2>
+                    
+                    <div class="text-secondary">
+                        @Model.StartTime.ToLocalTime().ToString("MMM d")
+                        
+                        @if (Model.EndTime.HasValue)
+                        {
+                            <span>
+                                - @Model.EndTime.Value.ToLocalTime().ToString("MMM d, yyyy")
+                            </span>
+                        }
+                    </div>
+                    
+                    @if (!string.IsNullOrWhiteSpace(Model.Venue))
+                    {
+                        <div class="text-secondary">
+                            <i class="bi bi-geo-alt-fill me-1"></i>
+                            
+                            @Model.Venue
+                            
+                            @if (!string.IsNullOrWhiteSpace(Model.Location))
+                            {
+                                <span>
+                                    • @Model.Location
+                                </span>
+                            }
+                        </div>
+                    }
+                </div>
+                
+                <div>
+                    @if (Model.IsLive)
+                    {
+                        <span class="badge bg-danger">
+                            LIVE
+                        </span>
+                    }
+                    else if (Model.IsFinal)
+                    {
+                        <span class="badge bg-dark">
+                            FINAL
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-primary">
+                            SCHEDULED
+                        </span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <strong>Leaderboard</strong>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table align-middle mb-0 golf-leaderboard-table">
+                <thead>
+                    <tr>
+                        <th class="text-center">Pos</th>
+                        <th>Player</th>
+                        <th class="text-center">R1</th>
+                        <th class="text-center">R2</th>
+                        <th class="text-center">R3</th>
+                        <th class="text-center">R4</th>
+                        <th class="text-end">Score</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    @foreach (GolfLeaderboardRowViewModel golfer in Model.Leaderboard)
+                    {
+                        string collapseId = $"golfer-scorecard-{golfer.AthleteId}";
+                        
+                        <tr class="golf-leaderboard-row">
+                            <td class="text-center fw-semibold">
+                                @golfer.Position
+                            </td>
+                            
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    @if (!string.IsNullOrWhiteSpace(golfer.CountryFlag))
+                                    {
+                                        <img src="@golfer.CountryFlag" alt="@golfer.Country" class="golf-country-flag" />
+                                    }
+                                    
+                                    <span class="fw-semibold">
+                                        @golfer.Name
+                                    </span>
+                                </div>
+                            </td>
+                            
+                            @for (int roundNumber = 1; roundNumber <= 4; roundNumber++)
+                            {
+                                GolfRoundViewModel? round = golfer.Rounds.FirstOrDefault(r => r.Round == roundNumber);
+                                
+                                <td class="text-center">
+                                    @(round?.Strokes?.ToString() ?? "-")
+                                </td>
+                            }
+                            
+                            <td class="text-end fw-bold">
+                                @golfer.Score
+                            </td> 
+                            
+                            <td class="text-end">
+                                @if (golfer.Rounds.Any(round => round.Holes.Count > 0))
+                                {
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-secondary golf-scorecard-toggle"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#@collapseId"
+                                            aria-expanded="false"
+                                            aria-controls="@collapseId">
+
+                                        <i class="bi bi-chevron-down golf-scorecard-chevron"></i>
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                        
+                        <tr class="golf-scorecard-row">
+                            <td colspan="8" class="p-0 border-0">
+                                <div id="@collapseId" class="collapse">
+                                    <div class="golf-scorecard-container p-3">
+                                        <partial name="~/Views/Game/Partials/Sport/Golf/_GolfScorecard.cshtml" model="golfer" />
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

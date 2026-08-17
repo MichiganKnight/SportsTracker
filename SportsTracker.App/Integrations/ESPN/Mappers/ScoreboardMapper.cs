@@ -139,7 +139,7 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
             {
                 Hole = dto.Period ?? 0,
                 Strokes = dto.Value.HasValue ? Convert.ToInt32(dto.Value.Value) : null,
-                ScoreToPar = dto.DisplayValue ?? string.Empty,
+                ScoreToPar = dto.ScoreType?.DisplayValue ?? string.Empty,
             };
         }
 

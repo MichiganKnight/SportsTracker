@@ -6,6 +6,9 @@
         
         public DateTime? EndTime { get; init; }
         
+        public string? Venue { get; init; }
+        public string? Location { get; init; }
+        
         public IReadOnlyList<GolfLeaderboardEntry> Leaderboard { get; init; } = [];
     }
 

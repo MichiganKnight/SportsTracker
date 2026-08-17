@@ -30,5 +30,27 @@
         public int? Position { get; init; }
         
         public string Score { get; init; } = string.Empty;
+        
+        public IReadOnlyList<GolfRoundViewModel> Rounds { get; init; } = [];
+    }
+    
+    public sealed class GolfRoundViewModel
+    {
+        public int Round { get; init; }
+        
+        public int? Strokes { get; init; }
+        
+        public string ScoreToPar { get; init; } = string.Empty;
+        
+        public IReadOnlyList<GolfHoleViewModel> Holes { get; init; } = [];
+    }
+
+    public sealed class GolfHoleViewModel
+    {
+        public int Hole { get; init; }
+        
+        public int? Strokes { get; init; }
+        
+        public string ScoreToPar { get; init; } = string.Empty;
     }
 }
