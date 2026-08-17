@@ -1,0 +1,22 @@
+﻿@model SportsTracker.App.ViewModels.GameDetails.GameDetailsViewModel
+
+@{
+    string activeTab = ViewData["ActiveGameTab"]?.ToString() ?? "Summary";
+}
+
+<!-- Game Navigation -->
+<div class="mb-4">
+    <div class="btn-group" role="group" aria-label="Game Navigation">
+        <a asp-controller="Game" asp-action="Index" asp-route-league="@Model.League" asp-route-gameId="@Model.GameId" class="btn @(activeTab == "Summary" ? "btn-primary" : "btn-outline-secondary")">
+            Summary
+        </a>
+            
+        <a asp-controller="Game" asp-action="BoxScore" asp-route-league="@Model.League" asp-route-gameId="@Model.GameId" class="btn @(activeTab == "BoxScore" ? "btn-primary" : "btn-outline-secondary")">
+            Box Score
+        </a>
+            
+        <a asp-controller="Game" asp-action="PlayByPlay" asp-route-league="@Model.League" asp-route-gameId="@Model.GameId" class="btn @(activeTab == "PlayByPlay" ? "btn-primary" : "btn-outline-secondary")">
+            Play-by-Play
+        </a>
+    </div>
+</div>

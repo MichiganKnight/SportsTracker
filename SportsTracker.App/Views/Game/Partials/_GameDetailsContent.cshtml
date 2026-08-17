@@ -1,0 +1,30 @@
+﻿@model SportsTracker.App.ViewModels.GameDetails.GameDetailsViewModel
+
+@{
+    ViewData["ActiveGameTab"] = "Summary";
+}
+
+<div id="game-summary-@Model.GameId" data-game-summary data-league="@Model.League" data-game-id="@Model.GameId">
+    <partial name="_GameHeader" model="Model" />
+    
+    <partial name="_GameNavigation" model="Model" />
+    
+    <div id="summary">
+        @if (Model.Baseball is not null)
+        {
+            <partial name="Sport/Baseball/_BaseballLineScore" model="Model" />    
+        }
+        
+        <partial name="_GameInformation" model="Model" />
+        
+        @if (Model.FeaturedAthletes.Count > 0)
+        {
+            <partial name="_FeaturedAthletes" model="Model" />        
+        }
+        
+        @if (!string.IsNullOrWhiteSpace(Model.Headline) || !string.IsNullOrWhiteSpace(Model.Recap))
+        {
+            <partial name="_GameSummary" model="Model" />
+        }
+    </div>
+</div>

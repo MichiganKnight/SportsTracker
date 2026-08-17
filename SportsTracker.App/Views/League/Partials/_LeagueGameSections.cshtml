@@ -1,0 +1,9 @@
+﻿@model SportsTracker.App.ViewModels.LeagueInfo.LeaguePageViewModel
+
+<!-- League Partial: @Model.League -->
+
+<div id="league-games-@Model.League.ToString().ToLowerInvariant()">
+    <partial name="~/Views/Game/Partials/_GameSection.cshtml" model="Model.Live" />
+    <partial name="~/Views/Game/Partials/_GameSection.cshtml" model="Model.Upcoming" />
+    <partial name="~/Views/Game/Partials/_GameSection.cshtml" model="Model.Final" />
+</div>

@@ -1,0 +1,12 @@
+﻿@using SportsTracker.App.ViewModels.BoxScore
+@model SportsTracker.App.ViewModels.GameInfo.GamePageViewModel<BoxScoreViewModel>
+
+@{
+    ViewData["Title"] = "Box Score";
+}
+
+<div class="container-fluid">
+    <div id="game-boxscore-@Model.Game.GameId" data-game-boxscore-page data-league="@Model.Game.League" data-game-id="@Model.Game.GameId">
+        <partial name="Partials/BoxScore/_BoxScorePageContent" model="Model" />
+    </div>
+</div>

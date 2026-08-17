@@ -1,0 +1,110 @@
+﻿@model SportsTracker.App.ViewModels.GameInfo.GameCardViewModel
+
+@{
+    bool showVenue = !string.IsNullOrWhiteSpace(Model.Venue);
+    
+    bool isBaseball = Model.Baseball is not null;
+    bool isFootball = Model.Football is not null;
+    
+    bool showBaseballSituation = isBaseball && Model.IsLive;
+    bool showFootballSituation = isFootball && Model.IsLive && !string.IsNullOrWhiteSpace(Model.Football!.DownDistanceText);
+
+    bool showLiveSituation = Model.IsLive && (!string.IsNullOrWhiteSpace(Model.SituationHeadline) || !string.IsNullOrWhiteSpace(Model.SituationSubheadline));
+        
+    string gameStatusLabel = Model.IsLive ? "LIVE" : Model.IsFinal ? "FINAL" : "SCHEDULED";
+    string gameStatusClass = Model.IsLive ? "bg-danger game-live-badge" : Model.IsFinal ? "bg-dark" : "bg-primary";
+}
+
+<div class="card game-card shadow-sm h-100 position-relative" id="game-@Model.GameId" data-game-id="@Model.GameId">
+    <div class="card-body">
+        <!-- Teams -->
+        <div class="rounded-3 p-2 mb-3 bg-body-tertiary">
+            <partial name="~/Views/Team/Partials/_TeamRow.cshtml" model="Model.AwayTeam" />
+            <partial name="~/Views/Team/Partials/_TeamRow.cshtml" model="Model.HomeTeam" />
+        </div>
+        
+        <!-- Game Status -->
+        <div class="border-top pt-3">
+            <div class="game-status-row">
+                <div class="game-status-main">
+                    <span class="badge @gameStatusClass">
+                        @if (Model.IsLive)
+                        {
+                            <span class="game-live-dot"></span>
+                        }
+                        
+                        @gameStatusLabel
+                    </span>
+                    
+                    @if (Model.IsUpcoming)
+                    {
+                        <span class="fw-semibold text-secondary">
+                            @Model.StartTime.ToLocalTime().ToString("g")
+                        </span>
+                    }
+                    
+                    @if (showLiveSituation)
+                    {
+                        <span class="fw-semibold text-secondary">
+                            @if (!string.IsNullOrWhiteSpace(Model.SituationHeadline))
+                            {
+                                <span>
+                                    @Model.SituationHeadline
+                                </span>
+                            }
+                        </span>
+                    }
+                </div>
+                
+                @if (showBaseballSituation)
+                {
+                    <div class="game-situation-inline text-secondary fw-semibold">
+                        <span>
+                            @Model.Baseball!.Balls-@Model.Baseball.Strikes
+                        
+                            <span class="game-situation-inline">•</span>
+                        
+                            @Model.Baseball.Outs
+                            Out@(Model.Baseball.Outs == 1 ? "" : "s")
+                        </span>
+                    </div>
+                }
+                else if (showFootballSituation)
+                {
+                    <div class="game-situation-inline text-secondary fw-semibold">
+                        @Model.SituationSubheadline
+                    </div>
+                }
+            </div>
+            
+            <!-- Sport Specific Situation -->
+
+            @if (Model.Baseball is not null)
+            {
+                <partial name="Sport/Baseball/_BaseballSituation" model="Model"/>
+            }
+            else if (Model.Football is not null)
+            {
+                <partial name="Sport/Football/_FootballSituation" model="Model"/>
+            }
+            else if (!string.IsNullOrWhiteSpace(Model.SituationDetail) && Model.IsLive)
+            {
+                <div class="game-last-play mt-3 text-secondary">
+                    @Model.SituationDetail
+                </div>
+            }
+            
+            <!-- Venue -->
+
+            @if (showVenue)
+            {
+                <div class="small text-secondary mt-3">
+                    <i class="bi bi-geo-alt-fill me-1"></i>
+                    @Model.Venue
+                </div>
+            }
+        </div>
+        
+        <a asp-controller="Game" asp-action="Index" asp-route-league="@Model.League" asp-route-gameId="@Model.GameId" class="stretched-link" aria-label="View @Model.AwayTeam.DisplayName at @Model.HomeTeam.DisplayName"></a>
+    </div>
+</div>

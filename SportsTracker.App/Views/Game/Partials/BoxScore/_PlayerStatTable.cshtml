@@ -1,0 +1,124 @@
+﻿@using SportsTracker.App.ViewModels.BoxScore
+@model SportsTracker.App.ViewModels.BoxScore.PlayerStatTableViewModel
+
+<section class="boxscore-stat-section">
+    <div class="boxscore-stat-heading">
+        @Model.DisplayName
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 boxscore-table" data-boxscore-table>
+            <thead>
+                <tr>
+                    <th class="boxscore-player-column boxscore-sortable" data-sort-column="-1" data-sort-type="text">
+                        <span class="boxscore-sort-header">
+                            Player
+                            <i class="bi bi-arrow-down-up boxscore-sort-icon"></i>
+                        </span>
+                    </th>
+
+                    @for (int i = 0; i < Model.Columns.Count; i++)
+                    {
+                        BoxScoreColumnViewModel column = Model.Columns[i];
+
+                        <th class="text-end boxscore-sortable" data-sort-column="@i" data-sort-type="@GetSortType(column.Key)" title="@column.Description">
+                            <span class="boxscore-sort-header">
+                                @column.Label
+                                <i class="bi bi-arrow-down-up boxscore-sort-icon"></i>
+                            </span>
+                        </th>
+                    }
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (PlayerStatRowViewModel player in Model.Players)
+                {
+                    <tr data-boxscore-player-row>
+                        <td class="boxscore-player-column">
+                            <div class="d-flex align-items-center gap-2">
+                                @if (!string.IsNullOrWhiteSpace(player.Headshot))
+                                {
+                                    <img src="@player.Headshot" alt="@player.Name" class="boxscore-player-image"/>
+                                }
+
+                                <div class="boxscore-player-info @(player.IsSubstitute ? "boxscore-player-substitute" : "")">
+                                    <div class="d-flex align-items-center gap-2">
+                                        @if (Model.Type == "batting" && player.BatOrder.HasValue && player.Starter)
+                                        {
+                                            <span class="boxscore-bat-order">
+                                                @player.BatOrder
+                                            </span>
+                                        }
+
+                                        <span class="boxscore-player-name">
+                                            @player.Name
+                                        </span>
+
+                                        @if (Model.Type == "pitching" && !string.IsNullOrWhiteSpace(player.Note))
+                                        {
+                                            <span class="boxscore-player-note">
+                                                @player.Note
+                                            </span>
+                                        }
+                                    </div>
+
+                                    @if (!string.IsNullOrWhiteSpace(player.Position))
+                                    {
+                                        <div class="boxscore-player-position">
+                                            @player.Position
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </td>
+
+                        @for (int i = 0; i < Model.Columns.Count; i++)
+                        {
+                            <td class="text-end">
+                                @(i < player.Stats.Count ? player.Stats[i] : string.Empty)
+                            </td>
+                        }
+                    </tr>
+                }
+
+                @if (Model.Totals.Count > 0)
+                {
+                    <tr class="boxscore-totals-row">
+                        <td class="fw-semibold">
+                            Totals
+                        </td>
+
+                        @for (int i = 0; i < Model.Columns.Count; i++)
+                        {
+                            <td class="text-end fw-semibold">
+                                @(i < Model.Totals.Count ? Model.Totals[i] : string.Empty)
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+@functions
+{
+    private static string GetSortType(string key)
+    {
+        return key switch
+        {
+            "avg" or
+            "onBasePct" or
+            "slugAvg" or
+            "ERA" or
+            "WHIP" => "decimal",
+
+            "hits-atBats" => "compound",
+            
+            "innings" => "innings",
+
+            _ => "number"
+        };
+    }
+}

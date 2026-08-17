@@ -1,0 +1,54 @@
+﻿@inject IConfiguration Configuration
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>@ViewData["Title"] - SportsTracker</title>
+        
+        <script type="importmap"></script>
+        
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+        
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/favicon/site.webmanifest">
+        
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    </head>
+    <body>
+        <partial name="Layout/_Navbar" />
+        
+        <div class="container-fluid">
+            <div class="row">
+                <aside class="col-md-2 sidebar">
+                    @await Component.InvokeAsync("Sidebar")
+                </aside>
+                
+                <main class="col-md-10 py-3">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+        
+        <partial name="Layout/_Footer" />
+        
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
+
+        <script src="~/js/core/theme.js" asp-append-version="true"></script>
+        <script src="~/js/core/partialRefresh.js" asp-append-version="true"></script>
+
+        <script src="~/js/game/gameScoreAnimations.js" asp-append-version="true"></script>
+        <script src="~/js/game/boxscore.js" asp-append-version="true"></script>
+        <script src="~/js/game/playbyplay.js" asp-append-version="true"></script>
+
+        <script src="~/js/realtime/scoreboardHub.js" asp-append-version="true"></script>
+
+        @await RenderSectionAsync("Scripts", required: false)
+    </body>
+</html>

@@ -1,0 +1,10 @@
+﻿@using SportsTracker.App.ViewModels.PlayByPlay
+@model SportsTracker.App.ViewModels.GameInfo.GamePageViewModel<PlayByPlayViewModel>
+
+@{
+    ViewData["Title"] = "Play-by-Play";
+}
+
+<div class="container-fluid">
+    <partial name="Partials/PlayByPlay/_PlayByPlayContent" model="Model" />
+</div>

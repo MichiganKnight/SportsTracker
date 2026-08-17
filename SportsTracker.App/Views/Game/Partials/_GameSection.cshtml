@@ -1,0 +1,34 @@
+﻿@using SportsTracker.App.ViewModels.GameInfo
+@model GameSectionViewModel
+
+@if (Model.HasGames)
+{
+    <div class="card shadow-sm mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+                <i class="@Model.Icon me-2"></i> @Model.Title
+            </h5>
+
+            <span class="badge bg-secondary">
+                @Model.Count
+            </span>
+        </div>
+
+        <div class="card-body row g-3">
+            @foreach (GameCardViewModel game in Model.Games)
+            {
+                <div class="col-12 col-md-6">
+                    <partial name="_GameCard" model="game"/>
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="card shadow-sm mb-4">
+        <div class="card-body text-secondary">
+            No @Model.Title
+        </div>
+    </div>
+}

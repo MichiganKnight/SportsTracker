@@ -1,0 +1,94 @@
+﻿@using SportsTracker.App.ViewModels.PlayByPlay
+@model SportsTracker.App.ViewModels.GameInfo.GamePageViewModel<PlayByPlayViewModel>
+
+@{
+    List<IGrouping<string?, GamePlayViewModel>> periods = Model.Content.Plays.Where(play => !string.IsNullOrWhiteSpace(play.Period)).GroupBy(play => play.Period).ToList();
+}
+
+<div id="play-by-play-content" data-play-by-play-content>
+    @if (Model.Content.Plays.Count == 0)
+    {
+        <div class="card shadow-sm">
+            <div class="card-body text-center py-5">
+                <i class="bi bi-list-ul fs-2 text-secondary"></i>
+
+                <h5 class="mt-3  mb-2">
+                    Play-by-Play Data Not Available
+                </h5>
+
+                <div class="text-secondary">
+                    Play-by-Play Will be Available Once the Game Begins
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        @if (Model.Content.Filters.Count > 0)
+        {
+            <!-- Filters -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body py-3">
+                    <div class="d-flex flex-wrap align-items-center gap-2">
+                        <span class="text-secondary small fw-semibold me-1">
+                            Show:
+                        </span>
+
+                        @foreach (PlayFilterViewModel filter in Model.Content.Filters)
+                        {
+                            bool isAll = filter.Key == "all";
+                        
+                            <button type="button" class="btn btn-sm @(isAll ? "btn-primary active" : "btn-outline-secondary") play-filter" data-play-filter="@filter.Key">
+                                @filter.Label
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Plays -->
+        <div id="play-by-play" data-play-by-play>
+            @foreach (IGrouping<string?, GamePlayViewModel> period in periods)
+            {
+                <section class="play-period" data-play-period>
+                    <div class="play-period-header">
+                        @period.Key
+                    </div>
+
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body p-0">
+                            @foreach (GamePlayViewModel play in period)
+                            {
+                                string? teamColor = null;
+                                string? teamSide = null;
+                                
+                                @if (!string.IsNullOrWhiteSpace(play.TeamId))
+                                {
+                                    if (play.TeamId == Model.Game.HomeTeam.Id)
+                                    {
+                                        teamColor = Model.Game.HomeTeam.PrimaryColor;
+                                        teamSide = "home";
+                                    }
+                                    else if (play.TeamId == Model.Game.AwayTeam.Id)
+                                    {
+                                        teamColor = Model.Game.AwayTeam.PrimaryColor;
+                                        teamSide = "away";
+                                    }
+                                }
+
+                                ViewDataDictionary<GamePlayViewModel> playViewData = new(ViewData, play)
+                                {
+                                    ["TeamColor"] = teamColor,
+                                    ["TeamSide"] = teamSide
+                                };
+                                
+                                <partial name="_GamePlay" model="play" view-data="playViewData" />
+                            }
+                        </div>
+                    </div>
+                </section>
+            }
+        </div>
+    }
+</div>

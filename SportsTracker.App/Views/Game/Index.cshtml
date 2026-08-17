@@ -1,0 +1,9 @@
+﻿@model SportsTracker.App.ViewModels.GameDetails.GameDetailsViewModel
+
+@{
+    ViewData["Title"] = $"{Model.AwayTeam.Abbreviation} at {Model.HomeTeam.Abbreviation}";
+}
+
+<div class="container-fluid">
+    <partial name="Partials/_GameDetailsContent" model="Model" />
+</div>

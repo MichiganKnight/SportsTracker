@@ -1,0 +1,43 @@
+﻿@using SportsTracker.App.ViewModels.BoxScore
+@model SportsTracker.App.ViewModels.GameInfo.GamePageViewModel<BoxScoreViewModel>
+
+@{
+    ViewData["ActiveGameTab"] = "BoxScore";
+}
+
+<partial name="Partials/_GameHeader" model="Model.Game" />
+    
+<partial name="Partials/_GameNavigation" model="Model.Game" />
+
+@foreach (TeamBoxScoreViewModel team in Model.Content.Teams)
+{
+    <div class="card shadow-sm mb-4">
+        <!-- Team Header -->
+        <div class="card-header boxscore-team-header">
+            <a asp-controller="Team" asp-action="Index" asp-route-league="@Model.Game.League" asp-route-teamId="@team.TeamId" class="team-link d-inline-flex align-items-center gap-2">
+                @if (!string.IsNullOrWhiteSpace(team.Logo))
+                {
+                    <img src="@team.Logo" alt="@team.TeamName" class="boxscore-team-logo"/>
+                }
+
+                <div>
+                    <h4 class="mb-0">
+                        @team.TeamName
+                    </h4>
+
+                    <div class="text-secondary small">
+                        @team.Abbreviation
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="card-body p-0">
+            @foreach (PlayerStatTableViewModel table in team.Tables)
+            {
+                <partial name="_PlayerStatTable" model="table"/>
+            }
+        </div>
+    </div>
+}
+

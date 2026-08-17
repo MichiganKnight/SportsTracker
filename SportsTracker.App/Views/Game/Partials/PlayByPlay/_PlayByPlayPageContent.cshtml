@@ -1,0 +1,16 @@
+﻿@using SportsTracker.App.ViewModels.PlayByPlay
+@model SportsTracker.App.ViewModels.GameInfo.GamePageViewModel<PlayByPlayViewModel>
+
+@{
+    ViewData["ActiveGameTab"] = "PlayByPlay";
+}
+
+<div id="game-playbyplay-@Model.Game.GameId" data-game-playbyplay-page data-league="@Model.Game.League" data-game-id="@Model.Game.GameId">
+    <div class="game-page-sticky-header">
+        <partial name="Partials/_GameHeader" model="Model.Game"/>
+
+        <partial name="Partials/_GameNavigation" model="Model.Game" />
+    </div>
+
+    <partial name="_PlayByPlayContent" model="Model"/>
+</div>
