@@ -1,4 +1,5 @@
 ﻿using SportsTracker.App.Enums;
+using SportsTracker.App.Models.Sport;
 
 namespace SportsTracker.App.Models.GameInfo
 {
@@ -21,6 +22,8 @@ namespace SportsTracker.App.Models.GameInfo
         public int AwayScore { get; init; }
         
         public IReadOnlyList<Athlete> Athletes { get; init; } = [];
+        
+        public GolfTournament? Golf { get; init; }
         
         public Venue? Venue { get; init; }
         

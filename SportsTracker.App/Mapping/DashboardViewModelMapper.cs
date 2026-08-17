@@ -3,6 +3,7 @@ using SportsTracker.App.Metadata;
 using SportsTracker.App.Models.GameInfo;
 using SportsTracker.App.ViewModels.DashboardInfo;
 using SportsTracker.App.ViewModels.GameInfo;
+using SportsTracker.App.ViewModels.Golf;
 using SportsTracker.App.ViewModels.LeagueInfo;
 
 namespace SportsTracker.App.Mapping
@@ -14,7 +15,7 @@ namespace SportsTracker.App.Mapping
         LeagueSectionViewModel MapLeague(League league, IReadOnlyList<Game>? games);
     }
     
-    public sealed class DashboardViewModelMapper(IGameCardViewModelMapper gameCardViewModelMapper) : IDashboardViewModelMapper
+    public sealed class DashboardViewModelMapper(IGameCardViewModelMapper gameCardViewModelMapper, IGolfEventCardViewModelMapper golfEventCardViewModelMapper) : IDashboardViewModelMapper
     {
         private const int MaxDashboardGames = 3;
 
@@ -41,6 +42,21 @@ namespace SportsTracker.App.Mapping
 
             games ??= [];
 
+            if (league == League.PGA)
+            {
+                return new LeagueSectionViewModel
+                {
+                    League = league,
+                    LeagueName = info.DisplayName,
+                    Icon = info.Icon,
+
+                    GolfEvents = SelectDashboardGolfEvents(games),
+
+                    LiveEvents = games.Count(game => game.IsLive),
+                    TotalEvents = games.Count
+                };
+            }
+
             return new LeagueSectionViewModel
             {
                 League = league,
@@ -49,19 +65,33 @@ namespace SportsTracker.App.Mapping
 
                 Games = SelectDashboardGames(games),
 
-                LiveGames = games.Count(g => g.IsLive),
-                TotalGames = games.Count
+                LiveEvents = games.Count(g => g.IsLive),
+                TotalEvents = games.Count
             };
+        }
+
+        private IReadOnlyList<GolfEventCardViewModel> SelectDashboardGolfEvents(IReadOnlyList<Game> games)
+        {
+            List<Game> selected = [];
+
+            AddGames(selected, games.Where(game => game.Golf is not null && game.IsLive).OrderBy(game => game.StartTime));
+            AddGames(selected, games.Where(game => game.Golf is not null && game.IsUpcoming).OrderBy(game => game.StartTime));
+            AddGames(selected, games.Where(game => game.Golf is not null && game.IsFinal).OrderByDescending(game => game.StartTime));
+
+            return selected
+                .Take(MaxDashboardGames)
+                .Select(golfEventCardViewModelMapper.Map)
+                .ToList();
         }
         
         private IReadOnlyList<GameCardViewModel> SelectDashboardGames(IReadOnlyList<Game> games)
         {
             List<Game> selected = [];
             
-            AddGames(selected, games.Where(g => g.IsLive).OrderBy(g => g.StartTime));
-            AddGames(selected, games.Where(g => g.IsUpcoming).OrderBy(g => g.StartTime));
-            AddGames(selected, games.Where(g => g.IsFinal).OrderByDescending(g => g.StartTime));
-
+            AddGames(selected, games.Where(game => game.IsLive).OrderBy(game => game.StartTime)); 
+            AddGames(selected, games.Where(game => game.IsUpcoming).OrderBy(game => game.StartTime));
+            AddGames(selected, games.Where(game => game.IsFinal).OrderByDescending(game => game.StartTime));
+            
             return selected.Take(MaxDashboardGames).Select(gameCardViewModelMapper.Map).ToList();
         }
 

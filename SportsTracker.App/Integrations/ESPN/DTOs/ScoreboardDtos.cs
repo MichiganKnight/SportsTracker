@@ -23,7 +23,10 @@ namespace SportsTracker.App.Integrations.ESPN.DTOs
     {
         public string Id { get; init; } = string.Empty;
         
+        public string Name { get; init; } = string.Empty;
+        
         public DateTime Date { get; init; }
+        public DateTime? EndDate { get; init; }
         
         public bool NeutralSite { get; init; }
 
@@ -43,11 +46,53 @@ namespace SportsTracker.App.Integrations.ESPN.DTOs
 
     public sealed class CompetitorDto
     {
-        public string HomeAway { get; init; } = string.Empty;
-        public string Score { get; init; } = "0";
-
-        public TeamDto Team { get; init; } = new();
+        public string Id { get; init; }
+        
+        // Team Sports
+        public string? HomeAway { get; init; }
+        public TeamDto? Team { get; init; }
+        
+        // Golf
+        public int? Order { get; init; }
+        public GolfAthleteDto? Athlete { get; init; }
+        
+        // Shared
+        public string? Score { get; init; }
         
         public List<RecordDto> Records { get; init; } = [];
+        public List<GolfLineScoreDto> LineScores { get; init; } = [];
+    }
+
+    public sealed class GolfAthleteDto
+    {
+        public string? FullName { get; init; }
+        public string? DisplayName { get; init; }
+        public string? ShortName { get; init; }
+        
+        public GolfFlagDto? Flag { get; init; }
+    }
+    
+    public sealed class GolfFlagDto
+    {
+        public string? Href { get; init; }
+        public string? Alt { get; init; }
+    }
+
+    public sealed class GolfLineScoreDto
+    {
+        public double? Value { get; init; }
+        
+        public string? DisplayValue { get; init; }
+        
+        public int? Period { get; init; }
+        
+        public GolfScoreTypeDto? ScoreType { get; init; }
+        
+        public List<GolfLineScoreDto> LineScores { get; init; } = [];
+    }
+    
+    public sealed class GolfScoreTypeDto
+    {
+        public string? DisplayValue { get; init; }
     }
 }

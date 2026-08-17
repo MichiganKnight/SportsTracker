@@ -1,0 +1,71 @@
+﻿@using SportsTracker.App.ViewModels.Golf
+@model SportsTracker.App.ViewModels.Golf.GolfEventCardViewModel
+
+@{
+    string statusClass = Model.IsLive ? "bg-danger game-live-badge" : Model.IsFinal ? "bg-dark" : "bg-primary";
+    
+    string statusText = Model.IsLive ? "LIVE" : Model.IsFinal ? "FINAL" : "SCHEDULED";
+}
+
+<div class="card golf-event-card shadow-sm h-100 position-relative">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h5 class="mb-1">
+                    @Model.Name
+                </h5>
+                
+                @if (Model.IsUpcoming)
+                {
+                    <div class="small text-secondary">
+                        @Model.StartTime.ToLocalTime().ToString("g")
+                    </div>
+                }
+            </div>
+            
+            <span class="badge @statusClass">
+                @if (Model.IsLive)
+                {
+                    <span class="game-live-dot"></span>
+                }
+                
+                @statusText
+            </span>
+        </div>
+        
+        @if (Model.Leaders.Count > 0)
+        {
+            <div class="golf-leaders">
+                @foreach (GolfLeaderboardRowViewModel golfer in Model.Leaders)
+                {
+                    <div class="golf-leader-row">
+                        <div class="golf-leader-position">
+                            @golfer.Position
+                        </div>
+                        
+                        @if (!string.IsNullOrWhiteSpace(golfer.CountryFlag))
+                        {
+                            <img src="@golfer.CountryFlag" alt="@golfer.Country" class="golf-country-flag" />
+                        }
+                        
+                        <div class="golf-leader-name">
+                            @golfer.Name
+                        </div>
+                        
+                        <div class="golf-leader-score">
+                            @golfer.Score
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-secondary small">
+                Leaderboard Not Available Yet
+            </div>
+        }
+        
+        <a asp-controller="Golf" asp-action="Index" asp-route-eventId="@Model.EventId" class="stretched-link" aria-label="View @Model.Name"></a>
+    </div>
+</div>

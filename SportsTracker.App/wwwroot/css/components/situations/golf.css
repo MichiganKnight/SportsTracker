@@ -1,0 +1,41 @@
+﻿.golf-event-card .card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.golf-leaders {
+    border-top: 1px solid var(--bs-border-color);
+}
+
+.golf-leader-row {
+    display: grid;
+    grid-template-columns: 2rem 1.5rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem 0;
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.golf-leader-position {
+    text-align: center;
+    font-weight: 600;
+}
+
+.golf-country-flag {
+    width: 20px;
+    height: 14px;
+    object-fit: contain;
+}
+
+.golf-leader-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.golf-leader-score {
+    font-weight: 700;
+    text-align: right;
+}

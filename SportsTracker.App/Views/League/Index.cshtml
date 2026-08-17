@@ -1,4 +1,5 @@
 ﻿@using SportsTracker.App.Enums
+@using SportsTracker.App.ViewModels.Golf
 @using SportsTracker.App.ViewModels.LeagueInfo
 @model SportsTracker.App.ViewModels.LeagueInfo.LeaguePageViewModel
 
@@ -13,25 +14,40 @@
             <h1 class="mb-1">
                 @Model.LeagueName
             </h1>
-
-            <div class="text-secondary">
-                Games
+            
+            <div class="text-secondary small">
+                Last Updated: @Model.LastUpdatedUtc.ToLocalTime().ToString("g")
             </div>
         </div>
-
-        <partial name="Navigation/_LeagueNavigation" model="new LeagueNavigationViewModel
-                 {
-                     League = Model.League,
-                     LeagueName = Model.LeagueName,
-                     ActivePage = LeaguePage.Games
-                 }"/>
     </div>
-
-    <!-- Last Updated -->
-    <div class="mb-4 text-secondary small">
-        Updated @Model.LastUpdatedUtc.ToLocalTime()
-    </div>
-
-    <!-- Game Sections -->
-    <partial name="Partials/_LeagueGameSections" model="Model" />
+    
+    @if (Model.IsGolf)
+    {
+        if (!Model.HasGolfEvents)
+        {
+            <div class="card shadow-sm">
+                <div class="card-body text-center py-5">
+                    <div class="text-secondary">
+                        No Tournaments Available
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row g-3">
+                @foreach (GolfEventCardViewModel golfEvent in Model.GolfEvents)
+                {
+                    <div class="col-12 col-xl-6">
+                        <partial name="~/Views/Game/Partials/Sport/Golf/_GolfEventCard.cshtml" model="golfEvent" />
+                    </div>
+                }
+            </div>
+        }
+    }
+    else
+    {
+        <!-- Game Sections -->
+        <partial name="Partials/_LeagueGameSections" model="Model" />
+    }
 </div>

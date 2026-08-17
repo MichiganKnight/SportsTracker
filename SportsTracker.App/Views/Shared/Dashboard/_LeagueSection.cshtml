@@ -1,4 +1,5 @@
 ﻿@using SportsTracker.App.ViewModels.GameInfo
+@using SportsTracker.App.ViewModels.Golf
 @model SportsTracker.App.ViewModels.LeagueInfo.LeagueSectionViewModel
 
 <section id="league-@Model.League.ToString().ToLowerInvariant()" class="mb-5 p-2">
@@ -6,35 +7,57 @@
         <h3 class="mb-0">
             @Model.Icon
             @Model.LeagueName
-            
+
             <small class="text-secondary">
-                (@Model.GameCount)
+                (@Model.TotalEvents)
             </small>
         </h3>
         
         <div class="d-flex gap-2">
-            <a asp-controller="Standings" asp-action="Index" asp-route-league="@Model.League" class="btn btn-outline-secondary">
-                <i class="bi bi-list-ol me-1"></i>
-                Standings
-            </a>
+            @if (!Model.IsGolf)
+            {
+                <a asp-controller="Standings" asp-action="Index" asp-route-league="@Model.League" class="btn btn-outline-secondary">
+                    <i class="bi bi-list-ol me-1"></i>
+                    Standings
+                </a>
+            }
             
             <a asp-controller="League" asp-action="Index" asp-route-league="@Model.League" class="btn btn-outline-secondary">
                 <i class="bi bi-calendar-event me-1"></i>
-                All Games
+                
+                @(Model.IsGolf ? "All Tournaments" : "All Games")
                 
                 <span class="ms-1">
-                    @(Model.TotalGames)
+                    @(Model.TotalEvents)
                 </span>
             </a>
         </div>
     </div>
     
-    @if (!Model.HasGames)
+    @if (!Model.HasEvents)
     {
         <div class="card">
             <div class="card-body text-secondary">
-                No Games Scheduled
+                @if (Model.IsGolf)
+                {
+                    <span>No Tournaments Available</span>
+                }
+                else
+                {
+                    <span>No Games Scheduled</span>
+                }
             </div>
+        </div>
+    }
+    else if (Model.IsGolf)
+    {
+        <div class="row g-3">
+            @foreach (GolfEventCardViewModel golfEvent in Model.GolfEvents)
+            {
+                <div class="col-12 col-lg-4">
+                    <partial name="~/Views/Game/Partials/Sport/Golf/_GolfEventCard.cshtml" model="golfEvent" />
+                </div>
+            }
         </div>
     }
     else
@@ -42,18 +65,19 @@
         <div class="row g-3">
             @foreach (GameCardViewModel game in Model.Games)
             {
-                <div class="col-xl-4 col-lg-6">
+                <div class="col-12 col-lg-4">
                     <partial name="~/Views/Game/Partials/_GameCard.cshtml" model="game" />
                 </div>
             }
         </div>
     }
     
-    @if (Model.HasMoreGames)
+    @if (Model.HasMoreEvents)
     {
         <div class="text-center mt-3">
             <small class="text-secondary">
-                Showing @Model.DisplayedGames of @Model.TotalGames Games
+                Showing @Model.DisplayedEvents of @Model.TotalEvents
+                @(Model.IsGolf ? "Tournaments" : "Games")
             </small>
         </div>
     }

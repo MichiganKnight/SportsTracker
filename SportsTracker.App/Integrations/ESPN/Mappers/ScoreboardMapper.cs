@@ -2,6 +2,7 @@
 using SportsTracker.App.Integrations.ESPN.DTOs;
 using SportsTracker.App.Models;
 using SportsTracker.App.Models.GameInfo;
+using SportsTracker.App.Models.Sport;
 
 namespace SportsTracker.App.Integrations.ESPN.Mappers
 {
@@ -18,6 +19,13 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
                     continue;
                 }
 
+                if (league == League.PGA)
+                {
+                    yield return MapGolfEvent(@event, competition, league);
+                    
+                    continue;
+                }
+
                 CompetitorDto? home = competition.Competitors.FirstOrDefault(c => c.HomeAway == "home");
                 CompetitorDto? away = competition.Competitors.FirstOrDefault(c => c.HomeAway == "away");
 
@@ -25,35 +33,114 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
                 {
                     continue;
                 }
-
-                yield return new Game
-                {
-                    Id = @event.Id,
-                    League = league,
-                    StartTime = @event.Date,
-                    Status = MapStatus(competition.Status.Type.Name),
-                    StatusText = competition.Status.Type.ShortDetail,
-                    
-                    Situation = SituationMapper.Map(competition, league),
-
-                    HomeTeam = MapTeam(home, league),
-                    AwayTeam = MapTeam(away, league),
-
-                    HomeScore = int.TryParse(home.Score, out int homeScore) ? homeScore : 0,
-                    AwayScore = int.TryParse(away.Score, out int awayScore) ? awayScore : 0,
-
-                    Venue = competition.Venue is null
-                        ? null
-                        : new Venue
-                        {
-                            Id = competition.Venue.Id,
-                            Name = competition.Venue.FullName,
-                            IsIndoor = competition.Venue.Indoor
-                        },
-
-                    IsNeutralSite = @event.NeutralSite
-                };
+                
+                yield return MapTeamEvent(@event, competition, home, away, league);
             }
+        }
+
+        private static Game MapTeamEvent(EventDto @event, CompetitionDto competition, CompetitorDto home, CompetitorDto away, League league)
+        {
+            return new Game
+            {
+                Id = @event.Id,
+                League = league,
+                StartTime = @event.Date,
+                Status = MapStatus(competition.Status.Type.Name),
+                StatusText = competition.Status.Type.ShortDetail,
+
+                Situation = SituationMapper.Map(competition, league),
+
+                HomeTeam = MapTeam(home, league),
+                AwayTeam = MapTeam(away, league),
+
+                HomeScore = int.TryParse(home.Score, out int homeScore) ? homeScore : 0,
+                AwayScore = int.TryParse(away.Score, out int awayScore) ? awayScore : 0,
+
+                Venue = competition.Venue is null
+                    ? null
+                    : new Venue
+                    {
+                        Id = competition.Venue.Id,
+                        Name = competition.Venue.FullName,
+                        IsIndoor = competition.Venue.Indoor
+                    },
+
+                IsNeutralSite = @event.NeutralSite
+            };
+        }
+
+        private static Game MapGolfEvent(EventDto @event, CompetitionDto competition, League league)
+        {
+            return new Game
+            {
+                Id = @event.Id,
+                League = league,
+                StartTime = @event.Date,
+                Status = MapStatus(competition.Status.Type.Name),
+                StatusText = competition.Status.Type.ShortDetail,
+
+                Golf = new GolfTournament
+                {
+                    Name = @event.Name,
+                    EndTime = @event.EndDate,
+
+                    Leaderboard = competition.Competitors
+                        .Where(competitor => competitor.Athlete is not null)
+                        .OrderBy(competitor => competitor.Order ?? int.MaxValue)
+                        .Select(MapGolfer)
+                        .ToList()
+                }
+            };
+        }
+
+        private static GolfLeaderboardEntry MapGolfer(CompetitorDto competitor)
+        {
+            GolfAthleteDto athlete = competitor.Athlete!;
+
+            return new GolfLeaderboardEntry
+            {
+                AthleteId = competitor.Id ?? string.Empty,
+                Name = athlete.DisplayName ?? athlete.FullName ?? string.Empty,
+                ShortName = athlete.ShortName ?? athlete.DisplayName ?? athlete.FullName ?? string.Empty,
+
+                CountryFlag = athlete.Flag?.Href,
+                Country = athlete.Flag?.Alt,
+
+                Position = competitor.Order,
+                ScoreToPar = competitor.Score ?? string.Empty,
+
+                Rounds = competitor.LineScores
+                    .Where(round => round.Period.HasValue)
+                    .OrderBy(round => round.Period)
+                    .Select(MapGolfRound)
+                    .ToList()
+            };
+        }
+
+        private static GolfRound MapGolfRound(GolfLineScoreDto dto)
+        {
+            return new GolfRound
+            {
+                Round = dto.Period ?? 0,
+                Strokes = dto.Value.HasValue ? Convert.ToInt32(dto.Value.Value) : null,
+                ScoreToPar = dto.DisplayValue ?? string.Empty,
+
+                Holes = dto.LineScores
+                    .Where(hole => hole.Period.HasValue)
+                    .OrderBy(hole => hole.Period)
+                    .Select(MapGolfHole)
+                    .ToList()
+            };
+        }
+
+        private static GolfHole MapGolfHole(GolfLineScoreDto dto)
+        {
+            return new GolfHole
+            {
+                Hole = dto.Period ?? 0,
+                Strokes = dto.Value.HasValue ? Convert.ToInt32(dto.Value.Value) : null,
+                ScoreToPar = dto.DisplayValue ?? string.Empty,
+            };
         }
 
         private static GameStatus MapStatus(string statusName)
