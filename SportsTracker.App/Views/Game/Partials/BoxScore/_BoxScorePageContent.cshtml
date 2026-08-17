@@ -35,7 +35,7 @@
         <div class="card-body p-0">
             @foreach (PlayerStatTableViewModel table in team.Tables)
             {
-                <partial name="_PlayerStatTable" model="table"/>
+                <partial name="~/Views/Game/Partials/BoxScore/_PlayerStatTable.cshtml" model="table"/>
             }
         </div>
     </div>

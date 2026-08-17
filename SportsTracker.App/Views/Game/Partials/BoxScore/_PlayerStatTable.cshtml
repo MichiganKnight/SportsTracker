@@ -75,7 +75,7 @@
 
                         @for (int i = 0; i < Model.Columns.Count; i++)
                         {
-                            <td class="text-end">
+                            <td class="text-end fw-semibold">
                                 @(i < player.Stats.Count ? player.Stats[i] : string.Empty)
                             </td>
                         }
@@ -91,7 +91,7 @@
 
                         @for (int i = 0; i < Model.Columns.Count; i++)
                         {
-                            <td class="text-end fw-semibold">
+                            <td class="text-end boxscore-player-note">
                                 @(i < Model.Totals.Count ? Model.Totals[i] : string.Empty)
                             </td>
                         }
