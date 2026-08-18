@@ -1,7 +1,6 @@
 ﻿.sidebar {
     background: var(--st-sidebar);
     border-right: 1px solid var(--st-border);
-    min-height: calc(100vh - var(--st-navbar-height));
 }
 
 .sidebar-header {

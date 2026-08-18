@@ -84,7 +84,7 @@
 
 .golf-scorecard-chevron {
     display: inline-block;
-    transition: transform .2s ease;
+    transition: transform var(--st-interaction-transition-duration) var(--st-interaction-transition-easing);
 }
 
 .golf-scorecard-toggle[aria-expanded="true"] .golf-scorecard-chevron {

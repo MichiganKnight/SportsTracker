@@ -17,7 +17,7 @@
 
 .boxscore-stat-heading {
     padding: .65rem 1rem;
-    background: rgba(255, 255, 255, .025);
+    background-color: var(--st-surface-alt);
     color: var(--st-text);
     font-size: .8rem;
     font-weight: 800;
@@ -98,7 +98,7 @@
 }
 
 .boxscore-totals-row {
-    background: rgba(255, 255, 255, .025);
+    background-color: var(--st-surface-alt);
 }
 
 .boxscore-totals-row td {

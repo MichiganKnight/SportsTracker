@@ -1,4 +1,12 @@
-﻿[data-theme="dark"] {
+﻿:root {
+    --st-theme-transition-duration: .2s;
+    --st-theme-transition-easing: ease;
+    
+    --st-interaction-transition-duration: .15s;
+    --st-interaction-transition-easing: ease;
+}
+
+[data-theme="dark"] {
     --st-bg: #121212;
 
     --st-surface: #1B1B1D;
@@ -60,4 +68,37 @@
     --st-danger-rgb: 220, 53, 69;
     --st-warning-rgb: 255, 193, 7;
     --st-primary-rgb: 13, 110, 253;
+}
+
+body,
+main,
+.navbar-sports,
+.sidebar,
+.card,
+.card-header,
+.card-footer,
+.table,
+.table th,
+.table td,
+.table-responsive,
+.list-group-item,
+.form-control,
+.form-select,
+.form-search-sports,
+.theme-toggle,
+.st-surface-alt,
+.game-play,
+.golf-scorecard-container {
+    transition: background-color var(--st-theme-transition-duration) var(--st-theme-transition-easing), color var(--st-theme-transition-duration) var(--st-theme-transition-easing), border-color var(--st-theme-transition-duration) var(--st-theme-transition-easing);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+    }
 }

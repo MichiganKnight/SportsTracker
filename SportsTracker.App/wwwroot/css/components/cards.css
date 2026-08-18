@@ -13,7 +13,6 @@
 
 .game-card {
     cursor: pointer;
-    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
 }
 
 .game-card:hover {
@@ -79,7 +78,7 @@
     height: 6px;
     flex: 0 0 6px;
     border-radius: 50%;
-    background: #fff;
+    background-color: currentColor;
     animation: live-dot-pulse 1.5s ease-in-out infinite;
 }
 
@@ -144,16 +143,31 @@
 
 @keyframes game-score-change {
     0% {
-        box-shadow: 0 0 0 0 rgba(25, 135, 84, .55);
+        box-shadow: 0 0 0 0 rgba(var(--st-success-rgb), .55);
     }
 
     40% {
-        box-shadow: 0 0 0 4px rgba(25, 135, 84, .25);
+        box-shadow: 0 0 0 4px rgba(var(--st-success-rgb), .25);
     }
 
     100% {
-        box-shadow: 0 0 0 0 rgba(25, 135, 84, 0);
+        box-shadow: 0 0 0 0 rgba(var(--st-success-rgb), 0);
     }
+}
+
+.st-surface-alt {
+    background-color: var(--st-surface-alt);
+    color: var(--st-text);
+}
+
+.card-interactive {
+    transition: transform var(--st-interaction-transition-duration) var(--st-interaction-transition-easing), box-shadow var(--st-theme-transition-duration) var(--st-theme-transition-easing), border-color var(--st-theme-transition-duration) var(--st-theme-transition-easing), background-color var(--st-theme-transition-duration) var(--st-theme-transition-easing), color var(--st-theme-transition-duration) var(--st-theme-transition-easing);
+}
+
+.card-interactive:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--st-card-hover-shadow);
+    border-color: var(--st-card-hover-border);
 }
 
 /* Responsive */

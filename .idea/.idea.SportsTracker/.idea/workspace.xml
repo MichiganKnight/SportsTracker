@@ -19,10 +19,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/SportsTracker.App/Views/Game/Partials/BoxScore/_BoxScorePageContent.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/Views/Game/Partials/BoxScore/_BoxScorePageContent.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.App/Views/Game/Partials/BoxScore/_PlayerStatTable.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/Views/Game/Partials/BoxScore/_PlayerStatTable.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.App/Views/Dashboard/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/Views/Dashboard/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.App/Views/Game/Partials/PlayByPlay/_PlayByPlayContent.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/Views/Game/Partials/PlayByPlay/_PlayByPlayContent.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.App/Views/Game/Partials/PlayByPlay/_PlayByPlayPageContent.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/Views/Game/Partials/PlayByPlay/_PlayByPlayPageContent.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.App/Views/Game/Partials/Sport/Baseball/_BaseballLineScore.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/Views/Game/Partials/Sport/Baseball/_BaseballLineScore.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.App/Views/Game/Partials/Sport/Baseball/_BaseballSituation.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/Views/Game/Partials/Sport/Baseball/_BaseballSituation.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.App/Views/Game/Partials/Sport/Golf/_GolfEventCard.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/Views/Game/Partials/Sport/Golf/_GolfEventCard.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.App/Views/Game/Partials/_GameCard.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/Views/Game/Partials/_GameCard.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.App/Views/Shared/Layout/_Navbar.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/Views/Shared/Layout/_Navbar.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/components/cards.css" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/components/cards.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/components/situations/baseball.css" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/components/situations/baseball.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/components/situations/golf.css" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/components/situations/golf.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/components/tables.css" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/components/tables.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/components/standings.css" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/components/standings.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/components/team.css" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/components/team.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/layout/navbar.css" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/layout/navbar.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/layout/sidebar.css" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/layout/sidebar.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/themes/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/themes/theme.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -65,6 +76,7 @@
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Views/Game/Partials/Sport/Golf/_GolfEventCard.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Views/Game/Partials/Sport/Golf/_GolfScorecard.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Views/Golf/Index.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.App/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -76,61 +88,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.000135675274078" />
-      <entry key="S2" value="1.1332607680094609" />
-      <entry key="S5" value="1.6404884333941014" />
-      <entry key="S10" value="2.120435347153175" />
-      <entry key="S30" value="2.9005186470987083" />
-      <entry key="S60" value="5.1703553610220405" />
-      <entry key="M2" value="13.10174136685195" />
-      <entry key="M5" value="44.88471310151864" />
-      <entry key="M10" value="84.03916691614614" />
-      <entry key="M15" value="106.48801404081343" />
-      <entry key="M30" value="136.7757940608673" />
-      <entry key="H1" value="156.01087805476737" />
-      <entry key="H2" value="186.77868349398807" />
-      <entry key="H4" value="384.7635396709769" />
-      <entry key="D1" value="1785.1396622379093" />
-      <entry key="W1" value="2467.5166090475236" />
+      <entry key="MS100" value="1.027397289828669" />
+      <entry key="MS500" value="1.600401292637927" />
+      <entry key="S2" value="2.891824985648289" />
+      <entry key="S5" value="4.1182286170195015" />
+      <entry key="S10" value="5.237940005148254" />
+      <entry key="S30" value="6.786524610701615" />
+      <entry key="S60" value="8.038892874266583" />
+      <entry key="M2" value="13.522981298770848" />
+      <entry key="M5" value="43.73097815767101" />
+      <entry key="M10" value="105.00712290231965" />
+      <entry key="M15" value="160.15818950751142" />
+      <entry key="M30" value="270.5204293767888" />
+      <entry key="H1" value="368.4573103137645" />
+      <entry key="H2" value="451.52484571828506" />
+      <entry key="H4" value="664.8369004348432" />
+      <entry key="D1" value="2089.5881635460887" />
+      <entry key="W1" value="2801.431951521942" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="6.817214405823265E-67" />
-      <entry key="MS500" value="5.844150488519885E-14" />
-      <entry key="S2" value="4.91677514676132E-4" />
-      <entry key="S5" value="0.047497651762733066" />
-      <entry key="S10" value="0.2179400196257838" />
-      <entry key="S30" value="0.6124466263205884" />
-      <entry key="S60" value="0.9244325866634746" />
-      <entry key="M2" value="1.6286828098470498" />
-      <entry key="M5" value="4.107974735914671" />
-      <entry key="M10" value="6.713752304356935" />
-      <entry key="M15" value="8.072787686349772" />
-      <entry key="M30" value="9.799191537809255" />
-      <entry key="H1" value="10.89416412385097" />
-      <entry key="H2" value="17.22982153201041" />
-      <entry key="H4" value="74.13376613914429" />
-      <entry key="D1" value="493.678485774763" />
-      <entry key="W1" value="700.5903705295736" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="7.075228346615989E-157" />
+      <entry key="S2" value="9.92501655483074E-40" />
+      <entry key="S5" value="3.319526722520968E-16" />
+      <entry key="S10" value="2.5028749748195857E-8" />
+      <entry key="S30" value="0.004843750107274802" />
+      <entry key="S60" value="0.12573489390454762" />
+      <entry key="M2" value="0.8047618815554655" />
+      <entry key="M5" value="3.8359208195667125" />
+      <entry key="M10" value="9.327268430439597" />
+      <entry key="M15" value="13.874239528115579" />
+      <entry key="M30" value="22.36210638334761" />
+      <entry key="H1" value="29.51858549888456" />
+      <entry key="H2" value="38.86849963736161" />
+      <entry key="H4" value="92.76249637597687" />
+      <entry key="D1" value="512.2668728933686" />
+      <entry key="W1" value="726.6825787310227" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.46009382531243753" />
-      <entry key="MS500" value="0.8561905032539464" />
-      <entry key="S2" value="1.0233503519264484" />
-      <entry key="S5" value="1.5202252244345935" />
-      <entry key="S10" value="2.1915933692182064" />
-      <entry key="S30" value="3.4353694451910854" />
-      <entry key="S60" value="6.033518611103265" />
-      <entry key="M2" value="14.655993901738675" />
-      <entry key="M5" value="48.87956811284598" />
-      <entry key="M10" value="90.64048273587507" />
-      <entry key="M15" value="114.46379319034568" />
-      <entry key="M30" value="146.51134517941708" />
-      <entry key="H1" value="166.86836937375833" />
-      <entry key="H2" value="203.98701345637454" />
-      <entry key="H4" value="458.87789243411544" />
-      <entry key="D1" value="2278.804971137037" />
-      <entry key="W1" value="3168.1044069999166" />
+      <entry key="MS100" value="0.28870737224297244" />
+      <entry key="MS500" value="1.293986163032879" />
+      <entry key="S2" value="2.4481465814831185" />
+      <entry key="S5" value="3.6761818764022154" />
+      <entry key="S10" value="4.873433011109813" />
+      <entry key="S30" value="6.5999719768618474" />
+      <entry key="S60" value="8.045058605409457" />
+      <entry key="M2" value="14.227991388186682" />
+      <entry key="M5" value="47.453034614998174" />
+      <entry key="M10" value="114.20585882683486" />
+      <entry key="M15" value="173.9028177199592" />
+      <entry key="M30" value="292.77229631270546" />
+      <entry key="H1" value="397.9000149832171" />
+      <entry key="H2" value="490.34674739984536" />
+      <entry key="H4" value="757.5664412233033" />
+      <entry key="D1" value="2601.8393709524707" />
+      <entry key="W1" value="3528.1115707636286" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -148,36 +160,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.SportTracker.Test: https.executor": "Run",
-    ".NET Launch Settings Profile.SportsTracker.Backend: http.executor": "Run",
-    ".NET Launch Settings Profile.SportsTracker.Backend: https.executor": "Run",
-    ".NET Launch Settings Profile.SportsTracker.Frontend: https.executor": "Run",
-    ".NET Launch Settings Profile.SportsTracker.Web: http.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "cidr.known.project.marker": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "master",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.jshint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.jshint": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "ml.llm.LLMConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.SportTracker.Test: https.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.SportsTracker.Backend: http.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.SportsTracker.Backend: https.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.SportsTracker.Frontend: https.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.SportsTracker.Web: http.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;ml.llm.LLMConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.SportsTracker.Frontend: https">
     <configuration name="SportsTracker.Frontend: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/SportsTracker.App/SportsTracker.App.csproj" />

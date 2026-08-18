@@ -52,7 +52,7 @@
 /* Team Row */
 .team-row-name,
 .team-score {
-    color: var(--bs-body-color);
+    color: var(--st-text);
 }
 
 .team-row-name {
@@ -81,7 +81,7 @@
 
 .team-link h4,
 .team-link .fw-semibold {
-    transition: opacity .15s ease;
+    transition: opacity var(--st-interaction-transition-duration) var(--st-interaction-transition-easing);
 }
 
 .team-link:hover h4,

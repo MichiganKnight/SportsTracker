@@ -60,7 +60,7 @@
 }
 
 .game-play:hover {
-    background-color: rgba(255, 255, 255, .025);
+    background-color: var(--st-table-hover);
 }
 
 .game-play-main {

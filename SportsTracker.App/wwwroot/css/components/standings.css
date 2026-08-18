@@ -24,7 +24,7 @@
 }
 
 .standings-table tbody tr {
-    transition: background-color .12s ease;
+    transition: background-color var(--st-interaction-transition-duration) var(--st-interaction-transition-easing);
 }
 
 .standings-table tbody tr:hover {

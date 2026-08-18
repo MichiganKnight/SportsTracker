@@ -15,10 +15,10 @@
     string gameStatusClass = Model.IsLive ? "bg-danger game-live-badge" : Model.IsFinal ? "bg-dark" : "bg-primary";
 }
 
-<div class="card game-card shadow-sm h-100 position-relative" id="game-@Model.GameId" data-game-id="@Model.GameId">
+<div class="card game-card card-interactive shadow-sm h-100 position-relative" id="game-@Model.GameId" data-game-id="@Model.GameId">
     <div class="card-body">
         <!-- Teams -->
-        <div class="rounded-3 p-2 mb-3 bg-body-tertiary">
+        <div class="rounded-3 p-2 mb-3 st-surface-alt">
             <partial name="~/Views/Team/Partials/_TeamRow.cshtml" model="Model.AwayTeam" />
             <partial name="~/Views/Team/Partials/_TeamRow.cshtml" model="Model.HomeTeam" />
         </div>
@@ -81,11 +81,11 @@
 
             @if (Model.Baseball is not null)
             {
-                <partial name="Sport/Baseball/_BaseballSituation" model="Model"/>
+                <partial name="~/Views/Game/Partials/Sport/Baseball/_BaseballSituation.cshtml" model="Model"/>
             }
             else if (Model.Football is not null)
             {
-                <partial name="Sport/Football/_FootballSituation" model="Model"/>
+                <partial name="~/Views/Game/Partials/Sport/Football/_FootballSituation.cshtml" model="Model"/>
             }
             else if (!string.IsNullOrWhiteSpace(Model.SituationDetail) && Model.IsLive)
             {
