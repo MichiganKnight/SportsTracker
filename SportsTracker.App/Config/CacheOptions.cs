@@ -23,5 +23,7 @@
         public int TeamMinutes { get; init; } = 60;
         public int TeamScheduleMinutes { get; init; } = 2;
         public int TeamRosterMinutes { get; init; } = 60;
+        
+        public int AthleteMinutes { get; init; } = 60;
     }
 }

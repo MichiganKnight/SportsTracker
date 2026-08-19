@@ -1,0 +1,89 @@
+﻿@using SportsTracker.App.Models.AthleteInfo
+@model SportsTracker.App.Models.AthleteInfo.AthleteDetails
+
+@{
+    ViewData["Title"] = Model.FirstName + " " + Model.LastName;
+}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="d-flex align-items-center gap-4">
+            @if (!string.IsNullOrEmpty(Model.Headshot))
+            {
+                <img src="@Model.Headshot" alt="@Model.DisplayName" style="width: 140px;" />
+            }
+            
+            <div>
+                <h2>
+                    @Model.DisplayName
+                </h2>
+                
+                <div>
+                    @Model.Team?.DisplayName
+                </div>
+                
+                <div>
+                    @Model.Position?.Name
+                </div>
+                
+                <div>
+                    @Model.Jersey
+                </div>
+            </div>
+        </div>
+        
+        <hr />
+        
+        <div>
+            <strong>Status:</strong>
+            @Model.Status
+        </div>
+        
+        <div>
+            <strong>Age:</strong>
+            @Model.Age
+        </div>
+        
+        <div>
+            <strong>Height:</strong>
+            @Model.Height
+        </div>
+        
+        <div>
+            <strong>Weight:</strong>
+            @Model.Weight
+        </div>
+        
+        <hr />
+        
+        <h4>
+            @Model.StatsSummaryTitle
+        </h4>
+        
+        <div class="row g-3">
+            @foreach (AthleteStatSummary stat in Model.StatsSummary)
+            {
+                <div class="col-6 col-md-3">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div class="fw-bold fs-4">
+                                @stat.DisplayValue
+                            </div>
+                            
+                            <div class="text-secondary">
+                                @stat.Abbreviation
+                            </div>
+                            
+                            @if (!string.IsNullOrWhiteSpace(stat.RankDisplayValue))
+                            {
+                                <div class="small text-secondary">
+                                    @stat.RankDisplayValue
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
