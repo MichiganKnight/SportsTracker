@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace SportsTracker.App.Integrations.ESPN.DTOs.Athlete
+﻿namespace SportsTracker.App.Integrations.ESPN.DTOs.Athlete
 {
     public sealed class AthleteProfileResponseDto
     {

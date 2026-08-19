@@ -14,7 +14,7 @@ namespace SportsTracker.App.Integrations.ESPN
 
         public static string Standings(League league)
         {
-            LeagueInfo info = LeagueConfiguration.Leagues[league];
+            LeagueInfo info = GetLeagueInfo(league);
 
             return $"apis/v2/sports/{info.EspnSport}/{info.EspnLeague}/standings";
         }
@@ -61,6 +61,41 @@ namespace SportsTracker.App.Integrations.ESPN
             return Site(info, $"teams/{Uri.EscapeDataString(teamId)}/roster");
         }
 
+        public static string AthleteDetails(League league, string athleteId)
+        {
+            LeagueInfo info = GetLeagueInfo(league);
+            
+            return Athlete(info, athleteId);
+        } 
+
+        public static string AthleteOverview(League league, string athleteId)
+        {
+            LeagueInfo info = GetLeagueInfo(league);
+            
+            return Athlete(info, athleteId, "overview");
+        }
+
+        public static string AthleteStats(League league, string athleteId)
+        {
+            LeagueInfo info = GetLeagueInfo(league);
+            
+            return Athlete(info, athleteId, "stats");
+        }
+
+        public static string AthleteGameLog(League league, string athleteId)
+        {
+            LeagueInfo info = GetLeagueInfo(league);
+            
+            return Athlete(info, athleteId, "gamelog");
+        }
+
+        public static string AthleteSplits(League league, string athleteId)
+        {
+            LeagueInfo info = GetLeagueInfo(league);
+            
+            return Athlete(info, athleteId, "splits");
+        }
+
         private static LeagueInfo GetLeagueInfo(League league)
         {
             return !LeagueConfiguration.Leagues.TryGetValue(league, out LeagueInfo? info) ? throw new NotSupportedException($"ESPN Endpoints Not Configured for {league}") : info;
@@ -69,6 +104,18 @@ namespace SportsTracker.App.Integrations.ESPN
         private static string Site(LeagueInfo info, string path)
         {
             return $"apis/site/v2/sports/{info.EspnSport}/{info.EspnLeague}/{path}";
+        }
+        
+        private static string Athlete(LeagueInfo info, string athleteId, string? path = null)
+        {
+            string endpoint =  $"apis/common/v3/sports/{info.EspnSport}/{info.EspnLeague}/athletes/{Uri.EscapeDataString(athleteId)}";
+
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                endpoint += $"/{path}";
+            }
+            
+            return endpoint;
         }
     }
 }

@@ -41,14 +41,9 @@ namespace SportsTracker.App.Extensions
                 {
                     SportsApiOptions options = serviceProvider.GetRequiredService<IOptions<SportsApiOptions>>().Value;
                 
-                    client.BaseAddress = new Uri(options.BaseUrl.TrimEnd('/') + "/");
-                    client.DefaultRequestHeaders.Accept.ParseAdd("*/*");
-                    client.DefaultRequestHeaders.UserAgent.ParseAdd("PostmanRuntime/7.53.0");
+                    ConfigureEspnClient(client, options.BaseUrl);
                 })
-                .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-                {
-                    AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate | DecompressionMethods.Brotli
-                });
+                .ConfigurePrimaryHttpMessageHandler(CreateEspnHandler);
         }
 
         private static void AddApplicationServices(IServiceCollection services)
@@ -80,11 +75,29 @@ namespace SportsTracker.App.Extensions
             services.AddScoped<ITeamDetailsService, TeamDetailsService>();
             services.AddScoped<ITeamScheduleService, TeamScheduleService>();
             services.AddScoped<ITeamRosterService, TeamRosterService>();
+            
+            services.AddScoped<IAthleteDetailsService, AthleteDetailsService>();
         }
 
         private static void AddBackgroundServices(IServiceCollection services)
         {
             services.AddHostedService<ScoreboardWorker>();
+        }
+
+        private static void ConfigureEspnClient(HttpClient client, string baseUrl)
+        {
+            client.BaseAddress = new Uri(baseUrl.TrimEnd('/') + "/");
+            
+            client.DefaultRequestHeaders.Accept.ParseAdd("*/*");
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("PostmanRuntime/7.53.0");
+        }
+
+        private static HttpClientHandler CreateEspnHandler()
+        {
+            return new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate | DecompressionMethods.Brotli
+            };
         }
     }
 }

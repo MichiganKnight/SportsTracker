@@ -3,6 +3,11 @@ using SportsTracker.App.Common;
 
 namespace SportsTracker.App.Integrations.ESPN
 {
+    public interface IEspnApiClient
+    {
+        Task<ApiResult<T>> GetAsync<T>(string endpoint, CancellationToken cancellationToken = default);
+    }
+    
     public sealed class EspnApiClient(HttpClient httpClient, ILogger<EspnApiClient> logger) : IEspnApiClient
     {
         private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
