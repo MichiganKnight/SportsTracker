@@ -19,7 +19,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/themes/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/wwwroot/css/themes/theme.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.App/Cache/CacheKeys.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/Cache/CacheKeys.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.App/Config/CacheOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/Config/CacheOptions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.App/Controllers/DevController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/Controllers/DevController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SportsTracker.App/Extensions/ServiceCollectionExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/Extensions/ServiceCollectionExtensions.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,20 +51,24 @@
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Controllers/AthleteController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Controllers/DevController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Controllers/GolfController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.App/Integrations/ESPN/DTOs/Athlete/AthleteOverviewDtos.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Integrations/ESPN/DTOs/Athlete/AthleteProfileDtos.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Integrations/ESPN/DTOs/Team/TeamDetailsDtos.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Integrations/ESPN/DTOs/Team/TeamRosterDtos.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Integrations/ESPN/Mappers/AthleteDetailsMapper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.App/Integrations/ESPN/Mappers/AthleteOverviewMapper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Mapping/AthleteDetailsViewModelMapper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Mapping/GolfEventCardViewModelMapper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Mapping/GolfTournamentViewModelMapper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Models/AthleteInfo/AthleteDetailsModels.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.App/Models/AthleteInfo/AthleteOverviewModels.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Models/BoxScore/BoxScoreModels.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Models/GameDetails/GameDetailsModels.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Models/PlayByPlay/PlayByPlayModels.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Models/Standings/StandingsModels.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Models/TeamInfo/TeamRosterModels.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/Services/AthleteDetailsService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SportsTracker.App/Services/AthleteOverviewService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/ViewModels/AthleteInfo/AthleteDetailsViewModel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/ViewModels/Golf/GolfEventCardViewModel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SportsTracker.App/ViewModels/Golf/GolfTournamentViewModel.cs" root0="FORCE_HIGHLIGHTING" />
@@ -84,61 +91,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0000000000001004" />
-      <entry key="MS500" value="1.0025136508736352" />
-      <entry key="S2" value="1.2239190682902255" />
-      <entry key="S5" value="1.5621458253989484" />
-      <entry key="S10" value="1.9524722064766933" />
-      <entry key="S30" value="4.859978825989517" />
-      <entry key="S60" value="10.9643837864098" />
-      <entry key="M2" value="21.641973656657964" />
-      <entry key="M5" value="48.99291674701261" />
-      <entry key="M10" value="110.97631552057997" />
-      <entry key="M15" value="180.5818914504725" />
-      <entry key="M30" value="366.20872754612947" />
-      <entry key="H1" value="673.6815709770725" />
-      <entry key="H2" value="1171.722115527985" />
-      <entry key="H4" value="1816.5966729369445" />
-      <entry key="D1" value="3969.695728056685" />
-      <entry key="W1" value="5048.102619730728" />
+      <entry key="MS100" value="1.0000088248305046" />
+      <entry key="MS500" value="1.0980092085118027" />
+      <entry key="S2" value="1.753539133165237" />
+      <entry key="S5" value="2.7112429618663803" />
+      <entry key="S10" value="3.9949137176286937" />
+      <entry key="S30" value="13.305711687011796" />
+      <entry key="S60" value="27.27370577010516" />
+      <entry key="M2" value="49.062181031765014" />
+      <entry key="M5" value="125.1985074492289" />
+      <entry key="M10" value="297.4984315831338" />
+      <entry key="M15" value="477.09250357863795" />
+      <entry key="M30" value="912.9154219313423" />
+      <entry key="H1" value="1476.1334175284028" />
+      <entry key="H2" value="2183.966427768209" />
+      <entry key="H4" value="3008.4708558041566" />
+      <entry key="D1" value="5449.877830633056" />
+      <entry key="W1" value="6639.291082317104" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="0.0" />
-      <entry key="S2" value="2.061287483651797E-82" />
-      <entry key="S5" value="4.172068470913296E-33" />
-      <entry key="S10" value="1.5315903765255664E-16" />
-      <entry key="S30" value="2.272486885592408E-5" />
-      <entry key="S60" value="0.015313925294867367" />
-      <entry key="M2" value="0.4618929441452687" />
-      <entry key="M5" value="5.444054302349835" />
-      <entry key="M10" value="19.181895744470694" />
-      <entry key="M15" value="35.49863175080103" />
-      <entry key="M30" value="83.18741352096743" />
-      <entry key="H1" value="163.74427453753864" />
-      <entry key="H2" value="277.48959697036435" />
-      <entry key="H4" value="412.6077863093389" />
-      <entry key="D1" value="952.1983336622704" />
-      <entry key="W1" value="1250.6006786114679" />
+      <entry key="MS100" value="3.783287713339E-5" />
+      <entry key="MS500" value="0.13401927513494807" />
+      <entry key="S2" value="0.8506300306791522" />
+      <entry key="S5" value="1.6821703516668292" />
+      <entry key="S10" value="2.9547398786515218" />
+      <entry key="S30" value="6.617609034391302" />
+      <entry key="S60" value="10.134323219610849" />
+      <entry key="M2" value="16.604853837060006" />
+      <entry key="M5" value="46.52749498629789" />
+      <entry key="M10" value="104.51034196571504" />
+      <entry key="M15" value="149.30199514541738" />
+      <entry key="M30" value="236.81650084069128" />
+      <entry key="H1" value="347.69597433627337" />
+      <entry key="H2" value="492.0069985278626" />
+      <entry key="H4" value="658.9275183055205" />
+      <entry key="D1" value="1250.7400453141192" />
+      <entry key="W1" value="1573.145424142078" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="7.576694453713E-6" />
-      <entry key="MS500" value="0.09479419831577092" />
-      <entry key="S2" value="0.6724848984089988" />
-      <entry key="S5" value="1.2251678747959382" />
-      <entry key="S10" value="1.7373233968931625" />
-      <entry key="S30" value="4.752352372229377" />
-      <entry key="S60" value="10.901309138732149" />
-      <entry key="M2" value="22.039171254442294" />
-      <entry key="M5" value="54.36272760084277" />
-      <entry key="M10" value="130.05245288905041" />
-      <entry key="M15" value="215.95850146249128" />
-      <entry key="M30" value="449.2701415757817" />
-      <entry key="H1" value="837.3151987175917" />
-      <entry key="H2" value="1449.121320777132" />
-      <entry key="H4" value="2229.1364046836334" />
-      <entry key="D1" value="4921.868591049655" />
-      <entry key="W1" value="6298.698605965384" />
+      <entry key="MS100" value="0.06607687838857433" />
+      <entry key="MS500" value="0.7614636218441452" />
+      <entry key="S2" value="2.2634655535322974" />
+      <entry key="S5" value="3.9650565734962506" />
+      <entry key="S10" value="6.488587670010562" />
+      <entry key="S30" value="19.512589210822245" />
+      <entry key="S60" value="37.069309553628756" />
+      <entry key="M2" value="65.38405914977774" />
+      <entry key="M5" value="171.47147091294548" />
+      <entry key="M10" value="401.7507658424932" />
+      <entry key="M15" value="626.1412230474133" />
+      <entry key="M30" value="1149.5062534870717" />
+      <entry key="H1" value="1823.647011806919" />
+      <entry key="H2" value="2675.836130685144" />
+      <entry key="H4" value="3667.3016585092087" />
+      <entry key="D1" value="6700.58614145767" />
+      <entry key="W1" value="8212.43082592353" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
