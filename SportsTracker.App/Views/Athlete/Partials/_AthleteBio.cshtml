@@ -1,0 +1,167 @@
+﻿@model SportsTracker.App.ViewModels.AthleteInfo.AthleteDetailsViewModel
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        Player Information
+    </div>
+
+    <div class="card-body">
+        <div class="athlete-bio-grid">
+            @if (Model.Age.HasValue)
+            {
+                <div class="athlete-bio-item">
+                    <span class="athlete-bio-label">
+                        Age
+                    </span>
+
+                    <span class="athlete-bio-value">
+                        @Model.Age
+                    </span>
+                </div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.DateOfBirth))
+            {
+                <div class="athlete-bio-item">
+                    <span class="athlete-bio-label">
+                        Born
+                    </span>
+
+                    <span class="athlete-bio-value">
+                        @Model.DateOfBirth
+                    </span>
+                </div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.BirthPlace))
+            {
+                <div class="athlete-bio-item">
+                    <span class="athlete-bio-label">
+                        Birthplace
+                    </span>
+
+                    <span class="athlete-bio-value">
+                        @Model.BirthPlace
+                    </span>
+                </div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.Height))
+            {
+                <div class="athlete-bio-item">
+                    <span class="athlete-bio-label">
+                        Height
+                    </span>
+
+                    <span class="athlete-bio-value">
+                        @Model.Height
+                    </span>
+                </div>
+            }
+            
+            @if (!string.IsNullOrWhiteSpace(Model.Weight))
+            {
+                <div class="athlete-bio-item">
+                    <span class="athlete-bio-label">
+                        Weight
+                    </span>
+
+                    <span class="athlete-bio-value">
+                        @Model.Weight
+                    </span>
+                </div>
+            }
+            
+            @if (!string.IsNullOrWhiteSpace(Model.College))
+            {
+                <div class="athlete-bio-item">
+                    <span class="athlete-bio-label">
+                        College
+                    </span>
+
+                    <span class="athlete-bio-value">
+                        @Model.College
+                    </span>
+                </div>
+            }
+            
+            @if (!string.IsNullOrWhiteSpace(Model.Experience))
+            {
+                <div class="athlete-bio-item">
+                    <span class="athlete-bio-label">
+                        Experience
+                    </span>
+
+                    <span class="athlete-bio-value">
+                        @Model.Experience
+                    </span>
+                </div>
+            }
+            
+            @if (!string.IsNullOrWhiteSpace(Model.Draft))
+            {
+                <div class="athlete-bio-item">
+                    <span class="athlete-bio-label">
+                        Draft
+                    </span>
+
+                    <span class="athlete-bio-value">
+                        @Model.Draft
+                    </span>
+                </div>
+            }
+            
+            @if (!string.IsNullOrWhiteSpace(Model.BatsThrows))
+            {
+                <div class="athlete-bio-item">
+                    <span class="athlete-bio-label">
+                        Bats / Throws
+                    </span>
+
+                    <span class="athlete-bio-value">
+                        @Model.BatsThrows
+                    </span>
+                </div>
+            }
+            
+            @if (Model.TurnedPro.HasValue)
+            {
+                <div class="athlete-bio-item">
+                    <span class="athlete-bio-label">
+                        Turned Pro
+                    </span>
+
+                    <span class="athlete-bio-value">
+                        @Model.TurnedPro
+                    </span>
+                </div>
+            }
+            
+            @if (!string.IsNullOrWhiteSpace(Model.Hand))
+            {
+                <div class="athlete-bio-item">
+                    <span class="athlete-bio-label">
+                        Hand
+                    </span>
+
+                    <span class="athlete-bio-value">
+                        @Model.Hand
+                    </span>
+                </div>
+            }
+            
+            @if (!string.IsNullOrWhiteSpace(Model.Citizenship))
+            {
+                <div class="athlete-bio-item">
+                    <span class="athlete-bio-label">
+                        Citizenship
+                    </span>
+
+                    <span class="athlete-bio-value">
+                        @Model.Citizenship
+                    </span>
+                </div>
+            }
+        </div>
+    </div>
+</div>

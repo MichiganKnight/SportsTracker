@@ -1,0 +1,190 @@
+﻿/* Athlete Header */
+
+.athlete-header {
+    padding: 1.5rem;
+}
+
+.athlete-header-main {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.athlete-header-wrap {
+    flex: 0 0 auto;
+}
+
+.athlete-headshot {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    border-radius: 50%;
+    background-color: var(--st-surface-alt);
+}
+
+.athlete-headshot-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: var(--st-surface-alt);
+    color: var(--st-text-muted);
+    font-size: 4rem;
+}
+
+.athlete-header-info {
+    min-width: 0;
+}
+
+.athlete-name {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.athlete-meta {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-top: .35rem;
+    color: var(--st-text-muted);
+}
+
+.athlete-team-link,
+.athlete-country {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    margin-top: .75rem;
+    color: var(--st-text);
+    text-decoration: none;
+}
+
+.athlete-team-link:hover {
+    color: var(--st-primary);
+}
+
+.athlete-team-logo {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.athlete-team-logo-dark {
+    display: none;
+}
+
+[data-theme="dark"] .athlete-team-logo-light {
+    display: none;
+}
+
+[data-theme="dark"] .athlete-team-logo-dark {
+    display: block;
+}
+
+.athlete-country-flag {
+    width: 30px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* Quick Stats */
+
+.athlete-stat-card {
+    height: 100%;
+    padding: 1rem;
+    text-align: center;
+    border: 1px solid var(--st-border);
+    border-radius: .7rem;
+    background-color: var(--st-surface-alt);
+}
+
+.athlete-stat-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.athlete-stat-label {
+    margin-top: .2rem;
+    color: var(--st-text-muted);
+    font-size: .8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.athlete-stat-rank {
+    margin-top: .25rem;
+    color: var(--st-text-muted);
+    font-size: .75rem;
+}
+
+/* Bio */
+
+.athlete-bio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.athlete-bio-item {
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+    padding: .85rem 1rem;
+    border-radius: .7rem;
+    background-color: var(--st-surface-alt);
+}
+
+.athlete-bio-label {
+    color: var(--st-text-muted);
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;    
+}
+
+.athlete-bio-value {
+    font-weight: 500;
+}
+
+.athlete-bio-item-wide {
+    grid-column: span 2;
+}
+
+/* Responsive */
+
+@media (max-width: 767.98px) {
+    .athlete-header-main {
+        align-items: flex-start;
+    }
+
+    .athlete-headshot,
+    .athlete-headshot-placeholder {
+        width: 110px;
+        height: 110px;
+    }
+
+    .athlete-name {
+        font-size: 1.6rem;
+    }
+
+    .athlete-bio-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 575.98px) {
+    .athlete-header-main {
+        flex-direction: column;
+    }
+
+    .athlete-bio-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .athlete-bio-item-wide {
+        grid-column: auto;
+    }
+}

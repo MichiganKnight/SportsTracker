@@ -1,0 +1,34 @@
+﻿@using SportsTracker.App.ViewModels.AthleteInfo
+@model SportsTracker.App.ViewModels.AthleteInfo.AthleteDetailsViewModel
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        @(Model.StatsSummaryTitle ?? "Season Stats")
+    </div>
+    
+    <div class="card-body">
+        <div class="row g-3">
+            @foreach (AthleteStatSummaryViewModel stat in Model.StatsSummary)
+            {
+                <div class="col-6 col-md-3">
+                    <div class="athlete-stat-card">
+                        <div class="athlete-stat-value">
+                            @stat.Value
+                        </div>
+                        
+                        <div class="athlete-stat-label">
+                            @stat.Label
+                        </div>
+                        
+                        @if (!string.IsNullOrWhiteSpace(stat.Rank))
+                        {
+                            <div class="athlete-stat-rank">
+                                @stat.Rank
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

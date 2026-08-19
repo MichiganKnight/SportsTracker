@@ -9,6 +9,8 @@
 
 .card-header {
     border-bottom: 1px solid var(--st-border);
+    font-weight: 600;
+    text-transform: capitalize;
 }
 
 .game-card {

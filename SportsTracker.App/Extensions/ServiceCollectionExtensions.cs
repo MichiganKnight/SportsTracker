@@ -60,6 +60,7 @@ namespace SportsTracker.App.Extensions
             services.AddScoped<ITeamRosterViewModelMapper, TeamRosterViewModelMapper>();
             services.AddScoped<IGolfEventCardViewModelMapper, GolfEventCardViewModelMapper>();
             services.AddScoped<IGolfTournamentViewModelMapper, GolfTournamentViewModelMapper>();
+            services.AddScoped<IAthleteDetailsViewModelMapper, AthleteDetailsViewModelMapper>();
             
             services.AddScoped<IScoreboardService, ScoreboardService>();
             services.AddScoped<IScoreboardRefreshService, ScoreboardRefreshService>();
