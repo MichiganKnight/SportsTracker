@@ -37,6 +37,12 @@
     font-size: .72rem;
 }
 
+.game-team-surface {
+    background-color: var(--st-game-team-surface);
+    
+    border: 1px solid var(--st-border);
+}
+
 /* Game Status */
 
 .game-status-row {

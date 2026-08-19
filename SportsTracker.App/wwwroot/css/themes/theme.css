@@ -7,67 +7,77 @@
 }
 
 [data-theme="dark"] {
-    --st-bg: #121212;
+    color-scheme: dark;
+    
+    --st-bg: #17181A;
 
-    --st-surface: #1B1B1D;
-    --st-surface-alt: #26282C;
+    --st-surface: #1E2023;
+    --st-surface-alt: #282B30;
 
-    --st-card-hover-border: #4A4F56;
-    --st-card-hover-shadow: 0 .5rem 1rem rgba(0, 0, 0, .30);
+    --st-game-team-surface: var(--st-surface-alt);
 
-    --st-table-bg: #1B1B1D;
-    --st-table-header: #222428;
-    --st-table-row-alt: #202226;
-    --st-table-hover: #2A2D32;
+    --st-card-hover-border: #4A5058;
+    --st-card-hover-shadow: 0 .5rem 1rem rgba(0, 0, 0, .26);
 
-    --st-navbar: #181A1E;
-    --st-sidebar: #16181C;
+    --st-table-bg: #1E2023;
+    --st-table-header: #25282C;
+    --st-table-row-alt: #22252A;
+    --st-table-hover: #2D3137;
 
-    --st-border: #343A40;
+    --st-navbar: #1B1D20;
+    --st-sidebar: #191B1E;
 
-    --st-primary: #0D6EFD;
-    --st-success: #198754;
-    --st-warning: #FFC107;
-    --st-danger: #DC3545;
+    --st-border: #3A3F46;
 
-    --st-text: #F8F9FA;
-    --st-text-muted: #ADB5BD;
+    --st-primary: #4C8DFF;
+    --st-success: #35A66F;
+    --st-warning: #D9A624;
+    --st-danger: #E05A63;
+
+    --st-text: #E9ECEF;
+    --st-text-muted: #A7ADB5;
+    
+    --st-primary-rgb: 76, 141, 255;
+    --st-success-rgb: 53, 166, 111;
+    --st-warning-rgb: 217, 166, 36;
+    --st-danger-rgb: 224, 90, 99;
 }
 
 [data-theme="light"] {
-    --st-bg: #F5F7FA;
+    color-scheme: light;
+    
+    --st-bg: #F4F5F7;
 
-    --st-surface: #FFFFFF;
-    --st-surface-alt: #F1F3F5;
+    --st-surface: #FAFAFB;
+    --st-surface-alt: #EEF0F2;
 
-    --st-card-hover-border: #C7CDD4;
-    --st-card-hover-shadow: 0 .5rem 1rem rgba(0, 0, 0, .12);
+    --st-game-team-surface: #DFE3E8;
 
-    --st-table-bg: #FFFFFF;
-    --st-table-header: #F1F3F5;
-    --st-table-row-alt: #F8F9FA;
-    --st-table-hover: #EEF1F4;
+    --st-card-hover-border: #C7CBD1;
+    --st-card-hover-shadow: 0 .5rem 1rem rgba(0, 0, 0, .10);
 
-    --st-navbar: #FFFFFF;
-    --st-sidebar: #F8F9FA;
+    --st-table-bg: #FAFAFB;
+    --st-table-header: #EEF0F2;
+    --st-table-row-alt: #F5F6F8;
+    --st-table-hover: #E8EBEE;
 
-    --st-border: #DEE2E6;
+    --st-navbar: #FAFAFB;
+    --st-sidebar: #F3F4F6;
 
-    --st-primary: #0D6EFD;
-    --st-success: #198754;
-    --st-warning: #FFC107;
-    --st-danger: #DC3545;
+    --st-border: #D6D9DE;
 
-    --st-text: #212529;
-    --st-text-muted: #6C757D;
-}
+    --st-primary: #2F6FDB;
+    --st-success: #2E8B63;
+    --st-warning: #B98514;
+    --st-danger: #C94D55;
 
-[data-theme="dark"],
-[data-theme="light"] {
-    --st-success-rgb: 25, 135, 84;
-    --st-danger-rgb: 220, 53, 69;
-    --st-warning-rgb: 255, 193, 7;
-    --st-primary-rgb: 13, 110, 253;
+    --st-text: #24272B;
+    --st-text-muted: #666D76;
+    
+    --st-primary-rgb: 47, 111, 219;
+    --st-success-rgb: 46, 139, 99;
+    --st-warning-rgb: 185, 133, 20;
+    --st-danger-rgb: 201, 77, 85;
 }
 
 body,
