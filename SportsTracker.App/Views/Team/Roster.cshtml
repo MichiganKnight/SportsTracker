@@ -45,30 +45,32 @@
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center gap-3">
-                                            @if (!string.IsNullOrWhiteSpace(player.Headshot))
-                                            {
-                                                <img src="@player.Headshot" alt="@player.DisplayName" class="roster-player-headshot" />
-                                            }
-                                            
-                                            <div>
-                                                <div class="fw-semibold">
-                                                    @if (!string.IsNullOrWhiteSpace(player.Jersey))
-                                                    {
-                                                        <span class="text-secondary me-1">
-                                                            #@player.Jersey
-                                                        </span>
-                                                    }
-                                                    
-                                                    @player.DisplayName
-                                                </div>
-                                                
-                                                @if (!string.IsNullOrWhiteSpace(player.BirthPlace))
+                                            <a asp-controller="Athlete" asp-action="Index" asp-route-league="@Model.Team.League" asp-route-athleteId="@player.Id" class="athlete-link d-inline-block">
+                                                @if (!string.IsNullOrWhiteSpace(player.Headshot))
                                                 {
-                                                    <div class="text-secondary small">
-                                                        @player.BirthPlace
-                                                    </div>
+                                                    <img src="@player.Headshot" alt="@player.DisplayName" class="roster-player-headshot"/>
                                                 }
-                                            </div>
+
+                                                <div>
+                                                    <div class="fw-semibold">
+                                                        @if (!string.IsNullOrWhiteSpace(player.Jersey))
+                                                        {
+                                                            <span class="text-secondary me-1">
+                                                                #@player.Jersey
+                                                            </span>
+                                                        }
+
+                                                        @player.DisplayName
+                                                    </div>
+
+                                                    @if (!string.IsNullOrWhiteSpace(player.BirthPlace))
+                                                    {
+                                                        <div class="text-secondary small">
+                                                            @player.BirthPlace
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </a>
                                         </div>
                                     </td>
                                     

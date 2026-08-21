@@ -102,14 +102,16 @@
                             
                             <td>
                                 <div class="d-flex align-items-center gap-2">
-                                    @if (!string.IsNullOrWhiteSpace(golfer.CountryFlag))
-                                    {
-                                        <img src="@golfer.CountryFlag" alt="@golfer.Country" class="golf-country-flag" />
-                                    }
-                                    
-                                    <span class="fw-semibold">
-                                        @golfer.Name
-                                    </span>
+                                    <a asp-controller="Athlete" asp-action="Index" asp-route-league="PGA" asp-route-athleteId="@golfer.AthleteId" class="athlete-link d-inline-block">
+                                        @if (!string.IsNullOrWhiteSpace(golfer.CountryFlag))
+                                        {
+                                            <img src="@golfer.CountryFlag" alt="@golfer.Country" class="golf-country-flag"/>
+                                        }
+
+                                        <span class="fw-semibold">
+                                            @golfer.Name
+                                        </span>
+                                    </a>
                                 </div>
                             </td>
                             
