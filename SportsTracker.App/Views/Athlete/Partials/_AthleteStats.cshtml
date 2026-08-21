@@ -1,0 +1,104 @@
+﻿@using SportsTracker.App.ViewModels.AthleteInfo
+@model SportsTracker.App.ViewModels.AthleteInfo.AthleteStatsViewModel
+
+@if (!Model.HasStats)
+{
+    <div class="card shadow-sm">
+        <div class="card-body text-center py-5">
+            <i class="bi bi-bar-char fs-2 text-secondary"></i>
+            
+            <h5 class="mt-3 mb-2">
+                Statistics Not Available
+            </h5>
+        </div>
+    </div>
+}
+else
+{
+    @foreach (AthleteStatsCategoryViewModel category in Model.Categories)
+    {
+        <div class="card athlete-stats-category shadow-sm mb-4">
+            <div class="card-header athlete-section-header">
+                @category.DisplayName
+            </div>
+            
+            <div class="table-responsive athlete-stats-table-wrap">
+                <table class="table athlete-stats-table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Season</th>
+                            <th>Team</th>
+                            
+                            @foreach (AthleteStatsColumnViewModel column in category.Columns)
+                            {
+                                <th class="text-center" title="@(string.IsNullOrWhiteSpace(column.Description) ? column.DisplayName : column.Description)">
+                                    @column.Label
+                                </th>
+                            }
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        @foreach (AthleteStatsRowViewModel row in category.Rows)
+                        {
+                            <tr>
+                                <th class="athlete-stats-season">
+                                    @row.Season
+                                </th>
+                                
+                                <td>
+                                    <div class="athlete-stats-team">
+                                        @if (!string.IsNullOrWhiteSpace(row.TeamLogo))
+                                        {
+                                            <img src="@row.TeamLogo" alt="@row.TeamName" class="athlete-stats-team-logo athlete-stats-team-logo-light" />
+                                        }
+
+                                        @if (!string.IsNullOrWhiteSpace(row.TeamDarkLogo))
+                                        {
+                                            <img src="@row.TeamDarkLogo" alt="@row.TeamName" class="athlete-stats-team-logo athlete-stats-team-logo-dark" />
+                                        }
+                                        
+                                        <span>
+                                            @row.TeamAbbreviation
+                                        </span>
+                                    </div>
+                                </td>
+                                
+                                @for (int i = 0; i < category.Columns.Count; i++)
+                                {
+                                    string value = i < row.Stats.Count ? row.Stats[i] : string.Empty;
+                                    
+                                    <td class="text-center">
+                                        @value
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                    
+                    @if (category.Totals.Count > 0)
+                    {
+                        <tfoot>
+                            <tr>
+                                <th>
+                                    Career
+                                </th>
+                                
+                                <td></td>
+                                
+                                @for (int i = 0; i < category.Columns.Count; i++)
+                                {
+                                    string value = i < category.Totals.Count ? category.Totals[i] : string.Empty;
+                                    
+                                    <td class="text-center">
+                                        @value
+                                    </td>
+                                }
+                            </tr>
+                        </tfoot>
+                    }
+                </table>
+            </div>
+        </div>
+    }
+}

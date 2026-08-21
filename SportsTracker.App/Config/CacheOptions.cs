@@ -26,5 +26,6 @@
         
         public int AthleteMinutes { get; init; } = 60;
         public int AthleteOverviewMinutes { get; init; } = 15;
+        public int AthleteStatsMinutes { get; init; } = 60;
     }
 }

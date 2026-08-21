@@ -8,7 +8,7 @@ using SportsTracker.App.ViewModels.AthleteInfo;
 namespace SportsTracker.App.Controllers
 {
     [Route("athlete")]
-    public sealed class AthleteController(IAthleteService athleteService, IAthleteDetailsViewModelMapper athleteDetailsViewModelMapper, IAthleteOverviewViewModelMapper athleteOverviewViewModelMapper) : Controller
+    public sealed class AthleteController(IAthleteService athleteService, IAthleteDetailsViewModelMapper athleteDetailsViewModelMapper, IAthleteOverviewViewModelMapper athleteOverviewViewModelMapper, IAthleteStatsViewModelMapper athleteStatsViewModelMapper) : Controller
     {
         [HttpGet("{league}/{athleteId}")]
         public async Task<IActionResult> Index(League league, string athleteId, CancellationToken cancellationToken)
@@ -39,14 +39,28 @@ namespace SportsTracker.App.Controllers
         [HttpGet("{league}/{athleteId}/stats")]
         public async Task<IActionResult> Stats(League league, string athleteId, CancellationToken cancellationToken)
         {
-            AthleteDetailsViewModel? athlete = await GetAthleteDetailsAsync(league, athleteId, cancellationToken);
-
-            if (athlete is null)
+            Task<AthleteDetails?> detailsTask = athleteService.GetAthleteDetailsAsync(league, athleteId, cancellationToken);
+            Task<AthleteStats?> statsTask = athleteService.GetAthleteStatsAsync(league, athleteId, cancellationToken);
+            
+            await Task.WhenAll(detailsTask, statsTask);
+            
+            AthleteDetails? details = await detailsTask;
+            
+            if (details is null)
             {
                 return NotFound();
             }
             
-            return View(athlete);
+            AthleteStats? stats = await statsTask;
+
+            AthletePageViewModel<AthleteStatsViewModel> viewModel = new()
+            {
+                Athlete = athleteDetailsViewModelMapper.Map(details),
+
+                Content = stats is null ? new AthleteStatsViewModel() : athleteStatsViewModelMapper.Map(stats)
+            };
+            
+            return View(viewModel);
         }
 
         [HttpGet("{league}/{athleteId}/gamelog")]

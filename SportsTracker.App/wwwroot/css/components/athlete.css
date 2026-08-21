@@ -377,6 +377,74 @@
     background-color: var(--st-table-hover);
 }
 
+/* Full Athlete Stats */
+
+.athlete-stats-category {
+    overflow: hidden;
+}
+
+.athlete-stats-table-wrap {
+    border: 0;
+    border-radius: 0;
+}
+
+.athlete-stats-table {
+    min-width: 850px;    
+}
+
+.athlete-stats-table thead th {
+    font-size: .72rem;
+}
+
+.athlete-stats-table tbody th,
+.athlete-stats-table tbody td,
+.athlete-stats-table tfoot th,
+.athlete-stats-table tfoot td {
+    padding-top: .65rem;
+    padding-bottom: .65rem;
+}
+
+.athlete-stats-season {
+    min-width: 75px;
+    font-size: .85rem;
+    font-weight: 600;
+}
+
+.athlete-stats-team {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    min-width: 70px;
+    font-size: .82rem;
+    font-weight: 600;
+}
+
+.athlete-stats-team-logo {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.athlete-stats-team-logo-dark {
+    display: none;
+}
+
+[data-theme="dark"] .athlete-stats-team-logo-light {
+    display: none;
+}
+
+[data-theme="dark"] .athlete-stats-team-logo-dark {
+    display: block;
+}
+
+.athlete-stats-table tbody tr:hover > * {
+    background-color: var(--st-table-hover);
+}
+
+.athlete-stats-table tfoot > tr > * {
+    font-weight: 700;
+}
+
 /* Athlete Navigation */
 
 .athlete-page .btn-group {

@@ -1,18 +1,15 @@
-﻿@model SportsTracker.App.ViewModels.AthleteInfo.AthleteDetailsViewModel
+﻿@using SportsTracker.App.ViewModels.AthleteInfo
+@model SportsTracker.App.ViewModels.AthleteInfo.AthletePageViewModel<AthleteStatsViewModel>
 
 @{
-    ViewData["Title"] = $"{Model.DisplayName} Stats";
+    ViewData["Title"] = $"{Model.Athlete.DisplayName} Stats";
     ViewData["ActiveAthleteTab"] = "Stats";
 }
 
-<div class="container-fluid">
-    <partial name="~/Views/Athlete/Partials/_AthleteHeader.cshtml" model="Model" />
+<div class="container-fluid athlete-page">
+    <partial name="~/Views/Athlete/Partials/_AthleteHeader.cshtml" model="Model.Athlete" />
     
-    <partial name="~/Views/Athlete/Partials/_AthleteNavigation.cshtml" model="Model" />
+    <partial name="~/Views/Athlete/Partials/_AthleteNavigation.cshtml" model="Model.Athlete" />
     
-    <div class="card shadow-sm">
-        <div class="card-body text-secondary">
-            Stats Coming Soon
-        </div>
-    </div>
+    <partial name="~/Views/Athlete/Partials/_AthleteStats.cshtml" model="Model.Content" />
 </div>

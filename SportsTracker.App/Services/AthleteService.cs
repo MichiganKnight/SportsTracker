@@ -13,6 +13,7 @@ namespace SportsTracker.App.Services
     {
         Task<AthleteDetails?> GetAthleteDetailsAsync(League league, string athleteId, CancellationToken cancellationToken = default);
         Task<AthleteOverview?> GetAthleteOverviewAsync(League league, string athleteId, CancellationToken cancellationToken = default);
+        Task<AthleteStats?> GetAthleteStatsAsync(League league, string athleteId, CancellationToken cancellationToken = default);
     }
     
     public sealed class AthleteService(IEspnApiClient espnApiClient, ICacheService cache, IOptions<CacheOptions> cacheOptions, ILogger<AthleteService> logger) : EspnCachedServiceBase(espnApiClient, cache), IAthleteService
@@ -29,6 +30,12 @@ namespace SportsTracker.App.Services
         {
             return GetOrFetchAsync<AthleteOverviewResponseDto, AthleteOverview>(league, $"Athlete Overview for {athleteId}", CacheKeys.AthleteOverview(league, athleteId), EspnEndpoints.AthleteOverview(league, athleteId),
                 AthleteOverviewMapper.Map, _ => TimeSpan.FromMinutes(_cache.AthleteOverviewMinutes), logger, cancellationToken);
+        }
+
+        public Task<AthleteStats?> GetAthleteStatsAsync(League league, string athleteId, CancellationToken cancellationToken = default)
+        {
+            return GetOrFetchAsync<AthleteStatsResponseDto, AthleteStats>(league, $"Athlete Stats for {athleteId}", CacheKeys.AthleteStats(league, athleteId), EspnEndpoints.AthleteStats(league, athleteId), AthleteStatsMapper.Map,
+                _ => TimeSpan.FromMinutes(_cache.AthleteStatsMinutes), logger, cancellationToken);
         }
     }
 }
