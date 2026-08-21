@@ -9,12 +9,12 @@ using SportsTracker.App.ViewModels.TeamInfo;
 namespace SportsTracker.App.Controllers
 {
     [Route("team")]
-    public sealed class TeamController(ITeamDetailsService teamDetailsService, ITeamScheduleService teamScheduleService, ITeamRosterService teamRosterService, ITeamDetailsViewModelMapper teamDetailsViewModelMapper, IGameCardViewModelMapper gameCardViewModelMapper, ITeamRosterViewModelMapper teamRosterViewModelMapper) : Controller
+    public sealed class TeamController(ITeamService teamService, ITeamDetailsViewModelMapper teamDetailsViewModelMapper, IGameCardViewModelMapper gameCardViewModelMapper, ITeamRosterViewModelMapper teamRosterViewModelMapper) : Controller
     {
         [HttpGet("{league}/{teamId}")]
         public async Task<IActionResult> Index(League league, string teamId, CancellationToken cancellationToken)
         {
-            TeamDetails? details = await teamDetailsService.GetTeamDetailsAsync(league, teamId, cancellationToken);
+            TeamDetails? details = await teamService.GetDetailsAsync(league, teamId, cancellationToken);
 
             if (details is null)
             {
@@ -29,8 +29,8 @@ namespace SportsTracker.App.Controllers
         [HttpGet("{league}/{teamId}/schedule")]
         public async Task<IActionResult> Schedule(League league, string teamId, CancellationToken cancellationToken)
         {
-            Task<TeamDetails?> teamTask = teamDetailsService.GetTeamDetailsAsync(league, teamId, cancellationToken);
-            Task<TeamSchedule?> scheduleTask = teamScheduleService.GetTeamScheduleAsync(league, teamId, cancellationToken);
+            Task<TeamDetails?> teamTask = teamService.GetDetailsAsync(league, teamId, cancellationToken);
+            Task<TeamSchedule?> scheduleTask = teamService.GetScheduleAsync(league, teamId, cancellationToken);
             
             await Task.WhenAll(teamTask, scheduleTask);
             
@@ -55,8 +55,8 @@ namespace SportsTracker.App.Controllers
         [HttpGet("{league}/{teamId}/roster")]
         public async Task<IActionResult> Roster(League league, string teamId, CancellationToken cancellationToken)
         {
-            Task<TeamDetails?> teamTask = teamDetailsService.GetTeamDetailsAsync(league, teamId, cancellationToken);
-            Task<TeamRoster?> rosterTask = teamRosterService.GetTeamRosterAsync(league, teamId, cancellationToken);
+            Task<TeamDetails?> teamTask = teamService.GetDetailsAsync(league, teamId, cancellationToken);
+            Task<TeamRoster?> rosterTask = teamService.GetRosterAsync(league, teamId, cancellationToken);
 
             await Task.WhenAll(teamTask, rosterTask);
 

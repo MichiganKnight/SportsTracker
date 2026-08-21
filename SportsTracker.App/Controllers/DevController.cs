@@ -8,7 +8,7 @@ namespace SportsTracker.App.Controllers
 {
     [ApiController]
     [Route("dev")]
-    public sealed class DevController(IScoreboardService scoreboardService, IAthleteDetailsService athleteDetailsService, IAthleteOverviewService athleteOverviewService) : ControllerBase
+    public sealed class DevController(IScoreboardService scoreboardService, IAthleteService athleteService) : ControllerBase
     {
         [HttpGet("scoreboard/{league}")]
         public async Task<ActionResult<CachedScoreboard>> Scoreboard(League league, CancellationToken cancellationToken)
@@ -21,7 +21,7 @@ namespace SportsTracker.App.Controllers
         [HttpGet("athlete/{league}/{athleteId}")]
         public async Task<ActionResult<AthleteDetails>> AthleteDetails(League league, string athleteId, CancellationToken cancellationToken)
         {
-            AthleteDetails? athleteDetails = await athleteDetailsService.GetAthleteDetailsAsync(league, athleteId, cancellationToken);
+            AthleteDetails? athleteDetails = await athleteService.GetAthleteDetailsAsync(league, athleteId, cancellationToken);
             
             return athleteDetails is null ? NotFound() : Ok(athleteDetails);
         }
@@ -29,7 +29,7 @@ namespace SportsTracker.App.Controllers
         [HttpGet("athlete-overview/{league}/{athleteId}")]
         public async Task<ActionResult<AthleteOverview>> AthleteOverview(League league, string athleteId, CancellationToken cancellationToken)
         {
-            AthleteOverview? athleteOverview = await athleteOverviewService.GetAthleteOverviewAsync(league, athleteId, cancellationToken);
+            AthleteOverview? athleteOverview = await athleteService.GetAthleteOverviewAsync(league, athleteId, cancellationToken);
             
             return athleteOverview is null ? NotFound() : Ok(athleteOverview);
         }

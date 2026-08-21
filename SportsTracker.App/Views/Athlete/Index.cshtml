@@ -1,16 +1,10 @@
-﻿@model SportsTracker.App.ViewModels.AthleteInfo.AthleteDetailsViewModel
+﻿@using SportsTracker.App.ViewModels.AthleteInfo
+@model SportsTracker.App.ViewModels.AthleteInfo.AthletePageViewModel<AthleteOverviewViewModel>
 
 @{
-    ViewData["Title"] = Model.DisplayName;
+    ViewData["Title"] = Model.Athlete.DisplayName;
 }
 
-<div class="container-fluid athlete-page">
-    <partial name="~/Views/Athlete/Partials/_AthleteHeader.cshtml" model="Model" />
-    
-    @if (Model.HasStatsSummary)
-    {
-        <partial name="~/Views/Athlete/Partials/_AthleteQuickStats.cshtml" model="Model" />   
-    }
-    
-    <partial name="~/Views/Athlete/Partials/_AthleteBio.cshtml" model="Model" />   
+<div class="container-fluid">
+    <partial  name="~/Views/Athlete/Partials/_AthleteOverviewPageContent.cshtml" model="Model" />
 </div>

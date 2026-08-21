@@ -1,0 +1,28 @@
+﻿@model SportsTracker.App.ViewModels.AthleteInfo.AthleteDetailsViewModel
+
+@{
+    string activeTab = ViewData["ActiveAthleteTab"]?.ToString() ?? "Overview";
+}
+
+<div class="mb-4">
+    <div class="btn-group" role="group" aria-label="Navigation">
+        <a asp-controller="Athlete" asp-action="Index" asp-route-league="@Model.League" asp-route-athleteId="@Model.Id" class="btn @(activeTab == "Overview" ? "btn-primary" : "btn-outline-secondary")">
+            Overview
+        </a>
+        
+        @if (!Model.IsGolf)
+        {
+            <a asp-controller="Athlete" asp-action="Stats" asp-route-league="@Model.League" asp-route-athleteId="@Model.Id" class="btn @(activeTab == "Stats" ? "btn-primary" : "btn-outline-secondary")">
+                Stats
+            </a>
+            
+            <a asp-controller="Athlete" asp-action="GameLog" asp-route-league="@Model.League" asp-route-athleteId="@Model.Id" class="btn @(activeTab == "GameLog" ? "btn-primary" : "btn-outline-secondary")">
+                Game Log
+            </a>
+            
+            <a asp-controller="Athlete" asp-action="Splits" asp-route-league="@Model.League" asp-route-athleteId="@Model.Id" class="btn @(activeTab == "Splits" ? "btn-primary" : "btn-outline-secondary")">
+                Splits
+            </a>
+        }
+    </div>
+</div>

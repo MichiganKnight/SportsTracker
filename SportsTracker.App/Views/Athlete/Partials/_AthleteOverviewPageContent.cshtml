@@ -1,0 +1,21 @@
+﻿@using SportsTracker.App.ViewModels.AthleteInfo
+@model SportsTracker.App.ViewModels.AthleteInfo.AthletePageViewModel<AthleteOverviewViewModel>
+
+@{
+    ViewData["ActiveAthleteTab"] = "Overview";
+}
+
+<div id="athlete-overview-@Model.Athlete.Id" data-athlete-overview data-league="@Model.Athlete.League" data-athlete-id="@Model.Athlete.Id">
+    <partial name="~/Views/Athlete/Partials/_AthleteHeader.cshtml" model="Model.Athlete" />
+    
+    <partial name="~/Views/Athlete/Partials/_AthleteNavigation.cshtml" model="Model.Athlete" />
+    
+    @if (Model.Athlete.HasStatsSummary)
+    {
+        <partial name="~/Views/Athlete/Partials/_AthleteQuickStats.cshtml" model="Model.Athlete" />
+    }
+    
+    <partial name="~/Views/Athlete/Partials/_AthleteBio.cshtml" model="Model.Athlete" />
+    
+    <partial name="~/Views/Athlete/Partials/_AthleteOverview.cshtml" model="Model.Content" />
+</div>

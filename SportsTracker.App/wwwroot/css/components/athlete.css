@@ -61,6 +61,10 @@
     text-decoration: none;
 }
 
+.athlete-team-link {
+    transition: color var(--st-interaction-transition-duration) var(--st-interaction-transition-easing);
+}
+
 .athlete-team-link:hover {
     color: var(--st-primary);
 }
@@ -101,8 +105,10 @@
 }
 
 .athlete-stat-value {
+    color: var(--st-text);
     font-size: 1.6rem;
     font-weight: 700;
+    line-height: 1.2;
 }
 
 .athlete-stat-label {
@@ -133,6 +139,7 @@
     flex-direction: column;
     gap: .2rem;
     padding: .85rem 1rem;
+    border: 1px solid var(--st-border);
     border-radius: .7rem;
     background-color: var(--st-surface-alt);
 }
@@ -142,15 +149,158 @@
     font-size: .72rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: .05em;    
+    letter-spacing: .05em;
 }
 
 .athlete-bio-value {
+    color: var(--st-text);
     font-weight: 500;
 }
 
 .athlete-bio-item-wide {
     grid-column: span 2;
+}
+
+/* Athlete Overview */
+
+.athlete-overview-card {
+    overflow: hidden;
+}
+
+.athlete-section-header {
+    padding: .8rem 1rem;
+    font-size: .85rem;
+    font-weight: 650;
+    letter-spacing: .025em;
+}
+
+/* Overview Statistics */
+
+.athlete-statistics-table-wrap {
+    border: 0;
+    border-radius: 0;
+}
+
+.athlete-statistics-table {
+    min-width: 650px;
+}
+
+.athlete-statistics-table thead th {
+    padding-top: .65rem;
+    padding-bottom: .65rem;
+    font-size: .72rem;
+}
+
+.athlete-statistics-table tbody th,
+.athlete-statistics-table tbody td {
+    padding-top: .7rem;
+    padding-bottom: .7rem;
+}
+
+.athlete-stat-row-label {
+    min-width: 125px;
+    color: var(--st-text);
+    font-size: .83rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.athlete-stat-cell {
+    min-width: 58px;
+    color: var(--st-text);
+    font-size: .85rem;
+    font-weight: 500;
+}
+
+.athlete-statistics-table tbody tr {
+    transition: background-color var(--st-interaction-transition-duration) var(--st-interaction-transition-easing);
+}
+
+.athlete-statistics-table tbody tr:hover > * {
+    background-color: var(--st-table-hover);
+}
+
+/* Shared Overview Content */
+
+.athlete-content-header {
+    margin-bottom: .5rem;
+    color: var(--st-text);
+    font-size: 1.05rem;
+    font-weight: 650;
+    line-height: 1.35;
+}
+
+.athlete-content-description {
+    color: var(--st-text-muted);
+    font-size: .9rem;
+    line-height: 1.55;
+}
+
+/* Analysis */
+
+.athlete-analysis-body {
+    padding: 1.1rem 1.25rem;
+}
+
+.athlete-analysis-story {
+    margin-top: .9rem;
+    color: var(--st-text);
+    font-size: .92rem;
+    line-height: 1.65;
+}
+
+/* News */
+
+.athlete-news-layout {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+}
+
+.athlete-news-image-wrap {
+    overflow: hidden;
+    border: 1px solid var(--st-border);
+    border-radius: .7rem;
+    background-color: var(--st-surface-alt);
+}
+
+.athlete-news-image {
+    display: block;
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+}
+
+.athlete-news-content {
+    min-width: 0;
+}
+
+.athlete-news-date {
+    margin-top: .75rem;
+    color: var(--st-text-muted);
+    font-size: .75rem;
+    font-weight: 500;
+}
+
+/* Athlete Navigation */
+
+.athlete-page .btn-group {
+    flex-wrap: wrap;
+}
+
+.athlete-page .btn-group .btn {
+    font-weight: 500;
+}
+
+/* Theme Transitions */
+
+.athlete-headshot,
+.athlete-headshot-placeholder,
+.athlete-stat-card,
+.athlete-bio-item,
+.athlete-news-image-wrap {
+    transition: background-color var(--st-interaction-transition-duration) var(--st-interaction-transition-easing), color var(--st-interaction-transition-duration) var(--st-interaction-transition-easing), border-color var(--st-interaction-transition-duration) var(--st-interaction-transition-easing);
 }
 
 /* Responsive */
@@ -173,6 +323,15 @@
     .athlete-bio-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+    
+    .athlete-news-layout {
+        grid-template-columns: 140px minmax(0, 1fr);
+        gap: 1rem;
+    }
+    
+    .athlete-news-image {
+        height: 95px;
+    }
 }
 
 @media (max-width: 575.98px) {
@@ -186,5 +345,30 @@
 
     .athlete-bio-item-wide {
         grid-column: auto;
+    }
+    
+    .athlete-news-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .athlete-news-image-wrap {
+        max-width: 100%;
+    }
+    
+    .athlete-news-image {
+        height: 180px;
+    }
+    
+    .athlete-analysis-body {
+        padding: 1rem;
+    }
+    
+    .athlete-page .btn-group {
+        display: flex;
+        width: 100%;
+    }
+    
+    .athlete-page .btn-group .btn {
+        flex: 1 1 auto;
     }
 }

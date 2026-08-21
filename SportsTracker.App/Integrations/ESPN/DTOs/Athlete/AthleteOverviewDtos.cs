@@ -1,6 +1,4 @@
-﻿using SportsTracker.App.Models.AthleteInfo;
-
-namespace SportsTracker.App.Integrations.ESPN.DTOs.Athlete
+﻿namespace SportsTracker.App.Integrations.ESPN.DTOs.Athlete
 {
     public sealed class AthleteOverviewResponseDto
     {

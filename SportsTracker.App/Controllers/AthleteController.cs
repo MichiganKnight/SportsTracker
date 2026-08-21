@@ -8,21 +8,102 @@ using SportsTracker.App.ViewModels.AthleteInfo;
 namespace SportsTracker.App.Controllers
 {
     [Route("athlete")]
-    public sealed class AthleteController(IAthleteDetailsService athleteDetailsService, IAthleteDetailsViewModelMapper athleteDetailsViewModelMapper) : Controller
+    public sealed class AthleteController(IAthleteService athleteService, IAthleteDetailsViewModelMapper athleteDetailsViewModelMapper, IAthleteOverviewViewModelMapper athleteOverviewViewModelMapper) : Controller
     {
         [HttpGet("{league}/{athleteId}")]
         public async Task<IActionResult> Index(League league, string athleteId, CancellationToken cancellationToken)
         {
-            AthleteDetails? athlete = await athleteDetailsService.GetAthleteDetailsAsync(league, athleteId, cancellationToken);
+            AthletePageViewModel<AthleteOverviewViewModel>? viewModel = await GetOverviewPageAsync(league, athleteId, cancellationToken);
+
+            if (viewModel is null)
+            {
+                return NotFound();
+            }
+            
+            return View(viewModel);
+        }
+
+        [HttpGet("overview/content/{league}/{athleteId}")]
+        public async Task<IActionResult> OverviewContent(League league, string athleteId, CancellationToken cancellationToken)
+        {
+            AthletePageViewModel<AthleteOverviewViewModel>? viewModel = await GetOverviewPageAsync(league, athleteId, cancellationToken);
+            
+            if (viewModel is null)
+            {
+                return NotFound();
+            }
+            
+            return PartialView("Partials/_AthleteOverviewPageContent", viewModel);
+        }
+
+        [HttpGet("{league}/{athleteId}/stats")]
+        public async Task<IActionResult> Stats(League league, string athleteId, CancellationToken cancellationToken)
+        {
+            AthleteDetailsViewModel? athlete = await GetAthleteDetailsAsync(league, athleteId, cancellationToken);
+
+            if (athlete is null)
+            {
+                return NotFound();
+            }
+            
+            return View(athlete);
+        }
+
+        [HttpGet("{league}/{athleteId}/gamelog")]
+        public async Task<IActionResult> GameLog(League league, string athleteId, CancellationToken cancellationToken)
+        {
+            AthleteDetailsViewModel? athlete = await GetAthleteDetailsAsync(league, athleteId, cancellationToken);
             
             if (athlete is null)
             {
                 return NotFound();
             }
             
-            AthleteDetailsViewModel viewModel = athleteDetailsViewModelMapper.Map(athlete);
+            return View(athlete);
+        }
+
+        [HttpGet("{league}/{athleteId}/splits")]
+        public async Task<IActionResult> Splits(League league, string athleteId, CancellationToken cancellationToken)
+        {
+            AthleteDetailsViewModel? athlete = await GetAthleteDetailsAsync(league, athleteId, cancellationToken);
             
-            return View(viewModel);
+            if (athlete is null)
+            {
+                return NotFound();
+            }
+            
+            return View(athlete);
+        }
+
+        private async Task<AthleteDetailsViewModel?> GetAthleteDetailsAsync(League league, string athleteId, CancellationToken cancellationToken)
+        {
+            AthleteDetails? details = await athleteService.GetAthleteDetailsAsync(league, athleteId, cancellationToken);
+            
+            return details is null ? null : athleteDetailsViewModelMapper.Map(details);
+        }
+
+        private async Task<AthletePageViewModel<AthleteOverviewViewModel>?> GetOverviewPageAsync(League league, string athleteId, CancellationToken cancellationToken)
+        {
+            Task<AthleteDetails?> detailsTask = athleteService.GetAthleteDetailsAsync(league, athleteId, cancellationToken);
+            Task<AthleteOverview?> overviewTask = athleteService.GetAthleteOverviewAsync(league, athleteId, cancellationToken);
+
+            await Task.WhenAll(detailsTask, overviewTask);
+
+            AthleteDetails? details = await detailsTask;
+
+            if (details is null)
+            {
+                return null;
+            }
+            
+            AthleteOverview? overview = await overviewTask;
+
+            return new AthletePageViewModel<AthleteOverviewViewModel>
+            {
+                Athlete = athleteDetailsViewModelMapper.Map(details),
+
+                Content = overview is null ? new AthleteOverviewViewModel() : athleteOverviewViewModelMapper.Map(overview)
+            };
         }
     }
 }

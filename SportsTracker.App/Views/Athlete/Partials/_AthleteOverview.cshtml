@@ -1,0 +1,138 @@
+﻿@using SportsTracker.App.ViewModels.AthleteInfo
+@model SportsTracker.App.ViewModels.AthleteInfo.AthleteOverviewViewModel
+
+@if (Model.HasStatistics)
+{
+    <div class="card athlete-overview-card athlete-statistics-card shadow-sm mb-4">
+        <div class="card-header athlete-section-header">
+            @(string.IsNullOrWhiteSpace(Model.StatisticsTitle) ? "Statistics" : Model.StatisticsTitle)
+        </div>
+        
+        <div class="table-responsive athlete-statistics-table-wrap">
+            <table class="table athlete-statistics-table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th></th>
+                        
+                        @foreach (AthleteOverviewStatColumnViewModel column in Model.StatColumns)
+                        {
+                            <th class="text-center" title="@column.DisplayName">
+                                @column.Label
+                            </th>
+                        }
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    @foreach (AthleteOverviewStatRowViewModel row in Model.StatRows)
+                    {
+                        <tr>
+                            <th class="athlete-stat-row-label">
+                                @row.DisplayName
+                            </th>
+                            
+                            @for (int i = 0; i < Model.StatColumns.Count; i++)
+                            {
+                                string value = i < row.Stats.Count ? row.Stats[i] : string.Empty;
+                                
+                                <td class="text-center athlete-stat-cell">
+                                    @value
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@if (Model.HasAnalysis)
+{
+    <div class="card athlete-overview-card athlete-analysis-card shadow-sm mb-4">
+        <div class="card-header athlete-section-header">
+            Analysis
+        </div>
+        
+        <div class="card-body athlete-analysis-body">
+            @if (!string.IsNullOrWhiteSpace(Model.Analysis!.Headline))
+            {
+                <h5 class="athlete-content-headline">
+                    @Model.Analysis.Headline
+                </h5>
+            }
+            
+            @if (ShouldShowAnalysisDescription(Model.Analysis.Headline, Model.Analysis.Description))
+            {
+                <div class="athlete-content-description">
+                    @Model.Analysis.Description
+                </div>
+            }
+            
+            @if (!string.IsNullOrWhiteSpace(Model.Analysis.Story))
+            {
+                <div class="athlete-analysis-story">
+                    @Model.Analysis.Story
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@if (Model.HasNews)
+{
+    <div class="card athlete-overview-card athlete-news-card shadow-sm mb-4">
+        <div class="card-header athlete-section-header">
+            Latest News
+        </div>
+        
+        <div class="card-body">
+            <div class="athlete-news-layout">
+                @if (!string.IsNullOrWhiteSpace(Model.LatestNews!.Image))
+                {
+                    <div class="athlete-news-image-wrap">
+                        <img src="@Model.LatestNews.Image" alt="@Model.LatestNews.Headline" class="athlete-news-image" />
+                    </div>
+                }
+                
+                <div class="athlete-news-content">
+                    <h5 class="athlete-content-headline">
+                        @Model.LatestNews!.Headline
+                    </h5>
+                    
+                    @if (!string.IsNullOrWhiteSpace(Model.LatestNews.Description))
+                    {
+                        <div class="athlete-content-description">
+                            @Model.LatestNews.Description
+                        </div>
+                    }
+                    
+                    @if (Model.LatestNews.LastModified.HasValue)
+                    {
+                        <div class="athlete-news-date">
+                            @Model.LatestNews.LastModified.Value.ToLocalTime().ToString("MMM d, yyyy")
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@functions
+{
+    private static bool ShouldShowAnalysisDescription(string? headline, string? description)
+    {
+        if (string.IsNullOrWhiteSpace(description))
+        {
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(headline))
+        {
+            return true;
+        }
+        
+        return !string.Equals(headline.Trim(), description.Trim(), StringComparison.OrdinalIgnoreCase);
+    }
+}

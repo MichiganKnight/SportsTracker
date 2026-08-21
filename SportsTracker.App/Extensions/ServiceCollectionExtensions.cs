@@ -61,6 +61,7 @@ namespace SportsTracker.App.Extensions
             services.AddScoped<IGolfEventCardViewModelMapper, GolfEventCardViewModelMapper>();
             services.AddScoped<IGolfTournamentViewModelMapper, GolfTournamentViewModelMapper>();
             services.AddScoped<IAthleteDetailsViewModelMapper, AthleteDetailsViewModelMapper>();
+            services.AddScoped<IAthleteOverviewViewModelMapper, AthleteOverviewViewModelMapper>();
             
             services.AddScoped<IScoreboardService, ScoreboardService>();
             services.AddScoped<IScoreboardRefreshService, ScoreboardRefreshService>();
@@ -68,17 +69,11 @@ namespace SportsTracker.App.Extensions
             services.AddScoped<IStandingsService, StandingsService>();
             services.AddScoped<IGroupsService, GroupsService>();
             
-            services.AddScoped<IGameDetailsService, GameDetailsService>();
-            services.AddScoped<IGameSummaryService, GameSummaryService>();
+            services.AddScoped<IGameService, GameService>();
             
-            services.AddScoped<IGameContentService, GameContentService>();
+            services.AddScoped<ITeamService, TeamService>();
             
-            services.AddScoped<ITeamDetailsService, TeamDetailsService>();
-            services.AddScoped<ITeamScheduleService, TeamScheduleService>();
-            services.AddScoped<ITeamRosterService, TeamRosterService>();
-            
-            services.AddScoped<IAthleteDetailsService, AthleteDetailsService>();
-            services.AddScoped<IAthleteOverviewService, AthleteOverviewService>();
+            services.AddScoped<IAthleteService, AthleteService>();
         }
 
         private static void AddBackgroundServices(IServiceCollection services)

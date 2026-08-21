@@ -7,7 +7,7 @@ namespace SportsTracker.App.Services
 {
     public abstract class EspnCachedServiceBase(IEspnApiClient espnApiClient, ICacheService cache)
     {
-        protected async Task<TModel?> GetOrFetchAsync<TDto, TModel>(League league, string resourceName, string cacheKey, string endpoint, Func<TDto, TModel?> mapper, Func<TModel, TimeSpan> cacheLifetimeFactory, ILogger logger, CancellationToken cancellationToken) where TDto : class where TModel : class
+        protected async Task<TModel?> GetOrFetchAsync<TDto, TModel>(League league, string resourceName, string cacheKey, string endpoint, Func<TDto, TModel?> mapper, Func<TModel, TimeSpan> cacheLifetimeFactory, ILogger logger, CancellationToken cancellationToken = default) where TDto : class where TModel : class
         {
             TModel? cached = await cache.GetAsync<TModel>(cacheKey);
 

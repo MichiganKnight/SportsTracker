@@ -13,7 +13,7 @@ using SportsTracker.App.ViewModels.PlayByPlay;
 namespace SportsTracker.App.Controllers
 {
     [Route("game")]
-    public sealed class GameController(IGameDetailsService gameDetailsService, IGameContentService gameContentService, IGameDetailsViewModelMapper gameDetailsViewModelMapper, IBoxScoreViewModelMapper boxScoreViewModelMapper, IPlayByPlayViewModelMapper playByPlayViewModelMapper) : Controller
+    public sealed class GameController(IGameService gameService, IGameDetailsViewModelMapper gameDetailsViewModelMapper, IBoxScoreViewModelMapper boxScoreViewModelMapper, IPlayByPlayViewModelMapper playByPlayViewModelMapper) : Controller
     {
         [HttpGet("{league}/{gameId}")]
         public async Task<IActionResult> Index(League league, string gameId, CancellationToken cancellationToken)
@@ -95,14 +95,14 @@ namespace SportsTracker.App.Controllers
 
         private async Task<GameDetailsViewModel?> GetGameDetailsAsync(League league, string gameId, CancellationToken cancellationToken)
         {
-            GameDetails? details = await gameDetailsService.GetGameDetailsAsync(league, gameId, cancellationToken);
+            GameDetails? details = await gameService.GetGameDetailsAsync(league, gameId, cancellationToken);
             
             return details is null ? null : gameDetailsViewModelMapper.Map(details);
         }
 
         private async Task<GamePageViewModel<BoxScoreViewModel>?> GetBoxScorePageAsync(League league, string gameId, CancellationToken cancellationToken)
         {
-            Task<GameBoxScore?> boxScoreTask = gameContentService.GetBoxScoreAsync(league, gameId, cancellationToken);
+            Task<GameBoxScore?> boxScoreTask = gameService.GetBoxScoreAsync(league, gameId, cancellationToken);
             Task<GameDetailsViewModel?> gameTask = GetGameDetailsAsync(league, gameId, cancellationToken);
             
             await Task.WhenAll(boxScoreTask, gameTask);
@@ -124,7 +124,7 @@ namespace SportsTracker.App.Controllers
 
         private async Task<GamePageViewModel<PlayByPlayViewModel>?> GetPlayByPlayPageAsync(League league, string gameId, CancellationToken cancellationToken)
         {
-            Task<GamePlayByPlay?> playByPlayTask = gameContentService.GetPlayByPlayAsync(league, gameId, cancellationToken);
+            Task<GamePlayByPlay?> playByPlayTask = gameService.GetPlayByPlayAsync(league, gameId, cancellationToken);
             Task<GameDetailsViewModel?> gameTask = GetGameDetailsAsync(league, gameId, cancellationToken);
             
             await Task.WhenAll(playByPlayTask, gameTask);

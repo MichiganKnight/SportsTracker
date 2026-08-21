@@ -18,7 +18,7 @@ namespace SportsTracker.App.Services
         Task<TimeSpan?> RefreshAsync(League league, CancellationToken cancellationToken = default);
     }
     
-    public sealed class ScoreboardRefreshService(IEspnApiClient espnApiClient, ICacheService cache, IOptions<CacheOptions> cacheOptions, IHubContext<ScoreboardHub> hub, IGameSummaryService gameSummaryService, ILogger<ScoreboardRefreshService> logger) : IScoreboardRefreshService
+    public sealed class ScoreboardRefreshService(IEspnApiClient espnApiClient, ICacheService cache, IOptions<CacheOptions> cacheOptions, IHubContext<ScoreboardHub> hub, IGameService gameService, ILogger<ScoreboardRefreshService> logger) : IScoreboardRefreshService
     {
         private readonly CacheOptions _cacheOptions = cacheOptions.Value;
 
@@ -87,7 +87,7 @@ namespace SportsTracker.App.Services
                     continue;
                 }
                 
-                await gameSummaryService.InvalidateAsync(league, game.Id);
+                await gameService.InvalidateSummaryAsync(league, game.Id);
             }
         }
 
