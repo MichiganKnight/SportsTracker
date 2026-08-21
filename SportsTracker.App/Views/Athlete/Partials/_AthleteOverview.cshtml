@@ -47,38 +47,6 @@
     </div>
 }
 
-@if (Model.HasAnalysis)
-{
-    <div class="card athlete-overview-card athlete-analysis-card shadow-sm mb-4">
-        <div class="card-header athlete-section-header">
-            Analysis
-        </div>
-        
-        <div class="card-body athlete-analysis-body">
-            @if (!string.IsNullOrWhiteSpace(Model.Analysis!.Headline))
-            {
-                <h5 class="athlete-content-headline">
-                    @Model.Analysis.Headline
-                </h5>
-            }
-            
-            @if (ShouldShowAnalysisDescription(Model.Analysis.Headline, Model.Analysis.Description))
-            {
-                <div class="athlete-content-description">
-                    @Model.Analysis.Description
-                </div>
-            }
-            
-            @if (!string.IsNullOrWhiteSpace(Model.Analysis.Story))
-            {
-                <div class="athlete-analysis-story">
-                    @Model.Analysis.Story
-                </div>
-            }
-        </div>
-    </div>
-}
-
 @if (Model.HasNews)
 {
     <div class="card athlete-overview-card athlete-news-card shadow-sm mb-4">
@@ -115,6 +83,225 @@
                     }
                 </div>
             </div>
+        </div>
+    </div>
+}
+
+@if (Model.HasAnalysis)
+{
+    <div class="card athlete-overview-card athlete-analysis-card shadow-sm mb-4">
+        <div class="card-header athlete-section-header">
+            Analysis
+        </div>
+        
+        <div class="card-body athlete-analysis-body">
+            @if (!string.IsNullOrWhiteSpace(Model.Analysis!.Headline))
+            {
+                <h5 class="athlete-content-headline">
+                    @Model.Analysis.Headline
+                </h5>
+            }
+            
+            @if (ShouldShowAnalysisDescription(Model.Analysis.Headline, Model.Analysis.Description))
+            {
+                <div class="athlete-content-description">
+                    @Model.Analysis.Description
+                </div>
+            }
+            
+            @if (!string.IsNullOrWhiteSpace(Model.Analysis.Story))
+            {
+                <div class="athlete-analysis-story">
+                    @Model.Analysis.Story
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@if (Model.HasAwards)
+{
+    <div class="card athlete-overview-card shadow-sm mb-4">
+        <div class="card-header athlete-section-header">
+            Awards
+        </div>
+        
+        <div class="card-body">
+            <div class="athlete-awards-grid">
+                @foreach (AthleteAwardViewModel award in Model.Awards)
+                {
+                    <div class="athlete-award-item">
+                        <div class="athlete-award-name">
+                            @award.Name
+                        </div>
+                        
+                        @if (!string.IsNullOrWhiteSpace(award.DisplayCount))
+                        {
+                            <div class="athlete-award-count">
+                                @award.DisplayCount
+                            </div>
+                        }
+                        
+                        @if (award.Seasons.Count > 0)
+                        {
+                            <div class="athlete-award-seasons">
+                                @string.Join(", ", award.Seasons)
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.HasFantasy)
+{
+    <div class="card athlete-overview-card shadow-sm mb-4">
+        <div class="card-header athlete-section-header">
+            Fantasy
+        </div>
+        
+        <div class="card-body">
+            <div class="athlete-fantasy-grid">
+                @if (!string.IsNullOrWhiteSpace(Model.Fantasy!.DraftRank))
+                {
+                    <div class="athlete-overview-metric">
+                        <span class="athlete-overview-metric-label">
+                            Draft Rank
+                        </span>
+                        
+                        <span class="athlete-overview-metric-value">
+                            @Model.Fantasy.DraftRank
+                        </span>
+                    </div>
+                }
+                
+                @if (!string.IsNullOrWhiteSpace(Model.Fantasy.PositionRank))
+                {
+                    <div class="athlete-overview-metric">
+                        <span class="athlete-overview-metric-label">
+                            Position Rank
+                        </span>
+                        
+                        <span class="athlete-overview-metric-value">
+                            @Model.Fantasy.PositionRank
+                        </span>
+                    </div>
+                }
+                
+                @if (!string.IsNullOrWhiteSpace(Model.Fantasy.PercentOwned))
+                {
+                    <div class="athlete-overview-metric">
+                        <span class="athlete-overview-metric-label">
+                            Owned
+                        </span>
+                        
+                        <span class="athlete-overview-metric-value">
+                            @Model.Fantasy.PercentOwned
+                        </span>
+                    </div>
+                }
+                
+                @if (!string.IsNullOrWhiteSpace(Model.Fantasy.Projection))
+                {
+                    <div class="athlete-overview-metric athlete-fantasy-projection">
+                        <span class="athlete-overview-metric-label">
+                            Projection
+                        </span>
+
+                        <span class="athlete-fantasy-projection-text">
+                            @Model.Fantasy.Projection
+                        </span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.HasGolfRankings)
+{
+    <div class="card athlete-overview-card shadow-sm mb-4">
+        <div class="card-header athlete-section-header">
+            @(string.IsNullOrWhiteSpace(Model.GolfSeasonRankingsTitle) ? "Season Rankings" : Model.GolfSeasonRankingsTitle)
+        </div>
+        
+        <div class="card-body">
+            <div class="athlete-golf-ranking-grid">
+                @foreach (GolfSeasonRankingViewModel ranking in Model.GolfSeasonRankings)
+                {
+                    <div class="athlete-overview-metric">
+                        <span class="athlete-overview-metric-label">
+                            @ranking.DisplayName
+                        </span>
+                        
+                        <span class="athlete-overview-metric-value">
+                            @ranking.DisplayValue
+                        </span>
+                        
+                        @if (!string.IsNullOrWhiteSpace(ranking.Rank))
+                        {
+                            <span class="athlete-overview-metric-rank">
+                                @ranking.Rank
+                            </span>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.HasGolfRecentTournaments)
+{
+    <div class="card athlete-overview-card shadow-sm mb-4">
+        <div class="card-header athlete-section-header">
+            Recent Tournaments
+        </div>
+        
+        <div class="table-responsive athlete-statistics-table-wrap">
+            <table class="table align-middle mb-0 athlete-golf-results-table">
+                <thead>
+                    <tr>
+                        <th>Tournament</th>
+                        <th class="text-center">Finish</th>
+                        <th class="text-center">Score</th>
+                        <th class="text-center">R1</th>
+                        <th class="text-center">R2</th>
+                        <th class="text-center">R3</th>
+                        <th class="text-center">R4</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    @foreach (GolfRecentTournamentViewModel tournament in Model.GolfRecentTournaments)
+                    {
+                        <tr>
+                            <th>
+                                @tournament.Name
+                            </th>
+                            
+                            <td class="text-center">
+                                @(tournament.Position ?? "-")
+                            </td>
+                            
+                            <td class="text-center fw-semibold">
+                                @(tournament.ScoreToPar ?? "-")
+                            </td>
+                            
+                            @for (int roundIndex = 0; roundIndex < 4; roundIndex++)
+                            {
+                                int? roundScore = roundIndex < tournament.RoundScores.Count ? tournament.RoundScores[roundIndex] : null;
+                                
+                                <td class="text-center">
+                                    @(roundScore?.ToString() ?? "-")
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 }

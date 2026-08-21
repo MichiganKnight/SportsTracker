@@ -283,6 +283,100 @@
     font-weight: 500;
 }
 
+/* Awards */
+
+.athlete-awards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.athlete-award-item {
+    padding: .9rem 1rem;
+    border: 1px solid var(--st-border);
+    border-radius: .7rem;
+    background-color: var(--st-surface-alt);
+}
+
+.athlete-award-name {
+    color: var(--st-text);
+    font-weight: 600;
+}
+
+.athlete-award-count,
+.athlete-award-seasons {
+    margin-top: .25rem;
+    color: var(--st-text-muted);
+    font-size: .8rem;
+}
+
+/* Fantasy */
+
+.athlete-fantasy-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.athlete-fantasy-projection {
+    grid-column: 1 / -1;
+}
+
+.athlete-fantasy-projection-text {
+    margin-top: .25rem;
+    color: var(--st-text);
+    font-size: .9rem;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+/* Overview Metrics */
+
+.athlete-golf-ranking-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.athlete-overview-metric {
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+    padding: .9rem 1rem;
+    border: 1px solid var(--st-border);
+    border-radius: .7rem;
+    background-color: var(--st-surface-alt);
+}
+
+.athlete-overview-metric-label {
+    color: var(--st-text-muted);
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.athlete-overview-metric-value {
+    color: var(--st-text);
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+/* Golf Results */
+
+.athlete-golf-results-table {
+    min-width: 700px;
+}
+
+.athlete-golf-results-table tbody th {
+    min-width: 220px;
+    font-weight: 600;
+}
+
+.athlete-golf-results-table tbody tr:hover > * {
+    background-color: var(--st-table-hover);
+}
+
 /* Athlete Navigation */
 
 .athlete-page .btn-group {
@@ -323,12 +417,12 @@
     .athlete-bio-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-    
+
     .athlete-news-layout {
         grid-template-columns: 140px minmax(0, 1fr);
         gap: 1rem;
     }
-    
+
     .athlete-news-image {
         height: 95px;
     }
@@ -346,29 +440,63 @@
     .athlete-bio-item-wide {
         grid-column: auto;
     }
-    
+
     .athlete-news-layout {
         grid-template-columns: 1fr;
     }
-    
+
     .athlete-news-image-wrap {
         max-width: 100%;
     }
-    
+
     .athlete-news-image {
         height: 180px;
     }
-    
+
     .athlete-analysis-body {
         padding: 1rem;
     }
-    
+
     .athlete-page .btn-group {
         display: flex;
         width: 100%;
     }
-    
+
     .athlete-page .btn-group .btn {
         flex: 1 1 auto;
+    }
+}
+
+/* Additional Responsiveness */
+
+@media (max-width: 991.98px) {
+    .athlete-fantasy-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .athlete-golf-ranking-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .athlete-fantasy-projection {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .athlete-awards-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 575.98px) {
+    .athlete-awards-grid,
+    .athlete-fantasy-grid,
+    .athlete-golf-ranking-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .athlete-fantasy-projection {
+        grid-column: auto;
     }
 }
