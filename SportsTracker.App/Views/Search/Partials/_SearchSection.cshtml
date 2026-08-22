@@ -1,0 +1,19 @@
+﻿@using SportsTracker.App.ViewModels.SearchInfo
+@model SportsTracker.App.ViewModels.SearchInfo.SearchSectionViewModel
+
+<section class="search-section mb-5">
+    <div class="search-section-header mb-3">
+        <h4 class="mb-0">
+            <i class="@Model.Icon me-2"></i>
+            
+            @Model.Title - @Model.Results.Count
+        </h4>
+    </div>
+    
+    <div class="search-results-grid">
+        @foreach (SearchResultViewModel result in Model.Results)
+        {
+            <partial name="~/Views/Search/Partials/_SearchResult.cshtml" model="result" />
+        }
+    </div>
+</section>

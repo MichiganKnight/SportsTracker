@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
+using SportsTracker.App.Common;
 using SportsTracker.App.Enums;
+using SportsTracker.App.Integrations.ESPN;
 using SportsTracker.App.Models;
 using SportsTracker.App.Models.AthleteInfo;
 using SportsTracker.App.Services;
@@ -32,6 +35,21 @@ namespace SportsTracker.App.Controllers
             AthleteOverview? athleteOverview = await athleteService.GetAthleteOverviewAsync(league, athleteId, cancellationToken);
             
             return athleteOverview is null ? NotFound() : Ok(athleteOverview);
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> Search(string q, [FromServices] IEspnApiClient espnApiClient, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(q))
+            {
+                return BadRequest();
+            }
+            
+            string endpoint = EspnEndpoints.Search(q, 25);
+
+            ApiResult<JsonElement> result = await espnApiClient.GetAsync<JsonElement>(endpoint, cancellationToken);
+            
+            return result.Success ? Ok(result.Value) : StatusCode(result.StatusCode ?? 500, result.Error);
         }
     }
 }

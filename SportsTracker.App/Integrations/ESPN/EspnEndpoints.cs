@@ -101,6 +101,11 @@ namespace SportsTracker.App.Integrations.ESPN
             return !LeagueConfiguration.Leagues.TryGetValue(league, out LeagueInfo? info) ? throw new NotSupportedException($"ESPN Endpoints Not Configured for {league}") : info;
         }
 
+        public static string Search(string query, int limit = 25)
+        {
+            return $"apis/search/v2?query={Uri.EscapeDataString(query)}&limit={limit}";
+        }
+
         private static string Site(LeagueInfo info, string path)
         {
             return $"apis/site/v2/sports/{info.EspnSport}/{info.EspnLeague}/{path}";

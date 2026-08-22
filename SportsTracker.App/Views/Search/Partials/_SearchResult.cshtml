@@ -1,0 +1,87 @@
+﻿@using SportsTracker.App.Models
+@model SportsTracker.App.ViewModels.SearchInfo.SearchResultViewModel
+
+<div class="card search-result-card shadow-sm position-relative">
+    <div class="card-body search-result-body">
+        <div class="search-result-image-wrap">
+            @if (!string.IsNullOrWhiteSpace(Model.Image))
+            {
+                <img src="@Model.Image" alt="@Model.DisplayName" class="search-result-image search-result-image-light" />
+                
+                @if (!string.IsNullOrWhiteSpace(Model.DarkImage))
+                {
+                    <img src="@Model.DarkImage" alt="@Model.DisplayName" class="search-result-image search-result-image-dark" />
+                }
+            }
+            else
+            {
+                <div class="search-result-image-placeholder">
+                    @if (Model.Type == SearchResultType.Player)
+                    {
+                        <i class="bi bi-person-fill"></i>
+                    }
+                    else if (Model.Type == SearchResultType.Team)
+                    {
+                        <i class="bi bi-shield-fill"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-calendar-event-fill"></i>
+                    }
+                </div>
+            }
+        </div>
+        
+        <div class="search-result-content">
+            <div class="search-result-table">
+                @Model.DisplayName
+            </div>
+            
+            <div class="search-result-meta">
+                <span class="badge text-bg-secondary">
+                    @Model.League
+                </span>
+                
+                @if (!string.IsNullOrWhiteSpace(Model.Subtitle))
+                {
+                    <span>
+                        @Model.Subtitle
+                    </span>
+                }
+            </div>
+            
+            @if (!string.IsNullOrWhiteSpace(Model.Description))
+            {
+                <div class="search-result-description">
+                    @Model.Description
+                </div>
+            }
+            
+            @if (!string.IsNullOrWhiteSpace(Model.DateDisplay))
+            {
+                <div class="search-result-date">
+                    <i class="bi bi-clock me-1"></i>
+                    @Model.DateDisplay
+                </div>
+            }
+        </div>
+    </div>
+    
+    @switch (Model.Type)
+    {
+        case SearchResultType.Player:
+            <a asp-controller="Athlete" asp-action="Index" asp-route-league="@Model.League" asp-route-athleteId="@Model.Id" class="stretched-link" aria-label="View @Model.DisplayName"></a>
+            
+            break;
+            
+        case SearchResultType.Team:
+            <a asp-controller="Team" asp-action="Index" asp-route-league="@Model.League" asp-route-teamId="@Model.Id" class="stretched-link" aria-label="View @Model.DisplayName"></a>
+            
+            break;
+            
+        case SearchResultType.Game:
+            <a asp-controller="Game" asp-action="Index" asp-route-league="@Model.League" asp-route-gameId="@Model.Id" class="stretched-link" aria-label="View @Model.DisplayName"></a>
+            
+            break;
+    }
+</div>

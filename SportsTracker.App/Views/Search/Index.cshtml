@@ -1,0 +1,104 @@
+﻿@using SportsTracker.App.ViewModels.SearchInfo
+@model SportsTracker.App.ViewModels.SearchInfo.SearchPageViewModel
+
+@{
+    ViewData["Title"] = string.IsNullOrWhiteSpace(Model.Query) ? "Search" : $"Search - {Model.Query}";
+}
+
+<div class="container-fluid search-page">
+    <div class="search-page-header mb-4">
+        <h2 class="mb-1">
+            Search
+        </h2>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Query))
+        {
+            <div class="text-secondary">
+                @Model.TotalResults result@(Model.TotalResults == 1 ? "" : "s") for
+                <span class="fw-semibold">
+                    "@Model.Query"
+                </span>
+            </div>
+        }
+    </div>
+
+    @if (string.IsNullOrWhiteSpace(Model.Query))
+    {
+        <div class="card shadow-sm">
+            <div class="card-body text-center py-5">
+                <i class="bi bi-search fs-2 text-secondary"></i>
+
+                <h5 class="mt-3">
+                    Search SportsTracker
+                </h5>
+
+                <div class="text-secondary">
+                    Search for Teams, Players, Games...
+                </div>
+            </div>
+        </div>
+    }
+    else if (!Model.HasResults)
+    {
+        <div class="card shadow-sm">
+            <div class="card-body text-center py-5">
+                <i class="bi bi-search fs-2 text-secondary"></i>
+
+                <h5 class="mt-3">
+                    No Results Found
+                </h5>
+
+                <div class="text-secondary">
+                    No Matching Players, Teams, or Games Found
+
+                    "@Model.Query"
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.DidYouMean))
+                {
+                    <div class="mt-3">
+                        Did you mean
+                        <a asp-controller="Search" asp-action="Index" asp-route-q="@Model.DidYouMean">
+                            @Model.DidYouMean
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        @if (Model.HasPlayers)
+        {
+            <partial name="~/Views/Search/Partials/_SearchSection.cshtml"
+                     model="@(new SearchSectionViewModel
+                            {
+                                Title = "Players",
+                                Icon = "bi bi-person-fill",
+                                Results = Model.Players
+                            })"/>
+        }
+
+        @if (Model.HasTeams)
+        {
+            <partial name="~/Views/Search/Partials/_SearchSection.cshtml"
+                     model="@(new SearchSectionViewModel
+                            {
+                                Title = "Teams",
+                                Icon = "bi bi-shield-fill",
+                                Results = Model.Teams
+                            })"/>
+        }
+
+        @if (Model.HasGames)
+        {
+            <partial name="~/Views/Search/Partials/_SearchSection.cshtml"
+                     model="@(new SearchSectionViewModel
+                            {
+                                Title = "Games",
+                                Icon = "bi bi-calendar-event",
+                                Results = Model.Games
+                            })"/>
+        }
+    }
+</div>
