@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-
-namespace SportsTracker.App.Models.AthleteInfo
+﻿namespace SportsTracker.App.Models.AthleteInfo
 {
     public sealed class AthleteStats
     {

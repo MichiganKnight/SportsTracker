@@ -377,6 +377,21 @@
     background-color: var(--st-table-hover);
 }
 
+/* Athlete Stats Buttons */
+
+.athlete-stats-category-nav {
+    overflow-x: auto;
+}
+
+.athlete-stats-category-nav .btn-group {
+    flex-wrap: nowrap;
+}
+
+.athlete-stats-category-button {
+    white-space: nowrap;
+    font-weight: 500;
+}
+
 /* Full Athlete Stats */
 
 .athlete-stats-category {

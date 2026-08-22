@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Routing.Template;
-using SportsTracker.App.Models.AthleteInfo;
+﻿using SportsTracker.App.Models.AthleteInfo;
 using SportsTracker.App.ViewModels.AthleteInfo;
 
 namespace SportsTracker.App.Mapping
@@ -8,7 +7,7 @@ namespace SportsTracker.App.Mapping
     {
         AthleteStatsViewModel Map(AthleteStats stats);
     }
-    
+
     public class AthleteStatsViewModelMapper : IAthleteStatsViewModelMapper
     {
         public AthleteStatsViewModel Map(AthleteStats stats)
@@ -26,9 +25,9 @@ namespace SportsTracker.App.Mapping
             return new AthleteStatsCategoryViewModel
             {
                 Name = category.Name,
-                
+
                 DisplayName = category.DisplayName,
-                
+
                 Columns = category.Columns
                     .Select(column => new AthleteStatsColumnViewModel
                     {
@@ -37,12 +36,12 @@ namespace SportsTracker.App.Mapping
                         Description = column.Description
                     })
                     .ToList(),
-                
+
                 Rows = category.Rows
                     .OrderByDescending(row => row.SeasonYear)
                     .Select(row => MapRow(row, teams))
                     .ToList(),
-                
+
                 Totals = category.Totals
             };
         }
@@ -67,6 +66,6 @@ namespace SportsTracker.App.Mapping
 
                 Stats = row.Stats
             };
-        } 
+        }
     }
 }
