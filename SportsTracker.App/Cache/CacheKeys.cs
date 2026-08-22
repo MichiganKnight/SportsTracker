@@ -16,5 +16,7 @@ namespace SportsTracker.App.Cache
         public static string AthleteDetails(League league, string athleteId) => $"athlete-details:{league}:{athleteId}";
         public static string AthleteOverview(League league, string athleteId) => $"athlete-overview:{league}:{athleteId}";
         public static string AthleteStats(League league, string athleteId) => $"athlete-stats:{league}:{athleteId}";
+        public static string AthleteGameLog(League league, string athleteId) => $"athlete-gamelog:{league}:{athleteId}";
+        public static string AthleteSplits(League league, string athleteId) => $"athlete-splits:{league}:{athleteId}";
     }
 }

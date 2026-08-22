@@ -460,6 +460,117 @@
     font-weight: 700;
 }
 
+/* Athlete Game Log */
+
+.athlete-gamelog-card {
+    overflow: hidden;
+}
+
+.athlete-gamelog-table-wrap {
+    border: 0;
+    border-radius: 0;
+}
+
+.athlete-gamelog-table {
+    min-width: 950px;
+}
+
+.athlete-gamelog-table thead th {
+    font-size: .72rem;
+}
+
+.athlete-gamelog-table tbody td,
+.athlete-gamelog-table tbody th,
+.athlete-gamelog-table tfoot td,
+.athlete-gamelog-table tfoot th {
+    padding-top: .65rem;
+    padding-bottom: .65rem;
+}
+
+.athlete-gamelog-date-column {
+    min-width: 80px;
+}
+
+.athlete-gamelog-opponent-column {
+    min-width: 150px;
+}
+
+.athlete-gamelog-result-column {
+    min-width: 90px;
+}
+
+.athlete-gamelog-date {
+    color: var(--st-text-muted);
+    font-size: .82rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.athlete-gamelog-opponent-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    color: var(--st-text);
+    text-decoration: none;
+}
+
+.athlete-gamelog-opponent-link:hover {
+    color: var(--st-primary);
+}
+
+.athlete-gamelog-opponent-logo {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.athlete-gamelog-note {
+    margin-top: .2rem;
+    color: var(--st-text-muted);
+    font-size: .72rem;
+}
+
+.athlete-gamelog-result {
+    align-items: center;
+    justify-content: center;
+    gap: .35rem;
+}
+
+.athlete-gamelog-score {
+    color: var(--st-text-muted);
+    font-size: .8rem;
+    font-weight: 500;
+}
+
+.athlete-gamelog-stat {
+    min-width: 58px;
+    font-size: .84rem;
+    font-weight: 500;
+}
+
+.athlete-gamelog-table tbody tr:hover > * {
+    background-color: var(--st-table-hover);
+}
+
+.athlete-gamelog-table tfoot > tr > * {
+    font-weight: 700;
+}
+
+/* Athlete Game Log Navigation */
+
+.athlete-gamelog-season-nav {
+    overflow-x: auto;
+}
+
+.athlete-gamelog-season-nav .btn-group {
+    flex-wrap: nowrap;
+}
+
+.athlete-gamelog-season-button {
+    white-space: nowrap;
+    font-weight: 500;
+}
+
 /* Athlete Navigation */
 
 .athlete-page .btn-group {
