@@ -11,7 +11,7 @@
 }
 
 .form-search-sports {
-    min-width: 250px;
+    min-width: 350px;
     background-color: var(--st-surface-alt);
     color: var(--st-text);
     border: 1px solid var(--st-border);

@@ -10,7 +10,13 @@
             </button>
             
             <form asp-controller="Search" asp-action="Index" method="get" class="navbar-search">
-                <input class="form-control form-search-sports" type="search" name="q" placeholder="Search Teams, Players, Games..." autocomplete="off" aria-label="Search SportsTracker" />
+                <div class="input-group">
+                    <input class="form-control form-search-sports" type="search" name="q" placeholder="Search Teams, Players, Games..." autocomplete="off" aria-label="Search SportsTracker" />
+                    
+                    <button class="btn btn-outline-secondary" type="submit" id="search-sports">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
             </form>
         </div>
     </div>
