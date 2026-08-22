@@ -35,6 +35,16 @@
                 <div class="text-secondary">
                     Search for Teams, Players, Games...
                 </div>
+                
+                <form asp-controller="Search" asp-action="Index" method="get" class="navbar-search">
+                    <div class="input-group">
+                        <input class="form-control form-search-sports" type="search" name="q" placeholder="Search..." autocomplete="off" aria-label="Search SportsTracker" />
+                    
+                        <button class="btn btn-outline-secondary" type="submit" id="search-sports">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     }
