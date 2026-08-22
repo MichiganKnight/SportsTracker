@@ -109,13 +109,13 @@
         return key switch
         {
             "avg" or
-            "onBasePct" or
-            "slugAvg" or
-            "ERA" or
-            "WHIP" => "decimal",
+                "onBasePct" or
+                "slugAvg" or
+                "ERA" or
+                "WHIP" => "decimal",
 
             "hits-atBats" => "compound",
-            
+
             "innings" => "innings",
 
             _ => "number"
