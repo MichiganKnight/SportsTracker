@@ -9,15 +9,19 @@
                 <i class="bi bi-sun-fill"></i>
             </button>
             
-            <form asp-controller="Search" asp-action="Index" method="get" class="navbar-search">
-                <div class="input-group">
-                    <input class="form-control form-search-sports" type="search" name="q" placeholder="Search Teams, Players, Games..." autocomplete="off" aria-label="Search SportsTracker" />
+            <div class="navbar-search-container">
+                <form asp-controller="Search" asp-action="Index" method="get" class="navbar-search" data-navbar-search>
+                    <div class="input-group">
+                        <input class="form-control form-search-sports" type="search" name="q" placeholder="Search Teams, Players, Games..." autocomplete="off" aria-label="Search SportsTracker" data-navbar-search-input />
                     
-                    <button class="btn btn-outline-secondary" type="submit" id="search-sports">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </div>
-            </form>
+                        <button class="btn btn-outline-secondary" type="submit" id="search-sports">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="navbar-search-results d-none" data-navbar-search-results></div>
+                </form>
+            </div>
         </div>
     </div>
 </nav>

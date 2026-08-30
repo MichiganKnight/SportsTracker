@@ -21,7 +21,7 @@
         </div>
         
         <div class="game-play-content">
-            @if (!string.IsNullOrWhiteSpace(Model.Situation) || !string.IsNullOrWhiteSpace(Model.Clock))
+            @if (!string.IsNullOrWhiteSpace(Model.Situation) || !string.IsNullOrWhiteSpace(Model.Clock) || !string.IsNullOrWhiteSpace(Model.Context))
             {
                 <div class="game-play-meta">
                     @if (!string.IsNullOrWhiteSpace(Model.Clock))

@@ -165,6 +165,7 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
             {
                 "nfl" => SetLeague(League.NFL, out league),
                 "mlb" => SetLeague(League.MLB, out league),
+                "college-football" => SetLeague(League.CFB, out league),
                 "pga" => SetLeague(League.PGA, out league),
 
                 _ => false
@@ -186,6 +187,11 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
             if (subtitle.Contains("MLB", StringComparison.OrdinalIgnoreCase))
             {
                 return League.MLB;
+            }
+
+            if (subtitle.Contains("College Football", StringComparison.OrdinalIgnoreCase) || subtitle.Contains("NCAAF", StringComparison.OrdinalIgnoreCase))
+            {
+                return League.CFB;
             }
 
             if (subtitle.Contains("PGA", StringComparison.OrdinalIgnoreCase))

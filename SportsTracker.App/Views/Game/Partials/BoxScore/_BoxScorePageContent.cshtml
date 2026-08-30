@@ -5,9 +5,9 @@
     ViewData["ActiveGameTab"] = "BoxScore";
 }
 
-<partial name="Partials/_GameHeader" model="Model.Game" />
+<partial name="~/Views/Game/Partials/_GameHeader.cshtml" model="Model.Game" />
     
-<partial name="Partials/_GameNavigation" model="Model.Game" />
+<partial name="~/Views/Game/Partials/_GameNavigation.cshtml" model="Model.Game" />
 
 @foreach (TeamBoxScoreViewModel team in Model.Content.Teams)
 {

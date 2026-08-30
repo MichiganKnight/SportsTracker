@@ -15,16 +15,16 @@
             <partial name="~/Views/Game/Partials/Sport/Baseball/_BaseballLineScore.cshtml" model="Model" />    
         }
         
-        <partial name="~/Views/Game/Partials/_GameInformation.cshtml" model="Model" />
+        <partial name="~/Views/Game/Partials/Summary/_GameInformation.cshtml" model="Model" />
         
         @if (Model.FeaturedAthletes.Count > 0)
         {
-            <partial name="~/Views/Game/Partials/_FeaturedAthletes.cshtml" model="Model" />        
+            <partial name="~/Views/Game/Partials/Summary/_FeaturedAthletes.cshtml" model="Model" />        
         }
         
         @if (!string.IsNullOrWhiteSpace(Model.Headline) || !string.IsNullOrWhiteSpace(Model.Recap))
         {
-            <partial name="~/Views/Game/Partials/_GameSummary.cshtml" model="Model" />
+            <partial name="~/Views/Game/Partials/Summary/_GameSummary.cshtml" model="Model" />
         }
     </div>
 </div>

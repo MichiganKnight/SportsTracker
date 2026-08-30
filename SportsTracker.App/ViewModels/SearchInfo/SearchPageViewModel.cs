@@ -50,4 +50,27 @@ namespace SportsTracker.App.ViewModels.SearchInfo
         
         public IReadOnlyList<SearchResultViewModel> Results { get; init; } = [];
     }
+
+    public sealed class SearchSuggestionsViewModel
+    {
+        public string Query { get; init; } = string.Empty;
+        
+        public IReadOnlyList<SearchSuggestionViewModel> Results { get; init; } = [];
+    }
+
+    public sealed class SearchSuggestionViewModel
+    {
+        public string Type { get; init; } = string.Empty;
+        
+        public string Id { get; init; } = string.Empty;
+        
+        public string League { get; init; } = string.Empty;
+        public string DisplayName { get; init; } = string.Empty;
+        
+        public string? Subtitle { get; init; }
+        public string? Image { get; init; }
+        public string? DarkImage { get; init; }
+        
+        public string Url { get; init; } = string.Empty;
+    }
 }

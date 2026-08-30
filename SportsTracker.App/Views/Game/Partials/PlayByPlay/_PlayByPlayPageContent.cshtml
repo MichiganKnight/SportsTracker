@@ -6,11 +6,9 @@
 }
 
 <div id="game-playbyplay-@Model.Game.GameId" data-game-playbyplay-page data-league="@Model.Game.League" data-game-id="@Model.Game.GameId">
-    <div class="game-page-sticky-header">
-        <partial name="~/Views/Game/Partials/_GameHeader.cshtml" model="Model.Game"/>
+    <partial name="~/Views/Game/Partials/_GameHeader.cshtml" model="Model.Game"/>
 
-        <partial name="~/Views/Game/Partials/_GameNavigation.cshtml" model="Model.Game" />
-    </div>
+    <partial name="~/Views/Game/Partials/_GameNavigation.cshtml" model="Model.Game" />
 
     <partial name="~/Views/Game/Partials/PlayByPlay/_PlayByPlayContent.cshtml" model="Model"/>
 </div>
