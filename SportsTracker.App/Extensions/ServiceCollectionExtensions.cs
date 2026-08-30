@@ -64,6 +64,7 @@ namespace SportsTracker.App.Extensions
             services.AddScoped<IAthleteOverviewViewModelMapper, AthleteOverviewViewModelMapper>();
             services.AddScoped<IAthleteStatsViewModelMapper, AthleteStatsViewModelMapper>();
             services.AddScoped<IAthleteGameLogViewModelMapper, AthleteGameLogViewModelMapper>();
+            services.AddScoped<IAthleteSplitsViewModelMapper, AthleteSplitsViewModelMapper>();
             services.AddScoped<ISearchViewModelMapper, SearchViewModelMapper>();
             
             services.AddScoped<IScoreboardService, ScoreboardService>();

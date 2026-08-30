@@ -8,12 +8,7 @@ using SportsTracker.App.ViewModels.AthleteInfo;
 namespace SportsTracker.App.Controllers
 {
     [Route("athlete")]
-    public sealed class AthleteController(
-        IAthleteService athleteService,
-        IAthleteDetailsViewModelMapper athleteDetailsViewModelMapper,
-        IAthleteOverviewViewModelMapper athleteOverviewViewModelMapper,
-        IAthleteStatsViewModelMapper athleteStatsViewModelMapper,
-        IAthleteGameLogViewModelMapper gameLogViewModelMapper) : Controller
+    public sealed class AthleteController(IAthleteService athleteService, IAthleteDetailsViewModelMapper athleteDetailsViewModelMapper, IAthleteOverviewViewModelMapper athleteOverviewViewModelMapper, IAthleteStatsViewModelMapper athleteStatsViewModelMapper, IAthleteGameLogViewModelMapper gameLogViewModelMapper, IAthleteSplitsViewModelMapper athleteSplitsViewModelMapper) : Controller
     {
         [HttpGet("{league}/{athleteId}")]
         public async Task<IActionResult> Index(League league, string athleteId, CancellationToken cancellationToken)
@@ -103,14 +98,27 @@ namespace SportsTracker.App.Controllers
         [HttpGet("{league}/{athleteId}/splits")]
         public async Task<IActionResult> Splits(League league, string athleteId, CancellationToken cancellationToken)
         {
-            AthleteDetailsViewModel? athlete = await GetAthleteDetailsAsync(league, athleteId, cancellationToken);
+            Task<AthleteDetails?> detailsTask = athleteService.GetAthleteDetailsAsync(league, athleteId, cancellationToken);
+            Task<AthleteSplits?> splitsTask = athleteService.GetAthleteSplitsAsync(league, athleteId, cancellationToken);
+            
+            await Task.WhenAll(detailsTask, splitsTask);
+            
+            AthleteDetails? athlete = await detailsTask;
+            AthleteSplits? splits = await splitsTask;
 
-            if (athlete is null)
+            if (athlete is null || splits is null)
             {
                 return NotFound();
             }
 
-            return View(athlete);
+            AthletePageViewModel<AthleteSplitsViewModel> viewModel = new()
+            {
+                Athlete = athleteDetailsViewModelMapper.Map(athlete),
+
+                Content = athleteSplitsViewModelMapper.Map(splits)
+            };
+            
+            return View(viewModel);
         }
 
         private async Task<AthleteDetailsViewModel?> GetAthleteDetailsAsync(League league, string athleteId, CancellationToken cancellationToken)

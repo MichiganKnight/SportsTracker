@@ -37,6 +37,14 @@ namespace SportsTracker.App.Controllers
             return athleteOverview is null ? NotFound() : Ok(athleteOverview);
         }
 
+        [HttpGet("athlete-splits/{league}/{athleteId}")]
+        public async Task<ActionResult<AthleteSplits>> AthleteSplits(League league, string athleteId, CancellationToken cancellationToken)
+        {
+            AthleteSplits? athleteSplits = await athleteService.GetAthleteSplitsAsync(league, athleteId, cancellationToken);
+            
+            return athleteSplits is null ? NotFound() : Ok(athleteSplits);
+        }
+
         [HttpGet("search")]
         public async Task<IActionResult> Search(string q, [FromServices] IEspnApiClient espnApiClient, CancellationToken cancellationToken)
         {
