@@ -1,0 +1,74 @@
+﻿@using SportsTracker.App.ViewModels.AthleteInfo
+@model AthleteSplitsViewModel
+
+<div class="athlete-overview-card" data-athlete-splits>
+    <div class="athlete-section-header">
+        <h5 class="mb-0">
+            @Model.DisplayName
+        </h5>
+    </div>
+    
+    @if (Model.Categories.Count == 0)
+    {
+        <div class="p-4 text-secondary">
+            No Split Data is Currently Available
+        </div>
+    }
+    else
+    {
+        <div class="athlete-splits-category-nav">
+            @for (int i = 0; i < Model.Categories.Count; i++)
+            {
+                AthleteSplitCategoryViewModel category = Model.Categories[i];
+                
+                <button type="button"class="btn btn-sm athlete-splits-category-button @(i == 0 ? "btn-primary" : "btn-outline-secondary")" data-athlete-splits-category="@i">
+                    @category.DisplayName
+                </button>
+            }
+        </div>
+        
+        @for (int categoryIndex = 0; categoryIndex < Model.Categories.Count; categoryIndex++)
+        {
+            AthleteSplitCategoryViewModel category = Model.Categories[categoryIndex];
+            
+            <div class="athlete-splits-category-panel @(categoryIndex == 0 ? "" : "d-none")" data-athlete-splits-category-panel="@categoryIndex">
+                <div class="table-responsive">
+                    <table class="table athlete-splits-table mb-0">
+                        <thead>
+                            <tr>
+                                <th class="athlete-splits-name-column">
+                                    Split
+                                </th>
+                                
+                                @foreach (AthleteSplitColumnViewModel column in category.Columns)
+                                {
+                                    <th title="@column.DisplayName">
+                                        @(!string.IsNullOrWhiteSpace(column.Label) ? column.Label : column.DisplayName)
+                                    </th>
+                                }
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            @foreach (AthleteSplitRowViewModel row in category.Rows)
+                            {
+                                <tr>
+                                    <td class="athlete-splits-name">
+                                        @row.DisplayName
+                                    </td>
+                                    
+                                    @foreach (string stat in row.Stats)
+                                    {
+                                        <td>
+                                            @stat
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    }
+</div>

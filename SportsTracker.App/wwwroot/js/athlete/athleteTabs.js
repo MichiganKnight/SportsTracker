@@ -51,5 +51,35 @@
 
             panel.classList.toggle("d-none", !isActive);
         });
+        
+        return;
+    }
+    
+    const splitsButton = event.target.closest("[data-athlete-splits-category]");
+    
+    if (splitsButton) {
+        const container = splitsButton.closest("[data-athlete-splits]");
+        
+        if (!container) {
+            return;
+        }
+        
+        const category = splitsButton.dataset.athleteSplitsCategory;
+        
+        container.querySelectorAll("[data-athlete-splits-category]").forEach(button => {
+            const isActive = button.dataset.athleteSplitsCategory === category;
+            
+            button.classList.toggle("btn-primary", isActive);
+            
+            button.classList.toggle("btn-outline-secondary", !isActive);
+        });
+        
+        container.querySelectorAll("[data-athlete-splits-category-panel]").forEach(panel => {
+            const isActive = panel.dataset.athleteSplitsCategoryPanel === category;
+            
+            panel.classList.toggle("d-none", !isActive);
+        });
+        
+        return;
     }
 });

@@ -1,18 +1,15 @@
-﻿@model SportsTracker.App.ViewModels.AthleteInfo.AthleteDetailsViewModel
+﻿@using SportsTracker.App.ViewModels.AthleteInfo
+@model AthletePageViewModel<AthleteSplitsViewModel>
 
 @{
-    ViewData["Title"] = $"{Model.DisplayName} Splits";
+    ViewData["Title"] = $"{Model.Athlete.DisplayName} Splits";
     ViewData["ActiveAthleteTab"] = "Splits";
 }
 
 <div class="container-fluid athlete-page">
-    <partial name="~/Views/Athlete/Partials/_AthleteHeader.cshtml" model="Model" />
+    <partial name="~/Views/Athlete/Partials/_AthleteHeader.cshtml" model="Model.Athlete" />
     
-    <partial name="~/Views/Athlete/Partials/_AthleteNavigation.cshtml" model="Model" />
+    <partial name="~/Views/Athlete/Partials/_AthleteNavigation.cshtml" model="Model.Athlete" />
     
-    <div class="card shadow-sm">
-        <div class="card-body text-secondary">
-            Splits Coming Soon
-        </div>
-    </div>
+    <partial name="~/Views/Athlete/Partials/_AthleteSplits.cshtml" model="Model.Content" />
 </div>
