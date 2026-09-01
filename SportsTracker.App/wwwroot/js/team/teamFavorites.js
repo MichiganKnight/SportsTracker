@@ -44,8 +44,12 @@ function initializeTeamFavoritesButtons() {
 function updateFavoriteButton(button, isFavorite) {
     const icon = button.querySelector("i");
     const label = button.querySelector("span");
+    const teamName = button.dataset.teamName ?? "team";
     
     button.setAttribute("aria-pressed", isFavorite.toString());
+    button.setAttribute("aria-label", isFavorite ? `Remove ${teamName} from Favorites` : `Add ${teamName} to Favorites`);
+    
+    button.title = isFavorite ? `Remove from Favorites` : `Add to Favorites`;   
     
     button.classList.toggle("is-favorite", isFavorite);
     

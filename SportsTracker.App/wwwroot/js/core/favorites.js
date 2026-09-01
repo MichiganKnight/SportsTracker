@@ -40,6 +40,10 @@
     }
 
     function add(team) {
+        if (!isValidTeam(team)) {
+            return;
+        }
+        
         const favorites = getAll();
 
         if (isFavorite(team.league, team.teamId)) {
@@ -59,14 +63,24 @@
 
         save(favorites);
     }
+    
+    function isValidTeam(team) {
+        return Boolean(team && team.league && team.teamId);
+    }
 
     function toggle(team) {
+        if (!isValidTeam(team)) {
+            return false;
+        }
+        
         if (isFavorite(team.league, team.teamId)) {
             remove(team.league, team.teamId);
+            
             return false;
         }
 
         add(team);
+        
         return true;
     }
 

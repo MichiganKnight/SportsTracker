@@ -44,8 +44,12 @@ async function refreshDashboardLeague(payload) {
             const changedGames = findScoreChanges(oldScores, replacement);
 
             animateScoreChanges(changedGames);
+
+            if (typeof sportsTrackerFavorites  === "function") {
+                sportsTrackerFavorites.refreshGameCards(replacement);
+            }
             
-            if (typeof refreshDashboardFeatures === "function") {
+            if (typeof scheduleDashboardFeaturesRefresh  === "function") {
                 scheduleDashboardFeaturesRefresh();
             }
         }
@@ -84,6 +88,10 @@ async function refreshGamesLeague(payload) {
             const changedGames = findScoreChanges(oldScores, replacement);
 
             animateScoreChanges(changedGames);
+
+            if (typeof sportsTrackerFavorites  === "function") {
+                sportsTrackerFavorites.refreshGameCards(replacement);
+            }
         }
     })
 }
@@ -110,6 +118,10 @@ async function refreshLeaguePage(payload) {
             const changedGames = findScoreChanges(oldScores, replacement);
 
             animateScoreChanges(changedGames);
+            
+            if (typeof sportsTrackerFavorites  === "function") {
+                sportsTrackerFavorites.refreshGameCards(replacement);
+            }
         }
     });
 }

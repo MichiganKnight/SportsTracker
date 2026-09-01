@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 document.addEventListener("sportsTracker:favoritesChanged", () => {
+    renderFavoritesEmptyState();
     renderFavoriteTeams();
     renderFavoriteGames();
 
@@ -21,6 +22,7 @@ async function refreshDashboardFeatures() {
 
     dashboardGameCards = await loadDashboardGameCards();
 
+    renderFavoritesEmptyState();
     renderFavoriteTeams();
     renderFavoriteGames();
     renderLiveGames();
@@ -47,6 +49,18 @@ async function loadDashboardGameCards() {
 
         return getVisibleDashboardGameCards();
     }
+}
+
+function renderFavoritesEmptyState() {
+    const emptyState = document.querySelector("#dashboard-favorites-empty");
+    
+    if (!emptyState) {
+        return;
+    }
+    
+    const hasFavorites = sportsTrackerFavorites.getAll().length > 0;
+    
+    emptyState.classList.toggle("d-none", hasFavorites);
 }
 
 function renderFavoriteTeams() {

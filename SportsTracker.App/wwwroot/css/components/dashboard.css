@@ -5,6 +5,29 @@
     border-radius: 0.75rem;
 }
 
+.dashboard-favorites-empty {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1rem;
+    background: var(--st-table-bg);
+    border: 1px dashed var(--st-border);
+    border-radius: 0.75rem;
+}
+
+.dashboard-favorites-empty-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--bs-warning);
+    background: var(--st-table-row-alt);
+    border-radius: 50%;
+    font-size: 1.1rem;
+}
+
 .dashboard-feature-section > .d-flex {
     padding-bottom: 0.7rem;
     border-bottom: 1px solid var(--st-border);
