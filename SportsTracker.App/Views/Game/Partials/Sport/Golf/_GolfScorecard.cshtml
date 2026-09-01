@@ -27,13 +27,40 @@
                 </div>
             </div>
             
+            <div class="golf-scorecard-legend mb-3">
+                <div class="golf-scorecard-legend-item">
+                    <span class="golf-score-legend-marker golf-score-eagle"></span>
+                    <span>Eagle</span>
+                </div>
+
+                <div class="golf-scorecard-legend-item">
+                    <span class="golf-score-legend-marker golf-score-birdie"></span>
+                    <span>Birdie</span>
+                </div>
+
+                <div class="golf-scorecard-legend-item">
+                    <span class="golf-score-legend-marker golf-score-par"></span>
+                    <span>Par</span>
+                </div>
+
+                <div class="golf-scorecard-legend-item">
+                    <span class="golf-score-legend-marker golf-score-bogey"></span>
+                    <span>Bogey</span>
+                </div>
+
+                <div class="golf-scorecard-legend-item">
+                    <span class="golf-score-legend-marker golf-score-double-bogey"></span>
+                    <span>Double Bogey+</span>
+                </div>
+            </div>
+            
             <div class="table-responsive">
                 <table class="table table-sm golf-scorecard-table mb-0">
                     <thead>
                         <tr>
                             <th>Hole</th>
                             
-                            @foreach (GolfHoleViewModel hole in round.Holes.OrderBy(r => r.Hole))
+                            @foreach (GolfHoleViewModel hole in round.Holes.OrderBy(hole => hole.Hole))
                             {
                                 <th class="text-center">
                                     @hole.Hole
@@ -74,19 +101,24 @@
 
 @functions
 {
+    private static int? ParseScoreToPar(string? scoreToPar)
+    {
+        if (string.IsNullOrWhiteSpace(scoreToPar))
+        {
+            return null;
+        }
+
+        if (scoreToPar.Equals("E", StringComparison.OrdinalIgnoreCase))
+        {
+            return 0;
+        }
+        
+        return int.TryParse(scoreToPar, out int score) ? score : null;
+    }
+    
     private static string GetScoreClass(string? scoreToPar)
     {
-        if (string.IsNullOrWhiteSpace(scoreToPar) || scoreToPar.Equals("E", StringComparison.OrdinalIgnoreCase))
-        {
-            return string.Empty;
-        }
-
-        if (!int.TryParse(scoreToPar, out int score))
-        {
-            return string.Empty;
-        }
-
-        return score switch
+        return ParseScoreToPar(scoreToPar) switch
         {
             <= -2 => "golf-score-eagle",
             -1 => "golf-score-birdie",
@@ -98,22 +130,7 @@
 
     private static string GetScoreName(string? scoreToPar)
     {
-        if (string.IsNullOrWhiteSpace(scoreToPar))
-        {
-            return string.Empty;
-        }
-
-        if (scoreToPar.Equals("E", StringComparison.OrdinalIgnoreCase))
-        {
-            return "Par";
-        }
-
-        if (!int.TryParse(scoreToPar, out int score))
-        {
-            return string.Empty;
-        }
-        
-        return score switch
+        return ParseScoreToPar(scoreToPar) switch
         {
             <= -3 => "Albatross or Better",
             -2 => "Eagle",
@@ -121,7 +138,7 @@
             1 => "Bogey",
             2 => "Double Bogey",
             >= 3 => "Triple Bogey or Worse",
-            _ => "Par"
+            _ => string.Empty
         };
     }
 }

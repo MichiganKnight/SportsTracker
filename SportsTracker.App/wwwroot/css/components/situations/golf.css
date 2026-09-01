@@ -105,6 +105,33 @@
     white-space: nowrap;
 }
 
+.golf-scorecard-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 1rem;
+    padding: 0.6rem 0.8rem;
+    background: var(--st-table-header);
+    border-bottom: 1px solid var(--st-border);
+    border-radius: 0.5rem;
+}
+
+.golf-scorecard-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--st-text-muted);
+    font-size: 0.78rem;
+    white-space: nowrap;
+}
+
+.golf-score-legend-marker {
+    width: 1.4rem;
+    height: 1.4rem;
+    font-size: 0;
+    flex-shrink: 0;
+}
+
 .golf-score-birdie,
 .golf-score-eagle,
 .golf-score-bogey,
@@ -132,6 +159,17 @@
     border: 2px solid var(--bs-warning);
     border-radius: 50%;
     background-color: rgba(var(--bs-warning-rgb), .14);
+}
+
+.golf-score-par {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 1px solid var(--st-border);
+    border-radius: 0.25rem;
 }
 
 .golf-score-eagle::after {
