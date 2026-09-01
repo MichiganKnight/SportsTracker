@@ -33,7 +33,7 @@ namespace SportsTracker.App.Controllers
         {
             CachedScoreboard? scoreboard = await scoreboardService.GetScoreboardAsync(league, cancellationToken);
 
-            LeagueSectionViewModel viewModel = dashboardViewModelMapper.MapLeague(league, scoreboard?.Games);
+            LeagueSectionViewModel viewModel = dashboardViewModelMapper.MapDashboardLeague(league, scoreboard?.Games);
             
             return PartialView("Dashboard/_LeagueSection", viewModel);
         }

@@ -1,0 +1,54 @@
+﻿@model SportsTracker.App.ViewModels.GameInfo.GamesPageViewModel
+
+<div class="modal fade" id="gamesDateModal" tabindex="-1" aria-labelledby="gamesDateModalLabel" aria-hidden="true" data-selected-date="@Model.Date.ToString("yyyy-MM-dd")">
+    <div class="modal-dialog modal-dialog-centered games-date-modal-dialog">
+        <div class="modal-content games-date-modal">
+            <div class="games-date-modal-header">
+                <div>
+                    <h5 class="games-date-modal-title" id="gamesDateModalLabel">Select a Date</h5>
+                
+                    <div class="games-date-modal-subtitle">
+                        Choose a Date to View Scheduled Games
+                    </div>
+                </div>
+                
+                <button type="button" class="games-date-modal-close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            
+            <div class="games-date-modal-body">
+                <div class="games-calendar-header">
+                    <button type="button" id="games-calendar-previous" class="games-calendar-nav" aria-label="Previous Month">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    
+                    <div id="games-calendar-month" class="games-calendar-month"></div>
+                    
+                    <button type="button" id="games-calendar-next" class="games-calendar-nav" aria-label="Next Month">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <div class="games-calendar-weekdays">
+                    <span>Sun</span>
+                    <span>Mon</span>
+                    <span>Tue</span>
+                    <span>Wed</span>
+                    <span>Thu</span>
+                    <span>Fri</span>
+                    <span>Sat</span>
+                </div>
+                
+                <div id="games-calendar-days" class="games-calendar-days"></div>
+            </div>
+            
+            <div class="games-date-modal-footer">
+                <a asp-controller="Games" asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-calendar-check me-1"></i>
+                    Go to Today
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

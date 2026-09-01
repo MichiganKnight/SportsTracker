@@ -10,6 +10,7 @@ connection.on("ScoreboardUpdated", async payload => {
 async function handleScoreboardUpdated(payload) {
     await Promise.all([
         refreshDashboardLeague(payload),
+        refreshGamesLeague(payload),
         refreshLeaguePage(payload),
         refreshGameDetails(payload),
         refreshBoxScore(payload),
@@ -17,7 +18,14 @@ async function handleScoreboardUpdated(payload) {
     ]);
 }
 
+/**
+ * Dashboard League Section
+ */
 async function refreshDashboardLeague(payload) {
+    if (document.querySelector(".games-page")) {
+        return;
+    }
+
     const league = payload.league;
     const leagueKey = league.toLowerCase();
     const selector = `#league-${leagueKey}`;
@@ -40,6 +48,45 @@ async function refreshDashboardLeague(payload) {
     });
 }
 
+/**
+ * Games Page League Section
+ */
+async function refreshGamesLeague(payload) {
+    const gamesPage = document.querySelector(".games-page");
+
+    if (!gamesPage) {
+        return;
+    }
+
+    if (gamesPage.dataset.isToday !== "true") {
+        return;
+    }
+
+    const league = payload.league;
+    const leagueKey = league.toLowerCase();
+    const selector = `#league-${leagueKey}`;
+    const current = document.querySelector(selector);
+
+    if (!current) {
+        return;
+    }
+
+    const oldScores = captureScores(current);
+
+    await refreshPartial({
+        selector: selector,
+        url: `/games/league-section?league=${encodeURIComponent(league)}&t=${Date.now()}`,
+        afterReplace: replacement => {
+            const changedGames = findScoreChanges(oldScores, replacement);
+
+            animateScoreChanges(changedGames);
+        }
+    })
+}
+
+/**
+ * League Page
+ */
 async function refreshLeaguePage(payload) {
     const league = payload.league;
     const leagueKey = league.toLowerCase();
@@ -63,6 +110,9 @@ async function refreshLeaguePage(payload) {
     });
 }
 
+/**
+ * Game Summary Page
+ */
 async function refreshGameDetails(payload) {
     const page = document.querySelector("[data-game-summary-page]");
 
@@ -83,6 +133,9 @@ async function refreshGameDetails(payload) {
     });
 }
 
+/**
+ * Game Boxscore Page
+ */
 async function refreshBoxScore(payload) {
     const page = document.querySelector("[data-game-boxscore-page]");
 
@@ -106,6 +159,9 @@ async function refreshBoxScore(payload) {
     })
 }
 
+/**
+ * Game Play-By-Play Page
+ */
 async function refreshPlayByPlay(payload) {
     const page = document.querySelector("[data-game-playbyplay-page]");
 
@@ -130,11 +186,11 @@ async function refreshPlayByPlay(payload) {
         }),
         afterReplace: (replacement, state) => {
             initializePlayByPlayFilters();
-            
+
             restorePlayFilter(state.filter);
-            
+
             highlightNewPlays(state.playIds);
-            
+
             if (state.followLatest) {
                 scrollToLatestPlay();
             }
@@ -142,41 +198,69 @@ async function refreshPlayByPlay(payload) {
     });
 }
 
+/**
+ * Helpers
+ */
 function isMatchingLeague(pageLeague, updatedLeague) {
     if (!pageLeague || !updatedLeague) {
         return false;
     }
-    
+
     return pageLeague.toLowerCase() === updatedLeague.toLowerCase();
 }
 
+/**
+ * Reconnection Refresh
+ */
 async function refreshCurrentPage() {
     const gameSummary = document.querySelector("[data-game-summary-page]");
-    
+
     if (gameSummary) {
         await refreshGameDetails({
             league: gameSummary.dataset.league,
         });
-        
+
         return;
     }
-    
+
     const boxScore = document.querySelector("[data-game-boxscore-page]");
-    
+
     if (boxScore) {
         await refreshBoxScore({
             league: boxScore.dataset.league,
         });
-        
+
         return;
     }
-    
+
     const playByPlay = document.querySelector("[data-game-playbyplay-page]");
-    
+
     if (playByPlay) {
         await refreshPlayByPlay({
             league: playByPlay.dataset.league,
         });
+
+        return;
+    }
+
+    const gamesPage = document.querySelector(".games-page");
+
+    if (gamesPage) {
+        if (gamesPage.dataset.isToday !== "true") {
+            return;
+        }
+
+        const sections = gamesPage.querySelectorAll("[id^='league-']");
+
+        await Promise.all(
+            Array.from(sections).map(section => {
+                const league = section.id.replace("league-", "");
+                
+                return refreshGamesLeague({
+                    league: league,
+                });
+            })
+        );
         
         return;
     }
@@ -187,11 +271,14 @@ async function refreshCurrentPage() {
         const league = leaguePage.id.replace("league-games-", "");
         
         await refreshLeaguePage({
-            league
+            league: league,
         });
     }
 }
 
+/**
+ * SignalR Connection
+ */
 async function start() {
     try {
         await connection.start();

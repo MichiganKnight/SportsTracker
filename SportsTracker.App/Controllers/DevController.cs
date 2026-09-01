@@ -21,6 +21,14 @@ namespace SportsTracker.App.Controllers
             return scoreboard is null ? NotFound() : Ok(scoreboard);
         }
 
+        [HttpGet("scoreboard/{league}/{date}")]
+        public async Task<ActionResult<CachedScoreboard>> Scoreboard(League league, DateOnly date, CancellationToken cancellationToken)
+        {
+            CachedScoreboard? scoreboard = await scoreboardService.GetScoreboardAsync(league, date, cancellationToken);
+            
+            return scoreboard is null ? NotFound() : Ok(scoreboard);
+        }
+
         [HttpGet("athlete/{league}/{athleteId}")]
         public async Task<ActionResult<AthleteDetails>> AthleteDetails(League league, string athleteId, CancellationToken cancellationToken)
         {

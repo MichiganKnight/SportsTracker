@@ -12,6 +12,13 @@ namespace SportsTracker.App.Integrations.ESPN
             return Site(info, "scoreboard");
         }
 
+        public static string Scoreboard(League league, DateOnly date)
+        {
+            LeagueInfo info = GetLeagueInfo(league);
+            
+            return Site(info, $"scoreboard?dates={date:yyyyMMdd}");
+        }
+
         public static string Standings(League league)
         {
             LeagueInfo info = GetLeagueInfo(league);

@@ -39,27 +39,16 @@ namespace SportsTracker.App.Services
             
             CachedScoreboard? previousScoreboard = await cache.GetAsync<CachedScoreboard>(CacheKeys.Scoreboard(league));
             
-            IReadOnlyList<Game> games = ScoreboardMapper.ToGames(result.Value, league).ToList();
-            
             DateTime updatedUtc = DateTime.UtcNow;
+            
+            CachedScoreboard scoreboard = ScoreboardMapper.MapScoreboard(result.Value, league, updatedUtc);
+            
+            IReadOnlyList<Game> games = scoreboard.Games;
+            
             TimeSpan refreshInterval = GetRefreshInterval(games);
             TimeSpan cacheLifetime = GetCacheLifetime(refreshInterval);
 
-            ScoreboardLeagueDto? leagueInfo = result.Value.Leagues.FirstOrDefault();
-            
-            string? leagueLogo = GetLeagueLogo(leagueInfo?.Logos, "default");
-            string? leagueDarkLogo = GetLeagueLogo(leagueInfo?.Logos, "dark");
-
-            await cache.SetAsync(CacheKeys.Scoreboard(league), new CachedScoreboard
-            {
-                League = league,
-                Games = games,
-                
-                LeagueLogo = leagueLogo,
-                LeagueDarkLogo = leagueDarkLogo,
-                
-                LastUpdatedUtc = updatedUtc
-            }, cacheLifetime);
+            await cache.SetAsync(CacheKeys.Scoreboard(league), scoreboard, cacheLifetime);
 
             await InvalidateGameSummariesAsync(league, games, previousScoreboard);
             
@@ -114,16 +103,6 @@ namespace SportsTracker.App.Services
         private static TimeSpan GetCacheLifetime(TimeSpan refreshInterval)
         {
             return TimeSpan.FromTicks(refreshInterval.Ticks * 2);
-        }
-
-        private static string? GetLeagueLogo(IReadOnlyList<EspnLogoDto>? logos, string relation)
-        {
-            if (logos is null)
-            {
-                return null;
-            }
-            
-            return logos.FirstOrDefault(logo => logo.Rel.Any(rel => rel.Equals(relation, StringComparison.OrdinalIgnoreCase)))?.Href;
         }
     }
 }

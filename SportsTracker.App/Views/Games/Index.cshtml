@@ -1,0 +1,50 @@
+﻿@using SportsTracker.App.ViewModels.LeagueInfo
+@model SportsTracker.App.ViewModels.GameInfo.GamesPageViewModel
+
+@{
+    ViewData["Title"] = Model.IsToday ? "Today's Games" : $"Games - {Model.Date:MMMM d, yyyy}";
+}
+
+<div class="games-page" data-games-date="@Model.Date.ToString("yyyy-MM-dd")" data-is-today="@Model.IsToday.ToString().ToLowerInvariant()">
+    <div class="mb-4">
+        <h1 class="h3 mb-1">
+            @if (Model.IsToday)
+            {
+                <text>Today's Games</text>
+            }
+            else
+            {
+                <text>Games - @Model.Date.ToString("MMMM d, yyyy")</text>
+            }
+        </h1>
+        
+        <div class="text-secondary">
+            @Model.Date.ToString("dddd, MMMM d, yyyy")
+        </div>
+    </div>
+    
+    <partial name="~/Views/Games/Partials/_DateNavigation.cshtml" />
+    
+    @if (!Model.HasEvents)
+    {
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <h2 class="h5 mb-2">No Games Scheduled</h2>
+                
+                <p class="text-secondary mb-0">
+                    No Supported Events Found for
+                    @Model.Date.ToString("MMMM d, yyyy")
+                </p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="games-leagues">
+            @foreach (LeagueSectionViewModel league in Model.Leagues.Where(league => league.HasEvents))
+            {
+                <partial name="~/Views/Shared/Dashboard/_LeagueSection.cshtml" model="league" />
+            }
+        </div>
+    }
+</div>

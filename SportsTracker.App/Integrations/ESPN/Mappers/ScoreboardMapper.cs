@@ -8,6 +8,22 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
 {
     public static class ScoreboardMapper
     {
+        public static CachedScoreboard MapScoreboard(ScoreboardResponseDto dto, League league, DateTime updatedUtc)
+        {
+            ScoreboardLeagueDto? leagueInfo = dto.Leagues.FirstOrDefault();
+            
+            return new CachedScoreboard
+            {
+                League = league,
+                Games = [.. ToGames(dto, league)],
+
+                LeagueLogo = GetLeagueLogo(leagueInfo?.Logos, "default"),
+                LeagueDarkLogo = GetLeagueLogo(leagueInfo?.Logos, "dark"),
+
+                LastUpdatedUtc = updatedUtc
+            };
+        }
+        
         public static IEnumerable<Game> ToGames(ScoreboardResponseDto dto, League league)
         {
             foreach (EventDto @event in dto.Events)
@@ -184,6 +200,16 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
         private static Record? MapRecord(RecordDto dto)
         {
             return new Record(dto.Summary, dto.DisplayValue);
+        }
+        
+        private static string? GetLeagueLogo(IReadOnlyList<EspnLogoDto>? logos, string relation)
+        {
+            if (logos is null)
+            {
+                return null;
+            }
+            
+            return logos.FirstOrDefault(logo => logo.Rel.Any(rel => rel.Equals(relation, StringComparison.OrdinalIgnoreCase)))?.Href;
         }
     }
 }

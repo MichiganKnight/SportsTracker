@@ -1,0 +1,45 @@
+﻿@model SportsTracker.App.ViewModels.GameInfo.GamesPageViewModel
+
+<div class="games-date-card mb-4">
+    <div class="games-date-navigation">
+        <a asp-controller="Games" asp-action="Index" asp-route-date="@Model.PreviousDate.ToString("yyyy-MM-dd")" class="games-date-nav-button">
+            <i class="bi bi-chevron-left"></i>
+
+            <span class="d-none d-md-inline">
+                Previous
+            </span>
+        </a>
+
+        <div class="games-date-center">
+            <div class="games-date-heading">
+                @Model.Date.ToString("dddd, MMMM d")
+            </div>
+
+            <div class="games-date-actions">
+                <button type="button" class="games-change-date-button" data-bs-toggle="modal" data-bs-target="#gamesDateModal">
+                    <i class="bi bi-calendar3"></i>
+                    Change Date
+                </button>
+                
+                @if (!Model.IsToday)
+                {
+                    <span class="games-date-divider"></span>
+                    
+                    <a asp-controller="Games" asp-action="Index" class="games-today-link">
+                        Today
+                    </a>
+                }
+            </div>
+        </div>
+
+        <a asp-controller="Games" asp-action="Index" asp-route-date="@Model.NextDate.ToString("yyyy-MM-dd")" class="games-date-nav-button">
+            <span class="d-none d-md-inline">
+                Next
+            </span>
+
+            <i class="bi bi-chevron-right"></i>
+        </a>
+    </div>
+</div>
+
+<partial name="~/Views/Games/Partials/_DatePickerModal.cshtml" model="@Model" />
