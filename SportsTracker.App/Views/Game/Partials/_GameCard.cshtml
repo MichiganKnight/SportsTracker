@@ -16,13 +16,17 @@
 }
 
 <div class="card game-card card-interactive shadow-sm h-100 position-relative" id="game-@Model.GameId" data-game-card data-game-id="@Model.GameId" data-league="@Model.League" data-away-team-id="@Model.AwayTeam.Id" data-home-team-id="@Model.HomeTeam.Id" data-is-live="@Model.IsLive.ToString().ToLowerInvariant()">
+    <div class="game-favorite-badge d-none" data-favorite-game-badge title="Favorite Team Playing" aria-label="Favorite Team Playing">
+        <i class="bi bi-star-fill"></i>
+    </div>
+    
     <div class="card-body">
         <!-- Teams -->
         <div class="rounded-3 p-2 mb-3 game-team-surface">
-            <partial name="~/Views/Team/Partials/_TeamRow.cshtml" model="Model.AwayTeam" />
-            <partial name="~/Views/Team/Partials/_TeamRow.cshtml" model="Model.HomeTeam" />
+            <partial name="~/Views/Team/Partials/_TeamRow.cshtml" model="Model.AwayTeam"/>
+            <partial name="~/Views/Team/Partials/_TeamRow.cshtml" model="Model.HomeTeam"/>
         </div>
-        
+
         <!-- Game Status -->
         <div class="border-top pt-3">
             <div class="game-status-row">
@@ -32,17 +36,17 @@
                         {
                             <span class="game-live-dot"></span>
                         }
-                        
+
                         @gameStatusLabel
                     </span>
-                    
+
                     @if (Model.IsUpcoming)
                     {
                         <span class="fw-semibold text-secondary">
                             @Model.StartTime.ToLocalTime().ToString("g")
                         </span>
                     }
-                    
+
                     @if (showLiveSituation)
                     {
                         <span class="fw-semibold text-secondary">
@@ -55,15 +59,15 @@
                         </span>
                     }
                 </div>
-                
+
                 @if (showBaseballSituation)
                 {
                     <div class="game-situation-inline text-secondary fw-semibold">
                         <span>
                             @Model.Baseball!.Balls-@Model.Baseball.Strikes
-                        
+
                             <span class="game-situation-inline">•</span>
-                        
+
                             @Model.Baseball.Outs
                             Out@(Model.Baseball.Outs == 1 ? "" : "s")
                         </span>
@@ -76,7 +80,7 @@
                     </div>
                 }
             </div>
-            
+
             <!-- Sport Specific Situation -->
 
             @if (Model.Baseball is not null)
@@ -93,7 +97,7 @@
                     @Model.SituationDetail
                 </div>
             }
-            
+
             <!-- Venue -->
 
             @if (showVenue)
@@ -104,7 +108,7 @@
                 </div>
             }
         </div>
-        
+
         <a asp-controller="Game" asp-action="Index" asp-route-league="@Model.League" asp-route-gameId="@Model.GameId" class="stretched-link" aria-label="View @Model.AwayTeam.DisplayName at @Model.HomeTeam.DisplayName"></a>
     </div>
 </div>

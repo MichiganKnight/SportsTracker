@@ -40,10 +40,14 @@ async function refreshDashboardLeague(payload) {
     await refreshPartial({
         selector: selector,
         url: `/Dashboard/LeagueSection?league=${encodeURIComponent(league)}&t=${Date.now()}`,
-        afterReplace: replacement => {
+        afterReplace: async replacement => {
             const changedGames = findScoreChanges(oldScores, replacement);
 
             animateScoreChanges(changedGames);
+            
+            if (typeof refreshDashboardFeatures === "function") {
+                scheduleDashboardFeaturesRefresh();
+            }
         }
     });
 }

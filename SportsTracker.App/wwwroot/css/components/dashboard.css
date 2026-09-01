@@ -9,3 +9,85 @@
     padding-bottom: 0.7rem;
     border-bottom: 1px solid var(--st-border);
 }
+
+.dashboard-favorite-team-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.75rem;
+}
+
+.dashboard-favorite-team-logo {
+    width: 2.5rem;
+    height: 2.5rem;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.dashboard-favorite-team-info {
+    min-width: 0;
+}
+
+.dashboard-favorite-team-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.dashboard-favorite-team-league {
+    margin-top: 0.1rem;
+    color: var(--st-text-muted);
+    font-size: 0.75rem;
+}
+
+/* Favorite Teams */
+
+.dashboard-favorite-team {
+    display: flex;
+    align-items: stretch;
+    min-width: 0;
+    overflow: hidden;
+    background: var(--st-table-row-alt);
+    border: 1px solid var(--st-border);
+    border-radius: 0.6rem;
+    transition: background-color var(--st-interaction-transition-duration) var(--st-interaction-transition-easing),
+    border-color var(--st-interaction-transition-duration) var(--st-interaction-transition-easing);
+}
+
+.dashboard-favorite-team:hover {
+    background: var(--st-table-hover);
+}
+
+.dashboard-favorite-team-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+    min-width: 0;
+    padding: 0.75rem;
+    color: var(--st-text);
+    text-decoration: none;
+}
+
+.dashboard-favorite-team-link:hover {
+    color: var(--st-text);
+}
+
+.dashboard-favorite-team-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 2.75rem;
+    padding: 0;
+    color: var(--bs-warning);
+    background: transparent;
+    border: 0;
+    border-left: 1px solid var(--st-border);
+    transition: background-color var(--st-interaction-transition-duration) var(--st-interaction-transition-easing), color var(--st-interaction-transition-duration) var(--st-interaction-transition-easing);
+}
+
+.dashboard-favorite-team-remove:hover,
+.dashboard-favorite-team-remove:focus-visible {
+    color: var(--st-text);
+    background: var(--st-table-hover);
+}

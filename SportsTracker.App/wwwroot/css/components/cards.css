@@ -200,3 +200,22 @@
         font-size: .8rem;
     }
 }
+
+.game-favorite-badge {
+    position: absolute;
+    top: 0.65rem;
+    right: 0.65rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.65rem;
+    height: 1.65rem;
+    color: var(--bs-warning);
+    background: var(--st-surface);
+    border: 1px solid var(--st-border);
+    border-radius: 50%;
+    font-size: 0.75rem;
+    pointer-events: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.12);
+}
