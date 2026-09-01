@@ -37,5 +37,29 @@ namespace SportsTracker.App.Controllers
             
             return PartialView("Dashboard/_LeagueSection", viewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> AllGames(CancellationToken cancellationToken)
+        {
+            League[] leagues = LeagueConfiguration.All.OrderBy(league => LeagueConfiguration.Get(league).DisplayOrder).ToArray();
+
+            Task<CachedScoreboard?>[] scoreboardTasks = leagues.Select(league => scoreboardService.GetScoreboardAsync(league, cancellationToken)).ToArray();
+            
+            CachedScoreboard?[] scoreboards = await Task.WhenAll(scoreboardTasks);
+
+            List<LeagueSectionViewModel> sections = [];
+
+            for (int i = 0; i < leagues.Length; i++)
+            {
+                League league = leagues[i];
+                CachedScoreboard? scoreboard = scoreboards[i];
+
+                LeagueSectionViewModel section = dashboardViewModelMapper.MapLeague(league, scoreboard?.Games);
+                
+                sections.Add(section);
+            }
+            
+            return PartialView("~/Views/Dashboard/_AllGames.cshtml", sections);
+        }
     }
 }

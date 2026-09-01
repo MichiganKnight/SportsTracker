@@ -1,0 +1,9 @@
+﻿@using SportsTracker.App.ViewModels.LeagueInfo
+@model IReadOnlyList<LeagueSectionViewModel>
+
+<div data-dashboard-all-games>
+    @foreach (LeagueSectionViewModel league in Model)
+    {
+        <partial name="~/Views/Shared/Dashboard/_LeagueSection.cshtml" model="league" />
+    }
+</div>

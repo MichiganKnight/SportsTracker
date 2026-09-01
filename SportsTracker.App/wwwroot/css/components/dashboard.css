@@ -1,0 +1,11 @@
+﻿.dashboard-feature-section {
+    padding: 1rem;
+    background: var(--st-table-bg);
+    border: 1px solid var(--st-border);
+    border-radius: 0.75rem;
+}
+
+.dashboard-feature-section > .d-flex {
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid var(--st-border);
+}

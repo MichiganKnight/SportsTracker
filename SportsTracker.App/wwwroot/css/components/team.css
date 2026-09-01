@@ -110,6 +110,32 @@
     vertical-align: middle;
 }
 
+/* Team Favorites */
+.team-favorite-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+    transition: color var(--st-interaction-transition-duration) var(--st-interaction-transition-easing), background-color var(--st-interaction-transition-duration) var(--st-interaction-transition-easing), border-color var(--st-interaction-transition-duration) var(--st-interaction-transition-easing);
+}
+
+.team-favorite-button i {
+    color: var(--st-text-muted);
+}
+
+.team-favorite-button.is-favorite {
+    color: var(--st-warning);
+    border-color: var(--st-warning);
+}
+
+.team-favorite-button.is-favorite i {
+    color: var(--st-warning);
+}
+
+.team-favorite-button.is-favorite:hover {
+    color: var(--st-warning);
+}
+
 @media (min-width: 768px) {
     .team-header-logo-wrap {
         width: 96px;

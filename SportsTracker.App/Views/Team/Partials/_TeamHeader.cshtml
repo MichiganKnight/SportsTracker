@@ -10,37 +10,49 @@
                     <picture>
                         @if (!string.IsNullOrWhiteSpace(Model.DarkLogo))
                         {
-                            <source media="all(prefers-color-scheme: dark)" srcset="@Model.DarkLogo" />
+                            <source media="all(prefers-color-scheme: dark)" srcset="@Model.DarkLogo"/>
                         }
-                            
-                        <img src="@Model.Team.Logo" alt="@Model.Team.DisplayName" class="team-header-logo" />
+
+                        <img src="@Model.Team.Logo" alt="@Model.Team.DisplayName" class="team-header-logo"/>
                     </picture>
                 }
             </div>
-                
+
             <div class="flex-grow-1">
-                <div class="text-secondary small fw-semibold text-uppercase">
-                    @Model.League
-                </div>
-                    
-                <h1 class="mb-1">
-                    @Model.Team.DisplayName
-                </h1>
-                    
-                <div class="text-secondary">
-                    @Model.Team.Abbreviation
-                </div>
-                    
-                @if (!string.IsNullOrWhiteSpace(Model.OverallRecord))
-                {
-                    <div class="team-overall-record mt-3">
-                        @Model.OverallRecord
+                <div class="d-flex justify-content-between align-items-start gap-3">
+                    <div>
+                        <div class="text-secondary small fw-semibold text-uppercase">
+                            @Model.League
+                        </div>
+
+                        <h1 class="mb-1">
+                            @Model.Team.DisplayName
+                        </h1>
+
+                        <div class="text-secondary">
+                            @Model.Team.Abbreviation
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(Model.OverallRecord))
+                        {
+                            <div class="team-overall-record mt-3">
+                                @Model.OverallRecord
+                            </div>
+                        }
                     </div>
-                }
+                    
+                    <button type="button" class="btn btn-outline-secondary team-favorite-button" data-favorite-team data-league="@Model.League" data-team-id="@Model.Team.Id" data-team-name="@Model.Team.DisplayName" data-team-abbreviation="@Model.Team.Abbreviation" data-team-logo="@Model.Team.Logo" aria-pressed="false">
+                        <i class="bi bi-star"></i>
+                        
+                        <span class="d-none d-sm-inline">
+                            Favorite
+                        </span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-        
+
     @if (!string.IsNullOrWhiteSpace(Model.Team.PrimaryColor))
     {
         <div class="team-color-bar" style="--team-primary: @Model.Team.PrimaryColor; --team-secondary: @(Model.Team.AlternateColor ?? Model.Team.PrimaryColor)"></div>

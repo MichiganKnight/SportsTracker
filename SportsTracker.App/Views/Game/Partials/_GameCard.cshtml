@@ -15,7 +15,7 @@
     string gameStatusClass = Model.IsLive ? "bg-danger game-live-badge" : Model.IsFinal ? "bg-dark" : "bg-primary";
 }
 
-<div class="card game-card card-interactive shadow-sm h-100 position-relative" id="game-@Model.GameId" data-game-id="@Model.GameId">
+<div class="card game-card card-interactive shadow-sm h-100 position-relative" id="game-@Model.GameId" data-game-card data-game-id="@Model.GameId" data-league="@Model.League" data-away-team-id="@Model.AwayTeam.Id" data-home-team-id="@Model.HomeTeam.Id" data-is-live="@Model.IsLive.ToString().ToLowerInvariant()">
     <div class="card-body">
         <!-- Teams -->
         <div class="rounded-3 p-2 mb-3 game-team-surface">
