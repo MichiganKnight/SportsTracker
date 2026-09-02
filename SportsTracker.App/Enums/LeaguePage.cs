@@ -3,6 +3,7 @@
     public enum LeaguePage
     {
         Games,
-        Standings
+        Standings,
+        Leaders
     }
 }

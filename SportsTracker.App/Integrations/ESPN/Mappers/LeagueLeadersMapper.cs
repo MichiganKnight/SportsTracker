@@ -5,86 +5,126 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
 {
     public static class LeagueLeadersMapper
     {
-        public static LeagueLeaders Map(LeagueLeadersResponseDto response)
+        public static LeaderCategory MapCategory(LeagueLeadersResponseDto response, string categoryName, string statisticName)
         {
-            List<LeaderCategory> categories = response.Stats?.Categories?.Select(MapCategory).ToList() ?? [];
-            
-            return new LeagueLeaders
-            {
-                Season = response.Season?.Year ?? DateTime.UtcNow.Year,
-                
-                SeasonName = response.Season?.DisplayName ?? response.Season?.Year?.ToString() ?? string.Empty,
-                
-                Categories = categories
-            };
-        }
+            LeagueLeaderCategoryMetadataDto? metadata = response.Categories.FirstOrDefault(category => string.Equals(category.Name, categoryName, StringComparison.OrdinalIgnoreCase));
 
-        private static LeaderCategory MapCategory(LeagueLeaderCategoryDto category)
-        {
-            List<StatLeader> leaders = category.Leaders?.Select((leader, index) => MapLeader(leader, category.Name, index + 1)).ToList() ?? [];
-            
+            int statisticIndex  = FindStatisticIndex(metadata, statisticName);
+
+            if (statisticIndex < 0)
+            {
+                return new LeaderCategory
+                {
+                    Name = statisticName,
+                    DisplayName = statisticName,
+                    Abbreviation = statisticName,
+
+                    Leaders = []
+                };
+            }
+
+            string displayName = GetAt(metadata?.DisplayNames, statisticIndex) ?? statisticName;
+            string abbreviation = GetAt(metadata?.Labels, statisticIndex) ?? statisticName;
+
+            List<StatLeader> leaders = response.Athletes?
+                .Select((entry, index) => MapLeader(entry, categoryName, statisticIndex, index + 1))
+                .Where(leader => leader is not null)
+                .Select(leader => leader!)
+                .ToList() ?? [];
+
             return new LeaderCategory
             {
-                Name = category.Name ?? string.Empty,
-                DisplayName = category.DisplayName ?? category.Name ?? string.Empty,
-                Abbreviation = category.Abbreviation ?? string.Empty,
-                
+                Name = statisticName,
+                DisplayName = displayName,
+                Abbreviation = abbreviation,
+
                 Leaders = leaders
             };
         }
 
-        private static StatLeader MapLeader(LeagueLeaderDto leader, string? statisticName, int rank)
+        private static StatLeader? MapLeader(LeagueLeaderAthleteEntryDto entry, string categoryName, int statisticIndex, int rank)
         {
-            LeagueLeaderTeamDto? team = leader.Team ?? leader.Athlete?.Team;
+            LeagueLeaderAthleteDto? athlete = entry.Athlete;
+
+            if (athlete is null)
+            {
+                return null;
+            }
+
+            LeagueLeaderAthleteCategoryDto? category = entry.Categories.FirstOrDefault(item => string.Equals(item.Name, categoryName, StringComparison.OrdinalIgnoreCase));
+
+            if (category is null)
+            {
+                return null;
+            }
+            
+            string? displayValue = GetAt(category.Totals, statisticIndex);
+            double? value = GetAt(category.Values, statisticIndex);
+
+            if (value is null)
+            {
+                return null;
+            }
 
             return new StatLeader
             {
                 Rank = rank,
 
-                Value = leader.Value ?? 0,
+                DisplayValue = displayValue ?? value.Value.ToString(),
+                Value = value.Value,
 
-                DisplayValue = GetStatisticDisplayValue(leader, statisticName),
+                AthleteId = athlete.Id ?? string.Empty,
 
-                AthleteId = leader.Athlete?.Id ?? string.Empty,
+                AthleteName = athlete.DisplayName ?? athlete.ShortName ?? string.Empty,
+                Headshot = athlete.Headshot?.Href,
 
-                AthleteName = leader.Athlete?.DisplayName ?? leader.Athlete?.ShortName ?? string.Empty,
-                Headshot = leader.Athlete?.Headshot?.Href,
+                TeamId = athlete.TeamId ?? string.Empty,
 
-                TeamId = team?.Id ?? string.Empty,
-                TeamName = team?.DisplayName ?? team?.Name ?? string.Empty,
-                TeamAbbreviation = team?.Abbreviation ?? string.Empty,
+                TeamName = athlete.TeamName ?? athlete.TeamShortName ?? string.Empty,
+                TeamAbbreviation = athlete.TeamShortName ?? string.Empty,
 
-                TeamLogo = GetPrimaryLogo(team)
+                TeamLogo = GetPrimaryLogo(athlete.TeamLogos)
             };
         }
 
-        private static string GetStatisticDisplayValue(LeagueLeaderDto leader, string? statisticName)
+        private static int FindStatisticIndex(LeagueLeaderCategoryMetadataDto? category, string statisticName)
         {
-            if (!string.IsNullOrWhiteSpace(statisticName))
+            if (category?.Names is null)
             {
-                LeagueLeaderStatDto? statistic = leader.Statistics?.Splits?.Categories?
-                    .SelectMany(category => category.Stats ?? [])
-                    .FirstOrDefault(stat => string.Equals(stat.Name, statisticName, StringComparison.OrdinalIgnoreCase));
+                return -1;
+            }
 
-                if (!string.IsNullOrWhiteSpace(statistic?.DisplayValue))
+            for (int i = 0; i < category.Names.Count; i++)
+            {
+                if (string.Equals(category.Names[i], statisticName, StringComparison.OrdinalIgnoreCase))
                 {
-                    return statistic.DisplayValue;
+                    return i;
                 }
             }
             
-            return leader.Value?.ToString() ?? string.Empty;
+            return -1;
         }
 
-        private static string? GetPrimaryLogo(LeagueLeaderTeamDto? team)
+        private static string? GetPrimaryLogo(IReadOnlyList<EspnLogoDto>? logos)
         {
-            if (team?.Logos is null)
+            if (logos is null || logos.Count == 0)
             {
                 return null;
             }
-
-            EspnLogoDto? defaultLogo = team.Logos.FirstOrDefault(logo => logo.Rel.Any(rel => string.Equals(rel, "default", StringComparison.OrdinalIgnoreCase)));
             
-            return defaultLogo?.Href ?? team.Logos.FirstOrDefault()?.Href;
+            EspnLogoDto? defaultLogo = logos.FirstOrDefault(logo => logo.Rel.Any(rel => string.Equals(rel, "default", StringComparison.OrdinalIgnoreCase)));
+            
+            return defaultLogo?.Href ?? logos[0].Href;
+        }
+
+        private static T? GetAt<T>(IReadOnlyList<T>? values, int index)
+        {
+            if (values is null || index < 0 || index >= values.Count)
+            {
+                return default;
+            }
+            
+            return values[index];
         }
     }
 }

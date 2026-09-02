@@ -26,11 +26,14 @@ namespace SportsTracker.App.Integrations.ESPN
             return $"apis/v2/sports/{info.EspnSport}/{info.EspnLeague}/standings";
         }
 
-        public static string LeagueStatistics(League league)
+        public static string LeagueLeadersByAthlete(League league, string category, string statistic, int season, int seasonType = 2, int limit = 50, bool descending = true)
         {
             LeagueInfo info = GetLeagueInfo(league);
+
+            string direction = descending ? "desc" : "asc";
+            string sort = $"{category}.{statistic}:{direction}";
             
-            return Site(info, "statistics");
+            return $"apis/common/v3/sports/{info.EspnSport}/{info.EspnLeague}/statistics/byathlete?category={category}&season={season}&seasonType={seasonType}&sort={Uri.EscapeDataString(sort)}&limit={limit}";
         }
 
         public static string Groups(League league)

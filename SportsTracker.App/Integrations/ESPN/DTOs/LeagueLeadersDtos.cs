@@ -2,8 +2,22 @@
 {
     public sealed class LeagueLeadersResponseDto
     {
-        public LeagueLeadersSeasonDto? Season { get; init; }
-        public LeagueLeadersStatsDto? Stats { get; init; }
+        public LeagueLeadersPaginationDto? Pagination { get; init; }
+        
+        public List<LeagueLeaderAthleteEntryDto>? Athletes { get; init; } = [];
+        
+        public LeagueLeadersSeasonDto? CurrentSeason { get; init; }
+        public LeagueLeadersSeasonDto? RequestedSeason { get; init; }
+        
+        public List<LeagueLeaderCategoryMetadataDto>? Categories { get; init; } = [];
+    }
+
+    public sealed class LeagueLeadersPaginationDto
+    {
+        public int? Count { get; init; }
+        public int? Limit { get; init; }
+        public int? Page { get; init; }
+        public int? Pages { get; init; }
     }
 
     public sealed class LeagueLeadersSeasonDto
@@ -12,76 +26,50 @@
         
         public string? DisplayName { get; init; }
         
+        public LeagueLeadersSeasonTypeDto? Type { get; init; }
+    }
+    
+    public sealed class LeagueLeadersSeasonTypeDto
+    {
+        public string? Id { get; init; }
+        
         public int? Type { get; init; }
         
         public string? Name { get; init; }
     }
     
-    public sealed class LeagueLeadersStatsDto
-    {
-        public string? Id { get; init; }
-        
-        public string? Name { get; init; }
-        public string? Abbreviation { get; init; }
-        
-        public List<LeagueLeaderCategoryDto>? Categories { get; init; } = [];
-    }
-    
-    public sealed class LeagueLeaderCategoryDto
+    public sealed class LeagueLeaderCategoryMetadataDto
     {
         public string? Name { get; init; }
         public string? DisplayName { get; init; }
-        public string? ShortDisplayName { get; init; }
-        public string? Abbreviation { get; init; }
         
-        public List<LeagueLeaderDto>? Leaders { get; init; } = [];
+        public List<string>? Labels { get; init; } = [];
+        public List<string>? Names { get; init; } = [];
+        public List<string>? DisplayNames { get; init; } = [];
     }
 
-    public sealed class LeagueLeaderDto
+    public sealed class LeagueLeaderAthleteEntryDto
     {
-        public string? DisplayValue { get; init; }
-        public double? Value { get; init; }
-        
-        public LeagueLeaderStatisticsDto? Statistics { get; init; }
         public LeagueLeaderAthleteDto? Athlete { get; init; }
-        public LeagueLeaderTeamDto? Team { get; init; }
-    }
-
-    public sealed class LeagueLeaderStatisticsDto
-    {
-        public LeagueLeaderSplitsDto? Splits { get; init; }
+        
+        public List<LeagueLeaderAthleteCategoryDto>? Categories { get; init; } = [];
     }
     
-    public sealed class LeagueLeaderSplitsDto
-    {
-        public List<LeagueLeaderStatCategoryDto>? Categories { get; init; } = [];
-    }
-
-    public sealed class LeagueLeaderStatCategoryDto
-    {
-        public string? Name { get; init; }
-        
-        public List<LeagueLeaderStatDto>? Stats { get; init; } = [];
-    }
-
-    public sealed class LeagueLeaderStatDto
-    {
-        public string? Name { get; init; }
-        
-        public string? DisplayValue { get; init; }
-        public double? Value { get; init; }
-    }
-
     public sealed class LeagueLeaderAthleteDto
     {
         public string? Id { get; init; }
         
         public string? DisplayName { get; init; }
         public string? ShortName { get; init; }
-        public string? Jersey { get; init; }
         
         public LeagueLeaderHeadshotDto? Headshot { get; init; }
-        public LeagueLeaderTeamDto? Team { get; init; }
+        
+        public string? TeamId { get; init; }
+        
+        public string? TeamName { get; init; }
+        public string? TeamShortName { get; init; }
+        
+        public List<EspnLogoDto>? TeamLogos { get; init; } = [];
     }
     
     public sealed class LeagueLeaderHeadshotDto
@@ -89,15 +77,18 @@
         public string? Href { get; init; }
         public string? Alt { get; init; }
     }
-
-    public sealed class LeagueLeaderTeamDto
+    
+    public sealed class LeagueLeaderAthleteCategoryDto
     {
-        public string? Id { get; init; }
-        
         public string? Name { get; init; }
-        public string? Abbreviation { get; init; }
         public string? DisplayName { get; init; }
         
-        public List<EspnLogoDto>? Logos { get; init; } = [];
+        public string? SplitId { get; init; }
+        
+        public List<string?>? Totals { get; init; } = [];
+        
+        public List<double?>? Values { get; init; } = [];
+        
+        public List<string?>? Ranks { get; init; } = [];
     }
 }

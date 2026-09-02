@@ -1,0 +1,159 @@
+﻿@using SportsTracker.App.Enums
+@using SportsTracker.App.ViewModels.LeagueInfo
+@model SportsTracker.App.ViewModels.LeagueInfo.LeagueLeadersViewModel
+
+@{
+    ViewData["Title"] = $"{Model.LeagueName} Leaders";
+
+    LeaderSectionViewModel? selectedSection = Model.Sections.FirstOrDefault();
+
+    string? requestedSection = Context.Request.Query["section"];
+
+    if (!string.IsNullOrWhiteSpace(requestedSection))
+    {
+        selectedSection = Model.Sections.FirstOrDefault(section => string.Equals(section.Title, requestedSection, StringComparison.OrdinalIgnoreCase)) ?? selectedSection;
+    }
+}
+
+<div class="container-fluid">
+    <!-- League Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="mb-1">
+                @Model.LeagueName
+            </h1>
+
+            <div class="text-secondary">
+                @Model.SeasonName Leaders
+            </div>
+        </div>
+
+        <partial name="Navigation/_LeagueNavigation" model="new LeagueNavigationViewModel
+                 {
+                     League = Model.League,
+                     LeagueName = Model.LeagueName,
+                     ActivePage = LeaguePage.Leaders
+                 }"/>
+    </div>
+
+    @if (selectedSection is not null)
+    {
+        <!-- Leaders Section Filter -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="mb-0">
+                @selectedSection.Title Leaders
+            </h4>
+
+            @if (Model.Sections.Count > 1)
+            {
+                <div class="btn-group leaders-section-filter" role="group" aria-label="Leaders Section">
+                    @foreach (LeaderSectionViewModel sec in Model.Sections)
+                    {
+                        bool active = string.Equals(sec.Title, selectedSection.Title, StringComparison.OrdinalIgnoreCase);
+
+                        <a asp-controller="LeagueLeaders" asp-action="Index" asp-route-league="@Model.League" asp-route-section="@sec.Title" class="btn btn-sm @(active ? "btn-primary" : "btn-outline-secondary")">
+                            @sec.Title
+                        </a>
+                    }
+                </div>
+            }
+        </div>
+
+        <!-- Leader Categories -->
+        <div class="row g-3">
+            @foreach (LeaderCategoryViewModel category in selectedSection.Categories)
+            {
+                <div class="col-12 col-lg-6 col-xxl-4">
+                    <div class="card shadow-sm leaders-card h-100">
+                        <div class="card-header leaders-card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">
+                                    @category.DisplayName
+                                </h5>
+
+                                @if (!string.IsNullOrWhiteSpace(category.Abbreviation))
+                                {
+                                    <span class="leaders-card-abbreviation">
+                                        @category.Abbreviation
+                                    </span>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0 leaders-table">
+                                <thead>
+                                    <tr>
+                                        <th class="leaders-rank">#</th>
+                                        <th>Player</th>
+                                        <th class="text-end">
+                                            @category.Abbreviation
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach (LeaderRowViewModel leader in category.Leaders)
+                                    {
+                                        <tr>
+                                            <td class="text-secondary leaders-rank">
+                                                @leader.Rank
+                                            </td>
+
+                                            <td class="leaders-player">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <a asp-controller="Athlete" asp-action="Index" asp-route-league="@Model.League" asp-route-athleteId="@leader.AthleteId" class="leaders-player-image-link">
+                                                        <span class="leaders-player-image-wrap">
+                                                            @if (!string.IsNullOrWhiteSpace(leader.Headshot))
+                                                            {
+                                                                <img class="leaders-player-image" src="@leader.Headshot" alt="@leader.AthleteName"/>
+                                                            }
+                                                            else if (!string.IsNullOrWhiteSpace(leader.TeamLogo))
+                                                            {
+                                                                <img class="leaders-player-fallback-logo" src="@leader.TeamLogo" alt="@leader.TeamName"/>
+                                                            }
+                                                        </span>
+                                                    </a>
+
+                                                    <div class="leaders-player-info">
+                                                        <a asp-controller="Athlete" asp-action="Index" asp-route-league="@Model.League" asp-route-athleteId="@leader.AthleteId" class="leaders-player-name">
+                                                            @leader.AthleteName
+                                                        </a>
+
+                                                        @if (!string.IsNullOrWhiteSpace(leader.TeamId))
+                                                        {
+                                                            <a asp-controller="Team" asp-action="Index" asp-route-league="@Model.League" asp-route-teamId="@leader.TeamId" class="leaders-team">
+                                                                @if (!string.IsNullOrWhiteSpace(leader.TeamLogo))
+                                                                {
+                                                                    <img src="@leader.TeamLogo" alt="@leader.TeamName"/>
+                                                                }
+                                                                
+                                                                <span>
+                                                                    @leader.TeamAbbreviation
+                                                                </span>
+                                                            </a>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            
+                                            <td class="text-end leaders-value">
+                                                @leader.DisplayValue
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-secondary">
+            No League Leader Data is Currently Available
+        </div>
+    }
+</div>

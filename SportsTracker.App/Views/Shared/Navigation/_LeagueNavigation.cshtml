@@ -4,6 +4,7 @@
 @{
     bool gamesActive = Model.ActivePage == LeaguePage.Games;
     bool standingsActive = Model.ActivePage == LeaguePage.Standings;
+    bool leadersActive = Model.ActivePage == LeaguePage.Leaders;
 }
 
 <div class="btn-group standings-view-filter" role="group" aria-label="@Model.LeagueName Navigation">
@@ -15,5 +16,10 @@
     <a asp-controller="Standings" asp-action="Index" asp-route-league="@Model.League" class="btn @(standingsActive ? "btn-primary" : "btn-outline-secondary")">
         <i class="bi bi-list-ol me-1"></i>
         Standings
+    </a>
+    
+    <a asp-controller="LeagueLeaders" asp-action="Index" asp-route-league="@Model.League" class="btn @(leadersActive ? "btn-primary" : "btn-outline-secondary")">
+        <i class="bi bi-trophy me-1"></i>
+        Leaders
     </a>
 </div>

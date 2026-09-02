@@ -1,4 +1,6 @@
-﻿@using SportsTracker.App.ViewModels.Golf
+﻿@using SportsTracker.App.Enums
+@using SportsTracker.App.ViewModels.Golf
+@using SportsTracker.App.ViewModels.LeagueInfo
 @model SportsTracker.App.ViewModels.LeagueInfo.LeaguePageViewModel
 
 @{
@@ -17,6 +19,13 @@
                 Last Updated: @Model.LastUpdatedUtc.ToLocalTime().ToString("g")
             </div>
         </div>
+        
+        <partial name="Navigation/_LeagueNavigation" model="new LeagueNavigationViewModel
+                 {
+                     League = Model.League,
+                     LeagueName = Model.LeagueName,
+                     ActivePage = LeaguePage.Games
+                 }"/>
     </div>
     
     @if (Model.IsGolf)
