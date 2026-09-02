@@ -12,18 +12,68 @@ namespace SportsTracker.App.Controllers
 {
     public class DashboardController(IScoreboardService scoreboardService, IDashboardViewModelMapper dashboardViewModelMapper) : Controller
     {
+        [HttpGet]
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            Dictionary<League, IReadOnlyList<Game>> scoreboards = new();
+            League[] leagues = LeagueConfiguration.All.OrderBy(league => LeagueConfiguration.Get(league).DisplayOrder).ToArray();
 
-            foreach (League league in LeagueConfiguration.All)
+            Task<CachedScoreboard?>[] scoreboardTasks = leagues.Select(league => scoreboardService.GetScoreboardAsync(league, cancellationToken)).ToArray();
+
+            CachedScoreboard?[] scoreboards = await Task.WhenAll(scoreboardTasks);
+
+            int liveEvents = scoreboards.Where(scoreboard => scoreboard is not null).Sum(scoreboard => scoreboard!.Games.Count(game => game.IsLive));
+
+            DashboardOverviewViewModel model = new()
             {
-                CachedScoreboard? scoreboard = await scoreboardService.GetScoreboardAsync(league, cancellationToken);
-                    
-                scoreboards[league] = scoreboard?.Games ?? [];
+                LiveEvents = liveEvents,
+
+                Leagues = leagues
+                    .Select(league =>
+                    {
+                        LeagueInfo info = LeagueConfiguration.Get(league);
+
+                        return new DashboardLeagueSummaryViewModel
+                        {
+                            League = league,
+                            LeagueName = info.DisplayName,
+                            Icon = info.Icon
+                        };
+                    })
+                    .ToList()
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Following()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Live()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Leagues(CancellationToken cancellationToken)
+        {
+            League[] leagues = LeagueConfiguration.All.OrderBy(league => LeagueConfiguration.Get(league).DisplayOrder).ToArray();
+
+            Task<CachedScoreboard?>[] scoreboardTasks = leagues.Select(league => scoreboardService.GetScoreboardAsync(league, cancellationToken)).ToArray();
+
+            CachedScoreboard?[] scoreboards = await Task.WhenAll(scoreboardTasks);
+
+            Dictionary<League, IReadOnlyList<Game>> gamesByLeague = new();
+
+            for (int i = 0; i < leagues.Length; i++)
+            {
+                gamesByLeague[leagues[i]] = scoreboards[i]?.Games ?? [];
             }
-            
-            DashboardViewModel model = dashboardViewModelMapper.Map(scoreboards);
+
+            DashboardViewModel model = dashboardViewModelMapper.Map(gamesByLeague);
 
             return View(model);
         }
@@ -34,8 +84,8 @@ namespace SportsTracker.App.Controllers
             CachedScoreboard? scoreboard = await scoreboardService.GetScoreboardAsync(league, cancellationToken);
 
             LeagueSectionViewModel viewModel = dashboardViewModelMapper.MapDashboardLeague(league, scoreboard?.Games);
-            
-            return PartialView("Dashboard/_LeagueSection", viewModel);
+
+            return PartialView("~/Views/Shared/Dashboard/_LeagueSection.cshtml", viewModel);
         }
 
         [HttpGet]
@@ -44,7 +94,7 @@ namespace SportsTracker.App.Controllers
             League[] leagues = LeagueConfiguration.All.OrderBy(league => LeagueConfiguration.Get(league).DisplayOrder).ToArray();
 
             Task<CachedScoreboard?>[] scoreboardTasks = leagues.Select(league => scoreboardService.GetScoreboardAsync(league, cancellationToken)).ToArray();
-            
+
             CachedScoreboard?[] scoreboards = await Task.WhenAll(scoreboardTasks);
 
             List<LeagueSectionViewModel> sections = [];
@@ -55,10 +105,10 @@ namespace SportsTracker.App.Controllers
                 CachedScoreboard? scoreboard = scoreboards[i];
 
                 LeagueSectionViewModel section = dashboardViewModelMapper.MapLeague(league, scoreboard?.Games);
-                
+
                 sections.Add(section);
             }
-            
+
             return PartialView("~/Views/Dashboard/_AllGames.cshtml", sections);
         }
     }

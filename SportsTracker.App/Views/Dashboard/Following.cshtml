@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Following";
+    ViewData["ActiveDashboardTab"] = "Following";
+}
+
+<div class="container-fluid dashboard-page">
+    <partial name="~/Views/Dashboard/Partials/_DashboardHeader.cshtml" />
+
+    <partial name="~/Views/Dashboard/Partials/_DashboardNavigation.cshtml" />
+
+    <partial name="~/Views/Dashboard/Partials/_FavoritesEmptyState.cshtml" />
+
+    <partial name="~/Views/Dashboard/Partials/_FavoriteTeams.cshtml" />
+
+    <partial name="~/Views/Dashboard/Partials/_FavoriteAthletes.cshtml" />
+
+    <partial name="~/Views/Dashboard/Partials/_FavoriteGames.cshtml" />
+</div>
+
+<div id="dashboard-all-games" class="d-none" ariahidden="true"></div>
+
+@section Scripts
+{
+    <script src="~/js/dashboard/dashboardFavorites.js" asp-append-version="true"></script>
+    <script src="~/js/dashboard/dashboardGames.js" asp-append-version="true"></script>
+    <script src="~/js/dashboard/dashboard.js" asp-append-version="true"></script>
+}

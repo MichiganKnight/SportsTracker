@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Live";
+    ViewData["ActiveDashboardTab"] = "Live";
+}
+
+<div class="container-fluid dashboard-page">
+    <partial name="~/Views/Dashboard/Partials/_DashboardHeader.cshtml" />
+
+    <partial name="~/Views/Dashboard/Partials/_DashboardNavigation.cshtml" />
+
+    <partial name="~/Views/Dashboard/Partials/_LiveGames.cshtml" />
+</div>
+
+<div id="dashboard-all-games" class="d-none" aria-hidden="true"></div>
+
+@section Scripts
+{
+    <script src="~/js/dashboard/dashboardGames.js" asp-append-version="true"></script>
+    <script src="~/js/dashboard/dashboard.js" asp-append-version="true"></script>
+}

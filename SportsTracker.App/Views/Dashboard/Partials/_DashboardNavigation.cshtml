@@ -1,0 +1,23 @@
+﻿@{
+    string activeTab = ViewData["ActiveDashboardTab"] as string ?? "Overview";
+}
+
+<div class="mb-4">
+    <div class="btn-group" role="group" aria-label="Dashboard Navigation">
+        <a asp-controller="Dashboard" asp-action="Index" class="btn @(activeTab == "Overview" ? "btn-primary" : "btn-outline-secondary")">
+            Overview
+        </a>
+        
+        <a asp-controller="Dashboard" asp-action="Following" class="btn @(activeTab == "Following" ? "btn-primary" : "btn-outline-secondary")">
+            Following
+        </a>
+
+        <a asp-controller="Dashboard" asp-action="Live" class="btn @(activeTab == "Live" ? "btn-primary" : "btn-outline-secondary")">
+            Live
+        </a>
+
+        <a asp-controller="Dashboard" asp-action="Leagues" class="btn @(activeTab == "Leagues" ? "btn-primary" : "btn-outline-secondary")">
+            Leagues
+        </a>
+    </div>
+</div>

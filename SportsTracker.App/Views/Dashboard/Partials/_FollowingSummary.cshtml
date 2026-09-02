@@ -1,0 +1,41 @@
+﻿<div class="card shadow-sm mb-4 dashboard-summary-card h-100">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start gap-3">
+            <div>
+                <h5 class="card-title mb-1">
+                    Following
+                </h5>
+
+                <p class="text-secondary mb-0">
+                    Teams and athletes you're following
+                </p>
+            </div>
+
+            <a asp-controller="Dashboard" asp-action="Following" class="btn btn-outline-secondary btn-sm">
+                View Following
+            </a>
+        </div>
+
+        <div class="row g-3 mt-2">
+            <div class="col-sm-6">
+                <div class="dashboard-summary-stat">
+                    <div class="dashboard-summary-stat-value" data-dashboard-favorite-team-count>0</div>
+
+                    <div class="dashboard-summary-stat-label">
+                        Favorite Teams
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="dashboard-summary-stat">
+                    <div class="dashboard-summary-stat-value" data-dashboard-favorite-athlete-count>0</div>
+
+                    <div class="dashboard-summary-stat-label">
+                        Favorite Players
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+﻿@using SportsTracker.App.ViewModels.LeagueInfo
+@model SportsTracker.App.ViewModels.DashboardInfo.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Leagues";
+    ViewData["ActiveDashboardTab"] = "Leagues";
+}
+
+<div class="container-fluid dashboard-page">
+    <partial name="~/Views/Dashboard/Partials/_DashboardHeader.cshtml" />
+
+    <partial name="~/Views/Dashboard/Partials/_DashboardNavigation.cshtml" />
+
+    <div id="dashboard-leagues">
+        @foreach (LeagueSectionViewModel league in Model.Leagues)
+        {
+            <partial name="~/Views/Shared/Dashboard/_LeagueSection.cshtml" model="league" />
+        }
+    </div>
+</div>

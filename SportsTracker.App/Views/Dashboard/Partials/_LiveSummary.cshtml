@@ -1,0 +1,31 @@
+﻿@model int
+
+<div class="card shadow-sm dashboard-summary-card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start gap-3">
+            <div>
+                <h5 class="card-title mb-1">
+                    Live Now
+                </h5>
+
+                <p class="text-secondary mb-0">
+                    Events currently in progress
+                </p>
+            </div>
+
+            <a asp-controller="Dashboard" asp-action="Live"class="btn btn-outline-secondary btn-sm">
+                View Live
+            </a>
+        </div>
+
+        <div class="dashboard-summary-stat mt-3">
+            <div class="dashboard-summary-stat-value">
+                @Model
+            </div>
+
+            <div class="dashboard-summary-stat-label">
+                Live Events
+            </div>
+        </div>
+    </div>
+</div>
