@@ -1,87 +1,145 @@
 ﻿const sportsTrackerFavorites = (() => {
-    const storageKey = "sportsTracker.favoriteTeams";
-
-    function getAll() {
+    const teamStorageKey = "sportsTracker.favoriteTeams";
+    const athleteStorageKey = "sportsTracker.favoriteAthletes";
+    
+    function getStoredItems(storageKey) {
         const stored = localStorage.getItem(storageKey);
-
+        
         if (!stored) {
             return [];
         }
-
+        
         try {
             const parsed = JSON.parse(stored);
-
+            
             return Array.isArray(parsed) ? parsed : [];
         } catch {
             return [];
         }
     }
-
-    function save(favorites) {
-        localStorage.setItem(storageKey, JSON.stringify(favorites));
-
-        document.dispatchEvent(new CustomEvent("sportsTracker:favoritesChanged", {
-            detail: {
-                favorites
-            }
-        }));
-    }
-
-    function createKey(league, teamId) {
-        return `${String(league ?? "").toLowerCase()}:${String(teamId ?? "")}`;
-    }
-
-    function isFavorite(league, teamId) {
-        const key = createKey(league, teamId);
-
-        return getAll().some(favorite =>
-            createKey(favorite.league, favorite.teamId) === key
-        );
-    }
-
-    function add(team) {
-        if (!isValidTeam(team)) {
-            return;
-        }
+    
+    function saveStoredItems(storageKey, items) {
+        localStorage.setItem(storageKey, JSON.stringify(items));
         
-        const favorites = getAll();
-
-        if (isFavorite(team.league, team.teamId)) {
-            return;
+        document.dispatchEvent(new CustomEvent("sportsTracker:favoritesChanged"));
+    }
+    
+    function createKey(league, id) {
+        return `${String(league ?? "").toLowerCase()}:${String(id ?? "")}`;
+    }
+    
+    const teams = {
+        getAll() {
+            return getStoredItems(teamStorageKey);
+        },
+        
+        isFavorite(league, teamId) {
+            const key = createKey(league, teamId);
+            
+            return this.getAll().some(team =>
+                createKey(team.league, team.teamId) === key
+            );
+        },
+        
+        add(team) {
+            if (!isValidTeam(team)) {
+                return;
+            }
+            
+            const favorites = this.getAll();
+            
+            if (this.isFavorite(team.league, team.teamId)) {
+                return;
+            }
+            
+            favorites.push(team);
+            saveStoredItems(teamStorageKey, favorites);
+        },
+        
+        remove(league, teamId) {
+            const key = createKey(league, teamId);
+            
+            const favorites = this.getAll().filter(team => createKey(team.league, team.teamId) !== key);
+            
+            saveStoredItems(teamStorageKey, favorites);
+        },
+        
+        toggle(team) {
+            if (!isValidTeam(team)) {
+                return false;
+            }
+            
+            if (this.isFavorite(team.league, team.teamId)) {
+                this.remove(team.league, team.teamId);
+                
+                return false;
+            }
+            
+            this.add(team);
+            
+            return true;
         }
+    };
 
-        favorites.push(team);
-        save(favorites);
-    }
+    const athletes = {
+        getAll() {
+            return getStoredItems(athleteStorageKey);
+        },
 
-    function remove(league, teamId) {
-        const key = createKey(league, teamId);
+        isFavorite(league, athleteId) {
+            const key = createKey(league, athleteId);
 
-        const favorites = getAll().filter(favorite =>
-            createKey(favorite.league, favorite.teamId) !== key
-        );
+            return this.getAll().some(athlete =>
+                createKey(athlete.league, athlete.athleteId) === key
+            );
+        },
 
-        save(favorites);
-    }
+        add(athlete) {
+            if (!isValidAthlete(athlete)) {
+                return;
+            }
+
+            const favorites = this.getAll();
+
+            if (this.isFavorite(athlete.league, athlete.athleteId)) {
+                return;
+            }
+
+            favorites.push(athlete);
+            saveStoredItems(athleteStorageKey, favorites);
+        },
+
+        remove(league, athleteId) {
+            const key = createKey(league, athleteId);
+
+            const favorites = this.getAll().filter(athlete => createKey(athlete.league, athlete.athleteId) !== key);
+
+            saveStoredItems(athleteStorageKey, favorites);
+        },
+
+        toggle(athlete) {
+            if (!isValidAthlete(athlete)) {
+                return false;
+            }
+
+            if (this.isFavorite(athlete.league, athlete.athleteId)) {
+                this.remove(athlete.league, athlete.athleteId);
+
+                return false;
+            }
+
+            this.add(athlete);
+
+            return true;
+        }
+    };
     
     function isValidTeam(team) {
         return Boolean(team && team.league && team.teamId);
     }
-
-    function toggle(team) {
-        if (!isValidTeam(team)) {
-            return false;
-        }
-        
-        if (isFavorite(team.league, team.teamId)) {
-            remove(team.league, team.teamId);
-            
-            return false;
-        }
-
-        add(team);
-        
-        return true;
+    
+    function isValidAthlete(athlete) {
+        return Boolean(athlete && athlete.league && athlete.athleteId);
     }
 
     function refreshGameCards(root = document) {
@@ -101,18 +159,15 @@
             const awayTeamId = card.dataset.awayTeamId;
             const homeTeamId = card.dataset.homeTeamId;
 
-            const hasFavoriteTeam = isFavorite(league, awayTeamId) || isFavorite(league, homeTeamId);
+            const hasFavoriteTeam = teams.isFavorite(league, awayTeamId) || teams.isFavorite(league, homeTeamId);
 
             badge.classList.toggle("d-none", !hasFavoriteTeam);
         });
     }
 
     return {
-        getAll,
-        add,
-        remove,
-        toggle,
-        isFavorite,
+        teams,
+        athletes,
         refreshGameCards
     };
 })();

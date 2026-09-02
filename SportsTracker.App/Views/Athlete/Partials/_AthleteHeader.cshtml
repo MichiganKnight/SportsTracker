@@ -1,12 +1,12 @@
 ﻿@model SportsTracker.App.ViewModels.AthleteInfo.AthleteDetailsViewModel
 
-<div class="card shadow-sm mb-4">
-    <div class="card-body athlete-header">
-        <div class="athlete-header-main">
+<div class="card shadow-sm athlete-header-card mb-4">
+    <div class="card-body">
+        <div class="d-flex flex-column flex-md-row align-items-md-center gap-4">
             <div class="athlete-header-wrap">
                 @if (!string.IsNullOrWhiteSpace(Model.Headshot))
                 {
-                    <img src="@Model.Headshot" alt="@Model.DisplayName" class="athlete-headshot" />
+                    <img src="@Model.Headshot" alt="@Model.DisplayName" class="athlete-headshot"/>
                 }
                 else
                 {
@@ -15,68 +15,84 @@
                     </div>
                 }
             </div>
-            
-            <div class="athlete-header-info">
-                <div class="d-flex align-items-center gap-2 mb-1">
-                    <h1 class="athlete-name mb-0">
-                        @Model.DisplayName
-                    </h1>
-                    
-                    @if (!string.IsNullOrWhiteSpace(Model.Status))
-                    {
-                        <span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">
-                            @Model.Status
-                        </span>
-                    }
-                </div>
-                
-                <div class="athlete-meta">
-                    @if (!string.IsNullOrWhiteSpace(Model.Jersey))
-                    {
-                        <span>
-                            @Model.Jersey
-                        </span>
-                    }
-                    
-                    @if (!string.IsNullOrWhiteSpace(Model.Position))
-                    {
-                        <span>
-                            @Model.Position
-                        </span>
-                    }
-                </div>
-                
-                @if (Model.HasTeam)
-                {
-                    <a asp-controller="Team" asp-action="Index" asp-route-league="@Model.League" asp-route-teamId="@Model.TeamId" class="athlete-team-link">
-                        @if (!string.IsNullOrWhiteSpace(Model.TeamLogo))
+
+            <div class="flex-grow-1">
+                <div class="d-flex justify-content-between align-items-start gap-3">
+                    <div class="athlete-header-info">
+                        <div class="text-secondary small fw-semibold text-uppercase">
+                            @Model.League
+                        </div>
+
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <h1 class="mb-0">
+                                @Model.DisplayName
+                            </h1>
+
+                            @if (!string.IsNullOrWhiteSpace(Model.Status))
+                            {
+                                <span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">
+                                    @Model.Status
+                                </span>
+                            }
+                        </div>
+
+                        <div class="athlete-meta">
+                            @if (!string.IsNullOrWhiteSpace(Model.Jersey))
+                            {
+                                <span>
+                                    @Model.Jersey
+                                </span>
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(Model.Position))
+                            {
+                                <span>
+                                    @Model.Position
+                                </span>
+                            }
+                        </div>
+
+                        @if (Model.HasTeam)
                         {
-                            <img src="@Model.TeamLogo" alt="@Model.TeamName" class="athlete-team-logo athlete-team-logo-light" />
+                            <a asp-controller="Team" asp-action="Index" asp-route-league="@Model.League" asp-route-teamId="@Model.TeamId" class="athlete-team-link mt-3">
+                                @if (!string.IsNullOrWhiteSpace(Model.TeamLogo))
+                                {
+                                    <img src="@Model.TeamLogo" alt="@Model.TeamName" class="athlete-team-logo athlete-team-logo-light"/>
+                                }
+
+                                @if (!string.IsNullOrWhiteSpace(Model.TeamDarkLogo))
+                                {
+                                    <img src="@Model.TeamDarkLogo" alt="@Model.TeamName" class="athlete-team-logo athlete-team-logo-dark"/>
+                                }
+
+                                <span>
+                                    @Model.TeamName
+                                </span>
+                            </a>
                         }
-                        
-                        @if (!string.IsNullOrWhiteSpace(Model.TeamDarkLogo))
+                        else if (Model.IsGolf && !string.IsNullOrWhiteSpace(Model.Citizenship))
                         {
-                            <img src="@Model.TeamDarkLogo" alt="@Model.TeamName" class="athlete-team-logo athlete-team-logo-dark" />
+                            <div class="athlete-country">
+                                @if (!string.IsNullOrWhiteSpace(Model.CountryFlag))
+                                {
+                                    <img src="@Model.CountryFlag" alt="@Model.Citizenship" class="athlete-country-flag"/>
+                                }
+
+                                <span>
+                                    @Model.Citizenship
+                                </span>
+                            </div>
                         }
-                        
-                        <span>
-                            @Model.TeamName
-                        </span>
-                    </a>
-                }
-                else if (Model.IsGolf && !string.IsNullOrWhiteSpace(Model.Citizenship))
-                {
-                    <div class="athlete-country">
-                        @if (!string.IsNullOrWhiteSpace(Model.CountryFlag))
-                        {
-                            <img src="@Model.CountryFlag" alt="@Model.Citizenship" class="athlete-country-flag" />
-                        }
-                        
-                        <span>
-                            @Model.Citizenship
-                        </span>
                     </div>
-                }
+                    
+                    <button type="button" class="btn btn-outline-secondary athlete-favorite-button" data-favorite-athlete data-league="@Model.League" data-athlete-id="@Model.Id" data-athlete-name="@Model.DisplayName" data-athlete-headshot="@Model.Headshot" data-athlete-team-id="@Model.TeamId" data-athlete-team-name="@Model.TeamName" data-athlete-position="@Model.Position" data-athlete-citizenship="@Model.Citizenship" aria-pressed="false">
+                        <i class="bi bi-star"></i>
+
+                        <span class="d-none d-sm-inline">
+                            Favorite
+                        </span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

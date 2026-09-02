@@ -5,12 +5,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     await refreshDashboardFeatures();
 });
 
-document.addEventListener("sportsTracker:favoritesChanged", () => {
-    renderFavoritesEmptyState();
-    renderFavoriteTeams();
-    renderFavoriteGames();
-
-    sportsTrackerFavorites.refreshGameCards();
+document.addEventListener("sportsTracker:favoritesChanged", async () => {
+    await refreshDashboardFeatures();
 });
 
 async function refreshDashboardFeatures() {
@@ -24,6 +20,7 @@ async function refreshDashboardFeatures() {
 
     renderFavoritesEmptyState();
     renderFavoriteTeams();
+    renderFavoriteAthletes();
     renderFavoriteGames();
     renderLiveGames();
 
@@ -53,14 +50,40 @@ async function loadDashboardGameCards() {
 
 function renderFavoritesEmptyState() {
     const emptyState = document.querySelector("#dashboard-favorites-empty");
-    
+
     if (!emptyState) {
         return;
     }
-    
-    const hasFavorites = sportsTrackerFavorites.getAll().length > 0;
-    
-    emptyState.classList.toggle("d-none", hasFavorites);
+
+    const hasFavoriteTeams = sportsTrackerFavorites.teams.getAll().length > 0;
+    const hasFavoriteAthletes = sportsTrackerFavorites.athletes.getAll().length > 0;
+
+    emptyState.classList.toggle("d-none", hasFavoriteTeams || hasFavoriteAthletes);
+}
+
+function renderFavoriteAthletes() {
+    const section = document.querySelector("#dashboard-favorite-athletes");
+    const container = document.querySelector("#dashboard-favorite-athlete-list");
+
+    if (!section || !container) {
+        return;
+    }
+
+    container.replaceChildren();
+
+    const favorites = sportsTrackerFavorites.athletes.getAll();
+
+    if (favorites.length === 0) {
+        section.classList.add("d-none");
+
+        return;
+    }
+
+    favorites.sort((a, b) => (a.displayName ?? "").localeCompare(b.displayName ?? "")).forEach(athlete => {
+        container.appendChild(createFavoriteAthleteCard(athlete));
+    });
+
+    section.classList.remove("d-none");
 }
 
 function renderFavoriteTeams() {
@@ -73,7 +96,7 @@ function renderFavoriteTeams() {
 
     container.replaceChildren();
 
-    const favorites = sportsTrackerFavorites.getAll();
+    const favorites = sportsTrackerFavorites.teams.getAll();
 
     if (favorites.length === 0) {
         section.classList.add("d-none");
@@ -100,7 +123,7 @@ function renderFavoriteGames() {
 
     container.replaceChildren();
 
-    const favorites = sportsTrackerFavorites.getAll();
+    const favorites = sportsTrackerFavorites.teams.getAll();
 
     if (favorites.length === 0) {
         section.classList.add("d-none");
@@ -108,21 +131,12 @@ function renderFavoriteGames() {
         return;
     }
 
-    const favoriteKeys = new Set(
-        favorites.map(favorite =>
-            createFavoriteKey(favorite.league, favorite.teamId)
-        )
-    );
-
     const favoriteGames = dashboardGameCards.filter(card => {
         const league = card.dataset.league;
         const awayTeamId = card.dataset.awayTeamId;
         const homeTeamId = card.dataset.homeTeamId;
 
-        return (
-            favoriteKeys.has(createFavoriteKey(league, awayTeamId)) ||
-            favoriteKeys.has(createFavoriteKey(league, homeTeamId))
-        );
+        return (sportsTrackerFavorites.teams.isFavorite(league, awayTeamId) || sportsTrackerFavorites.teams.isFavorite(league, homeTeamId));
     });
 
     if (favoriteGames.length === 0) {
@@ -136,6 +150,7 @@ function renderFavoriteGames() {
     });
 
     sportsTrackerFavorites.refreshGameCards(container);
+    
     section.classList.remove("d-none");
 }
 
@@ -180,6 +195,78 @@ function getVisibleDashboardGameCards() {
     );
 }
 
+function createFavoriteAthleteCard(athlete) {
+    const card = document.createElement("div");
+    card.className = "dashboard-favorite-athlete";
+
+    const link = document.createElement("a");
+
+    link.className = "dashboard-favorite-athlete-link";
+    link.href = `/athlete/${encodeURIComponent(athlete.league)}/${encodeURIComponent(athlete.athleteId)}`;
+
+    const imageWrapper = document.createElement("div");
+    imageWrapper.className = "dashboard-favorite-athlete-image-wrap";
+
+    if (athlete.headshot) {
+        const image = document.createElement("img");
+
+        image.src = athlete.headshot;
+        image.alt = athlete.displayName ?? "Favorite Player";
+        image.className = "dashboard-favorite-athlete-image";
+        imageWrapper.appendChild(image);
+    } else {
+        const placeholder = document.createElement("div");
+
+        placeholder.className = "dashboard-favorite-athlete-placeholder";
+        placeholder.innerHTML = '<i class="bi bi-person-fill"></i>';
+
+        imageWrapper.appendChild(placeholder);
+    }
+
+    const info = document.createElement("div");
+
+    info.className = "dashboard-favorite-athlete-info";
+
+    const name = document.createElement("div");
+
+    name.className = "dashboard-favorite-athlete-name";
+    name.textContent = athlete.displayName ?? "Player";
+
+    const details = document.createElement("div");
+
+    details.className = "dashboard-favorite-athlete-details";
+
+    details.textContent = getFavoriteAthleteDetails(athlete);
+
+    info.appendChild(name);
+
+    if (details.textContent) {
+        info.appendChild(details);
+    }
+
+    link.appendChild(imageWrapper);
+    link.appendChild(info);
+
+    card.appendChild(link);
+
+    const removeButton = document.createElement("button");
+    removeButton.type = "button";
+    removeButton.className = "dashboard-favorite-athlete-remove";
+    removeButton.title = "Remove from Favorites";
+
+    removeButton.setAttribute("aria-label", `Remove ${athlete.displayName ?? "Player"} from Favorites`);
+
+    removeButton.innerHTML = '<i class="bi bi-star-fill"></i>';
+
+    removeButton.addEventListener("click", () => {
+        sportsTrackerFavorites.athletes.remove(athlete.league, athlete.athleteId);
+    });
+
+    card.appendChild(removeButton);
+
+    return card;
+}
+
 function createFavoriteTeamCard(team) {
     const card = document.createElement("div");
     card.className = "dashboard-favorite-team";
@@ -219,20 +306,20 @@ function createFavoriteTeamCard(team) {
     card.appendChild(link);
 
     const removeButton = document.createElement("button");
-    
+
     removeButton.type = "button";
     removeButton.className = "dashboard-favorite-team-remove";
     removeButton.title = "Remove from Favorites";
-    
+
     removeButton.setAttribute(
         "aria-label",
         `Remove ${team.displayName ?? "team"} from Favorites`
     );
-    
+
     removeButton.innerHTML = '<i class="bi bi-star-fill"></i>';
 
     removeButton.addEventListener("click", () => {
-        sportsTrackerFavorites.remove(team.league, team.teamId);
+        sportsTrackerFavorites.teams.remove(team.league, team.teamId);
     });
 
     card.appendChild(removeButton);
@@ -242,20 +329,36 @@ function createFavoriteTeamCard(team) {
 
 function createDashboardGameColumn(card) {
     const column = document.createElement("div");
-    
+
     column.className = "col-12 col-xl-6 col-xxl-4";
 
     const clone = card.cloneNode(true);
-    
+
     column.appendChild(clone);
-    
+
     sportsTrackerFavorites.refreshGameCards(clone);
 
     return column;
 }
 
-function createFavoriteKey(league, teamId) {
-    return `${String(league ?? "").toLowerCase()}:${String(teamId ?? "")}`;
+function getFavoriteAthleteDetails(athlete) {
+    const details = [];
+
+    if (athlete.position) {
+        details.push(athlete.position);
+    }
+
+    if (athlete.teamName) {
+        details.push(athlete.teamName);
+    } else if (athlete.citizenship) {
+        details.push(athlete.citizenship);
+    }
+
+    if (athlete.league) {
+        details.push(athlete.league);
+    }
+
+    return details.join(" · ");
 }
 
 function scheduleDashboardFeaturesRefresh() {

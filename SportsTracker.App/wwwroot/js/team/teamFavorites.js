@@ -17,7 +17,7 @@ function initializeTeamFavoritesButtons() {
             return;
         }
         
-        updateFavoriteButton(button, sportsTrackerFavorites.isFavorite(league, teamId));
+        updateFavoriteButton(button, sportsTrackerFavorites.teams.isFavorite(league, teamId));
 
         if (button.dataset.favoriteInitialized === "true") {
             return;
@@ -34,7 +34,7 @@ function initializeTeamFavoritesButtons() {
                 logo: button.dataset.teamLogo ?? ""
             };
             
-            const isFavorite = sportsTrackerFavorites.toggle(team);
+            const isFavorite = sportsTrackerFavorites.teams.toggle(team);
             
             updateFavoriteButton(button, isFavorite);
         });
