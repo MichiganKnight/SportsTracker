@@ -26,6 +26,13 @@ namespace SportsTracker.App.Integrations.ESPN
             return $"apis/v2/sports/{info.EspnSport}/{info.EspnLeague}/standings";
         }
 
+        public static string LeagueStatistics(League league)
+        {
+            LeagueInfo info = GetLeagueInfo(league);
+            
+            return Site(info, "statistics");
+        }
+
         public static string Groups(League league)
         {
             LeagueInfo info = GetLeagueInfo(league);

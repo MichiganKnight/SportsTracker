@@ -72,6 +72,7 @@ namespace SportsTracker.App.Extensions
             
             services.AddScoped<IStandingsService, StandingsService>();
             services.AddScoped<IGroupsService, GroupsService>();
+            services.AddScoped<ILeagueLeaderService, LeagueLeaderService>();
             
             services.AddScoped<IGameService, GameService>();
             
