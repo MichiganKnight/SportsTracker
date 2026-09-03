@@ -36,6 +36,13 @@ namespace SportsTracker.App.Integrations.ESPN
             return $"apis/common/v3/sports/{info.EspnSport}/{info.EspnLeague}/statistics/byathlete?category={category}&season={season}&seasonType={seasonType}&sort={Uri.EscapeDataString(sort)}&limit={limit}";
         }
 
+        public static string Rankings(League league)
+        {
+            LeagueInfo info = GetLeagueInfo(league);
+            
+            return Site(info, "rankings");
+        }
+
         public static string Groups(League league)
         {
             LeagueInfo info = GetLeagueInfo(league);

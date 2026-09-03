@@ -1,7 +1,5 @@
-﻿using Microsoft.Extensions.Options;
-using SportsTracker.App.Cache;
+﻿using SportsTracker.App.Cache;
 using SportsTracker.App.Common;
-using SportsTracker.App.Config;
 using SportsTracker.App.Enums;
 using SportsTracker.App.Integrations.ESPN;
 using SportsTracker.App.Integrations.ESPN.DTOs;
@@ -15,7 +13,7 @@ namespace SportsTracker.App.Services
         Task<LeagueLeaders?> GetLeadersAsync(League league, CancellationToken cancellationToken = default);
     }
 
-    public sealed class LeagueLeadersService(IEspnApiClient espnApiClient, ICacheService cache, IOptions<CacheOptions> cacheOptions, ILogger<LeagueLeadersService> logger) : EspnCachedServiceBase(espnApiClient, cache), ILeagueLeadersService
+    public sealed class LeagueLeadersService(IEspnApiClient espnApiClient, ICacheService cache, ILogger<LeagueLeadersService> logger) : EspnCachedServiceBase(espnApiClient, cache), ILeagueLeadersService
     {
         private static readonly IReadOnlyList<LeagueLeaderRequest> MlbRequests =
         [

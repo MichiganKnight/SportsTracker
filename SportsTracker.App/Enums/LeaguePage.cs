@@ -4,6 +4,7 @@
     {
         Games,
         Standings,
+        Rankings,
         Leaders
     }
 }

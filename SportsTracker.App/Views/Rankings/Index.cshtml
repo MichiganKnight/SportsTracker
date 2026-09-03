@@ -1,0 +1,239 @@
+﻿@using SportsTracker.App.Enums
+@using SportsTracker.App.ViewModels.LeagueInfo
+@using SportsTracker.App.ViewModels.Rankings
+@model SportsTracker.App.ViewModels.Rankings.RankingsViewModel
+
+@{
+    ViewData["Title"] = $"{Model.LeagueName} Rankings";
+
+    RankingPollViewModel? initialPoll = Model.Polls.FirstOrDefault();
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="mb-1">
+                @Model.LeagueName
+            </h1>
+
+            <div class="text-secondary">
+                @Model.Season Rankings
+            </div>
+        </div>
+
+        <partial name="Navigation/_LeagueNavigation" model="new LeagueNavigationViewModel
+                 {
+                     League = Model.League,
+                     LeagueName = Model.LeagueName,
+                     ActivePage = LeaguePage.Rankings
+                 }"/>
+    </div>
+
+    @if (Model.Polls.Count == 0)
+    {
+        <div class="card shadow-sm">
+            <div class="card-body text-center py-5">
+                <h5 class="mb-2">
+                    Rankings Unavailable
+                </h5>
+
+                <div class="text-secondary">
+                    No Rankings Are Currently Available
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="d-flex flex-wrap gap-2 mb-4" id="rankingPollTabs">
+            @foreach (RankingPollViewModel poll in Model.Polls)
+            {
+                <button type="button" class="btn @(poll == initialPoll ? "btn-primary" : "btn-outline-secondary") ranking-poll-button" data-poll="@poll.Type">
+                    @GetPollDisplayName(poll)
+                </button>
+            }
+        </div>
+
+        @foreach (RankingPollViewModel poll in Model.Polls)
+        {
+            <div class="ranking-poll" data-poll="@poll.Type" style="@(poll == initialPoll ? "" : "display: none;")">
+                <div class="d-flex justify-content-between align-items-end mb-3">
+                    <div>
+                        <h4 class="mb-1">
+                            @poll.Name
+                        </h4>
+
+                        @if (!string.IsNullOrWhiteSpace(poll.WeekDisplayName))
+                        {
+                            <div class="text-secondary">
+                                @poll.WeekDisplayName
+                            </div>
+                        }
+                    </div>
+
+                    @if (poll.LastUpdatedUtc.HasValue)
+                    {
+                        <div class="text-secondary small">
+                            Updated
+                            <span data-utc-time="@poll.LastUpdatedUtc.Value.ToString("O")">
+                                @poll.LastUpdatedUtc.Value.ToString("MMM d, yyyy")
+                            </span>
+                        </div>
+                    }
+                </div>
+
+                <div class="card shadow-sm overflow-hidden">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 70px;">
+                                        RK
+                                    </th>
+
+                                    <th>TEAM</th>
+
+                                    <th class="text-center">
+                                        RECORD
+                                    </th>
+
+                                    <th class="text-center">
+                                        PREV
+                                    </th>
+
+                                    <th class="text-center">
+                                        POINTS
+                                    </th>
+
+                                    <th class="text-center">
+                                        1ST
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (RankedTeamViewModel team in poll.Teams)
+                                {
+                                    <tr>
+                                        <td class="text-center">
+                                            <span class="fw-semibold fs-5">
+                                                @team.Rank
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <div class="d-flex align-items-center gap-3">
+                                                @if (!string.IsNullOrWhiteSpace(team.TeamLogo))
+                                                {
+                                                    <img src="@team.TeamLogo" alt="@team.TeamName" width="40" height="40" class="object-fit-contain" loading="lazy"/>
+                                                }
+
+                                                <div>
+                                                    @if (!string.IsNullOrWhiteSpace(team.TeamId))
+                                                    {
+                                                        <a asp-controller="Team" asp-action="Index" asp-route-league="@Model.League" asp-route-teamId="@team.TeamId" class="fw-semibold text-decoration-none">
+                                                            @team.TeamName
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="fw-semibold">
+                                                            @team.TeamName
+                                                        </span>
+                                                    }
+
+                                                    @if (!string.IsNullOrWhiteSpace(team.Conference))
+                                                    {
+                                                        <span class="text-secondary small">
+                                                            @team.Conference
+                                                        </span>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td class="text-center fw-medium">
+                                            @(string.IsNullOrWhiteSpace(team.Record) ? "-" : team.Record)
+                                        </td>
+
+                                        <td class="text-center">
+                                            @GetPreviousRank(team)
+                                        </td>
+
+                                        <td class="text-center">
+                                            @team.Points.ToString("0.##")
+                                        </td>
+
+                                        <td class="text-center">
+                                            @(team.FirstPlaceVotes > 0 ? team.FirstPlaceVotes : "-")
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@section Scripts
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const buttons = document.querySelectorAll(".ranking-poll-button");
+            const polls = document.querySelectorAll(".ranking-poll");
+
+            buttons.forEach(button => {
+                button.addEventListener("click", () => {
+                    const selectedPoll = button.dataset.poll;
+
+                    buttons.forEach(item => {
+                        item.classList.remove("btn-primary");
+                        item.classList.add("btn-outline-secondary");
+                    });
+
+                    button.classList.remove("btn-outline-secondary");
+                    button.classList.add("btn-primary");
+
+                    polls.forEach(poll => {
+                        poll.style.display = poll.dataset.poll === selectedPoll ? "" : "none";
+                    });
+                });
+            });
+        });
+    </script>
+}
+
+@functions
+{
+    private static string GetPollDisplayName(RankingPollViewModel poll)
+    {
+        return poll.Type switch
+        {
+            "ap" => "AP Poll",
+            "usa" => "Coaches Poll",
+            "cfp" => "CFP",
+
+            _ => poll.ShortName
+        };
+    }
+
+    private static string GetPreviousRank(RankedTeamViewModel team)
+    {
+        if (team.PreviousRank <= 0)
+        {
+            return "-";
+        }
+
+        if (team.PreviousRank == team.Rank)
+        {
+            return team.PreviousRank.ToString();
+        }
+
+        string indicator = team.Rank < team.PreviousRank ? "↑" : "↓";
+
+        return $"{team.PreviousRank} {indicator}";
+    }
+}

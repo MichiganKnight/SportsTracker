@@ -4,6 +4,7 @@
 @{
     bool gamesActive = Model.ActivePage == LeaguePage.Games;
     bool standingsActive = Model.ActivePage == LeaguePage.Standings;
+    bool rankingsActive = Model.ActivePage == LeaguePage.Rankings;
     bool leadersActive = Model.ActivePage == LeaguePage.Leaders;
 }
 
@@ -17,6 +18,14 @@
         <i class="bi bi-list-ol me-1"></i>
         Standings
     </a>
+    
+    @if (Model.League == League.CFB)
+    {
+        <a asp-controller="Rankings" asp-action="Index" asp-route-league="@Model.League" class="btn @(rankingsActive ? "btn-primary" : "btn-outline-secondary")">
+            <i class="bi bi-trophy me-1"></i>
+            Rankings
+        </a>
+    }
     
     <a asp-controller="LeagueLeaders" asp-action="Index" asp-route-league="@Model.League" class="btn @(leadersActive ? "btn-primary" : "btn-outline-secondary")">
         <i class="bi bi-trophy me-1"></i>
