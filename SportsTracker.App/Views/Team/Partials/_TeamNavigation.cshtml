@@ -17,5 +17,9 @@
         <a asp-controller="Team" asp-action="Roster" asp-route-league="@Model.League" asp-route-teamId="@Model.Team.Id" class="btn @(activeTab == "Roster" ? "btn-primary" : "btn-outline-secondary")">
             Roster
         </a>
+        
+        <a asp-controller="Team" asp-action="Stats" asp-route-league="@Model.League" asp-route-teamId="@Model.Team.Id" class="btn @(activeTab == "Stats" ? "btn-primary" : "btn-outline-secondary")">
+            Stats
+        </a>
     </div>
 </div>

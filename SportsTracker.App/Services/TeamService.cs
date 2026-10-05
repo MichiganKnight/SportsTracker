@@ -14,6 +14,7 @@ namespace SportsTracker.App.Services
         Task<TeamSchedule?> GetScheduleAsync(League league, string teamId, CancellationToken cancellationToken = default);
         Task<TeamRoster?> GetRosterAsync(League league, string teamId, CancellationToken cancellationToken = default);
         Task<TeamDetails?> GetDetailsAsync(League league, string teamId, CancellationToken cancellationToken = default);
+        Task<TeamStats?> GetStatsAsync(League league, string teamId, CancellationToken cancellationToken = default);
     }
 
     public sealed class TeamService(IEspnApiClient espnApiClient, ICacheService cache, IOptions<CacheOptions> cacheOptions, ILogger<TeamService> logger) : EspnCachedServiceBase(espnApiClient, cache), ITeamService
@@ -36,6 +37,15 @@ namespace SportsTracker.App.Services
         {
             return GetOrFetchAsync<TeamDetailsResponseDto, TeamDetails>(league, $"Details for {teamId}", CacheKeys.TeamDetails(league, teamId), EspnEndpoints.TeamDetails(league, teamId), dto => TeamDetailsMapper.Map(dto, league),
                 _ => TimeSpan.FromMinutes(_cache.TeamMinutes), logger, cancellationToken);
+        }
+
+        public Task<TeamStats?> GetStatsAsync(League league, string teamId, CancellationToken cancellationToken = default)
+        {
+            int season = DateTime.UtcNow.Year;
+            const int seasonType = 2;
+
+            return GetOrFetchAsync<TeamStatsResponseDto, TeamStats>(league, $"Stats for {teamId}", CacheKeys.TeamStats(league, teamId, season, seasonType), EspnEndpoints.TeamStats(league, teamId, season, seasonType),
+                dto => TeamStatsMapper.Map(dto, season, seasonType), _ => TimeSpan.FromMinutes(_cache.TeamMinutes), logger, cancellationToken);
         }
     }
 }

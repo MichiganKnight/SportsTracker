@@ -9,7 +9,7 @@ using SportsTracker.App.ViewModels.TeamInfo;
 namespace SportsTracker.App.Controllers
 {
     [Route("team")]
-    public sealed class TeamController(ITeamService teamService, ITeamDetailsViewModelMapper teamDetailsViewModelMapper, IGameCardViewModelMapper gameCardViewModelMapper, ITeamRosterViewModelMapper teamRosterViewModelMapper) : Controller
+    public sealed class TeamController(ITeamService teamService, ITeamDetailsViewModelMapper teamDetailsViewModelMapper, IGameCardViewModelMapper gameCardViewModelMapper, ITeamRosterViewModelMapper teamRosterViewModelMapper, ITeamStatsViewModelMapper teamStatsViewModelMapper) : Controller
     {
         [HttpGet("{league}/{teamId}")]
         public async Task<IActionResult> Index(League league, string teamId, CancellationToken cancellationToken)
@@ -70,6 +70,28 @@ namespace SportsTracker.App.Controllers
 
             TeamDetailsViewModel team = teamDetailsViewModelMapper.Map(details);
             TeamRosterPageViewModel viewModel = teamRosterViewModelMapper.Map(team, roster);
+            
+            return View(viewModel);
+        }
+
+        [HttpGet("{league}/{teamId}/stats")]
+        public async Task<IActionResult> Stats(League league, string teamId, string? section, CancellationToken cancellationToken)
+        {
+            Task<TeamDetails?> teamTask = teamService.GetDetailsAsync(league, teamId, cancellationToken);
+            Task<TeamStats?> statsTask = teamService.GetStatsAsync(league, teamId, cancellationToken);
+
+            await Task.WhenAll(teamTask, statsTask);
+
+            TeamDetails? details = await teamTask;
+            TeamStats? stats = await statsTask;
+
+            if (details is null || stats is null)
+            {
+                return NotFound();
+            }
+
+            TeamDetailsViewModel team = teamDetailsViewModelMapper.Map(details);
+            TeamStatsViewModel viewModel = teamStatsViewModelMapper.Map(team, stats, section);
             
             return View(viewModel);
         }

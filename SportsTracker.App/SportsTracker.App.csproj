@@ -15,8 +15,4 @@
       <_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Data\" />
-    </ItemGroup>
-
 </Project>

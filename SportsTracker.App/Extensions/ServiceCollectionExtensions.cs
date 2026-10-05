@@ -11,15 +11,13 @@ namespace SportsTracker.App.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddSportsTrackerServices(this IServiceCollection services, IConfiguration configuration)
+        public static void AddSportsTrackerServices(this IServiceCollection services, IConfiguration configuration)
         {
             AddOptions(services, configuration);
             AddCaching(services);
             AddEspnIntegration(services);
             AddApplicationServices(services);
             AddBackgroundServices(services);
-            
-            return services;
         }
 
         private static void AddOptions(IServiceCollection services, IConfiguration configuration)
@@ -60,6 +58,7 @@ namespace SportsTracker.App.Extensions
             services.AddScoped<IPlayByPlayViewModelMapper, PlayByPlayViewModelMapper>();
             services.AddScoped<ITeamDetailsViewModelMapper, TeamDetailsViewModelMapper>();
             services.AddScoped<ITeamRosterViewModelMapper, TeamRosterViewModelMapper>();
+            services.AddScoped<ITeamStatsViewModelMapper, TeamStatsViewModelMapper>();
             services.AddScoped<IGolfEventCardViewModelMapper, GolfEventCardViewModelMapper>();
             services.AddScoped<IGolfTournamentViewModelMapper, GolfTournamentViewModelMapper>();
             services.AddScoped<IAthleteDetailsViewModelMapper, AthleteDetailsViewModelMapper>();

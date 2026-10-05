@@ -1,0 +1,182 @@
+﻿@using SportsTracker.App.ViewModels.TeamInfo
+@model SportsTracker.App.ViewModels.TeamInfo.TeamStatsViewModel
+
+@{
+    ViewData["Title"] = $"{Model.Team.Team.DisplayName} Stats";
+    ViewData["ActiveTeamTab"] = "Stats";
+}
+
+<div class="container-fluid">
+    <partial name="Partials/_TeamHeader" model="Model.Team"/>
+
+    <partial name="Partials/_TeamNavigation" model="Model.Team"/>
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+        <div>
+            <h4 class="mb-1">
+                Team Statistics
+            </h4>
+
+            <div class="text-secondary small">
+                @Model.Season Season
+            </div>
+        </div>
+    </div>
+
+    <div class="team-stats-sections mb-4">
+        <div class="d-flex flex-wrap gap-2">
+            @foreach (string section in Model.AvailableSections)
+            {
+                bool active = section.Equals(Model.SelectedSection, StringComparison.OrdinalIgnoreCase);
+
+                <a asp-controller="Team" asp-action="Stats" asp-route-league="@Model.Team.League" asp-route-teamId="@Model.Team.Team.Id" asp-route-section="@(section == "Overview" ? null : section)"
+                   class="btn btn-sm @(active ? "btn-primary" : "btn-outline-secondary")">
+                    @(section)
+                </a>
+            }
+        </div>
+    </div>
+
+    @if (Model.Sections.Count == 0)
+    {
+        <div class="alert alert-secondary">
+            No Team Statistics Are Currently Available
+        </div>
+    }
+    else
+    {
+        if (Model.SelectedSection == "Overview")
+        {
+            <div class="row g-3">
+                @foreach (TeamStatSectionViewModel section in Model.Sections)
+                {
+                    <div class="col-12 col-xl-6">
+                        <div class="card shadow-sm team-stats-card h-100">
+                            <div class="card-header team-stats-card-header">
+                                <h5 class="mb-0">
+                                    @(section.DisplayName)
+                                </h5>
+                            </div>
+                            
+                            <div class="card-body">
+                                <div class="row g-2">
+                                    @foreach (TeamStatisticViewModel stat in section.Stats)
+                                    {
+                                        <div class="col-6">
+                                            <div class="team-stat-tile">
+                                                <div class="team-stat-tile-label">
+                                                    @stat.DisplayName
+                                                </div>
+
+                                                <div class="team-stat-tile-value">
+                                                    @stat.Value
+                                                </div>
+
+                                                @if (!string.IsNullOrWhiteSpace(stat.Rank))
+                                                {
+                                                    <div class="team-stat-tile-rank">
+                                                        @stat.Rank
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="row g-3">
+                @foreach (TeamStatSectionViewModel section in Model.Sections)
+                {
+                    <div class="col-12 col-xl-6">
+                        <div class="card shadow-sm team-stats-card h-100">
+                            <div class="card-header team-stats-card-header">
+                                <h5 class="mb-0">
+                                    @(string.IsNullOrWhiteSpace(section.DisplayName) ? section.Name : section.DisplayName)
+                                </h5>
+
+                                @if (!string.IsNullOrWhiteSpace(section.Summary))
+                                {
+                                    <div class="team-stats-summary">
+                                        @(section.Summary)
+                                    </div>
+                                }
+                            </div>
+                        
+                            @if (section.Stats.Count == 0)
+                            {
+                                <div class="card-body text-secondary">
+                                    No Statistics Available for this Category
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0 team-stats-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Statistic</th>
+
+                                                <th class="text-end">
+                                                    Value
+                                                </th>
+
+                                                <th class="text-end team-stats-rank-column">
+                                                    Rank
+                                                </th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            @foreach (TeamStatisticViewModel stat in section.Stats)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <div class="team-stats-name">
+                                                            @stat.DisplayName
+                                                        </div>
+
+                                                        @if (!string.IsNullOrWhiteSpace(stat.Abbreviation) && !string.Equals(stat.Abbreviation, stat.DisplayName, StringComparison.OrdinalIgnoreCase))
+                                                        {
+                                                            <div class="team-stats-abbreviation">
+                                                                @stat.Abbreviation
+                                                            </div>
+                                                        }
+                                                    </td>
+
+                                                    <td class="text-end team-stats-value">
+                                                        @stat.Value
+                                                    </td>
+
+                                                    <td class="text-end team-stats-rank-column">
+                                                        @if (!string.IsNullOrWhiteSpace(stat.Rank))
+                                                        {
+                                                            <span class="team-stats-rank">
+                                                            @stat.Rank
+                                                        </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="text-secondary">
+                                                            -
+                                                        </span>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
+</div>
