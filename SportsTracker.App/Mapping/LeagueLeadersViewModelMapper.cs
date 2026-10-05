@@ -38,6 +38,37 @@ namespace SportsTracker.App.Mapping
             "holds",
             "avgGameScore"
         ];
+        
+        private static readonly string[] NflPassingCategories =
+        [
+            "passingYards",
+            "passingTouchdowns",
+            "completionPct",
+            "QBRating"
+        ];
+
+        private static readonly string[] NflRushingCategories =
+        [
+            "rushingYards",
+            "rushingTouchdowns",
+            "yardsPerRushAttempt"
+        ];
+
+        private static readonly string[] NflReceivingCategories =
+        [
+            "receivingYards",
+            "receptions",
+            "receivingTouchdowns",
+            "yardsPerReception"
+        ];
+
+        private static readonly string[] NflDefensiveCategories =
+        [
+            "totalTackles",
+            "sacks",
+            "tacklesForLoss",
+            "passesDefended"
+        ];
 
         public LeagueLeadersViewModel Map(League league, LeagueLeaders leaders)
         {
@@ -57,6 +88,7 @@ namespace SportsTracker.App.Mapping
             return league switch
             {
                 League.MLB => MapMlbSections(categories),
+                League.NFL => MapNflSections(categories),
 
                 _ =>
                 [
@@ -83,6 +115,36 @@ namespace SportsTracker.App.Mapping
                 {
                     Title = "Pitching",
                     Categories = SelectCategories(categories, MlbPitchingCategories)
+                }
+            ];
+        }
+
+        private static IReadOnlyList<LeaderSectionViewModel> MapNflSections(IReadOnlyList<LeaderCategory> categories)
+        {
+            return
+            [
+                new LeaderSectionViewModel()
+                {
+                    Title = "Passing",
+                    Categories = SelectCategories(categories, NflPassingCategories)
+                },
+                
+                new LeaderSectionViewModel()
+                {
+                    Title = "Rushing",
+                    Categories = SelectCategories(categories, NflRushingCategories)
+                },
+                
+                new LeaderSectionViewModel
+                {
+                    Title = "Receiving",
+                    Categories = SelectCategories(categories, NflReceivingCategories)
+                },
+
+                new LeaderSectionViewModel
+                {
+                    Title = "Defense",
+                    Categories = SelectCategories(categories, NflDefensiveCategories)
                 }
             ];
         }

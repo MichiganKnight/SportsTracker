@@ -32,8 +32,21 @@ namespace SportsTracker.App.Integrations.ESPN
 
             string direction = descending ? "desc" : "asc";
             string sort = $"{category}.{statistic}:{direction}";
-            
-            return $"apis/common/v3/sports/{info.EspnSport}/{info.EspnLeague}/statistics/byathlete?category={category}&season={season}&seasonType={seasonType}&sort={Uri.EscapeDataString(sort)}&limit={limit}";
+
+            List<string> query =
+            [
+                $"season={season}",
+                $"seasonType={seasonType}",
+                $"sort={Uri.EscapeDataString(sort)}",
+                $"limit={limit}"
+            ];
+
+            if (league == League.MLB)
+            {
+                query.Insert(0, $"category={Uri.EscapeDataString(category)}");
+            }
+
+            return $"/apis/common/v3/sports/{info.EspnSport}/{info.EspnLeague}/statistics/byathlete?{string.Join("&", query)}";
         }
 
         public static string Rankings(League league)

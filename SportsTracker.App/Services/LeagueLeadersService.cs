@@ -39,6 +39,32 @@ namespace SportsTracker.App.Services
             new("pitching", "holds"),
             new("pitching", "WARBR")
         ];
+
+        private static readonly IReadOnlyList<LeagueLeaderRequest> NflRequests =
+        [
+            // Passing
+            new("passing", "passingYards"),
+            new("passing", "passingTouchdowns"),
+            new("passing", "completionPct"),
+            new("passing", "QBRating"),
+
+            // Rushing
+            new("rushing", "rushingYards"),
+            new("rushing", "rushingTouchdowns"),
+            new("rushing", "yardsPerRushAttempt"),
+
+            // Receiving
+            new("receiving", "receivingYards"),
+            new("receiving", "receptions"),
+            new("receiving", "receivingTouchdowns"),
+            new("receiving", "yardsPerReception"),
+
+            // Defense
+            new("defensive", "totalTackles"),
+            new("defensive", "sacks"),
+            new("defensive", "tacklesForLoss"),
+            new("defensive", "passesDefended")
+        ];
         
         public async Task<LeagueLeaders?> GetLeadersAsync(League league, CancellationToken cancellationToken = default)
         {
@@ -106,6 +132,7 @@ namespace SportsTracker.App.Services
             return league switch
             {
                 League.MLB => MlbRequests,
+                League.NFL => NflRequests,
 
                 _ => []
             };
