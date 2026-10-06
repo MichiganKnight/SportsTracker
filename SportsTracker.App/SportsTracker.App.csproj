@@ -15,4 +15,8 @@
       <_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="HtmlAgilityPack" Version="1.13.0" />
+    </ItemGroup>
+
 </Project>

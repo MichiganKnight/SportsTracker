@@ -26,8 +26,7 @@ namespace SportsTracker.App.Services
         public Task<TeamSchedule?> GetScheduleAsync(League league, string teamId, CancellationToken cancellationToken = default)
         {
             return GetOrFetchAsync<TeamScheduleResponseDto, TeamSchedule>(league, $"Schedule for {teamId}", CacheKeys.TeamSchedule(league, teamId), EspnEndpoints.TeamSchedule(league, teamId),
-                dto => TeamScheduleMapper.Map(dto, league, teamId),
-                _ => TimeSpan.FromMinutes(_cache.TeamScheduleMinutes), logger, cancellationToken);
+                dto => TeamScheduleMapper.Map(dto, league, teamId), _ => TimeSpan.FromMinutes(_cache.TeamScheduleMinutes), logger, cancellationToken);
         }
 
         public Task<TeamRoster?> GetRosterAsync(League league, string teamId, CancellationToken cancellationToken = default)
@@ -97,7 +96,7 @@ namespace SportsTracker.App.Services
                 pageCount = response.PageCount ?? 1;
 
                 Task<TeamInjury?>[] injuryTasks = response.Items.Select(reference => FetchInjuryAsync(reference, cancellationToken)).ToArray();
-                
+
                 TeamInjury?[] pageInjuries = await Task.WhenAll(injuryTasks);
 
                 foreach (TeamInjury? injury in pageInjuries)
@@ -113,7 +112,7 @@ namespace SportsTracker.App.Services
 
             return injuries;
         }
-        
+
         private async Task<TeamInjury?> FetchInjuryAsync(TeamInjuryReferenceDto reference, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(reference.Ref))
@@ -129,14 +128,14 @@ namespace SportsTracker.App.Services
             {
                 return null;
             }
-            
+
             TeamInjury? injury = TeamInjuriesMapper.Map(result.Value);
 
             if (injury is null)
             {
                 return null;
             }
-            
+
             InjuryAthlete? athlete = await FetchInjuryAthleteAsync(injury.AthleteRef, cancellationToken);
 
             return new TeamInjury
@@ -160,19 +159,19 @@ namespace SportsTracker.App.Services
             {
                 return null;
             }
-            
+
             string endpoint = NormalizeEspnRef(athleteRef);
-            
+
             ApiResult<RosterAthleteDto> result = await espnApiClient.GetAsync<RosterAthleteDto>(endpoint, cancellationToken);
 
             if (!result.Success || result.Value is null)
             {
                 return null;
             }
-            
+
             return TeamInjuriesMapper.MapAthlete(result.Value);
         }
-        
+
         private static string NormalizeEspnRef(string reference)
         {
             if (reference.StartsWith("http://sports.core.api.espn.com/", StringComparison.OrdinalIgnoreCase))

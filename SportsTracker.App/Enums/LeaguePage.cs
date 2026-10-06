@@ -5,6 +5,7 @@
         Games,
         Standings,
         Rankings,
-        Leaders
+        Leaders,
+        News
     }
 }

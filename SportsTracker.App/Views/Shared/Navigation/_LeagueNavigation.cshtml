@@ -1,34 +1,31 @@
 ﻿@using SportsTracker.App.Enums
-@model SportsTracker.App.ViewModels.LeagueInfo.LeagueNavigationViewModel
+<div class="btn-group" role="group" aria-label="@Model.LeagueName Navigation">
 
-@{
-    bool gamesActive = Model.ActivePage == LeaguePage.Games;
-    bool standingsActive = Model.ActivePage == LeaguePage.Standings;
-    bool rankingsActive = Model.ActivePage == LeaguePage.Rankings;
-    bool leadersActive = Model.ActivePage == LeaguePage.Leaders;
-}
-
-<div class="btn-group standings-view-filter" role="group" aria-label="@Model.LeagueName Navigation">
-    <a asp-controller="League" asp-action="Index" asp-route-league="@Model.League" class="btn @(gamesActive ? "btn-primary" : "btn-outline-secondary")">
+    <a asp-controller="League" asp-action="Index" asp-route-league="@Model.League" class="btn @(Model.ActivePage == LeaguePage.Games ? "btn-primary" : "btn-outline-secondary")">
         <i class="bi bi-calendar-event me-1"></i>
         Games
     </a>
-    
-    <a asp-controller="Standings" asp-action="Index" asp-route-league="@Model.League" class="btn @(standingsActive ? "btn-primary" : "btn-outline-secondary")">
+
+    <a asp-controller="Standings" asp-action="Index" asp-route-league="@Model.League" class="btn @(Model.ActivePage == LeaguePage.Standings ? "btn-primary" : "btn-outline-secondary")">
         <i class="bi bi-list-ol me-1"></i>
         Standings
     </a>
-    
+
     @if (Model.League == League.CFB)
     {
-        <a asp-controller="Rankings" asp-action="Index" asp-route-league="@Model.League" class="btn @(rankingsActive ? "btn-primary" : "btn-outline-secondary")">
+        <a asp-controller="Rankings" asp-action="Index" asp-route-league="@Model.League" class="btn @(Model.ActivePage == LeaguePage.Rankings ? "btn-primary" : "btn-outline-secondary")">
             <i class="bi bi-trophy me-1"></i>
             Rankings
         </a>
     }
-    
-    <a asp-controller="LeagueLeaders" asp-action="Index" asp-route-league="@Model.League" class="btn @(leadersActive ? "btn-primary" : "btn-outline-secondary")">
+
+    <a asp-controller="LeagueLeaders" asp-action="Index" asp-route-league="@Model.League" class="btn @(Model.ActivePage == LeaguePage.Leaders ? "btn-primary" : "btn-outline-secondary")">
         <i class="bi bi-trophy me-1"></i>
         Leaders
+    </a>
+
+    <a asp-controller="League" asp-action="News" asp-route-league="@Model.League" class="btn @(Model.ActivePage == LeaguePage.News ? "btn-primary" : "btn-outline-secondary")">
+        <i class="bi bi-newspaper me-1"></i>
+        News
     </a>
 </div>

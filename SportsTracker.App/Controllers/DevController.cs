@@ -5,6 +5,7 @@ using SportsTracker.App.Enums;
 using SportsTracker.App.Integrations.ESPN;
 using SportsTracker.App.Models;
 using SportsTracker.App.Models.AthleteInfo;
+using SportsTracker.App.Models.LeagueNews;
 using SportsTracker.App.Models.Rankings;
 using SportsTracker.App.Models.TeamInfo;
 using SportsTracker.App.Services;
@@ -13,7 +14,7 @@ namespace SportsTracker.App.Controllers
 {
     [ApiController]
     [Route("dev")]
-    public sealed class DevController(IScoreboardService scoreboardService, ILeagueLeadersService leagueLeadersService, IRankingsService rankingsService, IAthleteService athleteService, ITeamService teamService) : ControllerBase
+    public sealed class DevController(IScoreboardService scoreboardService, ILeagueLeadersService leagueLeadersService, IRankingsService rankingsService, ILeagueNewsService leagueNewsService, IAthleteService athleteService, ITeamService teamService) : ControllerBase
     {
         [HttpGet("scoreboard/{league}")]
         public async Task<ActionResult<CachedScoreboard>> Scoreboard(League league, CancellationToken cancellationToken)
@@ -45,6 +46,14 @@ namespace SportsTracker.App.Controllers
             LeagueRankings? rankings = await rankingsService.GetRankingsAsync(league, cancellationToken);
             
             return rankings is null ? NotFound() : Ok(rankings);
+        }
+
+        [HttpGet("news/{league}")]
+        public async Task<IActionResult> News(League league, CancellationToken cancellationToken)
+        {
+            LeagueNews? leagueNews = await leagueNewsService.GetNewsAsync(league, cancellationToken);
+            
+            return leagueNews is null ? NotFound() : Ok(leagueNews);
         }
 
         [HttpGet("athlete/{league}/{athleteId}")]

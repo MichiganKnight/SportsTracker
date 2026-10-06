@@ -53,6 +53,7 @@ namespace SportsTracker.App.Extensions
             services.AddScoped<IStandingsViewModelMapper, StandingsViewModelMapper>();
             services.AddScoped<ILeagueLeadersViewModelMapper, LeagueLeadersViewModelMapper>();
             services.AddScoped<IRankingsViewModelMapper, RankingsViewModelMapper>();
+            services.AddScoped<ILeagueNewsViewModelMapper, LeagueNewsViewModelMapper>();
             services.AddScoped<IGameDetailsViewModelMapper, GameDetailsViewModelMapper>();
             services.AddScoped<IBoxScoreViewModelMapper, BoxScoreViewModelMapper>();
             services.AddScoped<IPlayByPlayViewModelMapper, PlayByPlayViewModelMapper>();
@@ -75,6 +76,9 @@ namespace SportsTracker.App.Extensions
             services.AddScoped<IGroupsService, GroupsService>();
             services.AddScoped<ILeagueLeadersService, LeagueLeadersService>();
             services.AddScoped<IRankingsService, RankingsService>();
+            services.AddScoped<ILeagueNewsService, LeagueNewsService>();
+
+            services.AddScoped<ILeagueNewsArticleSanitizer, LeagueNewsArticleSanitizer>();
             
             services.AddScoped<IGameService, GameService>();
             

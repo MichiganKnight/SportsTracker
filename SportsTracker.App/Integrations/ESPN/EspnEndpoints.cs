@@ -56,6 +56,18 @@ namespace SportsTracker.App.Integrations.ESPN
             return Site(info, "rankings");
         }
 
+        public static string LeagueNews(League league)
+        {
+            LeagueInfo info = GetLeagueInfo(league);
+
+            return $"/apis/site/v2/sports/{info.EspnSport}/{info.EspnLeague}/news";
+        }
+        
+        public static string LeagueNewsArticle(string articleId)
+        {
+            return $"https://content.core.api.espn.com/v1/sports/news/{articleId}";
+        }
+
         public static string Groups(League league)
         {
             LeagueInfo info = GetLeagueInfo(league);
