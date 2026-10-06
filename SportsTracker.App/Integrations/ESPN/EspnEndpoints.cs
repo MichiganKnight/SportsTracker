@@ -56,11 +56,11 @@ namespace SportsTracker.App.Integrations.ESPN
             return Site(info, "rankings");
         }
 
-        public static string LeagueNews(League league)
+        public static string LeagueNews(League league, int limit = 50)
         {
             LeagueInfo info = GetLeagueInfo(league);
 
-            return $"/apis/site/v2/sports/{info.EspnSport}/{info.EspnLeague}/news";
+            return $"/apis/site/v2/sports/{info.EspnSport}/{info.EspnLeague}/news?limit={limit}";
         }
         
         public static string LeagueNewsArticle(string articleId)

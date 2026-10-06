@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportsTracker.App.Enums;
 using SportsTracker.App.Mapping;
+using SportsTracker.App.Models.LeagueNews;
 using SportsTracker.App.Models.TeamInfo;
 using SportsTracker.App.Services;
 using SportsTracker.App.ViewModels.GameInfo;
@@ -9,7 +10,7 @@ using SportsTracker.App.ViewModels.TeamInfo;
 namespace SportsTracker.App.Controllers
 {
     [Route("team")]
-    public sealed class TeamController(ITeamService teamService, ITeamDetailsViewModelMapper teamDetailsViewModelMapper, IGameCardViewModelMapper gameCardViewModelMapper, ITeamRosterViewModelMapper teamRosterViewModelMapper, ITeamStatsViewModelMapper teamStatsViewModelMapper) : Controller
+    public sealed class TeamController(ITeamService teamService, ILeagueNewsService leagueNewsService, ITeamDetailsViewModelMapper teamDetailsViewModelMapper, IGameCardViewModelMapper gameCardViewModelMapper, ITeamRosterViewModelMapper teamRosterViewModelMapper, ITeamStatsViewModelMapper teamStatsViewModelMapper, ILeagueNewsViewModelMapper leagueNewsViewModelMapper) : Controller
     {
         [HttpGet("{league}/{teamId}")]
         public async Task<IActionResult> Index(League league, string teamId, CancellationToken cancellationToken)
@@ -119,6 +120,28 @@ namespace SportsTracker.App.Controllers
                 League = league,
                 Team = team,
                 Injuries = injuries.Injuries
+            };
+            
+            return View(viewModel);
+        }
+
+        [HttpGet("{league}/{teamId}/news")]
+        public async Task<IActionResult> News(League league, string teamId, CancellationToken cancellationToken)
+        {
+            Task<TeamDetails?> teamTask = teamService.GetDetailsAsync(league, teamId, cancellationToken);
+            Task<LeagueNews?> newsTask = leagueNewsService.GetTeamNewsAsync(league, teamId, cancellationToken);
+            
+            await Task.WhenAll(teamTask, newsTask);
+
+            TeamDetails? details = await teamTask;
+            LeagueNews? news = await newsTask;
+            
+            TeamDetailsViewModel team = teamDetailsViewModelMapper.Map(details);
+
+            TeamNewsViewModel viewModel = new()
+            {
+                Team = team,
+                Articles = leagueNewsViewModelMapper.MapArticles(league, news.Articles)
             };
             
             return View(viewModel);

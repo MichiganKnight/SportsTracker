@@ -1,6 +1,5 @@
 ﻿using SportsTracker.App.Enums;
 using SportsTracker.App.Metadata;
-using SportsTracker.App.Models;
 using SportsTracker.App.Models.LeagueNews;
 using SportsTracker.App.Models.TeamInfo;
 using SportsTracker.App.Services;
@@ -11,6 +10,7 @@ namespace SportsTracker.App.Mapping
     public interface ILeagueNewsViewModelMapper
     {
         LeagueNewsViewModel Map(League league, LeagueNews news);
+        IReadOnlyList<LeagueNewsArticleViewModel> MapArticles(League league, IReadOnlyList<LeagueNewsArticle> articles);
         LeagueNewsArticlePageViewModel MapArticle(League league, LeagueNewsArticle article, IReadOnlyList<TeamDetails> teams);
     }
     
@@ -26,8 +26,13 @@ namespace SportsTracker.App.Mapping
                 LeagueName = leagueInfo.DisplayName,
                 Header = news.Header,
 
-                Articles = news.Articles.Select(MapArticle).ToList()
+                Articles = MapArticles(league, news.Articles)
             };
+        }
+        
+        public IReadOnlyList<LeagueNewsArticleViewModel> MapArticles(League league, IReadOnlyList<LeagueNewsArticle> articles)
+        {
+            return articles.Select(article => MapArticle(league, article)).ToList();
         }
 
         public LeagueNewsArticlePageViewModel MapArticle(League league, LeagueNewsArticle article, IReadOnlyList<TeamDetails> teams)
@@ -63,12 +68,14 @@ namespace SportsTracker.App.Mapping
             };
         }
 
-        private static LeagueNewsArticleViewModel MapArticle(LeagueNewsArticle article)
+        private static LeagueNewsArticleViewModel MapArticle(League league, LeagueNewsArticle article)
         {
             LeagueNewsImage? image = article.Images.FirstOrDefault(image => string.Equals(image.Type, "header", StringComparison.OrdinalIgnoreCase)) ?? article.Images.FirstOrDefault();
 
             return new LeagueNewsArticleViewModel
             {
+                League = league,
+                
                 Id = article.Id,
 
                 Type = article.Type,

@@ -1,5 +1,4 @@
 ﻿using SportsTracker.App.Integrations.ESPN.DTOs.News;
-using SportsTracker.App.Models;
 using SportsTracker.App.Models.LeagueNews;
 
 namespace SportsTracker.App.Integrations.ESPN.Mappers

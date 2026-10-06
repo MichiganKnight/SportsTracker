@@ -63,7 +63,8 @@
 
 /* Article Body Card */
 .news-article-body-card {
-    max-width: 840px;
+    width: 100%;
+    max-width: none;
     padding: 2rem 2.25rem;
     background-color: var(--st-surface);
     color: var(--st-text);

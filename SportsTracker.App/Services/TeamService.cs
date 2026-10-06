@@ -6,7 +6,6 @@ using SportsTracker.App.Enums;
 using SportsTracker.App.Integrations.ESPN;
 using SportsTracker.App.Integrations.ESPN.DTOs.Team;
 using SportsTracker.App.Integrations.ESPN.Mappers;
-using SportsTracker.App.Models;
 using SportsTracker.App.Models.TeamInfo;
 
 namespace SportsTracker.App.Services

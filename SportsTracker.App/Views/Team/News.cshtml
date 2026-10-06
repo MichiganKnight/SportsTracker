@@ -1,0 +1,18 @@
+﻿@using SportsTracker.App.ViewModels.LeagueInfo
+@model SportsTracker.App.ViewModels.TeamInfo.TeamNewsViewModel
+
+@{
+    ViewData["Title"] = $"{Model.Team.Team.DisplayName} News";
+    ViewData["ActiveTeamTab"] = "News";
+    
+    LeagueNewsArticleViewModel? featured = Model.Articles.FirstOrDefault();
+    IReadOnlyList<LeagueNewsArticleViewModel> articles = Model.Articles.Skip(1).ToList();
+}
+
+<div class="container-fluid">
+    <partial name="Partials/_TeamHeader" model="Model.Team"/>
+    
+    <partial name="Partials/_TeamNavigation" model="Model.Team"/>
+    
+    <partial name="~/Views/Shared/News/_NewsFeed.cshtml" model="Model.Articles" />
+</div>

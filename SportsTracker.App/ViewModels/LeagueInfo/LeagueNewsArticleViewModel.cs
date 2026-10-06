@@ -1,7 +1,11 @@
-﻿namespace SportsTracker.App.ViewModels.LeagueInfo
+﻿using SportsTracker.App.Enums;
+
+namespace SportsTracker.App.ViewModels.LeagueInfo
 {
     public sealed class LeagueNewsArticleViewModel
     {
+        public League League { get; init; }
+        
         public string Id { get; init; } = string.Empty;
         
         public string Type { get; init; } = string.Empty;

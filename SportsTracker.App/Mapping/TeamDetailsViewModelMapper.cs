@@ -5,7 +5,7 @@ namespace SportsTracker.App.Mapping
 {
     public interface ITeamDetailsViewModelMapper
     {
-        TeamDetailsViewModel Map(TeamDetails team);
+        TeamDetailsViewModel Map(TeamDetails? team);
     }
     
     public sealed class TeamDetailsViewModelMapper : ITeamDetailsViewModelMapper

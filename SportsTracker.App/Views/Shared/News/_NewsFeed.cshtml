@@ -1,0 +1,187 @@
+﻿@using SportsTracker.App.ViewModels.LeagueInfo
+@model IReadOnlyList<SportsTracker.App.ViewModels.LeagueInfo.LeagueNewsArticleViewModel>
+
+@{
+    LeagueNewsArticleViewModel? featured = Model.FirstOrDefault();
+    IReadOnlyList<LeagueNewsArticleViewModel> articles = Model.Skip(1).ToList();
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">
+        Latest News
+    </h4>
+
+    <span class="text-secondary small">
+        @Model.Count @(Model.Count == 1 ? "Article" : "Articles")
+    </span>
+</div>
+
+@if (featured is null)
+{
+    <div class="card shadow-sm">
+        <div class="card-body py-5 text-center">
+            <h5 class="mb-2">
+                No News Available
+            </h5>
+
+            <div class="text-secondary">
+                There Are Currently No News Articles Available
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <!-- Featured Article -->
+    <div class="card shadow-sm mb-4">
+        <div class="row g-0">
+            @if (featured.HasImage)
+            {
+                <div class="col-lg-5">
+                    <img src="@featured.ImageUrl" alt="@featured.ImageAlt" class="img-fluid rounded-start w-100 h-100" style="object-fit: cover; max-height: 360px;"/>
+                </div>
+            }
+
+            <div class="@(featured.HasImage ? "col-lg-7" : "col-12")">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span class="badge text-bg-primary">
+                            Latest
+                        </span>
+
+                        @if (featured.IsMedia)
+                        {
+                            <span class="badge text-bg-secondary">
+                                Video
+                            </span>
+                        }
+
+                        @if (featured.Premium)
+                        {
+                            <span class="badge text-bg-warning">
+                                ESPN+
+                            </span>
+                        }
+                    </div>
+
+                    <h3 class="card-title mb-3">
+                        @featured.Headline
+                    </h3>
+
+                    @if (featured.HasDescription)
+                    {
+                        <p class="card-text text-secondary">
+                            @featured.Description
+                        </p>
+                    }
+
+                    <div class="d-flex flex-wrap gap-3 text-secondary small mb-3">
+                        @if (featured.HasByline)
+                        {
+                            <span>
+                                By @featured.Byline
+                            </span>
+                        }
+
+                        @if (featured.Published.HasValue)
+                        {
+                            <span>
+                                @featured.Published.Value.ToLocalTime().ToString("MMM dd, yyyy - h:mm tt")
+                            </span>
+                        }
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(featured.ArticleUrl))
+                    {
+                        <a asp-controller="League" asp-action="NewsArticle" asp-route-league="@featured.League" asp-route-articleId="@featured.Id" class="btn btn-sm btn-outline-primary">
+                            Read Article
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- More News -->
+    if (articles.Count > 0)
+    {
+        <h4 class="mb-3">
+            More News
+        </h4>
+
+        foreach (LeagueNewsArticleViewModel article in articles)
+        {
+            <div class="card shadow-sm mb-3">
+                <div class="row g-0">
+                    @if (article.HasImage)
+                    {
+                        <div class="col-md-3">
+                            <img src="@article.ImageUrl" alt="@article.ImageAlt" class="img-fluid rounded-start w-100 h-100" style="object-fit: cover; max-height: 200px;" />
+                        </div>
+                    }
+                    
+                    <div class="@(article.HasImage ? "col-md-9" : "col-12")">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                @if (article.IsMedia)
+                                {
+                                    <span class="badge text-bg-secondary">
+                                        Video
+                                    </span>
+                                }
+                                
+                                @if (article.Premium)
+                                {
+                                    <span class="badge text-bg-warning">
+                                        ESPN+   
+                                    </span>
+                                }
+                            </div>
+                            
+                            <h5 class="card-title">
+                                @article.Headline
+                            </h5>
+                            
+                            @if (article.HasDescription)
+                            {
+                                <p class="card-text text-secondary">
+                                    @article.Description
+                                </p>
+                            }
+                            
+                            <div class="d-flex justify-content-between align-items-end gap-3">
+                                <div class="text-secondary small">
+                                    @if (article.HasByline)
+                                    {
+                                        <span>
+                                            By @article.Byline
+                                        </span>
+                                    }
+                                    
+                                    @if (article.HasByline && article.Published.HasValue)
+                                    {
+                                        <span class="mx-1">-</span>
+                                    }
+                                    
+                                    @if (article.Published.HasValue)
+                                    {
+                                        <span>
+                                            @article.Published.Value.ToLocalTime().ToString("MMM dd, yyyy - h:mm tt")
+                                        </span>
+                                    }
+                                </div>
+                                
+                                @if (!string.IsNullOrWhiteSpace(article.ArticleUrl))
+                                {
+                                    <a asp-controller="League" asp-action="NewsArticle" asp-route-league="@article.League" asp-route-articleId="@article.Id" class="btn btn-sm btn-outline-primary">
+                                        Read Article
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+}
