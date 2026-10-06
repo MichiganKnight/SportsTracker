@@ -105,6 +105,13 @@ namespace SportsTracker.App.Integrations.ESPN
             return $"https://sports.core.api.espn.com/v2/sports/{info.EspnSport}/leagues/{info.EspnLeague}/seasons/{season}/types/{seasonType}/teams/{Uri.EscapeDataString(teamId)}/statistics";
         }
 
+        public static string TeamInjuries(League league, string teamId, int page = 1)
+        {
+            LeagueInfo info = GetLeagueInfo(league);
+
+            return $"https://sports.core.api.espn.com/v2/sports/{info.EspnSport}/leagues/{info.EspnLeague}/teams/{Uri.EscapeDataString(teamId)}/injuries?page={page}";
+        }
+
         public static string AthleteDetails(League league, string athleteId)
         {
             LeagueInfo info = GetLeagueInfo(league);

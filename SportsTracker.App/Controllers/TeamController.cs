@@ -95,5 +95,28 @@ namespace SportsTracker.App.Controllers
             
             return View(viewModel);
         }
+
+        [HttpGet("{league}/{teamId}/injuries")]
+        public async Task<IActionResult> Injuries(League league, string teamId, CancellationToken cancellationToken)
+        {
+            TeamDetails? details = await teamService.GetDetailsAsync(league, teamId, cancellationToken);
+            TeamInjuries? injuries = await teamService.GetInjuriesAsync(league, teamId, cancellationToken);
+
+            if (details is null || injuries is null)
+            {
+                return NotFound();
+            }
+
+            TeamInjuriesViewModel viewModel = new()
+            {
+                League = league,
+                TeamId = teamId,
+                TeamName = details.DisplayName,
+                TeamLogo = details.Logo,
+                Injuries = injuries.Injuries
+            };
+            
+            return View(viewModel);
+        }
     }
 }

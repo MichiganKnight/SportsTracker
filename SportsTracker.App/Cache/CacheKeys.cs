@@ -16,6 +16,7 @@ namespace SportsTracker.App.Cache
         public static string TeamSchedule(League league, string teamId) => $"team-schedule:{league}:{teamId}";
         public static string TeamRoster(League league, string teamId) => $"team-roster:{league}:{teamId}";
         public static string TeamStats(League league, string teamId, int season, int seasonType = 2) => $"team-stats:{league}:{teamId}:{season}:{seasonType}";
+        public static string TeamInjuries(League league, string teamId) => $"team-injuries:{league}:{teamId}";
         
         public static string AthleteDetails(League league, string athleteId) => $"athlete-details:{league}:{athleteId}";
         public static string AthleteOverview(League league, string athleteId) => $"athlete-overview:{league}:{athleteId}";

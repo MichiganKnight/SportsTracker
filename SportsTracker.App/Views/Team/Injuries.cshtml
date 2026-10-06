@@ -1,0 +1,128 @@
+﻿@using SportsTracker.App.Models.TeamInfo
+@model SportsTracker.App.ViewModels.TeamInfo.TeamInjuriesViewModel
+
+@{
+    ViewData["Title"] = $"{Model.TeamName} Injuries";
+}
+
+<div class="container-fluid">
+    <div class="d-flex align-items-center gap-3 mb-3">
+        @if (!string.IsNullOrWhiteSpace(Model.TeamLogo))
+        {
+            <img src="@Model.TeamLogo" alt="@Model.TeamName" width="64" height="64" class="object-fit-contain" />
+        }
+        
+        <div>
+            <h1 class="h3 mb-1">@Model.TeamName</h1>
+            <div class="text-secondary">
+                Injuries
+            </div>
+        </div>
+    </div>
+    
+    @if (Model.Injuries.Count == 0)
+    {
+        <div class="card mt-3">
+            <div class="card-body text-center py-5">
+                <h2 class="h5 mb-2">No Injuries Reported</h2>
+                
+                <p class="text-secondary mb-0">
+                    There Are Currently No Reported Injuries for @Model.TeamName
+                </p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="d-flex flex-column gap-3 mt-3">
+            @foreach (TeamInjury injury in Model.Injuries)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex gap-3">
+                            <div class="flex-shrink-0">
+                                @if (!string.IsNullOrWhiteSpace(injury.Athlete?.HeadshotUrl))
+                                {
+                                    <img src="@injury.Athlete.HeadshotUrl" alt="@injury.Athlete.DisplayName" width="72" height="72" class="rounded object-fit-contain" />
+                                }
+                            </div>
+                            
+                            <div class="flex-grow-1">
+                                <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-2">
+                                    <div>
+                                        <h2 class="h5 mb-1">
+                                            @injury.Athlete?.DisplayName
+                                        </h2>
+                                        
+                                        <div class="text-secondary small">
+                                            @if (!string.IsNullOrWhiteSpace(injury.Athlete?.Jersey))
+                                            {
+                                                <span>
+                                                    #@injury.Athlete.Jersey
+                                                </span>
+                                            }
+                                            
+                                            @if (!string.IsNullOrWhiteSpace(injury.Athlete?.PositionAbbreviation))
+                                            {
+                                                <span>
+                                                    - @injury.Athlete.PositionAbbreviation
+                                                </span>
+                                            }
+                                        </div>
+                                    </div>
+                                    
+                                    <span class="badge bg-secondary">
+                                        @injury.Status
+                                    </span>
+                                </div>
+                                
+                                @if (injury.Details is not null)
+                                {
+                                    <div class="mb-2">
+                                        <strong>
+                                            @injury.Details.Type
+                                        </strong>
+                                        
+                                        @if (!string.IsNullOrWhiteSpace(injury.Details.Location))
+                                        {
+                                            <span class="text-secondary">
+                                                - @injury.Details.Location
+                                            </span>
+                                        }
+                                        
+                                        @if (!string.IsNullOrWhiteSpace(injury.Details.Side) && !string.Equals(injury.Details.Side, "Not Specified", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            <span class="text-secondary">
+                                                - @injury.Details.Side
+                                            </span>
+                                        }
+                                    </div>
+                                    
+                                    @if (injury.Details.ReturnDate.HasValue)
+                                    {
+                                        <div class="small mb-2">
+                                            <span class="text-secondary">
+                                                Expected Return:
+                                            </span>
+                                            
+                                            <strong>
+                                                @injury.Details.ReturnDate.Value.ToString("MMM d, yyyy")
+                                            </strong>
+                                        </div>
+                                    }
+                                }
+                                
+                                @if (!string.IsNullOrWhiteSpace(injury.ShortComment))
+                                {
+                                    <p class="mb-0">
+                                        @injury.ShortComment
+                                    </p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

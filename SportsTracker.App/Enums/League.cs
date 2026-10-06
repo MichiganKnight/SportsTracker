@@ -1,5 +1,8 @@
 ﻿namespace SportsTracker.App.Enums
 {
+    /// <summary>
+    /// Enum of All Supported Leagues
+    /// </summary>
     public enum League
     {
         NFL,
