@@ -47,9 +47,11 @@ namespace SportsTracker.App.Controllers
         }
 
         [HttpGet("league-section")]
-        public async Task<IActionResult> LeagueSection(League league, CancellationToken cancellationToken)
+        public async Task<IActionResult> LeagueSection(League league, DateOnly? date, CancellationToken cancellationToken)
         {
-            CachedScoreboard? scoreboard = await scoreboardService.GetScoreboardAsync(league, cancellationToken);
+            DateOnly selectedDate = date ?? DateOnly.FromDateTime(DateTime.Today);
+            
+            CachedScoreboard? scoreboard = await scoreboardService.GetScoreboardAsync(league, selectedDate,  cancellationToken);
             
             LeagueSectionViewModel viewModel = dashboardViewModelMapper.MapLeague(league, scoreboard?.Games);
             

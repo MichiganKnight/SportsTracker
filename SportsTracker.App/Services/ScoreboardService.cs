@@ -24,13 +24,6 @@ namespace SportsTracker.App.Services
 
         public async Task<CachedScoreboard?> GetScoreboardAsync(League league, DateOnly date, CancellationToken cancellationToken = default)
         {
-            DateOnly today = DateOnly.FromDateTime(DateTime.Today);
-
-            if (date == today)
-            {
-                return await GetScoreboardAsync(league, cancellationToken);
-            }
-            
             string cacheKey = CacheKeys.Scoreboard(league, date);
             
             CachedScoreboard? cached = await cache.GetAsync<CachedScoreboard>(cacheKey);
