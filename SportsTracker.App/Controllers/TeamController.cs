@@ -99,20 +99,25 @@ namespace SportsTracker.App.Controllers
         [HttpGet("{league}/{teamId}/injuries")]
         public async Task<IActionResult> Injuries(League league, string teamId, CancellationToken cancellationToken)
         {
-            TeamDetails? details = await teamService.GetDetailsAsync(league, teamId, cancellationToken);
-            TeamInjuries? injuries = await teamService.GetInjuriesAsync(league, teamId, cancellationToken);
+            Task<TeamDetails?> teamTask = teamService.GetDetailsAsync(league, teamId, cancellationToken);
+            Task<TeamInjuries?> injuriesTask = teamService.GetInjuriesAsync(league, teamId, cancellationToken);
+
+            await Task.WhenAll(teamTask, injuriesTask);
+
+            TeamDetails? details = await teamTask;
+            TeamInjuries? injuries = await injuriesTask;
 
             if (details is null || injuries is null)
             {
                 return NotFound();
             }
+            
+            TeamDetailsViewModel team = teamDetailsViewModelMapper.Map(details);
 
             TeamInjuriesViewModel viewModel = new()
             {
                 League = league,
-                TeamId = teamId,
-                TeamName = details.DisplayName,
-                TeamLogo = details.Logo,
+                Team = team,
                 Injuries = injuries.Injuries
             };
             

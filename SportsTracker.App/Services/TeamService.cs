@@ -96,10 +96,12 @@ namespace SportsTracker.App.Services
 
                 pageCount = response.PageCount ?? 1;
 
-                foreach (TeamInjuryReferenceDto reference in response.Items)
-                {
-                    TeamInjury? injury = await FetchInjuryAsync(reference, cancellationToken);
+                Task<TeamInjury?>[] injuryTasks = response.Items.Select(reference => FetchInjuryAsync(reference, cancellationToken)).ToArray();
+                
+                TeamInjury?[] pageInjuries = await Task.WhenAll(injuryTasks);
 
+                foreach (TeamInjury? injury in pageInjuries)
+                {
                     if (injury is not null)
                     {
                         injuries.Add(injury);

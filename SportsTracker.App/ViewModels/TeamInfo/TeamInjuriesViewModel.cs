@@ -7,9 +7,7 @@ namespace SportsTracker.App.ViewModels.TeamInfo
     {
         public League League { get; init; }
         
-        public string TeamId { get; init; } = string.Empty;
-        public string TeamName { get; init; } = string.Empty;
-        public string? TeamLogo { get; init; } = string.Empty;
+        public TeamDetailsViewModel Team { get; init; } = null!;
         
         public IReadOnlyList<TeamInjury> Injuries { get; init; } = [];
     }
