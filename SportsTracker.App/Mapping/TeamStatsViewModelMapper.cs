@@ -11,31 +11,165 @@ namespace SportsTracker.App.Mapping
 
     public sealed class TeamStatsViewModelMapper : ITeamStatsViewModelMapper
     {
-        private static readonly string[] FootballSections =
+        private sealed record StatSectionDefinition(string Category, string DisplayName, IReadOnlyList<string> Stats);
+
+        private static readonly StatSectionDefinition FootballPassing = new("passing", "Passing",
         [
-            "Overview",
-            "Passing",
-            "Rushing",
-            "Receiving",
-            "Defense",
-            "Scoring"
+            "completions",
+            "passingAttempts",
+            "completionPct",
+            "passingYards",
+            "passingYardsPerGame",
+            "yardsPerPassAttempt",
+            "longPassing",
+            "passingTouchdowns",
+            "interceptions",
+            "sacks",
+            "sackYardsLost",
+            "QBR",
+            "QBRating"
+        ]);
+
+        private static readonly StatSectionDefinition FootballRushing = new("rushing", "Rushing",
+        [
+            "rushingAttempts",
+            "rushingYards",
+            "rushingYardsPerGame",
+            "yardsPerRushAttempt",
+            "longRushing",
+            "rushingBigPlays",
+            "rushingTouchdowns",
+            "rushingFumbles",
+            "rushingFumblesLost",
+            "rushingFirstDowns"
+        ]);
+
+        private static readonly StatSectionDefinition FootballReceiving = new("receiving", "Receiving",
+        [
+            "receptions",
+            "receivingTargets",
+            "receivingYards",
+            "receivingYardsPerGame",
+            "yardsPerReception",
+            "receivingBigPlays",
+            "receivingTouchdowns",
+            "receivingYardsAfterCatch",
+            "receivingFirstDowns",
+            "receivingFumbles",
+            "receivingFumblesLost"
+        ]);
+
+        private static readonly StatSectionDefinition FootballDefense = new("defensive", "Defense",
+        [
+            "soloTackles",
+            "assistTackles",
+            "totalTackles",
+            "sacks",
+            "sackYards",
+            "tacklesForLoss",
+            "passesDefended"
+        ]);
+
+        private static readonly StatSectionDefinition FootballDefensiveInterceptions = new("defensiveinterceptions", "Interceptions",
+        [
+            "interceptions",
+            "interceptionYards",
+            "interceptionTouchdowns"
+        ]);
+
+        private static readonly StatSectionDefinition FootballScoring = new("scoring", "Scoring",
+        [
+            "totalPoints",
+            "totalPointsPerGame",
+            "totalTouchdowns",
+            "passingTouchdowns",
+            "rushingTouchdowns",
+            "receivingTouchdowns",
+            "returnTouchdowns",
+            "fieldGoals",
+            "kickExtraPoints",
+            "totalTwoPointConvs"
+        ]);
+
+        private static readonly StatSectionDefinition BaseballBatting = new("batting", "Batting",
+        [
+            "gamesPlayed",
+            "atBats",
+            "runs",
+            "hits",
+            "avg",
+            "doubles",
+            "triples",
+            "homeRuns",
+            "RBIs",
+            "totalBases",
+            "walks",
+            "strikeouts",
+            "stolenBases",
+            "onBasePct",
+            "slugAvg",
+            "OPS"
+        ]);
+
+        private static readonly StatSectionDefinition BaseballPitching = new("pitching", "Pitching",
+        [
+            "gamesPlayed",
+            "gamesStarted",
+            "qualityStarts",
+            "ERA",
+            "wins",
+            "losses",
+            "saves",
+            "holds",
+            "innings",
+            "hits",
+            "earnedRuns",
+            "homeRuns",
+            "walks",
+            "strikeouts",
+            "strikeoutsPerNineInnings",
+            "WHIP"
+        ]);
+
+        private static readonly StatSectionDefinition BaseballFielding = new("fielding", "Fielding",
+        [
+            "gamesPlayed",
+            "putouts",
+            "assists",
+            "errors",
+            "fieldingPct",
+            "doublePlays"
+        ]);
+
+        private static readonly IReadOnlyList<StatSectionDefinition> FootballSections =
+        [
+            FootballPassing,
+            FootballRushing,
+            FootballReceiving,
+            FootballDefense,
+            FootballScoring
         ];
 
-        private static readonly string[] BaseballSections =
+        private static readonly IReadOnlyList<StatSectionDefinition> BaseballSections =
         [
-            "Overview",
-            "Batting",
-            "Pitching",
-            "Fielding"
+            BaseballBatting,
+            BaseballPitching,
+            BaseballFielding
         ];
 
         public TeamStatsViewModel Map(TeamDetailsViewModel team, TeamStats stats, string? section = null)
         {
-            IReadOnlyList<string> availableSections = GetAvailableSections(team.League);
+            IReadOnlyList<StatSectionDefinition> definitions = GetDefinitions(team.League);
+
+            IReadOnlyList<string> availableSections =
+            [
+                "Overview",
+                .. definitions.Select(definition => definition.DisplayName)
+            ];
 
             string selectedSection = ResolveSection(section, availableSections);
 
-            IReadOnlyList<TeamStatSectionViewModel> sections = selectedSection.Equals("Overview", StringComparison.OrdinalIgnoreCase) ? BuildOverview(team.League, stats) : BuildSection(stats, selectedSection);
+            IReadOnlyList<TeamStatSectionViewModel> sections = selectedSection.Equals("Overview", StringComparison.OrdinalIgnoreCase) ? BuildOverview(team.League, stats) : BuildSelectedSection(stats, selectedSection, definitions);
 
             return new TeamStatsViewModel
             {
@@ -50,14 +184,14 @@ namespace SportsTracker.App.Mapping
             };
         }
 
-        private static IReadOnlyList<string> GetAvailableSections(League league)
+        private static IReadOnlyList<StatSectionDefinition> GetDefinitions(League league)
         {
             return league switch
             {
                 League.NFL or League.CFB => FootballSections,
                 League.MLB => BaseballSections,
 
-                _ => ["Overview"]
+                _ => []
             };
         }
 
@@ -84,87 +218,139 @@ namespace SportsTracker.App.Mapping
 
         private static IReadOnlyList<TeamStatSectionViewModel> BuildFootballOverview(TeamStats stats)
         {
-            TeamStatSectionViewModel[] allSections =
+            List<TeamStatSectionViewModel> sections =
             [
-                CreateCuratedSection(stats, "passing", "Passing", ["passingYards", "passingYardsPerGame", "passingTouchdowns", "completionPct", "QBRating"]),
-                CreateCuratedSection(stats, "rushing", "Rushing", ["rushingYards", "rushingYardsPerGame", "rushingTouchdowns", "yardsPerRushAttempt"]),
-                CreateCuratedSection(stats, "receiving", "Receiving", ["receivingYards", "receivingYardsPerGame", "receivingTouchdowns", "receptions"]),
-                CreateCuratedSection(stats, "defensive", "Defense", ["totalTackles", "sacks", "tacklesForLoss", "passesDefended"])
+                CreateSection(stats, FootballPassing,
+                [
+                    "passingYards",
+                    "passingYardsPerGame",
+                    "passingTouchdowns",
+                    "completionPct"
+                ]),
+
+                CreateSection(stats, FootballRushing,
+                [
+                    "rushingYards",
+                    "rushingYardsPerGame",
+                    "yardsPerRushAttempt",
+                    "rushingTouchdowns"
+                ]),
+
+                CreateSection(stats, FootballReceiving,
+                [
+                    "receptions",
+                    "receivingYards",
+                    "receivingYardsPerGame",
+                    "receivingTouchdowns"
+                ]),
+
+                CreateSection(stats, FootballScoring,
+                [
+                    "totalPoints",
+                    "totalPointsPerGame",
+                    "totalTouchdowns",
+                    "fieldGoals"
+                ])
             ];
 
-            return allSections.Where(section => section.Stats.Count > 0).ToList();
+            return sections.Where(section => section.Stats.Count > 0).ToList();
         }
 
         private static IReadOnlyList<TeamStatSectionViewModel> BuildBaseballOverview(TeamStats stats)
         {
-            TeamStatSectionViewModel[] allSections =
+            List<TeamStatSectionViewModel> sections =
             [
-                CreateCuratedSection(stats, "batting", "Batting", ["avg", "hits", "homeRuns", "runs", "RBIs", "onBasePct", "slugAvg", "OPS"]),
-                CreateCuratedSection(stats, "pitching", "Pitching", ["ERA", "wins", "losses", "strikeouts", "walks", "WHIP", "saves"])
+                CreateSection(stats, BaseballBatting,
+                [
+                    "avg",
+                    "runs",
+                    "hits",
+                    "homeRuns",
+                    "RBIs",
+                    "onBasePct",
+                    "slugAvg",
+                    "OPS"
+                ]),
+
+                CreateSection(stats, BaseballPitching,
+                [
+                    "ERA",
+                    "wins",
+                    "losses",
+                    "strikeouts",
+                    "saves",
+                    "WHIP"
+                ])
             ];
 
-            return allSections.Where(section => section.Stats.Count > 0).ToList();
+            return sections.Where(section => section.Stats.Count > 0).ToList();
         }
 
-        private static IReadOnlyList<TeamStatSectionViewModel> BuildSection(TeamStats stats, string selectedSection)
+        private static IReadOnlyList<TeamStatSectionViewModel> BuildSelectedSection(TeamStats stats, string selectedSection, IReadOnlyList<StatSectionDefinition> definitions)
         {
-            TeamStatCategory? category = stats.Categories.FirstOrDefault(category => category.Name.Equals(selectedSection, StringComparison.OrdinalIgnoreCase) || category.DisplayName.Equals(selectedSection, StringComparison.OrdinalIgnoreCase));
+            StatSectionDefinition? definition = definitions.FirstOrDefault(definition => definition.DisplayName.Equals(selectedSection, StringComparison.OrdinalIgnoreCase));
 
-            if (category is null)
+            if (definition is null)
+            {
+                return [];
+            }
+            
+            TeamStatSectionViewModel section = CreateSection(stats, definition);
+
+            if (section.Stats.Count == 0)
             {
                 return [];
             }
 
-            return
-            [
-                MapSection(category)
-            ];
+            if (selectedSection.Equals("Defense", StringComparison.OrdinalIgnoreCase))
+            {
+                TeamStatSectionViewModel interceptions = CreateSection(stats, FootballDefensiveInterceptions);
+                
+                return interceptions.Stats.Count > 0 ? [section, interceptions] : [section];
+            }
+            
+            return [section];
         }
 
-        private static TeamStatSectionViewModel CreateCuratedSection(TeamStats stats, string categoryName, string displayName, IReadOnlyList<string> statisticNames)
+        private static TeamStatSectionViewModel CreateSection(TeamStats stats, StatSectionDefinition definition, IReadOnlyList<string>? selectedStats  = null)
         {
-            TeamStatCategory? category = stats.Categories.FirstOrDefault(category => category.Name.Equals(categoryName, StringComparison.OrdinalIgnoreCase));
+            TeamStatCategory? category = FindCategory(stats, definition.Category);
 
             if (category is null)
             {
                 return new TeamStatSectionViewModel
                 {
-                    Name = displayName,
-                    DisplayName = displayName
+                    Name = definition.Category,
+                    DisplayName = definition.DisplayName
                 };
             }
 
-            List<TeamStatisticViewModel> selectedStats = [];
+            IReadOnlyList<string> requestedStats = selectedStats ?? definition.Stats;
 
-            foreach (string statisticName in statisticNames)
+            List<TeamStatisticViewModel> mappedStats = [];
+
+            foreach (string statName in requestedStats)
             {
-                TeamStatistic? statistic = category.Stats.FirstOrDefault(stat => stat.Name.Equals(statisticName, StringComparison.OrdinalIgnoreCase));
+                TeamStatistic? statistic = category.Stats.FirstOrDefault(stat => stat.Name.Equals(statName, StringComparison.OrdinalIgnoreCase));
 
                 if (statistic is not null)
                 {
-                    selectedStats.Add(MapStatistic(statistic));
+                    mappedStats.Add(MapStatistic(statistic));
                 }
             }
 
             return new TeamStatSectionViewModel
             {
                 Name = category.Name,
-                DisplayName = displayName,
+                DisplayName = definition.DisplayName,
                 Summary = category.Summary,
-                Stats = selectedStats
+                Stats = mappedStats
             };
         }
 
-        private static TeamStatSectionViewModel MapSection(TeamStatCategory category)
+        private static TeamStatCategory? FindCategory(TeamStats stats, string categoryName)
         {
-            return new TeamStatSectionViewModel
-            {
-                Name = category.Name,
-                DisplayName = category.DisplayName,
-                Summary = category.Summary,
-
-                Stats = category.Stats.Select(MapStatistic).ToList()
-            };
+            return stats.Categories.FirstOrDefault(category => category.Name.Equals(categoryName, StringComparison.OrdinalIgnoreCase));
         }
 
         private static TeamStatisticViewModel MapStatistic(TeamStatistic statistic)
