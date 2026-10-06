@@ -2,6 +2,7 @@
 using SportsTracker.App.Metadata;
 using SportsTracker.App.Models;
 using SportsTracker.App.Models.LeagueNews;
+using SportsTracker.App.Models.TeamInfo;
 using SportsTracker.App.Services;
 using SportsTracker.App.ViewModels.LeagueInfo;
 
@@ -10,7 +11,7 @@ namespace SportsTracker.App.Mapping
     public interface ILeagueNewsViewModelMapper
     {
         LeagueNewsViewModel Map(League league, LeagueNews news);
-        LeagueNewsArticlePageViewModel MapArticle(League league, LeagueNewsArticle article);
+        LeagueNewsArticlePageViewModel MapArticle(League league, LeagueNewsArticle article, IReadOnlyList<TeamDetails> teams);
     }
     
     public sealed class LeagueNewsViewModelMapper(ILeagueNewsArticleSanitizer leagueNewsArticleSanitizer) : ILeagueNewsViewModelMapper
@@ -29,7 +30,7 @@ namespace SportsTracker.App.Mapping
             };
         }
 
-        public LeagueNewsArticlePageViewModel MapArticle(League league, LeagueNewsArticle article)
+        public LeagueNewsArticlePageViewModel MapArticle(League league, LeagueNewsArticle article, IReadOnlyList<TeamDetails> teams)
         {
             LeagueInfo leagueInfo = LeagueConfiguration.Get(league);
             
@@ -45,7 +46,7 @@ namespace SportsTracker.App.Mapping
                 Type = article.Type,
                 Headline = article.Headline,
                 Description = article.Description,
-                Story = leagueNewsArticleSanitizer.Sanitize(article.Story, league, article.References),
+                Story = leagueNewsArticleSanitizer.Sanitize(article.Story, league, article.References, teams),
                 Byline = article.Byline,
 
                 Published = article.Published,

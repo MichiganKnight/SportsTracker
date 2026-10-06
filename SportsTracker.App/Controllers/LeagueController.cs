@@ -3,13 +3,14 @@ using SportsTracker.App.Enums;
 using SportsTracker.App.Mapping;
 using SportsTracker.App.Models;
 using SportsTracker.App.Models.LeagueNews;
+using SportsTracker.App.Models.TeamInfo;
 using SportsTracker.App.Services;
 using SportsTracker.App.ViewModels.LeagueInfo;
 
 namespace SportsTracker.App.Controllers
 {
     [Route("league")]
-    public sealed class LeagueController(IScoreboardService scoreboardService, ILeagueViewModelMapper leagueViewModelMapper, ILeagueNewsService leagueNewsService, ILeagueNewsViewModelMapper leagueNewsViewModelMapper) : Controller
+    public sealed class LeagueController(IScoreboardService scoreboardService, ITeamService teamService, ILeagueViewModelMapper leagueViewModelMapper, ILeagueNewsService leagueNewsService, ILeagueNewsViewModelMapper leagueNewsViewModelMapper) : Controller
     {
         [HttpGet("{league}")]
         public async Task<IActionResult> Index(League league, CancellationToken cancellationToken)
@@ -62,7 +63,9 @@ namespace SportsTracker.App.Controllers
                 return NotFound();
             }
 
-            LeagueNewsArticlePageViewModel viewModel = leagueNewsViewModelMapper.MapArticle(league, article);
+            IReadOnlyList<TeamDetails> teams = await teamService.GetTeamsAsync(league, cancellationToken);
+            
+            LeagueNewsArticlePageViewModel viewModel = leagueNewsViewModelMapper.MapArticle(league, article, teams);
             
             return View(viewModel);
         }

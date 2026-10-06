@@ -6,12 +6,14 @@ using SportsTracker.App.Enums;
 using SportsTracker.App.Integrations.ESPN;
 using SportsTracker.App.Integrations.ESPN.DTOs.Team;
 using SportsTracker.App.Integrations.ESPN.Mappers;
+using SportsTracker.App.Models;
 using SportsTracker.App.Models.TeamInfo;
 
 namespace SportsTracker.App.Services
 {
     public interface ITeamService
     {
+        Task<IReadOnlyList<TeamDetails>> GetTeamsAsync(League league, CancellationToken cancellationToken = default);
         Task<TeamSchedule?> GetScheduleAsync(League league, string teamId, CancellationToken cancellationToken = default);
         Task<TeamRoster?> GetRosterAsync(League league, string teamId, CancellationToken cancellationToken = default);
         Task<TeamDetails?> GetDetailsAsync(League league, string teamId, CancellationToken cancellationToken = default);
@@ -22,6 +24,33 @@ namespace SportsTracker.App.Services
     public sealed class TeamService(IEspnApiClient espnApiClient, ICacheService cache, IOptions<CacheOptions> cacheOptions, ILogger<TeamService> logger) : EspnCachedServiceBase(espnApiClient, cache), ITeamService
     {
         private readonly CacheOptions _cache = cacheOptions.Value;
+
+        public async Task<IReadOnlyList<TeamDetails>> GetTeamsAsync(League league, CancellationToken cancellationToken = default)
+        {
+            string cacheKey = CacheKeys.Teams(league);
+            
+            List<TeamDetails>? cached = await cache.GetAsync<List<TeamDetails>>(cacheKey);
+            
+            if (cached is not null)
+            {
+                return cached;
+            }
+            
+            logger.LogInformation("Fetching Teams for {League}", league);
+            
+            ApiResult<TeamsResponseDto> result = await espnApiClient.GetAsync<TeamsResponseDto>(EspnEndpoints.Teams(league), cancellationToken);
+
+            if (!result.Success || result.Value is null)
+            {
+                return [];
+            }
+
+            List<TeamDetails> teams = TeamsMapper.Map(result.Value, league).ToList();
+            
+            await cache.SetAsync(cacheKey, teams, TimeSpan.FromHours(24));
+            
+            return teams;
+        }
 
         public Task<TeamSchedule?> GetScheduleAsync(League league, string teamId, CancellationToken cancellationToken = default)
         {

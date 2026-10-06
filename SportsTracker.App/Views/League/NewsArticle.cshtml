@@ -28,78 +28,81 @@
                  }"/>
     </div>
     
-    <!-- Back -->
-    <div class="mb-3">
-        <a asp-controller="League" asp-action="News" asp-route-league="@Model.League" class="btn btn-sm btn-outline-secondary">
-            &larr; Back to @Model.LeagueName News
-        </a>
-    </div>
-    
-    <!-- Article -->
-    <article class="card shadow-sm">
-        <div class="card-body p-4 p-lg-5">
+    <div class="news-article-container">
+        <!-- Back -->
+        <div class="mb-4">
+            <a asp-controller="League" asp-action="News" asp-route-league="@Model.League" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i>
+                Back to @Model.LeagueName News
+            </a>
+        </div>
+        
+        <article>
             <!-- Article Header -->
-            <div class="mb-4">
-                <div class="d-flex align-items-center gap-2 mb-3">
-                    @if (Model.Premium)
-                    {
-                        <span class="badge text-bg-warning">
-                            ESPN+
-                        </span>
-                    }
-                    
-                    @if (string.Equals(Model.Type, "Media", StringComparison.OrdinalIgnoreCase))
-                    {
-                        <span class="badge text-bg-secondary">
-                            Video
-                        </span>
-                    }
-                </div>
+            <header class="news-article-header">
+                @if (Model.Premium || string.Equals(Model.Type, "Media", StringComparison.OrdinalIgnoreCase))
+                {
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        @if (Model.Premium)
+                        {
+                            <span class="badge text-bg-warning">
+                                ESPN+
+                            </span>
+                        }
+                        
+                        @if (string.Equals(Model.Type, "Media", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <span class="badge text-bg-secondary">
+                                Video
+                            </span>
+                        }
+                    </div>
+                }
                 
-                <h2 class="mb-3">
+                <h2 class="news-article-headline">
                     @Model.Headline
                 </h2>
                 
                 @if (!string.IsNullOrWhiteSpace(Model.Description))
                 {
-                    <p class="lead text-secondary mb-3">
+                    <p class="news-article-description text-secondary">
                         @Model.Description
                     </p>
                 }
                 
-                <div class="d-flex flex-wrap gap-3 text-secondary small">
+                <div class="news-articlem-meta text-secondary">
                     @if (!string.IsNullOrWhiteSpace(Model.Byline))
                     {
                         <span>
-                            @Model.Byline
+                            By @Model.Byline
                         </span>
                     }
                     
                     @if (Model.Published.HasValue)
                     {
-                        <span>
-                            @Model.Published.Value.ToLocalTime().ToString("MMM d, yyyy - h:mm tt")
+                        <span class="@(!string.IsNullOrWhiteSpace(Model.Byline) ? "news-article-meta-separator" : string.Empty)">
+                            @Model.Published.Value.ToLocalTime().ToString("MMMM dd, yyyy - hh:mm tt")
                         </span>
                     }
                 </div>
-            </div>
+            </header>
             
             <!-- Header Image -->
             @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
             {
-                <figure class="mb-4">
-                    <img src="@Model.ImageUrl" alt="@Model.ImageAlt" class="img-fluid rounded w-100" style="max-height: 600px; object-fit: cover;" />
-
+                <figure class="news-article-figure">
+                    <img src="@Model.ImageUrl" alt="@Model.ImageAlt" class="news-article-image" />
+                    
                     @if (!string.IsNullOrWhiteSpace(Model.ImageCaption) || !string.IsNullOrWhiteSpace(Model.ImageCredit))
                     {
-                        <figcaption class="text-secondary small mt-2">
+                        <figcaption class="news-article-caption text-secondary">
                             @if (!string.IsNullOrWhiteSpace(Model.ImageCaption))
                             {
                                 <span>
                                     @Model.ImageCaption
                                 </span>
                             }
-
+                            
                             @if (!string.IsNullOrWhiteSpace(Model.ImageCredit))
                             {
                                 <span>
@@ -107,35 +110,31 @@
                                     {
                                         <text> - </text>
                                     }
-
+                                    
                                     @Model.ImageCredit
                                 </span>
                             }
-
                         </figcaption>
                     }
                 </figure>
             }
             
-            <hr class="my-4" />
-
             <!-- Article Body -->
-            <div class="league-news-article-body">
-                @Html.Raw(Model.Story)
-            </div>
-            
-            <!-- Source -->
-            @if (!string.IsNullOrWhiteSpace(Model.ArticleUrl))
-            {
-                <hr class="my-4" />
-
-                <div class="text-secondary small">
-                    Source:
-                    <a href="@Model.ArticleUrl" target="_blank" rel="noopener noreferrer">
-                        ESPN
-                    </a>
+            <div class="news-article-body-card">
+                <div class="league-news-article-body">
+                    @Html.Raw(Model.Story)
                 </div>
-            }
-        </div>
-    </article>
+
+                @if (!string.IsNullOrWhiteSpace(Model.ArticleUrl))
+                {
+                    <footer class="news-article-footer text-secondary small">
+                        Original Reporting:
+                        <a href="@Model.ArticleUrl" target="_blank" rel="noopener noreferrer">
+                            ESPN
+                        </a>
+                    </footer>
+                }
+            </div>
+        </article>
+    </div>
 </div>

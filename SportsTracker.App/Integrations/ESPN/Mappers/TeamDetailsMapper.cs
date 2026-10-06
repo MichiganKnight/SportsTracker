@@ -9,8 +9,11 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
     {
         public static TeamDetails? Map(TeamDetailsResponseDto response, League league)
         {
-            TeamDetailsDto? team = response.Team;
-
+            return Map(response.Team, league);
+        }
+        
+        public static TeamDetails? Map(TeamDetailsDto? team, League league)
+        {
             if (team is null || string.IsNullOrWhiteSpace(team.Id))
             {
                 return null;

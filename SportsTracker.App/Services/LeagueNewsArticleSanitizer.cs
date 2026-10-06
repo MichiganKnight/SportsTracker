@@ -1,12 +1,13 @@
 ﻿using HtmlAgilityPack;
 using SportsTracker.App.Enums;
 using SportsTracker.App.Models.LeagueNews;
+using SportsTracker.App.Models.TeamInfo;
 
 namespace SportsTracker.App.Services
 {
     public interface ILeagueNewsArticleSanitizer
     {
-        string Sanitize(string html, League league, IReadOnlyList<LeagueNewsReference> references);
+        string Sanitize(string html, League league, IReadOnlyList<LeagueNewsReference> references, IReadOnlyList<TeamDetails> teams);
     }
 
     public sealed class LeagueNewsArticleSanitizer : ILeagueNewsArticleSanitizer
@@ -39,7 +40,7 @@ namespace SportsTracker.App.Services
             "alsosee"
         ];
         
-        public string Sanitize(string html, League league, IReadOnlyList<LeagueNewsReference> references)
+        public string Sanitize(string html, League league, IReadOnlyList<LeagueNewsReference> references, IReadOnlyList<TeamDetails> teams)
         {
             if (string.IsNullOrWhiteSpace(html))
             {
@@ -52,7 +53,7 @@ namespace SportsTracker.App.Services
             
             SanitizeNodes(document);
             SanitizeAttributes(document);
-            RewriteLinks(document, league, references);
+            RewriteLinks(document, league, references, teams);
             
             return document.DocumentNode.InnerHtml;
         }
@@ -120,7 +121,7 @@ namespace SportsTracker.App.Services
             }
         }
 
-        private static void RewriteLinks(HtmlDocument document, League league, IReadOnlyList<LeagueNewsReference> references)
+        private static void RewriteLinks(HtmlDocument document, League league, IReadOnlyList<LeagueNewsReference> references, IReadOnlyList<TeamDetails> teams)
         {
             List<HtmlNode> links = document.DocumentNode.Descendants("a").ToList();
 
@@ -133,7 +134,7 @@ namespace SportsTracker.App.Services
                     continue;
                 }
                 
-                string? internalUrl = TryCreateInternalUrl(href, league, references);
+                string? internalUrl = TryCreateInternalUrl(href, league, references, teams);
 
                 if (!string.IsNullOrWhiteSpace(internalUrl))
                 {
@@ -146,7 +147,7 @@ namespace SportsTracker.App.Services
             }
         }
 
-        private static string? TryCreateInternalUrl(string href, League league, IReadOnlyList<LeagueNewsReference> references)
+        private static string? TryCreateInternalUrl(string href, League league, IReadOnlyList<LeagueNewsReference> references, IReadOnlyList<TeamDetails> teams)
         {
             if (!Uri.TryCreate(href, UriKind.Absolute, out Uri? uri))
             {
@@ -166,7 +167,7 @@ namespace SportsTracker.App.Services
                 return athleteUrl;
             }
             
-            string? teamUrl = TryCreateTeamUrl(segments, league, references);
+            string? teamUrl = TryCreateTeamUrl(segments, league, references, teams);
             if (teamUrl is not null)
             {
                 return teamUrl;
@@ -193,7 +194,7 @@ namespace SportsTracker.App.Services
             return $"/athlete/{league}/{athleteId}";
         }
 
-        private static string? TryCreateTeamUrl(string[] segments, League league, IReadOnlyList<LeagueNewsReference> references)
+        private static string? TryCreateTeamUrl(string[] segments, League league, IReadOnlyList<LeagueNewsReference> references, IReadOnlyList<TeamDetails> teams)
         {
             int teamIndex = FindSegment(segments, "team");
             if (teamIndex < 0)
@@ -208,7 +209,14 @@ namespace SportsTracker.App.Services
                 return null;
             }
             
-            LeagueNewsReference? team = references.FirstOrDefault(reference => reference.Type.Equals("team", StringComparison.OrdinalIgnoreCase) && reference.Abbreviation.Equals(abbreviation, StringComparison.OrdinalIgnoreCase));
+            LeagueNewsReference? reference = references.FirstOrDefault(reference => reference.Type.Equals("team", StringComparison.OrdinalIgnoreCase) && reference.Abbreviation.Equals(abbreviation, StringComparison.OrdinalIgnoreCase));
+
+            if (reference is not null && IsNumericId(reference.Id))
+            {
+                return $"/team/{league}/{reference.Id}";
+            }
+            
+            TeamDetails? team = teams.FirstOrDefault(team => team.Abbreviation.Equals(abbreviation, StringComparison.OrdinalIgnoreCase));
 
             if (team is null || !IsNumericId(team.Id))
             {
