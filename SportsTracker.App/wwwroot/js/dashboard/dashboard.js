@@ -17,8 +17,8 @@ async function refreshDashboard() {
 
     await dashboardGames.refresh();
     
-    if (typeof dashboardFavorites === "undefined") {
-        dashboardFavorites.render();    
+    if (typeof dashboardFavorites !== "undefined") {
+        dashboardFavorites.render();
     }
 
     sportsTrackerFavorites.refreshGameCards(dashboard);
@@ -31,7 +31,7 @@ function refreshDashboardFavorites() {
         return;
     }
     
-    if (typeof dashboardFavorites === "undefined") {
+    if (typeof dashboardFavorites !== "undefined") {
         dashboardFavorites.render();
     }
     

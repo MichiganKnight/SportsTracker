@@ -18,10 +18,7 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/SportsTracker.App/Controllers/GamesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/Controllers/GamesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SportsTracker.App/Services/ScoreboardService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SportsTracker.App/Services/ScoreboardService.cs" afterDir="false" />
-    </list>
+    <list default="true" id="87b0454a-4571-4307-a2e2-67c4568d77bd" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
