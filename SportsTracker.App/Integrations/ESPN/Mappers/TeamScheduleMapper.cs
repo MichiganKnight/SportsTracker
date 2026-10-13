@@ -41,6 +41,16 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
             {
                 return null;
             }
+            
+            int homeScore = ParseScore(home.Score);
+            int awayScore = ParseScore(away.Score);
+            
+            TeamScheduleStatusDto? status = competition.Status;
+
+            string? resultLabel = status is null
+                ? null
+                : GameResultFormatter.GetLabel(league, status.Type.Completed || status.Type.Name.StartsWith("STATUS_FINAL", StringComparison.OrdinalIgnoreCase), status.Period, status.Type.Name, status.Type.ShortDetail,
+                    status.Type.Description, status.Type.Detail, homeScore, awayScore);
 
             return new Game
             {
@@ -48,15 +58,16 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
                 League = league,
                 StartTime = @event.Date,
 
-                Status = MapStatus(competition.Status?.Type.Name),
-
-                StatusText = competition.Status?.Type.ShortDetail ?? competition.Status?.Type.Detail ?? string.Empty,
+                Status = GameResultFormatter.GetStatus(status?.Type.Name, resultLabel),
+                StatusText = status?.Type.ShortDetail ?? status?.Type.Detail ?? string.Empty,
+                
+                ResultLabel = resultLabel,
 
                 HomeTeam = MapTeam(home, league),
                 AwayTeam = MapTeam(away, league),
 
-                HomeScore = ParseScore(home.Score),
-                AwayScore = ParseScore(away.Score),
+                HomeScore = homeScore,
+                AwayScore = awayScore,
 
                 Venue = competition.Venue is null
                     ? null : new Venue
@@ -107,21 +118,6 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
             }
             
             return score.Value.HasValue ? (int)score.Value.Value : 0;
-        }
-
-        private static GameStatus MapStatus(string? statusName)
-        {
-            return statusName switch
-            {
-                "STATUS_SCHEDULED" => GameStatus.Scheduled,
-                "STATUS_IN_PROGRESS" => GameStatus.InProgress,
-                "STATUS_HALFTIME" => GameStatus.Halftime,
-                "STATUS_FINAL" => GameStatus.Final,
-                "STATUS_POSTPONED" => GameStatus.Postponed,
-                "STATUS_DELAYED" => GameStatus.Delayed,
-                "STATUS_CANCELLED" => GameStatus.Cancelled,
-                _ => GameStatus.Scheduled
-            };
         }
 
         private static Logo? MapLogo(EspnLogoDto dto)

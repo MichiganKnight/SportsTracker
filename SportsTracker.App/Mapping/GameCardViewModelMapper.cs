@@ -22,7 +22,9 @@ namespace SportsTracker.App.Mapping
                 AwayTeam = MapTeam(game.AwayTeam, game.AwayScore),
                 HomeTeam = MapTeam(game.HomeTeam, game.HomeScore),
 
+                GameStatus = game.Status,
                 Status = game.StatusText,
+                ResultLabel = game.ResultLabel,
                 
                 SituationHeadline = game.Situation?.Headline,
                 SituationSubheadline = game.Situation?.Subheadline,

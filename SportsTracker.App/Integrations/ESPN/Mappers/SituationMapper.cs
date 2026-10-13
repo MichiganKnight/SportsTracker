@@ -25,10 +25,12 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
         
         private static GameSituation MapTimedSport(StatusDto status, League league)
         {
+            bool isLive = status.Type.State.Equals("in", StringComparison.OrdinalIgnoreCase);
+            
             string headline = league switch
             {
                 League.NBA or League.CBB => FormatBasketballPeriod(status.Period),
-                League.NHL => FormatHocketPeriod(status.Period),
+                League.NHL => FormatHocketPeriod(status),
 
                 _ => status.Type.ShortDetail
             };
@@ -36,7 +38,7 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
             return new GameSituation
             {
                 Headline = headline,
-                Subheadline = status.DisplayClock,
+                Subheadline = isLive ? status.DisplayClock : string.Empty,
                 Detail = status.Type.ShortDetail
             };
         }
@@ -152,17 +154,33 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
             };
         }
 
-        private static string FormatHocketPeriod(int? period)
+        private static string FormatHocketPeriod(StatusDto status)
         {
-            return period switch
+            if (status.Type.Completed)
+            {
+                return status.Type.ShortDetail;
+            }
+
+            if (status.Type.State.Equals("pre", StringComparison.OrdinalIgnoreCase))
+            {
+                return string.Empty;
+            }
+
+            if (status.Type.ShortDetail.Contains("Shootout", StringComparison.OrdinalIgnoreCase) || status.Type.ShortDetail.Contains("SO", StringComparison.OrdinalIgnoreCase))
+            {
+                return "Shootout";
+            }
+            
+            return status.Period switch
             {
                 1 => "1st Period",
                 2 => "2nd Period",
                 3 => "3rd Period",
-
-                > 3 => $"Overtime {period - 3}",
-
-                _ => string.Empty
+                4 => "Overtime",
+                
+                > 4 => $"Overtime {status.Period - 3}",
+                
+                _ => status.Type.ShortDetail
             };
         }
 

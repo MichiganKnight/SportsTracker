@@ -28,7 +28,7 @@
 
                 <div class="game-detail-info-row">
                     <span class="text-secondary">Date</span>
-                    <span>@Model.StartTime.ToString("g")</span>
+                    <span>@Model.StartTime.ToLocalTime().ToString("g")</span>
                 </div>
 
                 @if (Model.Attendance.HasValue)

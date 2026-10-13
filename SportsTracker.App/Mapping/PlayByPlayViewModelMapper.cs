@@ -93,11 +93,6 @@ namespace SportsTracker.App.Mapping
                         {
                             Key = "rush",
                             Label = "Rushing"
-                        },
-                        new PlayFilterViewModel
-                        {
-                            Key = "turnover",
-                            Label = "Turnovers"
                         }
                     ]);
 

@@ -72,6 +72,8 @@
 
     public sealed class TeamScheduleStatusDto
     {
+        public int Period { get; init; }
+        
         public TeamScheduleStatusTypeDto Type { get; init; } = new();
     }
 
@@ -79,6 +81,8 @@
     {
         public string Name { get; init; } = string.Empty;
         public string? ShortDetail { get; init; }
+        public string? Description { get; init; }
         public string? Detail { get; init; }
+        public bool Completed { get; init; }
     }
 }

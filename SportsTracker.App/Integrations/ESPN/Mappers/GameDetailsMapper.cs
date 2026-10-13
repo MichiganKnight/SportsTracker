@@ -24,33 +24,40 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
                 return null;
             }
 
+            StatusDto? status = competition.Status ?? response.Status;
+
+            string? resultLabel = status is null
+                ? null
+                : GameResultFormatter.GetLabel(league, status.Type.Completed || status.Type.Name.StartsWith("STATUS_FINAL", StringComparison.OrdinalIgnoreCase), status.Period, status.Type.Name, status.Type.ShortDetail,
+                    status.Type.Description, status.Type.Detail, ParseScore(home.Score), ParseScore(away.Score));
+
             return new GameDetails
             {
                 Id = response.Id ?? competition.Id ?? string.Empty,
                 League = league,
-                
+
                 StartTime = competition.Date ?? response.Date ?? DateTime.MinValue,
-                
-                Status = competition.Status?.Type?.ShortDetail ?? response.Status?.Type?.ShortDetail ?? string.Empty,
-                
-                IsLive = string.Equals(competition.Status?.Type?.State, "in", StringComparison.OrdinalIgnoreCase),
-                IsFinal = competition.Status?.Type?.Completed == true,
-                IsScheduled = string.Equals(competition.Status?.Type?.State, "scheduled", StringComparison.OrdinalIgnoreCase),
-                
+
+                Status = resultLabel ?? status?.Type.ShortDetail ?? string.Empty,
+
+                IsLive = string.Equals(status?.Type.State, "in", StringComparison.OrdinalIgnoreCase),
+                IsFinal = resultLabel is not null,
+                IsScheduled = string.Equals(status?.Type.State, "pre", StringComparison.OrdinalIgnoreCase) || string.Equals(status?.Type.State, "scheduled", StringComparison.OrdinalIgnoreCase),
+
                 AwayTeam = MapTeam(away),
                 HomeTeam = MapTeam(home),
-                
+
                 Venue = competition.Venue?.FullName,
                 VenueCity = competition.Venue?.Address?.City,
                 VenueState = competition.Venue?.Address?.State,
-                
+
                 Broadcasts = MapBroadcasts(competition),
                 FeaturedAthletes = MapFeaturedAthletes(competition),
-                
+
                 Headline = competition.Headlines?.FirstOrDefault()?.ShortLinkText,
-                
+
                 Recap = CleanRecap(competition.Headlines?.FirstOrDefault()?.Description),
-                
+
                 Baseball = league == League.MLB ? MapBaseball(away, home) : null
             };
         }
@@ -62,26 +69,26 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
             return new GameDetailsTeam
             {
                 Id = team?.Id ?? competitor.Id ?? string.Empty,
-                
+
                 Name = team?.Name ?? string.Empty,
-                
+
                 DisplayName = team?.DisplayName ?? team?.Name ?? string.Empty,
-                
+
                 Abbreviation = team?.Abbreviation ?? string.Empty,
-                
+
                 Logo = team?.Logo,
                 Color = team?.Color,
                 AlternateColor = team?.AlternateColor,
-                
+
                 Score = ParseScore(competitor.Score),
-                
+
                 Winner = competitor.Winner == true,
-                
+
                 Record = GetOverallRecord(competitor),
-                
+
                 Hits = competitor.Hits,
                 Errors = competitor.Errors,
-                
+
                 LineScores = MapLineScores(competitor.LineScores)
             };
         }
@@ -97,7 +104,7 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
             {
                 return [];
             }
-            
+
             return lineScores
                 .Where(x => x.Period.HasValue)
                 .Select(x => new LineScore
@@ -124,7 +131,7 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
             {
                 return record.Summary;
             }
-            
+
             return record.DisplayValue;
         }
 
@@ -155,7 +162,7 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
             {
                 broadcasts.Add(competition.Broadcast);
             }
-            
+
             return broadcasts.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
         }
 
@@ -198,7 +205,7 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
             {
                 return [];
             }
-            
+
             return competition.Status.FeaturedAthletes
                 .Where(featured => featured.Athlete is not null)
                 .Select(featured => new FeaturedAthlete
@@ -206,7 +213,7 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
                     Type = featured.Name ?? string.Empty,
                     Label = featured.DisplayName ?? featured.ShortDisplayName ?? featured.Name ?? string.Empty,
                     Athlete = MapAthlete(featured.Athlete)!,
-                    
+
                     TeamId = featured.Team?.Id ?? featured.Athlete?.Team?.Id
                 })
                 .ToList();
@@ -225,7 +232,7 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
             {
                 cleaned = cleaned[1..].TrimStart();
             }
-            
+
             return cleaned;
         }
     }

@@ -13,7 +13,10 @@ namespace SportsTracker.App.ViewModels.GameInfo
         public TeamViewModel HomeTeam { get; init; } = null!;
         public TeamViewModel AwayTeam { get; init; } = null!;
         
+        public GameStatus GameStatus { get; init; }
         public string Status { get; init; } = string.Empty;
+        
+        public string? ResultLabel { get; init; }
         
         public string? SituationHeadline { get; init; }
         public string? SituationSubheadline { get; init; }

@@ -1,4 +1,5 @@
-﻿@model SportsTracker.App.ViewModels.GameInfo.GameCardViewModel
+﻿@using SportsTracker.App.Enums
+@model SportsTracker.App.ViewModels.GameInfo.GameCardViewModel
 
 @{
     bool showVenue = !string.IsNullOrWhiteSpace(Model.Venue);
@@ -10,8 +11,19 @@
     bool showFootballSituation = isFootball && Model.IsLive && !string.IsNullOrWhiteSpace(Model.Football!.DownDistanceText);
 
     bool showLiveSituation = Model.IsLive && (!string.IsNullOrWhiteSpace(Model.SituationHeadline) || !string.IsNullOrWhiteSpace(Model.SituationSubheadline));
-        
-    string gameStatusLabel = Model.IsLive ? "LIVE" : Model.IsFinal ? "FINAL" : "SCHEDULED";
+
+    string gameStatusLabel = Model.IsFinal
+        ? Model.ResultLabel ?? "FINAL"
+        : Model.GameStatus switch
+        {
+            GameStatus.InProgress or GameStatus.Halftime => "LIVE",
+            GameStatus.Delayed => "DELAYED",
+            GameStatus.Postponed => "POSTPONED",
+            GameStatus.Cancelled => "CANCELLED",
+
+            _ => "SCHEDULED"
+        };
+    
     string gameStatusClass = Model.IsLive ? "bg-danger game-live-badge" : Model.IsFinal ? "bg-dark" : "bg-primary";
 }
 

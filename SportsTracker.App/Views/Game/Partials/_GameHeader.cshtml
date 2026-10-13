@@ -30,21 +30,18 @@
 
             <!-- Score -->
             <div class="col-auto text-center px-4">
-                <div class="game-details-status mb-2">
-                    @if (Model.IsLive)
-                    {
-                        <span class="badge bg-danger">LIVE</span>
-                    }
-                    else if (Model.IsFinal)
-                    {
-                        <span class="badge bg-dark">FINAL</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-primary">SCHEDULED</span>
-                    }
-                </div>
+                @{
+                    string statusLabel = Model.IsLive ? "LIVE" : Model.IsFinal ? string.IsNullOrWhiteSpace(Model.Status) ? "FINAL" : Model.Status : "SCHEDULED";
+                    
+                    string statusBadgeClass = Model.IsLive ? "bg-danger" : Model.IsFinal ? "bg-dark" : "bg-primary";
+                }
                 
+                <div class="game-details-status mb-2">
+                    <span class="badge @statusBadgeClass">
+                        @statusLabel
+                    </span>
+                </div>
+
                 @if (Model.IsLive && !string.IsNullOrWhiteSpace(Model.Status))
                 {
                     <div class="game-details-live-status mb-2">

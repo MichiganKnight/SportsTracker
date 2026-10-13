@@ -13,6 +13,9 @@ namespace SportsTracker.App.Models.GameInfo
         
         public GameStatus Status { get; init; }
         public string StatusText { get; init; } = string.Empty;
+        
+        public string? ResultLabel { get; init; }
+        
         public GameSituation? Situation { get; init; }
         
         public Team? HomeTeam { get; init; }

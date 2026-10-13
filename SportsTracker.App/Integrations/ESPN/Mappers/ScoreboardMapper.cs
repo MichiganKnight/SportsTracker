@@ -13,7 +13,7 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
         public static CachedScoreboard MapScoreboard(ScoreboardResponseDto dto, League league, DateTime updatedUtc)
         {
             ScoreboardLeagueDto? leagueInfo = dto.Leagues.FirstOrDefault();
-            
+
             return new CachedScoreboard
             {
                 League = league,
@@ -21,7 +21,7 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
 
                 LeagueLogo = GetLeagueLogo(leagueInfo?.Logos, "default"),
                 LeagueDarkLogo = GetLeagueLogo(leagueInfo?.Logos, "dark"),
-                
+
                 Calendar = MapCalendar(leagueInfo),
 
                 LastUpdatedUtc = updatedUtc
@@ -30,21 +30,31 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
 
         private static Game MapTeamEvent(EventDto @event, CompetitionDto competition, CompetitorDto home, CompetitorDto away, League league)
         {
+            int homeScore = int.TryParse(home.Score, out int parsedHome) ? parsedHome : 0;
+            int awayScore = int.TryParse(away.Score, out int parsedAway) ? parsedAway : 0;
+
+            StatusDto status = competition.Status;
+
+            string? resultLabel = GameResultFormatter.GetLabel(league, status.Type.Completed || status.Type.Name.StartsWith("STATUS_FINAL", StringComparison.OrdinalIgnoreCase), status.Period, status.Type.Name, status.Type.ShortDetail,
+                status.Type.Description, status.Type.Detail, homeScore, awayScore);
+
             return new Game
             {
                 Id = @event.Id,
                 League = league,
                 StartTime = @event.Date,
-                Status = MapStatus(competition.Status.Type.Name),
+
+                Status = GameResultFormatter.GetStatus(status.Type.Name, resultLabel),
                 StatusText = competition.Status.Type.ShortDetail,
+                ResultLabel = resultLabel,
 
                 Situation = SituationMapper.Map(competition, league),
 
                 HomeTeam = MapTeam(home, league),
                 AwayTeam = MapTeam(away, league),
 
-                HomeScore = int.TryParse(home.Score, out int homeScore) ? homeScore : 0,
-                AwayScore = int.TryParse(away.Score, out int awayScore) ? awayScore : 0,
+                HomeScore = homeScore,
+                AwayScore = awayScore,
 
                 Venue = competition.Venue is null
                     ? null
@@ -66,7 +76,7 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
                 Id = @event.Id,
                 League = league,
                 StartTime = @event.Date,
-                Status = MapStatus(competition.Status.Type.Name),
+                Status = GameResultFormatter.GetStatus(competition.Status.Type.Name, null),
                 StatusText = competition.Status.Type.ShortDetail,
 
                 Golf = new GolfTournament
@@ -133,21 +143,6 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
             };
         }
 
-        private static GameStatus MapStatus(string statusName)
-        {
-            return statusName switch
-            {
-                "STATUS_SCHEDULED" => GameStatus.Scheduled,
-                "STATUS_IN_PROGRESS" => GameStatus.InProgress,
-                "STATUS_HALFTIME" => GameStatus.Halftime,
-                "STATUS_FINAL" => GameStatus.Final,
-                "STATUS_POSTPONED" => GameStatus.Postponed,
-                "STATUS_DELAYED" => GameStatus.Delayed,
-                "STATUS_CANCELLED" => GameStatus.Cancelled,
-                _ => GameStatus.Scheduled
-            };
-        }
-
         private static Team MapTeam(CompetitorDto competitor, League league)
         {
             return new Team
@@ -161,7 +156,7 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
                 Abbreviation = competitor.Team.Abbreviation,
                 Color = competitor.Team.Color,
                 AlternateColor = competitor.Team.AlternateColor,
-                Logo = !string.IsNullOrEmpty(competitor.Team.Logo) ? new Logo(competitor.Team.Logo,500, 500, $"{competitor.Team.Logo} Logo") : competitor.Team.Logos.Select(MapLogo).FirstOrDefault(),
+                Logo = !string.IsNullOrEmpty(competitor.Team.Logo) ? new Logo(competitor.Team.Logo, 500, 500, $"{competitor.Team.Logo} Logo") : competitor.Team.Logos.Select(MapLogo).FirstOrDefault(),
                 Record = competitor.Records.Select(MapRecord).FirstOrDefault()
             };
         }
@@ -175,8 +170,8 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
         {
             return new Record(dto.Summary, dto.DisplayValue);
         }
-        
-        public static IEnumerable<Game> ToGames(ScoreboardResponseDto dto, League league)
+
+        private static IEnumerable<Game> ToGames(ScoreboardResponseDto dto, League league)
         {
             foreach (EventDto @event in dto.Events)
             {
@@ -190,7 +185,7 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
                 if (league == League.PGA)
                 {
                     yield return MapGolfEvent(@event, competition, league);
-                    
+
                     continue;
                 }
 
@@ -201,7 +196,7 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
                 {
                     continue;
                 }
-                
+
                 yield return MapTeamEvent(@event, competition, home, away, league);
             }
         }
@@ -222,9 +217,9 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
             {
                 return null;
             }
-            
+
             JsonElement.ArrayEnumerator calendarEnumerator = league.Calendar.EnumerateArray();
-            
+
             List<JsonElement> elements = calendarEnumerator.ToList();
 
             if (elements.Count == 0)
@@ -236,7 +231,7 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
             {
                 return null;
             }
-            
+
             List<ScoreboardCalendarDto>? periods = JsonSerializer.Deserialize<List<ScoreboardCalendarDto>>(league.Calendar.GetRawText(), JsonSerializerOptions.Web);
 
             if (periods is null)
@@ -281,14 +276,14 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
                 EndDate = entry.EndDate
             };
         }
-        
+
         private static string? GetLeagueLogo(IReadOnlyList<EspnLogoDto>? logos, string relation)
         {
             if (logos is null)
             {
                 return null;
             }
-            
+
             return logos.FirstOrDefault(logo => logo.Rel.Any(rel => rel.Equals(relation, StringComparison.OrdinalIgnoreCase)))?.Href;
         }
     }
