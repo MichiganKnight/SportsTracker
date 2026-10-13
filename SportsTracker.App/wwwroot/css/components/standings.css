@@ -1,4 +1,39 @@
 ﻿/* Standings */
+.season-selector {
+    padding: 0.75rem;
+    background-color: var(--st-surface-alt);
+    border: 1px solid var(--st-border);
+    border-radius: 0.75rem;
+}
+
+.season-selector-field {
+    min-width: 140px;
+}
+
+.season-selector-field:last-of-type {
+    min-width: 180px;
+}
+
+.season-selector .form-label {
+    font-weight: 500;
+}
+
+.season-selector-select {
+    color: var(--st-text);
+    background-color: var(--st-surface);
+    border-color: var(--st-border);
+}
+
+.season-selector-select:hover {
+    border-color: var(--st-border);
+}
+
+.season-selector-select:focus {
+    color: var(--st-text);
+    background-color: var(--st-surface);
+    border-color: var(--st-border);
+    box-shadow: 0 0 0 .2rem rgba(var(--st-primary-rgb), .15);
+}
 
 .standings-table {
     margin: 0;
@@ -43,7 +78,7 @@
     border-bottom: 1px solid var(--st-border);
 }
 
-.standings-group-hader h5 {
+.standings-group-header h5 {
     font-size: .95rem;
     font-weight: 700;
 }

@@ -6,7 +6,10 @@ namespace SportsTracker.App.Cache
     {
         public static string Scoreboard(League league) => $"scoreboard:{league}";
         public static string Scoreboard(League league, DateOnly date) => $"scoreboard:{league}:{date:yyyy-MM-dd}";
-        public static string Standings(League league) => $"standings:{league}";
+        public static string Scoreboard(League league, int season, int seasonType) => $"scoreboard:{league}:{season}:{seasonType}";
+        public static string Scoreboard(League league, int season, int seasonType, int week) => $"scoreboard:{league}:{season}:{seasonType}:week:{week}";
+        public static string Standings(League league, int season, int seasonType = 2) => $"standings:{league}:{season}:{seasonType}";
+        
         public static string LeagueLeaders(League league) => $"league-leaders:{league}";
         public static string Rankings(League league, int season) => $"rankings:{league}:{season}";
         public static string LeagueNews(League league) => $"league-news:{league}";

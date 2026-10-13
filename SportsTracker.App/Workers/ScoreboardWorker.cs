@@ -97,7 +97,7 @@ namespace SportsTracker.App.Workers
             
             _nextRefreshUtc[league] = DateTime.UtcNow + retryInterval;
             
-            logger.LogWarning("{League} Refresh Failed | Retring in {Interval}", league, retryInterval);
+            logger.LogWarning("{League} Refresh Failed | Retrying in {Interval}", league, retryInterval);
         }
     }
 }

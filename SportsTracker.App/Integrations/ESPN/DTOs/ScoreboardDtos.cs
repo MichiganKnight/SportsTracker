@@ -12,11 +12,62 @@ namespace SportsTracker.App.Integrations.ESPN.DTOs
     public class ScoreboardLeagueDto
     {
         public string Id { get; init; } = string.Empty;
-        
+
         public string Name { get; init; } = string.Empty;
         public string Abbreviation { get; init; } = string.Empty;
-        
+
+        public ScoreboardSeasonDto? Season { get; init; }
+
+        public string CalendarType { get; init; } = string.Empty;
+        public bool CalendarIsWhitelist { get; init; }
+        public DateTime? CalendarStartDate { get; init; }
+        public DateTime? CalendarEndDate { get; init; }
+
+        public JsonElement Calendar { get; init; }
+
         public List<EspnLogoDto> Logos { get; init; } = [];
+    }
+
+    public sealed class ScoreboardSeasonDto
+    {
+        public int Year { get; init; }
+
+        public string DisplayName { get; init; } = string.Empty;
+
+        public ScoreboardSeasonTypeDto? Type { get; init; }
+    }
+
+    public sealed class ScoreboardSeasonTypeDto
+    {
+        public string Id { get; init; } = string.Empty;
+
+        public int Type { get; init; }
+
+        public string Name { get; init; } = string.Empty;
+        public string Abbreviation { get; init; } = string.Empty;
+    }
+
+    public sealed class ScoreboardCalendarDto
+    {
+        public string Label { get; init; } = string.Empty;
+        public string Value { get; init; } = string.Empty;
+
+        public DateTime? StartDate { get; init; }
+        public DateTime? EndDate { get; init; }
+
+        public List<ScoreboardCalendarEntryDto> Entries { get; init; } = [];
+    }
+
+    public sealed class ScoreboardCalendarEntryDto
+    {
+        public string Label { get; init; } = string.Empty;
+        public string AlternateLabel { get; init; } = string.Empty;
+        public string Detail { get; init; } = string.Empty;
+
+        public string Value { get; init; } = string.Empty;
+
+        public DateTime? StartDate { get; init; }
+        public DateTime? EndDate { get; init; }
     }
     
     public sealed class EventDto

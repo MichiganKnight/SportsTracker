@@ -27,6 +27,14 @@
                      ActivePage = LeaguePage.Standings
                  }"/>
     </div>
+    
+    <!-- Season Selector -->
+    @if (Model.SeasonSelector is not null)
+    {
+        <div class="d-flex justify-content-end mb-4">
+            <partial name="Season/_SeasonSelector" model="Model.SeasonSelector" />
+        </div>
+    }
 
     <!-- Standings View Filter -->
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -40,7 +48,7 @@
             {
                 bool active = standingsView == Model.SelectedView;
 
-                <a asp-controller="Standings" asp-action="Index" asp-route-league="@Model.League" asp-route-view="@standingsView" class="btn btn-sm @(active ? "btn-primary" : "btn-outline-secondary")">
+                <a asp-controller="Standings" asp-action="Index" asp-route-league="@Model.League" asp-route-view="@standingsView" asp-route-season="@Model.SeasonSelector?.SelectedSeason" asp-route-seasonType="@Model.SeasonSelector?.SelectedSeasonType" class="btn btn-sm @(active ? "btn-primary" : "btn-outline-secondary")">
                     @GetViewLabel(standingsView, Model.League)
                 </a>
             }

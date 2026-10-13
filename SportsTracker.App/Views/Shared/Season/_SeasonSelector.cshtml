@@ -1,0 +1,48 @@
+﻿@using SportsTracker.App.Models.Season
+@model SportsTracker.App.ViewModels.Season.SeasonSelectorViewModel
+
+<div class="season-selector">
+    <form asp-controller="@Model.Controller" asp-action="@Model.Action" method="get" class="d-flex flex-wrap align-items-end gap-2">
+        @foreach (KeyValuePair<string, string> routeValue in Model.RouteValues)
+        {
+            <input type="hidden" name="@routeValue.Key" value="@routeValue.Value" />
+        }
+    
+        <div class="season-selector-field">
+            <label for="season-selector-season" class="form-label small mb-1">
+                Season
+            </label>
+        
+            <select id="season-selector-season" name="season" class="form-select form-select-sm season-selector-select" onchange="this.form.submit()">
+                @foreach (int season in Model.Seasons)
+                {
+                    <option value="@season" selected="@(season == Model.SelectedSeason)">
+                        @season
+                    </option>
+                }
+            </select>
+        </div>
+    
+        @if (Model.Phases.Count > 1)
+        {
+            <div class="season-selector-field">
+                <label for="season-selector-type" class="form-label small mb-1">
+                    Season Type
+                </label>
+            
+                <select id="season-selector-type" name="seasonType" class="form-select form-select-sm season-selector-select" onchange="this.form.submit()">
+                    @foreach (SeasonPhaseOption phase in Model.Phases)
+                    {
+                        <option value="@phase.SeasonType" selected="@(phase.SeasonType == Model.SelectedSeasonType)">
+                            @phase.DisplayName
+                        </option>
+                    }
+                </select>
+            </div>
+        }
+        else
+        {
+            <input type="hidden" name="seasonType" value="@Model.SelectedSeasonType" />
+        }
+    </form>
+</div>

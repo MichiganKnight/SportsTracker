@@ -1,0 +1,101 @@
+﻿@using SportsTracker.App.Enums
+@using SportsTracker.App.ViewModels.GameInfo
+@using SportsTracker.App.ViewModels.LeagueInfo
+@using SportsTracker.App.ViewModels.Standings
+@model SportsTracker.App.ViewModels.Standings.PostseasonViewModel
+
+@{
+    ViewData["Title"] = $"{Model.LeagueName} Postseason";
+}
+
+<div class="container-fluid">
+    <!-- League Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="mb-1">
+                @Model.LeagueName
+            </h1>
+
+            <div class="text-secondary">
+                @Model.SeasonSelector.SelectedSeason Postseason
+            </div>
+        </div>
+
+        <partial name="Navigation/_LeagueNavigation" model="new LeagueNavigationViewModel
+                 {
+                     League = Model.League,
+                     LeagueName = Model.LeagueName,
+                     ActivePage = LeaguePage.Standings
+                 }"/>
+    </div>
+    
+    <!-- Season Selector -->
+    @if (Model.SeasonSelector is not null)
+    {
+        <div class="d-flex justify-content-end mb-4">
+            <partial name="Season/_SeasonSelector" model="Model.SeasonSelector" />
+        </div>
+    }
+    
+    <!-- Postseason Round Filter -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">
+            Postseason
+        </h4>
+        
+        @if (Model.Rounds.Count > 0)
+        {
+            <div class="btn-group" role="group" aria-label="Postseason Round">
+                @foreach (PostseasonRoundViewModel round in Model.Rounds)
+                {
+                    bool active = round.Number == Model.SelectedRound;
+                    
+                    <a asp-controller="Standings" asp-action="Index" asp-route-league="@Model.League" asp-route-season="@Model.SeasonSelector.SelectedSeason" asp-route-seasonType="@Model.SeasonSelector.SelectedSeasonType" asp-route-round="@round.Number" class="btn btn-sm @(active ? "btn-primary" : "btn-outline-secondary")">
+                        @round.Name
+                    </a>
+                }
+            </div>
+        }
+    </div>
+    
+    <!-- Current Round -->
+    @if (Model.CurrentRound is not null)
+    {
+        <div class="card shadow-sm mb-4">
+            <div class="card-header standings-group-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        @Model.CurrentRound.Name
+                    </h5>
+                    
+                    @if (!string.IsNullOrWhiteSpace(Model.CurrentRound.Detail))
+                    {
+                        <span class="standings-group-abbreviation">
+                            @Model.CurrentRound.Detail
+                        </span>
+                    }
+                </div>
+            </div>
+            
+            <div class="card-body">
+                @if (Model.Games.Count > 0)
+                {
+                    <div class="row g-3">
+                        @foreach (GameCardViewModel game in Model.Games)
+                        {
+                            <div class="col-12 col-lg-6">
+                                <partial name="~/Views/Game/Partials/_GameCard.cshtml" model="game"/>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center text-secondary py-4">
+                        No Games Are Available for This Postseason Round
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

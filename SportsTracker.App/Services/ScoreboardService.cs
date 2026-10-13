@@ -1,5 +1,4 @@
 ﻿using SportsTracker.App.Cache;
-using SportsTracker.App.Common;
 using SportsTracker.App.Enums;
 using SportsTracker.App.Integrations.ESPN;
 using SportsTracker.App.Integrations.ESPN.DTOs;
@@ -11,50 +10,52 @@ namespace SportsTracker.App.Services
     public interface IScoreboardService
     {
         Task<CachedScoreboard?> GetScoreboardAsync(League league, CancellationToken cancellationToken = default);
-
         Task<CachedScoreboard?> GetScoreboardAsync(League league, DateOnly date, CancellationToken cancellationToken = default);
+        Task<CachedScoreboard?> GetScoreboardAsync(League league, int season, int seasonType, CancellationToken cancellationToken = default);
+        Task<CachedScoreboard?> GetScoreboardAsync(League league, int season, int seasonType, int week, CancellationToken cancellationToken = default);
     }
     
-    public sealed class ScoreboardService(IEspnApiClient espnApiClient, ICacheService cache, ILogger<ScoreboardService> logger) : IScoreboardService
+    public sealed class ScoreboardService(IEspnApiClient espnApiClient, ICacheService cache, ILogger<ScoreboardService> logger) : EspnCachedServiceBase(espnApiClient, cache), IScoreboardService
     {
         public async Task<CachedScoreboard?> GetScoreboardAsync(League league, CancellationToken cancellationToken = default)
         {
-            return await cache.GetAsync<CachedScoreboard>(CacheKeys.Scoreboard(league));
+            string cacheKey = CacheKeys.Scoreboard(league);
+
+            return await GetOrFetchAsync<ScoreboardResponseDto, CachedScoreboard>(league, "Scoreboard", cacheKey, EspnEndpoints.Scoreboard(league), dto => ScoreboardMapper.MapScoreboard(dto, league, DateTime.UtcNow), GetScoreboardCacheLifetime,
+                logger, cancellationToken);
         }
 
         public async Task<CachedScoreboard?> GetScoreboardAsync(League league, DateOnly date, CancellationToken cancellationToken = default)
         {
+            DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+
+            if (date == today)
+            {
+                return await GetScoreboardAsync(league, cancellationToken);
+            }
+            
             string cacheKey = CacheKeys.Scoreboard(league, date);
-            
-            CachedScoreboard? cached = await cache.GetAsync<CachedScoreboard>(cacheKey);
-            
-            if (cached is not null)
-            {
-                return cached;
-            }
-            
-            logger.LogInformation("Fetching {League} Scoreboard for {Date}", league, date);
 
-            string endpoint = EspnEndpoints.Scoreboard(league, date);
-
-            ApiResult<ScoreboardResponseDto> result = await espnApiClient.GetAsync<ScoreboardResponseDto>(endpoint, cancellationToken);
-
-            if (!result.Success || result.Value is null)
-            {
-                logger.LogWarning("Unable to Fetch {League} for {Date}: {Message}", league, date, result.Error?.Message);
-                
-                return null;
-            }
-
-            CachedScoreboard scoreboard = ScoreboardMapper.MapScoreboard(result.Value, league, DateTime.UtcNow);
-            
-            await cache.SetAsync(cacheKey, scoreboard, GetCacheLifetime(date));
-            
-            logger.LogInformation("Cached {Count} Games for {League} on {Date}", scoreboard.Games.Count, league, date);
-            
-            return scoreboard;
+            return await GetOrFetchAsync<ScoreboardResponseDto, CachedScoreboard>(league, $"Scoreboard for {date}", cacheKey, EspnEndpoints.Scoreboard(league, date), dto => ScoreboardMapper.MapScoreboard(dto, league, DateTime.UtcNow),
+                _ => GetCacheLifetime(date), logger, cancellationToken);
         }
-        
+
+        public async Task<CachedScoreboard?> GetScoreboardAsync(League league, int season, int seasonType, int week, CancellationToken cancellationToken = default)
+        {
+            string cacheKey = CacheKeys.Scoreboard(league, season, seasonType, week);
+
+            return await GetOrFetchAsync<ScoreboardResponseDto, CachedScoreboard>(league, "Scoreboard", cacheKey, EspnEndpoints.Scoreboard(league, season, seasonType, week),
+                dto => ScoreboardMapper.MapScoreboard(dto, league, DateTime.UtcNow), GetScoreboardCacheLifetime , logger, cancellationToken);
+        }
+
+        public async Task<CachedScoreboard?> GetScoreboardAsync(League league, int season, int seasonType, CancellationToken cancellationToken = default)
+        {
+            string cacheKey = CacheKeys.Scoreboard(league, season, seasonType);
+
+            return await GetOrFetchAsync<ScoreboardResponseDto, CachedScoreboard>(league, "Scoreboard", cacheKey, EspnEndpoints.Scoreboard(league, season, seasonType),
+                dto => ScoreboardMapper.MapScoreboard(dto, league, DateTime.UtcNow), GetScoreboardCacheLifetime , logger, cancellationToken);
+        }
+
         private static TimeSpan GetCacheLifetime(DateOnly date)
         {
             DateOnly today = DateOnly.FromDateTime(DateTime.Today);
@@ -65,6 +66,25 @@ namespace SportsTracker.App.Services
             }
 
             return date < today ? TimeSpan.FromHours(6) : TimeSpan.FromMinutes(30);
+        }
+
+        private static TimeSpan GetScoreboardCacheLifetime(CachedScoreboard scoreboard)
+        {
+            if (scoreboard.Games.Count == 0)
+            {
+                return TimeSpan.FromMinutes(30);
+            }
+            
+            bool allFinal = scoreboard.Games.All(game => game.Status == GameStatus.Final);
+
+            if (allFinal)
+            {
+                return TimeSpan.FromDays(1);
+            }
+
+            bool anyLive = scoreboard.Games.Any(game => game.Status is GameStatus.InProgress or GameStatus.Halftime);
+            
+            return anyLive ? TimeSpan.FromMinutes(1) : TimeSpan.FromMinutes(30);
         }
     }
 }

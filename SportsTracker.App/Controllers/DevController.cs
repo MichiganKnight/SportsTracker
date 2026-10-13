@@ -7,6 +7,7 @@ using SportsTracker.App.Models;
 using SportsTracker.App.Models.AthleteInfo;
 using SportsTracker.App.Models.LeagueNews;
 using SportsTracker.App.Models.Rankings;
+using SportsTracker.App.Models.Standings;
 using SportsTracker.App.Models.TeamInfo;
 using SportsTracker.App.Services;
 
@@ -14,7 +15,7 @@ namespace SportsTracker.App.Controllers
 {
     [ApiController]
     [Route("dev")]
-    public sealed class DevController(IScoreboardService scoreboardService, ILeagueLeadersService leagueLeadersService, IRankingsService rankingsService, ILeagueNewsService leagueNewsService, IAthleteService athleteService, ITeamService teamService) : ControllerBase
+    public sealed class DevController(IScoreboardService scoreboardService, ILeagueLeadersService leagueLeadersService, IRankingsService rankingsService, ILeagueNewsService leagueNewsService, IAthleteService athleteService, ITeamService teamService, IStandingsService standingsService) : ControllerBase
     {
         [HttpGet("scoreboard/{league}")]
         public async Task<ActionResult<CachedScoreboard>> Scoreboard(League league, CancellationToken cancellationToken)
@@ -109,6 +110,14 @@ namespace SportsTracker.App.Controllers
             ApiResult<JsonElement> result = await espnApiClient.GetAsync<JsonElement>(endpoint, cancellationToken);
             
             return result.Success ? Ok(result.Value) : StatusCode(result.StatusCode ?? 500, result.Error);
+        }
+
+        [HttpGet("standings/{league}/{season}/{seasonType}")]
+        public async Task<IActionResult> Standings(League league, int season, int seasonType, CancellationToken cancellationToken)
+        {
+            LeagueStandings? standings = await standingsService.GetStandingsAsync(league, season, seasonType, cancellationToken);
+            
+            return standings is null ? NotFound() : Ok(standings);
         }
     }
 }

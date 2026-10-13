@@ -68,6 +68,7 @@ namespace SportsTracker.App.Extensions
             services.AddScoped<IAthleteGameLogViewModelMapper, AthleteGameLogViewModelMapper>();
             services.AddScoped<IAthleteSplitsViewModelMapper, AthleteSplitsViewModelMapper>();
             services.AddScoped<ISearchViewModelMapper, SearchViewModelMapper>();
+            services.AddScoped<IPostseasonViewModelMapper, PostseasonViewModelMapper>();
             
             services.AddScoped<IScoreboardService, ScoreboardService>();
             services.AddScoped<IScoreboardRefreshService, ScoreboardRefreshService>();
@@ -87,6 +88,8 @@ namespace SportsTracker.App.Extensions
             services.AddScoped<IAthleteService, AthleteService>();
             
             services.AddScoped<ISearchService, SearchService>();
+
+            services.AddScoped<ISeasonService, SeasonService>();
         }
 
         private static void AddBackgroundServices(IServiceCollection services)

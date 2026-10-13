@@ -74,7 +74,7 @@ namespace SportsTracker.App.Controllers
         {
             CachedScoreboard? scoreboard = await scoreboardService.GetScoreboardAsync(league, cancellationToken);
             
-            return leagueViewModelMapper.Map(scoreboard);
+            return leagueViewModelMapper.Map(league, scoreboard);
         }
     }
 }

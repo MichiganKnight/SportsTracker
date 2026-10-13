@@ -1,7 +1,9 @@
-﻿using SportsTracker.App.Enums;
+﻿using System.Text.Json;
+using SportsTracker.App.Enums;
 using SportsTracker.App.Integrations.ESPN.DTOs;
 using SportsTracker.App.Models;
 using SportsTracker.App.Models.GameInfo;
+using SportsTracker.App.Models.Season;
 using SportsTracker.App.Models.Sport;
 
 namespace SportsTracker.App.Integrations.ESPN.Mappers
@@ -19,39 +21,11 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
 
                 LeagueLogo = GetLeagueLogo(leagueInfo?.Logos, "default"),
                 LeagueDarkLogo = GetLeagueLogo(leagueInfo?.Logos, "dark"),
+                
+                Calendar = MapCalendar(leagueInfo),
 
                 LastUpdatedUtc = updatedUtc
             };
-        }
-        
-        public static IEnumerable<Game> ToGames(ScoreboardResponseDto dto, League league)
-        {
-            foreach (EventDto @event in dto.Events)
-            {
-                CompetitionDto? competition = @event.Competitions.FirstOrDefault();
-
-                if (competition is null)
-                {
-                    continue;
-                }
-
-                if (league == League.PGA)
-                {
-                    yield return MapGolfEvent(@event, competition, league);
-                    
-                    continue;
-                }
-
-                CompetitorDto? home = competition.Competitors.FirstOrDefault(c => c.HomeAway == "home");
-                CompetitorDto? away = competition.Competitors.FirstOrDefault(c => c.HomeAway == "away");
-
-                if (home is null || away is null)
-                {
-                    continue;
-                }
-                
-                yield return MapTeamEvent(@event, competition, home, away, league);
-            }
         }
 
         private static Game MapTeamEvent(EventDto @event, CompetitionDto competition, CompetitorDto home, CompetitorDto away, League league)
@@ -200,6 +174,112 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
         private static Record? MapRecord(RecordDto dto)
         {
             return new Record(dto.Summary, dto.DisplayValue);
+        }
+        
+        public static IEnumerable<Game> ToGames(ScoreboardResponseDto dto, League league)
+        {
+            foreach (EventDto @event in dto.Events)
+            {
+                CompetitionDto? competition = @event.Competitions.FirstOrDefault();
+
+                if (competition is null)
+                {
+                    continue;
+                }
+
+                if (league == League.PGA)
+                {
+                    yield return MapGolfEvent(@event, competition, league);
+                    
+                    continue;
+                }
+
+                CompetitorDto? home = competition.Competitors.FirstOrDefault(c => c.HomeAway == "home");
+                CompetitorDto? away = competition.Competitors.FirstOrDefault(c => c.HomeAway == "away");
+
+                if (home is null || away is null)
+                {
+                    continue;
+                }
+                
+                yield return MapTeamEvent(@event, competition, home, away, league);
+            }
+        }
+
+        private static SeasonCalendar? MapCalendar(ScoreboardLeagueDto? league)
+        {
+            if (league?.Season is null)
+            {
+                return null;
+            }
+
+            if (league.CalendarType.ToLowerInvariant() is not ("week" or "list" or "season"))
+            {
+                return null;
+            }
+
+            if (league.Calendar.ValueKind != JsonValueKind.Array)
+            {
+                return null;
+            }
+            
+            JsonElement.ArrayEnumerator calendarEnumerator = league.Calendar.EnumerateArray();
+            
+            List<JsonElement> elements = calendarEnumerator.ToList();
+
+            if (elements.Count == 0)
+            {
+                return null;
+            }
+
+            if (elements[0].ValueKind != JsonValueKind.Object)
+            {
+                return null;
+            }
+            
+            List<ScoreboardCalendarDto>? periods = JsonSerializer.Deserialize<List<ScoreboardCalendarDto>>(league.Calendar.GetRawText(), JsonSerializerOptions.Web);
+
+            if (periods is null)
+            {
+                return null;
+            }
+
+            return new SeasonCalendar
+            {
+                Season = league.Season.Year,
+
+                Periods = periods.Select(MapSeasonPeriod).ToList()
+            };
+        }
+
+        private static SeasonPeriod MapSeasonPeriod(ScoreboardCalendarDto calendar)
+        {
+            return new SeasonPeriod
+            {
+                SeasonType = int.TryParse(calendar.Value, out int seasonType) ? seasonType : 0,
+
+                Name = calendar.Label,
+
+                StartDate = calendar.StartDate,
+                EndDate = calendar.EndDate,
+
+                Weeks = calendar.Entries.Select(MapSeasonWeek).ToList()
+            };
+        }
+
+        private static SeasonWeek MapSeasonWeek(ScoreboardCalendarEntryDto entry)
+        {
+            return new SeasonWeek
+            {
+                Number = int.TryParse(entry.Value, out int week) ? week : 0,
+
+                Name = entry.Label,
+                AlternateName = entry.AlternateLabel,
+                Detail = entry.Detail,
+
+                StartDate = entry.StartDate,
+                EndDate = entry.EndDate
+            };
         }
         
         private static string? GetLeagueLogo(IReadOnlyList<EspnLogoDto>? logos, string relation)

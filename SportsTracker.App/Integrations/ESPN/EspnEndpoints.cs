@@ -18,12 +18,26 @@ namespace SportsTracker.App.Integrations.ESPN
             
             return Site(info, $"scoreboard?dates={date:yyyyMMdd}");
         }
+        
+        public static string Scoreboard(League league, int season, int seasonType)
+        {
+            LeagueInfo info = GetLeagueInfo(league);
+            
+            return Site(info, $"scoreboard?dates={season}&seasontype={seasonType}");
+        }
 
-        public static string Standings(League league)
+        public static string Scoreboard(League league, int season, int seasonType, int week)
+        {
+            LeagueInfo info = GetLeagueInfo(league);
+            
+            return Site(info, $"scoreboard?dates={season}&seasontype={seasonType}&week={week}");
+        }
+
+        public static string Standings(League league, int season, int seasonType = 2)
         {
             LeagueInfo info = GetLeagueInfo(league);
 
-            return $"apis/v2/sports/{info.EspnSport}/{info.EspnLeague}/standings";
+            return $"apis/v2/sports/{info.EspnSport}/{info.EspnLeague}/standings?season={season}&seasontype={seasonType}";
         }
 
         public static string LeagueLeadersByAthlete(League league, string category, string statistic, int season, int seasonType = 2, int limit = 50, bool descending = true)

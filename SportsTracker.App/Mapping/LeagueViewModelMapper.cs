@@ -10,38 +10,42 @@ namespace SportsTracker.App.Mapping
 {
     public interface ILeagueViewModelMapper
     {
-        LeaguePageViewModel Map(CachedScoreboard scoreboard);
+        LeaguePageViewModel Map(League league, CachedScoreboard? scoreboard);
     }
     
     public sealed class LeagueViewModelMapper(IGameCardViewModelMapper gameCardViewModelMapper, IGolfEventCardViewModelMapper golfEventCardViewModelMapper) : ILeagueViewModelMapper
     {
-        public LeaguePageViewModel Map(CachedScoreboard scoreboard)
+        public LeaguePageViewModel Map(League league, CachedScoreboard? scoreboard)
         {
-            if (scoreboard.League == League.PGA)
+            LeagueInfo leagueInfo = LeagueConfiguration.Get(league);
+            
+            if (league == League.PGA)
             {
                 return new LeaguePageViewModel
                 {
-                    League = scoreboard.League,
-                    LeagueName = LeagueConfiguration.Get(scoreboard.League).DisplayName,
+                    League = league,
+                    LeagueName = leagueInfo.DisplayName,
                     
-                    Icon = LeagueConfiguration.Get(scoreboard.League).Icon,
+                    Icon = leagueInfo.Icon,
                     
-                    LastUpdatedUtc = scoreboard.LastUpdatedUtc,
+                    LastUpdatedUtc = scoreboard?.LastUpdatedUtc ?? DateTime.UtcNow,
 
-                    GolfEvents = MapGolfEvents(scoreboard.Games)
+                    GolfEvents = scoreboard is not null ? MapGolfEvents(scoreboard.Games) : []
                 };
             }
 
+            IReadOnlyList<Game> games = scoreboard?.Games ?? [];
+
             return new LeaguePageViewModel
             {
-                League = scoreboard.League,
-                LeagueName = LeagueConfiguration.Get(scoreboard.League).DisplayName,
-                Icon = LeagueConfiguration.Get(scoreboard.League).Icon,
-                LastUpdatedUtc = scoreboard.LastUpdatedUtc,
+                League = league,
+                LeagueName = leagueInfo.DisplayName,
+                Icon = leagueInfo.Icon,
+                LastUpdatedUtc = scoreboard?.LastUpdatedUtc ?? DateTime.UtcNow,
                 
-                Live = CreateSection("Live Games", "bi bi-broadcast-pin", GetLiveGames(scoreboard.Games)),
-                Upcoming = CreateSection("Upcoming Games", "bi bi-clock", GetUpcomingGames(scoreboard.Games)),
-                Final = CreateSection("Final Games", "bi bi-flag", GetFinalGames(scoreboard.Games))
+                Live = CreateSection("Live Games", "bi bi-broadcast-pin", GetLiveGames(games)),
+                Upcoming = CreateSection("Upcoming Games", "bi bi-clock", GetUpcomingGames(games)),
+                Final = CreateSection("Final Games", "bi bi-flag", GetFinalGames(games))
             };
         }
 

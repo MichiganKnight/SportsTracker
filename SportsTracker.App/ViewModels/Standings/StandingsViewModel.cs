@@ -1,4 +1,5 @@
 ﻿using SportsTracker.App.Enums;
+using SportsTracker.App.ViewModels.Season;
 
 namespace SportsTracker.App.ViewModels.Standings
 {
@@ -18,6 +19,8 @@ namespace SportsTracker.App.ViewModels.Standings
         public DateTime? LastUpdatedUtc { get; init; }
         
         public StandingsView SelectedView { get; init; }
+        
+        public SeasonSelectorViewModel? SeasonSelector { get; set; }
         
         public IReadOnlyList<StandingsView> AvailableViews { get; init; } = [];
         public IReadOnlyList<StandingsGroupViewModel> Groups { get; init; } = [];

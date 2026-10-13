@@ -11,16 +11,16 @@ namespace SportsTracker.App.Services
 {
     public interface IStandingsService
     {
-        Task<LeagueStandings?> GetStandingsAsync(League league, CancellationToken cancellationToken = default);
+        Task<LeagueStandings?> GetStandingsAsync(League league, int season, int seasonType = 2, CancellationToken cancellationToken = default);
     }
     
     public sealed class StandingsService(IEspnApiClient espnApiClient, ICacheService cache, IOptions<CacheOptions> cacheOptions, ILogger<StandingsService> logger) : EspnCachedServiceBase(espnApiClient, cache), IStandingsService
     {
         private readonly CacheOptions _cacheOptions = cacheOptions.Value;
 
-        public Task<LeagueStandings?> GetStandingsAsync(League league, CancellationToken cancellationToken = default)
+        public Task<LeagueStandings?> GetStandingsAsync(League league, int season, int seasonType = 2, CancellationToken cancellationToken = default)
         {
-            return GetOrFetchAsync<StandingsResponseDto, LeagueStandings>(league, "Standings", CacheKeys.Standings(league), EspnEndpoints.Standings(league), dto => StandingsMapper.Map(dto, league),
+            return GetOrFetchAsync<StandingsResponseDto, LeagueStandings>(league, "Standings", CacheKeys.Standings(league, season, seasonType), EspnEndpoints.Standings(league, season, seasonType), dto => StandingsMapper.Map(dto, league),
                 _ => TimeSpan.FromMinutes(_cacheOptions.StandingsMinutes), logger, cancellationToken);
         }
     }
