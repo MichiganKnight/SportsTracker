@@ -244,3 +244,63 @@
     height: 13px;
     background: #ffcd37;
 }
+
+/* Historical Football Playback */
+
+.football-playback-timeline {
+    padding: 0.75rem 0.25rem;
+}
+
+.football-playback-seek {
+    --playback-progress: 0%;
+    cursor: pointer;
+    margin-bottom: 0.35rem;
+}
+
+.football-playback-seek::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(to right, var(--bs-primary) 0%, var(--bs-primary) var(--playback-progress), var(--bs-secondary-bg) var(--playback-progress), var(--bs-secondary-bg) 100%);
+}
+
+.football-playback-seek::-moz-range-track {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--bs-secondary-bg);
+}
+
+.football-playback-seek::-moz-range-progress {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--bs-primary);
+}
+
+.football-playback-controls .btn {
+    min-height: 34px;
+}
+
+.football-playback-toggle {
+    min-width: 90px;
+    font-weight: 600;
+}
+
+.football-playback-speed select {
+    width: 85px;
+    cursor: pointer;
+}
+
+.football-playback-speed label {
+    white-space: nowrap;
+}
+
+@media (max-width: 575.98px) {
+    .football-playback-controls {
+        gap: 0.5rem;
+    }
+
+    .football-playback-speed {
+        width: 100%;
+        justify-content: center;
+        margin-top: 0.5rem;
+    }
+}

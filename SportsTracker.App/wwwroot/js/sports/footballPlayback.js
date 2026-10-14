@@ -20,7 +20,10 @@
             const data = {
                 plays,
                 index: Number(container.dataset.initialIndex || 0),
-                lastSituation: null
+                lastSituation: null,
+                playing: false,
+                speed: 1,
+                timer: null
             };
 
             playbackCache.set(container, data);
@@ -159,6 +162,12 @@
 
         data.index = clamp(index, 0, data.plays.length - 1);
 
+        const seek = container.querySelector("[data-playback-seek]");
+
+        if (seek) {
+            seek.value = String(data.index);
+        }
+
         const play = data.plays[data.index];
 
         const field = container.closest("[data-football-field]");
@@ -179,12 +188,6 @@
 
         setText(container, "[data-playback-score]", `${away}: ${play.awayScore ?? "-"} | ${home}: ${play.homeScore ?? "-"}`);
 
-        const progress = container.querySelector("[data-playback-progress]");
-
-        if (progress) {
-            progress.style.width = `${(data.index + 1) / data.plays.length * 100}%`;
-        }
-
         if (play.situation) {
             data.lastSituation = play.situation;
 
@@ -201,6 +204,135 @@
             const action = button.dataset.playbackAction;
 
             button.disabled = (data.index === 0 && (action === "first" || action === "previous")) || (data.index === data.plays.length - 1 && (action === "next" || action === "last"));
+        }
+        
+        updatePlaybackControls(container);
+    }
+    
+    const BASE_PLAY_INTERVAL = 2000;
+    
+    function updatePlaybackControls(container) {
+        const data = getPlaybackData(container);
+        
+        if (!data) {
+            return;
+        }
+
+        const currentPlay = container.querySelector("[data-playback-current-play]");
+
+        if (currentPlay) {
+            currentPlay.textContent = `Play ${data.index + 1}`;
+        }
+
+        const label = container.querySelector("[data-playback-toggle-label]");
+        const icon = container.querySelector("[data-playback-toggle-icon]");
+        const toggle = container.querySelector('[data-playback-action="toggle"]');
+
+        if (label) {
+            label.textContent = data.playing ? "Pause" : "Play";
+        }
+
+        if (icon) {
+            icon.classList.toggle("bi-play-fill", !data.playing);
+            icon.classList.toggle("bi-pause-fill", data.playing);
+        }
+
+        if (toggle) {
+            toggle.setAttribute("aria-pressed", String(data.playing));
+            toggle.setAttribute("aria-label", data.playing ? "Pause" : "Play");
+            toggle.disabled = data.plays.length <= 1;
+        }
+
+        const seek = container.querySelector("[data-playback-seek]");
+        
+        if (seek) {
+            seek.max = String(Math.max(0, data.plays.length - 1));
+            seek.value = String(data.index);
+
+            const percent = data.plays.length <= 1 ? 100 : data.index / (data.plays.length - 1) * 100;
+
+            seek.style.setProperty("--playback-progress", `${percent}%`);
+            seek.setAttribute(                "aria-valuetext",                `Play ${data.index + 1} of ${data.plays.length}`            );
+        }
+    }
+
+    function pausePlayback(container) {
+        const data = getPlaybackData(container);
+
+        if (!data) return;
+
+        if (data.timer !== null) {
+            clearTimeout(data.timer);
+            
+            data.timer = null;
+        }
+
+        data.playing = false;
+        
+        updatePlaybackControls(container);
+    }
+
+    function scheduleNextPlay(container) {
+        const data = getPlaybackData(container);
+
+        if (!data || !data.playing) return;
+
+        if (data.timer !== null) {
+            clearTimeout(data.timer);
+            
+            data.timer = null;
+        }
+
+        if (data.index >= data.plays.length - 1) {
+            pausePlayback(container);
+            
+            return;
+        }
+
+        data.timer = setTimeout(() => {
+            data.timer = null;
+
+            if (!data.playing || !container.isConnected) {
+                pausePlayback(container);
+                
+                return;
+            }
+
+            renderPlay(container, data.index + 1);
+            scheduleNextPlay(container);
+        }, BASE_PLAY_INTERVAL / data.speed);
+    }
+
+    function startPlayback(container) {
+        const data = getPlaybackData(container);
+
+        if (!data || data.plays.length <= 1) {
+            return;
+        }
+
+        if (data.playing) {
+            return;
+        }
+
+        if (data.index >= data.plays.length - 1) {
+            renderPlay(container, 0);
+        }
+
+        data.playing = true;
+        
+        updatePlaybackControls(container);
+        scheduleNextPlay(container);
+    }
+
+    function togglePlayback(container) {
+        const data = getPlaybackData(container);
+
+        if (!data) return;
+
+        if (data.playing) {
+            pausePlayback(container);
+        } else {
+            startPlayback(container);
         }
     }
 
@@ -219,13 +351,23 @@
 
         const data = getPlaybackData(container);
 
-        if (!data) {
+        if (!data || data.plays.length === 0) {
             return;
         }
+        
+        const action = button.dataset.playbackAction;
+        
+        if (action === "toggle") {
+            togglePlayback(container);
+            
+            return;
+        }
+        
+        pausePlayback(container);
 
         let nextIndex = data.index;
 
-        switch (button.dataset.playbackAction) {
+        switch (action) {
             case "first":
                 nextIndex = 0;
                 break;
@@ -251,6 +393,65 @@
 
     document.addEventListener("click", handlePlaybackClick);
 
+    document.addEventListener("input", event => {
+        const target = event.target;
+        
+        if (!(target instanceof HTMLInputElement)) {
+            return;
+        }
+        
+        if (!target.matches("[data-playback-seek]")) {
+            return;
+        }
+
+        const container = target.closest("[data-football-playback]");
+
+        if (!container) {
+            return;
+        }
+        
+        const index = Number.parseInt(target.value, 10);
+        
+        if (!Number.isInteger(index)) {
+            return;
+        }
+
+        pausePlayback(container);
+        renderPlay(container, index);
+    });
+
+    document.addEventListener("change", event => {
+        const speedSelect = event.target.closest("[data-playback-speed]");
+
+        if (!speedSelect) {
+            return;
+        }
+
+        const container = speedSelect.closest("[data-football-playback]");
+
+        if (!container) {
+            return;
+        }
+
+        const data = getPlaybackData(container);
+
+        if (!data) {
+            return;
+        }
+
+        const speed = Number(speedSelect.value);
+
+        if (![0.5, 1, 2, 4].includes(speed)) {
+            return;
+        }
+
+        data.speed = speed;
+
+        if (data.playing) {
+            scheduleNextPlay(container);
+        }
+    });
+
     function initializePlaybacks(root = document) {
         const containers = root.querySelectorAll("[data-football-playback]");
 
@@ -274,6 +475,14 @@
     } else {
         initializePlaybacks();
     }
+
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) return;
+
+        document.querySelectorAll("[data-football-playback]").forEach(container => {
+            pausePlayback(container);
+        });
+    });
 
     window.SportsTrackerFootballPlayback = {
         initialize: initializePlaybacks,
@@ -324,6 +533,7 @@
                 index = clamp(state.index, 0, data.plays.length - 1);
             }
 
+            pausePlayback(container);
             renderPlay(container, index);
         }
     };

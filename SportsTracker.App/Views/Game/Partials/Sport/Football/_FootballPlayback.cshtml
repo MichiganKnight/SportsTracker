@@ -31,10 +31,6 @@
         </span>
     </div>
     
-    <div class="progress mb-3" style="height: 5px;">
-        <div class="progress-bar" data-playback-progress style="width:@((initialIndex + 1) * 100.0 / plays.Count)%"></div>
-    </div>
-    
     <div class="mb-3">
         <div class="small text-secondary mb-1" data-playback-drive>
             Drive @initialPlay.DriveNumber
@@ -53,26 +49,57 @@
         </div>
     </div>
     
-    <div class="d-flex flex-wrap justify-content-center gap-2">
+    <div class="football-playback-timeline mb-3">
+        <label class="form-label small text-secondary mb-2" for="football-playback-seek">
+            Playback Timeline
+        </label>
+        
+        <input type="range" class="form-range football-playback-seek" id="football-playback-seek" data-playback-seek min="0" max="@(plays.Count - 1)" step="1" value="@initialIndex" aria-label="Seek to Play" />
+        
+        <div class="d-flex justify-content-between small text-secondary">
+            <span data-playback-current-play>Play @(initialIndex + 1)</span>
+            <span>Play @plays.Count</span>
+        </div>
+    </div>
+    
+    <div class="football-playback-controls d-flex flex-wrap align-items-center justify-content-center gap-2">
         <button type="button" class="btn btn-outline-secondary btn-sm" data-playback-action="first" title="First Play">
             <i class="bi bi-skip-backward-fill"></i>
             First
         </button>
-        
-        <button type="button" class="btn btn-outline-secondary btn-sm" data-playback-action="previous">
+
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-playback-action="previous" title="Previous Play">
             <i class="bi bi-chevron-left"></i>
             Previous
         </button>
-        
-        <button type="button" class="btn btn-outline-secondary btn-sm" data-playback-action="next">
+
+        <button type="button" class="btn btn-primary btn-sm football-playback-toggle" data-playback-action="toggle" aria-label="Play" aria-pressed="false">
+            <i class="bi bi-play-fill" data-playback-toggle-icon></i>
+            <span data-playback-toggle-label>Play</span>
+        </button>
+
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-playback-action="next" title="Next Play">
             Next
             <i class="bi bi-chevron-right"></i>
         </button>
-        
+
         <button type="button" class="btn btn-outline-secondary btn-sm" data-playback-action="last" title="Last Play">
             Last
             <i class="bi bi-skip-forward-fill"></i>
         </button>
+
+        <div class="football-playback-speed d-flex align-items-center gap-2">
+            <label for="football-playback-speed" class="small text-secondary mb-0">
+                Speed
+            </label>
+
+            <select id="football-playback-speed" class="form-select form-select-sm" data-playback-speed aria-label="Playback speed">
+                <option value="0.5">0.5×</option>
+                <option value="1" selected>1×</option>
+                <option value="2">2×</option>
+                <option value="4">4×</option>
+            </select>
+        </div>
     </div>
     
     <div class="text-center small text-secondary mt-3" data-playback-status role="status" aria-live="polite">
