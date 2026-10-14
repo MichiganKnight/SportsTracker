@@ -153,12 +153,80 @@
         setVisible(redZone, situation.isRedZone === true);
     }
 
-    function renderPlay(container, index) {
+    function getPlayPossession(play) {
+        return String(play?.situation?.possession ?? play?.situation?.possessionTeamId ?? "").trim().toLowerCase();
+    }
+
+    function getScoringLabel(play) {
+        if (!play?.isScoringPlay) return null;
+
+        const description = String(play.description ?? "").toLowerCase();
+
+        if (description.includes("touchdown")) {
+            return "Touchdown"
+        }
+
+        if (description.includes("field goal")) {
+            return "Field Goal";
+        }
+
+        if (description.includes("safety")) {
+            return "Safety";
+        }
+
+        if (description.includes("extra point")) {
+
+        }
+
+        if (description.includes("two-point") || description.includes("2-point")) {
+            return "Two-Point Conversion";
+        }
+
+        return "Scoring Play";
+    }
+
+    function updatePlayEvents(container, play, previousPlay) {
+        const scoringBadge = container.querySelector("[data-playback-scoring]");
+        const possessionBadge = container.querySelector("[data-playback-possession-change]");
+
+        const scoringLabel = getScoringLabel(play);
+
+        if (scoringBadge) {
+            scoringBadge.hidden = scoringLabel === null;
+            scoringBadge.textContent = scoringLabel ?? "";
+        }
+
+        const previousPossession = getPlayPossession(previousPlay);
+        const currentPossession = getPlayPossession(play);
+
+        const possessionChanged = previousPossession !== "" && currentPossession !== "" && previousPossession !== currentPossession;
+
+        if (possessionBadge) {
+            possessionBadge.hidden = !possessionChanged;
+        }
+
+        container.classList.toggle("football-playback-is-scoring", scoringLabel !== null);
+        container.classList.toggle("football-playback-possession-changed", possessionChanged);
+    }
+
+    function setFieldAnimation(field, enabled, speed) {
+        const duration = enabled ? Math.min(700, 900 / speed) : 0;
+
+        field.style.setProperty(
+            "--football-playback-animation-duration",
+            `${duration}ms`
+        );
+    }
+
+    function renderPlay(container, index, animate = false) {
         const data = getPlaybackData(container);
 
         if (!data || data.plays.length === 0) {
             return;
         }
+
+        const previousIndex = data.index;
+        const previousPlay = data.plays[previousIndex];
 
         data.index = clamp(index, 0, data.plays.length - 1);
 
@@ -170,11 +238,24 @@
 
         const play = data.plays[data.index];
 
+        const adjacentPlay = data.index > 0 ? data.plays[data.index - 1] : null;
+
+        updatePlayEvents(container, play, adjacentPlay);
+
         const field = container.closest("[data-football-field]");
 
         if (!field) {
             return;
         }
+
+        const previousPossession = getPlayPossession(previousPlay);
+        const currentPossession = getPlayPossession(play);
+
+        const samePossession = previousPossession !== "" && previousPossession === currentPossession;
+
+        const shouldAnimate = animate && Math.abs(data.index - previousIndex) === 1 && samePossession && Boolean(previousPlay?.situation) && Boolean(play.situation);
+
+        setFieldAnimation(field, shouldAnimate, data.speed);
 
         const quarter = play.quarter ? `Q${play.quarter}` : "Quarter Unknown";
 
@@ -193,7 +274,9 @@
 
             updateField(field, play.situation);
 
-            setText(container, "[data-playback-status]", play.isScoringPlay ? "Scoring Play" : "Showing Field Position at the Start of This Play");
+            const scoringLabel = getScoringLabel(play);
+
+            setText(container, "[data-playback-status]", scoringLabel ? `${scoringLabel} — Field Position at the Start of This Play` : "Showing Field Position at the Start of This Play");
         } else {
             updateField(field, null);
 
@@ -205,15 +288,34 @@
 
             button.disabled = (data.index === 0 && (action === "first" || action === "previous")) || (data.index === data.plays.length - 1 && (action === "next" || action === "last"));
         }
-        
+
+        const previousDrive = findPreviousDriveIndex(data.plays, data.index);
+        const nextDrive = findNextDriveIndex(data.plays, data.index);
+
+        const previousDriveButton = container.querySelector(
+            '[data-playback-action="previous-drive"]'
+        );
+
+        const nextDriveButton = container.querySelector(
+            '[data-playback-action="next-drive"]'
+        );
+
+        if (previousDriveButton) {
+            previousDriveButton.disabled = previousDrive === null;
+        }
+
+        if (nextDriveButton) {
+            nextDriveButton.disabled = nextDrive === null;
+        }
+
         updatePlaybackControls(container);
     }
-    
+
     const BASE_PLAY_INTERVAL = 2000;
-    
+
     function updatePlaybackControls(container) {
         const data = getPlaybackData(container);
-        
+
         if (!data) {
             return;
         }
@@ -244,7 +346,7 @@
         }
 
         const seek = container.querySelector("[data-playback-seek]");
-        
+
         if (seek) {
             seek.max = String(Math.max(0, data.plays.length - 1));
             seek.value = String(data.index);
@@ -252,7 +354,7 @@
             const percent = data.plays.length <= 1 ? 100 : data.index / (data.plays.length - 1) * 100;
 
             seek.style.setProperty("--playback-progress", `${percent}%`);
-            seek.setAttribute(                "aria-valuetext",                `Play ${data.index + 1} of ${data.plays.length}`            );
+            seek.setAttribute("aria-valuetext", `Play ${data.index + 1} of ${data.plays.length}`);
         }
     }
 
@@ -263,12 +365,12 @@
 
         if (data.timer !== null) {
             clearTimeout(data.timer);
-            
+
             data.timer = null;
         }
 
         data.playing = false;
-        
+
         updatePlaybackControls(container);
     }
 
@@ -279,13 +381,13 @@
 
         if (data.timer !== null) {
             clearTimeout(data.timer);
-            
+
             data.timer = null;
         }
 
         if (data.index >= data.plays.length - 1) {
             pausePlayback(container);
-            
+
             return;
         }
 
@@ -294,11 +396,11 @@
 
             if (!data.playing || !container.isConnected) {
                 pausePlayback(container);
-                
+
                 return;
             }
 
-            renderPlay(container, data.index + 1);
+            renderPlay(container, data.index + 1, true);
             scheduleNextPlay(container);
         }, BASE_PLAY_INTERVAL / data.speed);
     }
@@ -319,7 +421,7 @@
         }
 
         data.playing = true;
-        
+
         updatePlaybackControls(container);
         scheduleNextPlay(container);
     }
@@ -334,6 +436,44 @@
         } else {
             startPlayback(container);
         }
+    }
+
+    function getDriveNumber(play) {
+        const number = Number(play?.driveNumber);
+
+        return Number.isFinite(number) && number > 0 ? number : null;
+    }
+
+    function getDriveStartIndices(plays) {
+        const starts = [];
+        let previousDrive = null;
+
+        for (let i = 0; i < plays.length; i++) {
+            const drive = getDriveNumber(plays[i]);
+
+            if (drive === null) {
+                continue;
+            }
+
+            if (drive !== previousDrive) {
+                starts.push(i);
+                previousDrive = drive;
+            }
+        }
+
+        return starts;
+    }
+
+    function findPreviousDriveIndex(plays, currentIndex) {
+        const starts = getDriveStartIndices(plays);
+
+        return starts.filter(index => index < currentIndex).at(-1) ?? null;
+    }
+
+    function findNextDriveIndex(plays, currentIndex) {
+        const starts = getDriveStartIndices(plays);
+
+        return starts.find(index => index > currentIndex) ?? null;
     }
 
     function handlePlaybackClick(event) {
@@ -354,15 +494,15 @@
         if (!data || data.plays.length === 0) {
             return;
         }
-        
+
         const action = button.dataset.playbackAction;
-        
+
         if (action === "toggle") {
             togglePlayback(container);
-            
+
             return;
         }
-        
+
         pausePlayback(container);
 
         let nextIndex = data.index;
@@ -384,22 +524,32 @@
                 nextIndex = data.plays.length - 1;
                 break;
 
+            case "previous-drive":
+                nextIndex = findPreviousDriveIndex(data.plays, data.index);
+                break;
+
+            case "next-drive":
+                nextIndex = findNextDriveIndex(data.plays, data.index);
+                break;
+
             default:
                 return;
         }
 
-        renderPlay(container, nextIndex);
+        if (nextIndex !== null) {
+            renderPlay(container, nextIndex);
+        }
     }
 
     document.addEventListener("click", handlePlaybackClick);
 
     document.addEventListener("input", event => {
         const target = event.target;
-        
+
         if (!(target instanceof HTMLInputElement)) {
             return;
         }
-        
+
         if (!target.matches("[data-playback-seek]")) {
             return;
         }
@@ -409,9 +559,9 @@
         if (!container) {
             return;
         }
-        
+
         const index = Number.parseInt(target.value, 10);
-        
+
         if (!Number.isInteger(index)) {
             return;
         }

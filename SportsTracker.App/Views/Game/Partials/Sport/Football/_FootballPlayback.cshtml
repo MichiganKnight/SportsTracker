@@ -32,11 +32,19 @@
     </div>
     
     <div class="mb-3">
-        <div class="small text-secondary mb-1" data-playback-drive>
-            Drive @initialPlay.DriveNumber
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+            <span class="small text-secondary" data-playback-drive>
+                Drive @initialPlay.DriveNumber
+            </span>
+            
+            <span class="badge bg-success football-playback-event" data-playback-scroring hidden></span>
+            
+            <span class="badge bg-info text-dark football-playback-event" data-playback-possession-change hidden>
+                Change of Possession
+            </span>
         </div>
         
-        <div class="fw-medium" data-playback-description>
+        <div class="football-playback-description fw-medium" data-playback-description>
             @initialPlay.Description
         </div>
         
@@ -86,6 +94,16 @@
         <button type="button" class="btn btn-outline-secondary btn-sm" data-playback-action="last" title="Last Play">
             Last
             <i class="bi bi-skip-forward-fill"></i>
+        </button>
+        
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-playback-action="previous-drive" title="Previous Drive">
+            <i class="bi bi-skip-start"></i>
+            Previous Drive
+        </button>
+
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-playback-action="next-drive" title="Next Drive">
+            Next Drive
+            <i class="bi bi-skip-end"></i>
         </button>
 
         <div class="football-playback-speed d-flex align-items-center gap-2">
