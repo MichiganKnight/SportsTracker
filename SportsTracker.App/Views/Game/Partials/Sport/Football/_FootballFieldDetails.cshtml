@@ -1,0 +1,182 @@
+﻿@using SportsTracker.App.Models.Sport
+@model SportsTracker.App.ViewModels.GameDetails.GameDetailsViewModel
+
+@{
+    FootballSituation? game = Model.FootballSituation;
+
+    bool isHistorical = Model.IsFinal && !Model.IsLive;
+    
+    bool isAwayPossession = !string.IsNullOrWhiteSpace(game?.PossessionTeamId) && game.PossessionTeamId == Model.AwayTeam.Id;
+    bool isHomePossession = !string.IsNullOrWhiteSpace(game?.PossessionTeamId) && game.PossessionTeamId == Model.HomeTeam.Id;
+
+    bool hasPossession = isAwayPossession || isHomePossession;
+    
+    string possessionTeam = isAwayPossession ? Model.AwayTeam.Abbreviation : isHomePossession ? Model.HomeTeam.Abbreviation : game?.PossessionText ?? "Unknown";
+
+    int? position = null;
+    int? gain = null;
+
+    if (game?.YardsToEndzone is int yards)
+    {
+        bool attacksRight = !isHomePossession;
+
+        position = Math.Clamp(attacksRight ? 100 - yards : yards, 0, 100);
+
+        if (game.Distance is int distance)
+        {
+            int yardsToGain = distance == 0 ? yards : distance;
+
+            gain = Math.Clamp(position.Value + (attacksRight ? yardsToGain : -yardsToGain), 0, 100);
+        }
+    }
+    
+    string downDistance = game?.DownDistanceText ?? game?.ShortDownDistanceText ?? "-";
+    
+    bool hasPlayback = Model.IsFinal && Model.HistoricalFootballPlays.Count > 0;
+    
+    string awayColor = NormalizeTeamColor(Model.AwayTeam.PrimaryColor);
+    string homeColor = NormalizeTeamColor(Model.HomeTeam.PrimaryColor);
+}
+
+<section class="card shadow-sm mb-4 sport-details" data-football-field data-away-team="@Model.AwayTeam.Id" data-away-abbreviation="@Model.AwayTeam.Abbreviation" data-home-team="@Model.HomeTeam.Id" data-home-abbreviation="@Model.HomeTeam.Abbreviation">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Field Position</h5>
+        
+        <span class="small text-secondary">
+            @if (Model.IsLive)
+            {
+                @Model.SituationPeriod @Model.SituationClock
+            }
+            else
+            {
+                <span class="badge bg-warning text-dark">
+                    Historical Preview
+                </span>
+            }
+        </span>
+    </div>
+    
+    <div class="card-body">
+        @if (Model.IsLive || hasPlayback || position.HasValue)
+        {
+            <div class="d-flex justify-content-between mb-2 small fw-semibold">
+                <span>@Model.AwayTeam.Abbreviation End Zone</span>
+                <span>@Model.HomeTeam.Abbreviation End Zone</span>
+            </div>
+            
+            <div class="football-detail-field" role="img" aria-label="Football Field Position: @downDistance, @(game?.YardsToEndzone?.ToString() ?? "Unknown") Yards to Goal">
+                <div class="football-detail-endzone" style="background-color:@awayColor">
+                    @Model.AwayTeam.Abbreviation End Zone
+                </div>
+                
+                <div class="football-detail-playing">
+                    @for (int i = 1; i < 10; i++)
+                    {
+                        int yardNumber = i <= 5 ? i * 10 : (10 - i) * 10;
+                        
+                        <span class="football-detail-yard" style="left:@(i * 10)%"></span>
+                        
+                        <span class="football-detail-yard-number football-detail-yard-number-top" style="left:@(i * 10)%">
+                            @yardNumber
+                        </span>
+                        
+                        <span class="football-detail-yard-number football-detail-yard-number-bottom" style="left:@(i * 10)%">
+                            @yardNumber
+                        </span>
+                    }
+                    
+                    <span class="football-detail-gain" data-football-gain style="left:@(gain ?? 0)%; display:@(gain.HasValue ? "block" : "none")" title="Line to Gain"></span>
+                    <span class="football-detail-ball" data-football-ball style="left:@(position ?? 0)%; display:@(position.HasValue ? "block" : "none")" title="@(game?.DownDistanceText ?? "Ball Position")"></span>
+                </div>
+                
+                <div class="football-detail-endzone" style="background-color:@homeColor">
+                    @Model.HomeTeam.Abbreviation End Zone
+                </div>
+            </div>
+            
+            
+            <div class="d-flex flex-wrap gap-3 mt-3">
+                <span>
+                    <strong>Possession:</strong>
+                    <span data-football-possession>
+                        @possessionTeam
+                    </span>
+                </span>
+
+                <span>
+                    <strong>Down &amp; Distance:</strong>
+                    <span data-football-down>
+                        @downDistance
+                    </span>
+                </span>
+
+                <span>
+                    <strong>Yards to Goal:</strong>
+                    <span data-football-yards>
+                        @(game?.YardsToEndzone?.ToString() ?? "—")
+                    </span>
+                </span>
+
+                <span class="badge bg-danger" data-football-redzone style="display:@(game?.IsRedZone == true ? "inline-block" : "none")">
+                    RED ZONE
+                </span>
+            </div>
+
+            
+            <div class="d-flex flex-wrap gap-3 mt-2 small text-secondary">
+                <span>
+                    <span class="football-detail-legend-ball"></span>
+                    Ball Position
+                </span>
+                
+                <span>
+                    <span class="football-detail-legend-gain"></span>
+                    First Down Marker
+                </span>
+            </div>
+            
+            @if (isHistorical)
+            {
+                <p class="small text-secondary mb-0 mt-3">
+                    Development Preview - Position is Derived from a Historical ESPN Play
+                </p>
+            }
+            else
+            {
+                <p class="small text-secondary mb-0 mt-3">
+                    Field is Normalized From the Possessing Team's Own Goal Line Toward the Opponent's End Zone
+                </p>
+            }
+        }
+        else
+        {
+            <p class="text-secondary mb-0">
+                Field Position is Not Available for This Game State
+            </p>
+        }
+        
+        @if (hasPlayback)
+        {
+            <partial name="~/Views/Game/Partials/Sport/Football/_FootballPlayback.cshtml" model="Model"/>
+        }
+    </div>
+</section>
+
+@functions {
+    private static string NormalizeTeamColor(string? color)
+    {
+        if (string.IsNullOrWhiteSpace(color))
+        {
+            return "#24513e";
+        }
+
+        string value = color.Trim().TrimStart('#');
+
+        if (value.Length is not (3 or 6) || !value.All(Uri.IsHexDigit))
+        {
+            return "#24513e";
+        }
+
+        return $"#{value}";
+    }
+}

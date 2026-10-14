@@ -9,8 +9,28 @@
         public DrivesDto? Drives { get; init; }
         
         public GameSummaryMetaDto? Meta { get; init; }
+        
+        public HockeySummaryHeaderDto? Header { get; init; }
     }
-    
+
+    public sealed class HockeySummaryHeaderDto
+    {
+        public List<HockeySummaryCompetitionDto>? Competitions { get; init; }   
+    }
+
+    public sealed class HockeySummaryCompetitionDto
+    {
+        public HockeySummaryStatusDto? Status { get; init; }
+        public System.Text.Json.JsonElement? Situation { get; init; }
+    }
+
+    public sealed class HockeySummaryStatusDto
+    {
+        public int? Period { get; init; }
+        public string? DisplayPeriod { get; init; }
+        public string? DisplayClock { get; init; }
+    }
+
     public sealed class GameSummaryMetaDto
     {
         public string? GameState { get; init; }
@@ -31,6 +51,8 @@
         public string? Result { get; init; }
         public string? ShortDisplayResult { get; init; }
         public string? DisplayResult { get; init; }
+        
+        public PlayTeamReferenceDto? Team { get; init; }
         
         public List<PlayDto>? Plays { get; init; } = [];
     }
@@ -66,6 +88,11 @@
         
         public PlaySituationDto? Start { get; init; }
         public PlaySituationDto? End { get; init; }
+        
+        public HockeyCoordinateDto? Coordinate { get; init; }
+        public HockeyStrengthDto? Strength { get; init; }
+        
+        public bool? ShootingPlay { get; init; }
     }
     
     public sealed class PlayClockDto

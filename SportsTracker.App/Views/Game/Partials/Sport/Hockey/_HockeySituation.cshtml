@@ -1,0 +1,49 @@
+﻿@using SportsTracker.App.Models.Sport
+@model SportsTracker.App.ViewModels.GameInfo.GameCardViewModel
+
+@{
+    HockeySituation? hockey = Model.Hockey;
+    
+    string? playTeam = hockey?.LastPlayTeamId == Model.HomeTeam.Id ? Model.HomeTeam.Abbreviation : hockey?.LastPlayTeamId == Model.AwayTeam.Id ? Model.AwayTeam.Abbreviation : null;
+    
+    string? powerPlayTeam = hockey?.PowerPlayTeamId == Model.HomeTeam.Id ? Model.HomeTeam.Abbreviation : hockey?.PowerPlayTeamId == Model.AwayTeam.Id ? Model.AwayTeam.Abbreviation : null;
+}
+
+@if (Model.IsLive && hockey is not null)
+{
+    <div class="hockey-situation mt-3">
+        @if (!string.IsNullOrWhiteSpace(powerPlayTeam))
+        {
+            <div class="hockey-power-play mb-2">
+                <i class="bi bi-lightning-charge-fill"></i>
+                @powerPlayTeam Power Play
+            </div>
+        }
+        else if (!string.IsNullOrWhiteSpace(hockey.Strength))
+        {
+            <div class="small text-secondary mb-2">
+                @hockey.Strength
+            </div>
+        }
+        
+        @if (!string.IsNullOrWhiteSpace(hockey.LastPlay))
+        {
+            <div class="game-last-play text-secondary">
+                <div class="small fw-semibold mb-1">
+                    Latest Play
+                    
+                    @if (!string.IsNullOrWhiteSpace(playTeam))
+                    {
+                        <span class="ms-1">
+                            - @playTeam
+                        </span>
+                    }
+                </div>
+                
+                <div class="small">
+                    @hockey.LastPlay
+                </div>
+            </div>
+        }
+    </div>
+}

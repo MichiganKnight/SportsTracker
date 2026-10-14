@@ -1,4 +1,5 @@
 ﻿using SportsTracker.App.Enums;
+using SportsTracker.App.Models.Sport;
 
 namespace SportsTracker.App.ViewModels.GameDetails
 {
@@ -32,5 +33,15 @@ namespace SportsTracker.App.ViewModels.GameDetails
         public string? Recap { get; init; }
         
         public BaseballGameDetailsViewModel? Baseball { get; init; }
+        
+        public IReadOnlyList<HockeyShot> HockeyShots { get; set; } = [];
+        
+        public FootballSituation? FootballSituation { get; set; }
+        public IReadOnlyList<FootballPlaybackPlay> HistoricalFootballPlays { get; set; } = [];
+        
+        public BaseballSituation? BaseballSituation { get; set; }
+        
+        public string? SituationPeriod { get; set; }
+        public string? SituationClock { get; set; }
     }
 }

@@ -24,6 +24,8 @@
 @import url("components/situations/football.css");
 @import url("components/situations/baseball.css");
 @import url("components/situations/golf.css");
+@import url("components/situations/hockey.css");
+@import url("components/situations/hockey-rink.css");
 
 html,
 body {

@@ -10,6 +10,7 @@ using SportsTracker.App.Integrations.ESPN.Mappers;
 using SportsTracker.App.Models.BoxScore;
 using SportsTracker.App.Models.GameDetails;
 using SportsTracker.App.Models.PlayByPlay;
+using SportsTracker.App.Models.Sport;
 
 namespace SportsTracker.App.Services
 {
@@ -21,6 +22,8 @@ namespace SportsTracker.App.Services
         // Game Content
         Task<GameBoxScore?> GetBoxScoreAsync(League league, string gameId, CancellationToken cancellationToken = default);
         Task<GamePlayByPlay?> GetPlayByPlayAsync(League league, string gameId, CancellationToken cancellationToken = default);
+        
+        Task<IReadOnlyList<HockeyShot>> GetHockeyShotsAsync(League league, string gameId, CancellationToken cancellationToken = default);
         
         // Game Summary
         Task<GameSummaryResponseDto?> GetGameSummaryAsync(League league, string gameId, CancellationToken cancellationToken = default);
@@ -50,6 +53,13 @@ namespace SportsTracker.App.Services
             GameSummaryResponseDto? summary = await GetGameSummaryAsync(league, gameId, cancellationToken);
 
             return summary is null ? null : PlayByPlayMapper.Map(summary, gameId, league);
+        }
+
+        public async Task<IReadOnlyList<HockeyShot>> GetHockeyShotsAsync(League league, string gameId, CancellationToken cancellationToken = default)
+        {
+            GameSummaryResponseDto? summary = await GetGameSummaryAsync(League.NHL, gameId, cancellationToken);
+
+            return summary is null ? [] : HockeyShotMapper.Map(summary);
         }
 
         public async Task<GameSummaryResponseDto?> GetGameSummaryAsync(League league, string gameId, CancellationToken cancellationToken = default)

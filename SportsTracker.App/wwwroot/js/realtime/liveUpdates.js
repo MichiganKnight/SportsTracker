@@ -45,11 +45,11 @@ async function refreshDashboardLeague(payload) {
 
             animateScoreChanges(changedGames);
 
-            if (typeof sportsTrackerFavorites  === "function") {
+            if (typeof sportsTrackerFavorites === "function") {
                 sportsTrackerFavorites.refreshGameCards(replacement);
             }
-            
-            if (typeof scheduleDashboardFeaturesRefresh  === "function") {
+
+            if (typeof scheduleDashboardFeaturesRefresh === "function") {
                 scheduleDashboardFeaturesRefresh();
             }
         }
@@ -89,7 +89,7 @@ async function refreshGamesLeague(payload) {
 
             animateScoreChanges(changedGames);
 
-            if (typeof sportsTrackerFavorites  === "function") {
+            if (typeof sportsTrackerFavorites === "function") {
                 sportsTrackerFavorites.refreshGameCards(replacement);
             }
         }
@@ -118,8 +118,8 @@ async function refreshLeaguePage(payload) {
             const changedGames = findScoreChanges(oldScores, replacement);
 
             animateScoreChanges(changedGames);
-            
-            if (typeof sportsTrackerFavorites  === "function") {
+
+            if (typeof sportsTrackerFavorites === "function") {
                 sportsTrackerFavorites.refreshGameCards(replacement);
             }
         }
@@ -136,6 +136,10 @@ async function refreshGameDetails(payload) {
         return;
     }
 
+    if (page.dataset.league?.toUpperCase() === "NFL" && page.querySelector("[data-football-playback]")) {
+        return;
+    }
+
     const league = page.dataset.league;
     const gameId = page.dataset.gameId;
 
@@ -146,6 +150,73 @@ async function refreshGameDetails(payload) {
     await refreshPartial({
         selector: "[data-game-summary-page]",
         url: `/game/content/${encodeURIComponent(league)}/${encodeURIComponent(gameId)}?t=${Date.now()}`,
+
+        beforeReplace: () => {
+            const footballPlayback = window.SportsTrackerFootballPlayback?.captureState();
+
+            const rink = document.querySelector("[data-hockey-shot-map]");
+
+            if (!rink) {
+                return {
+                    footballPlayback,
+                    hockey: null
+                };
+            }
+
+            return {
+                footballPlayback,
+
+                hockey: {
+                    team: rink.querySelector("[data-hockey-team]")?.value ?? "all",
+                    period: rink.querySelector("[data-hockey-period]")?.value ?? "all",
+                    goalsOnly: rink.querySelector("[data-hockey-goals-only]")?.checked ?? false,
+                }
+            };
+        },
+
+        afterReplace: (replacement, state) => {
+            if (window.SportsTrackerFootballPlayback) {
+                window.SportsTrackerFootballPlayback.initialize(replacement);
+
+                if (state?.footballPlayback) {
+                    window.SportsTrackerFootballPlayback.restoreState(state.footballPlayback, replacement);
+                }
+            }
+
+            const hockeyState = state?.hockey;
+
+            if (!hockeyState) {
+                return;
+            }
+
+            const rink = replacement.querySelector("[data-hockey-shot-map]");
+
+            if (!rink) {
+                return;
+            }
+
+            const teamSelect = rink.querySelector("[data-hockey-team]");
+            const periodSelect = rink.querySelector("[data-hockey-period]");
+            const goalsCheckbox = rink.querySelector("[data-hockey-goals-only]");
+
+            if (teamSelect) {
+                teamSelect.value = hockeyState.team;
+            }
+
+            if (periodSelect) {
+                const periodExists = Array.from(periodSelect.options).some(option => option.value === hockeyState.period);
+
+                periodSelect.value = periodExists ? hockeyState.period : "all";
+            }
+
+            if (goalsCheckbox) {
+                goalsCheckbox.checked = hockeyState.goalsOnly;
+            }
+
+            teamSelect?.dispatchEvent(new Event("change", {
+                bubbles: true
+            }));
+        }
     });
 }
 
@@ -271,21 +342,21 @@ async function refreshCurrentPage() {
         await Promise.all(
             Array.from(sections).map(section => {
                 const league = section.id.replace("league-", "");
-                
+
                 return refreshGamesLeague({
                     league: league,
                 });
             })
         );
-        
+
         return;
     }
-    
+
     const leaguePage = document.querySelector("[id^='league-games-']");
-    
+
     if (leaguePage) {
         const league = leaguePage.id.replace("league-games-", "");
-        
+
         await refreshLeaguePage({
             league: league,
         });

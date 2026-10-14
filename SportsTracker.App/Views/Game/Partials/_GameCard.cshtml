@@ -6,9 +6,11 @@
     
     bool isBaseball = Model.Baseball is not null;
     bool isFootball = Model.Football is not null;
+    bool isHockey = Model.Hockey is not null;
     
     bool showBaseballSituation = isBaseball && Model.IsLive;
     bool showFootballSituation = isFootball && Model.IsLive && !string.IsNullOrWhiteSpace(Model.Football!.DownDistanceText);
+    bool showHockeySituation = isHockey && Model.IsLive;
 
     bool showLiveSituation = Model.IsLive && (!string.IsNullOrWhiteSpace(Model.SituationHeadline) || !string.IsNullOrWhiteSpace(Model.SituationSubheadline));
 
@@ -85,7 +87,7 @@
                         </span>
                     </div>
                 }
-                else if (showFootballSituation)
+                else if (showFootballSituation || showHockeySituation)
                 {
                     <div class="game-situation-inline text-secondary fw-semibold">
                         @Model.SituationSubheadline
@@ -95,19 +97,9 @@
 
             <!-- Sport Specific Situation -->
 
-            @if (Model.Baseball is not null)
+            @if (Model.IsLive && !string.IsNullOrWhiteSpace(Model.SituationDetail))
             {
-                <partial name="~/Views/Game/Partials/Sport/Baseball/_BaseballSituation.cshtml" model="Model"/>
-            }
-            else if (Model.Football is not null)
-            {
-                <partial name="~/Views/Game/Partials/Sport/Football/_FootballSituation.cshtml" model="Model"/>
-            }
-            else if (!string.IsNullOrWhiteSpace(Model.SituationDetail) && Model.IsLive)
-            {
-                <div class="game-last-play mt-3 text-secondary">
-                    @Model.SituationDetail
-                </div>
+                <div class="game-last-play mt-3 text-secondary">@Model.SituationDetail</div>
             }
 
             <!-- Venue -->

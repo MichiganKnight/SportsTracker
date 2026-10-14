@@ -1,0 +1,134 @@
+﻿@using System.Globalization
+@using SportsTracker.App.Models.Sport
+@model SportsTracker.App.ViewModels.GameDetails.GameDetailsViewModel
+
+@{
+    IReadOnlyList<HockeyShot> shots = Model.HockeyShots;
+    
+    int goals = shots.Count(shot => shot.IsGoal);
+    int saved = shots.Count(shot => shot.IsSaved);
+    int missed = shots.Count(shot => shot.IsMissed);
+}
+
+@if (shots.Count > 0)
+{
+    <section class="hockey-shot-map mb-4" data-hockey-shot-map>
+        <div class="hockey-shot-map-header">
+            <div>
+                <h3>Shot Map</h3>
+                <p>Shot Locations Recorded by ESPN</p>
+            </div>
+            
+            <div class="text-end">
+                <div class="hockey-shot-map-count">
+                    @shots.Count Shot Events
+                </div>
+            </div>
+        </div>
+        
+        <div class="hockey-shot-map-filters">
+            <label>
+                Team
+                <select data-hockey-team>
+                    <option value="all">Both Teams</option>
+                    <option value="@Model.AwayTeam.Id">
+                        @Model.AwayTeam.Abbreviation
+                    </option>
+                    <option value="@Model.HomeTeam.Id">
+                        @Model.HomeTeam.Abbreviation
+                    </option>
+                </select>
+            </label>
+            
+            <label>
+                Period
+                <select data-hockey-period>
+                    <option value="all">All Periods</option>
+                    
+                    @foreach (int period in shots.Select(shot => shot.Period).Distinct().Order())
+                    {
+                        <option value="@period">
+                            @(period <= 3 ? $"Period {period}" : "OT {period - 3}")
+                        </option>
+                    }
+                </select>
+            </label>
+        </div>
+        
+        <div class="hockey-rink-teams">
+            <div class="hockey-rink-team">
+                <img src="@Model.AwayTeam.Logo" alt="" class="hockey-rink-team-logo" />
+                
+                <span>
+                    @Model.AwayTeam.Abbreviation
+                </span>
+            </div>
+            
+            <span class="hockey-rink-orientation">
+                Shot Locations
+            </span>
+            
+            <div class="hockey-rink-team">
+                <span>
+                    @Model.HomeTeam.Abbreviation
+                </span>
+                
+                <img src="@Model.HomeTeam.Logo" alt="" class="hockey-rink-team-logo" />
+            </div>
+        </div>
+        
+        <div class="hockey-shot-map-rink">
+            <svg viewBox="0 0 200 85" role="img" aria-label="Hockey Rink Shot Locations">
+                <rect x="1" y="1" width="198" height="83" rx="28" class="hockey-map-ice" />
+                
+                <line x1="100" y1="1" x2="100" y2="84" class="hockey-map-center-line" />
+                <line x1="65" y1="1" x2="65" y2="84" class="hockey-map-blue-line" />
+                <line x1="135" y1="1" x2="135" y2="84" class="hockey-map-blue-line" />
+                
+                <circle cx="100" cy="42.5" r="15" class="hockey-map-faceoff" />
+                
+                @foreach ((int, int) point in new[]
+                          {
+                              (30, 23), (30, 62),
+                              (170, 23), (170, 62)
+                          })
+                {
+                    <circle cx="@point.Item1" cy="@point.Item2" r="10" class="hockey-map-faceoff" />
+                }
+                
+                <line x1="10" y1="20" x2="10" y2="65" class="hockey-map-goal-line" />
+                <line x1="190" y1="20" x2="190" y2="65" class="hockey-map-goal-line" />
+                
+                <path d="M10 36 H5 V49 H10" class="hockey-map-net" />
+                <path d="M190 36 H195 V49 H190" class="hockey-map-net" />
+                
+                @foreach (HockeyShot shot in shots)
+                {
+                    double x = Math.Clamp(shot.X + 100, 2, 198);
+                    double y = Math.Clamp(42.5 - shot.Y, 2, 83);
+                    
+                    string kind = shot.IsGoal ? "goal" : shot.IsSaved ? "saved" : "missed";
+                    
+                    <circle cx="@x.ToString(CultureInfo.InvariantCulture)" cy="@y.ToString(CultureInfo.InvariantCulture)" r="2.2" class="hockey-map-shot hockey-map-shot--@kind" data-team="@shot.TeamId" data-period="@shot.Period" data-goal="@shot.IsGoal.ToString().ToLowerInvariant()">
+                        <title>@shot.Description - @shot.Clock</title>
+                    </circle>
+                }
+            </svg>
+        </div>
+        
+        <div class="hockey-shot-map-legend">
+            <span>
+                <i class="hockey-legend-dot hockey-legend-goal"></i>
+                Goals (@goals)
+            </span>
+            <span>
+                <i class="hockey-legend-dot hockey-legend-saved"></i>
+                Saved (@saved)
+            </span>
+            <span>
+                <i class="hockey-legend-dot hockey-legend-missed"></i>
+                Missed (@missed)
+            </span>
+        </div>
+    </section>
+}

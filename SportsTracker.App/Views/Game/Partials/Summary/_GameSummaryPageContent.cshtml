@@ -1,10 +1,14 @@
-﻿@model SportsTracker.App.ViewModels.GameDetails.GameDetailsViewModel
+﻿@inject IWebHostEnvironment HostEnvironment
+@using SportsTracker.App.Enums
+@model SportsTracker.App.ViewModels.GameDetails.GameDetailsViewModel
 
 @{
     ViewData["ActiveGameTab"] = "Summary";
+    
+    bool showNflField = Model.League == League.NFL && (Model.IsLive || (Model.IsFinal && HostEnvironment.IsDevelopment()));
 }
 
-<div id="game-summary-@Model.GameId" data-game-summary data-league="@Model.League" data-game-id="@Model.GameId">
+<div id="game-summary-@Model.GameId" data-game-summary-page data-league="@Model.League" data-game-id="@Model.GameId">
     <partial name="~/Views/Game/Partials/_GameHeader.cshtml" model="Model" />
     
     <partial name="~/Views/Game/Partials/_GameNavigation.cshtml" model="Model" />
@@ -13,6 +17,19 @@
         @if (Model.Baseball is not null)
         {
             <partial name="~/Views/Game/Partials/Sport/Baseball/_BaseballLineScore.cshtml" model="Model" />    
+        }
+        
+        @if (showNflField)
+        {
+            <partial name="~/Views/Game/Partials/Sport/Football/_FootballFieldDetails.cshtml" model="Model" />
+        }
+        else if (Model.League == League.MLB && Model.IsLive)
+        {
+            <partial name="~/Views/Game/Partials/Sport/Baseball/_BaseballDiamondDetails.cshtml" model="Model" />
+        }
+        else if (Model.League == League.NHL)
+        {
+            <partial name="~/Views/Game/Partials/Sport/Hockey/_HockeyRink.cshtml" model="Model" />   
         }
         
         <partial name="~/Views/Game/Partials/Summary/_GameInformation.cshtml" model="Model" />

@@ -121,3 +121,126 @@
     margin-top: .5rem;
     font-size: .85rem;
 }
+
+.football-detail-field {
+    display: flex;
+    height: 135px;
+    border: 1px solid var(--st-border);
+    border-radius: .5rem;
+    overflow: hidden;
+    color: #fff;
+}
+
+.football-detail-endzone {
+    flex: 0 0 7%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    writing-mode: vertical-rl;
+    font-size: .7rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, .8);
+}
+
+.football-detail-endzone:first-child {
+    border-right: 2px solid rgba(255, 255, 255, .85);
+}
+
+.football-detail-endzone:last-child {
+    border-left: 2px solid rgba(255, 255, 255, .85);
+}
+
+.football-detail-playing {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: repeating-linear-gradient(90deg, #397b52 0%, #397b52 9.8%, #4b9060 10%, #4b9060 20%);
+}
+
+.football-detail-yard-number {
+    position: absolute;
+    z-index: 2;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: clamp(0.55rem, 1.1vw, 0.9rem);
+    font-weight: 800;
+    line-height: 1;
+    transform: translateX(-50%);
+    pointer-events: none;
+    user-select: none;
+}
+
+.football-detail-yard-number-top {
+    top: 12%;
+}
+
+.football-detail-yard-number-bottom {
+    bottom: 12%;
+    transform: translateX(-50%) rotate(180deg);
+}
+
+.football-detail-yard {
+    position: absolute;
+    height: 100%;
+    border-left: 1px solid #ffffff75;
+}
+
+.football-detail-gain {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #ffcd37;
+    z-index: 4;
+}
+
+.football-detail-ball {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 18px;
+    height: 13px;
+    border: 2px solid white;
+    border-radius: 50%;
+    background: #693b20;
+    z-index: 5;
+}
+
+.baseball-detail-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.baseball-detail-svg {
+    width: min(100%, 310px);
+    height: auto;
+}
+
+.baseball-detail-stats {
+    min-width: 130px;
+}
+
+.football-detail-legend-ball,
+.football-detail-legend-gain {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.football-detail-legend-ball {
+    width: 12px;
+    height: 9px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    background: #693b20;
+}
+
+.football-detail-legend-gain {
+    width: 4px;
+    height: 13px;
+    background: #ffcd37;
+}

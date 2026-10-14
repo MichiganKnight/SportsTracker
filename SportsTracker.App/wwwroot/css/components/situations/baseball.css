@@ -51,7 +51,7 @@
     height: 10px;
     transform: none;
     clip-path: polygon(50% 0%, 100% 45%, 80% 100%, 20% 100%, 0% 45%);
-    background: rgba(255,255,255,.9);
+    background: rgba(255, 255, 255, .9);
     border: none;
 }
 
@@ -102,4 +102,21 @@
         flex-direction: column;
         gap: .3rem;
     }
+}
+
+.baseball-detail-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.baseball-detail-svg {
+    width: min(100%, 310px);
+    height: auto;
+}
+
+.baseball-detail-stats {
+    min-width: 130px;
 }

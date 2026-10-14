@@ -11,5 +11,6 @@ namespace SportsTracker.App.Models.GameInfo
         
         public BaseballSituation? Baseball { get; init; }
         public FootballSituation? Football { get; init; }
+        public HockeySituation? Hockey { get; init; }
     }
 }

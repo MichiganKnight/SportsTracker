@@ -1,9 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportsTracker.App.Enums;
+using SportsTracker.App.Integrations.ESPN.DTOs;
+using SportsTracker.App.Integrations.ESPN.Mappers;
 using SportsTracker.App.Mapping;
 using SportsTracker.App.Models.BoxScore;
+using SportsTracker.App.Models;
+using SportsTracker.App.Models.GameInfo;
 using SportsTracker.App.Models.GameDetails;
 using SportsTracker.App.Models.PlayByPlay;
+using SportsTracker.App.Models.Sport;
 using SportsTracker.App.Services;
 using SportsTracker.App.ViewModels.BoxScore;
 using SportsTracker.App.ViewModels.GameDetails;
@@ -13,7 +18,7 @@ using SportsTracker.App.ViewModels.PlayByPlay;
 namespace SportsTracker.App.Controllers
 {
     [Route("game")]
-    public sealed class GameController(IGameService gameService, IGameDetailsViewModelMapper gameDetailsViewModelMapper, IBoxScoreViewModelMapper boxScoreViewModelMapper, IPlayByPlayViewModelMapper playByPlayViewModelMapper) : Controller
+    public sealed class GameController(IGameService gameService, IScoreboardService scoreboardService, IGameDetailsViewModelMapper gameDetailsViewModelMapper, IBoxScoreViewModelMapper boxScoreViewModelMapper, IPlayByPlayViewModelMapper playByPlayViewModelMapper, IWebHostEnvironment environment) : Controller
     {
         [HttpGet("{league}/{gameId}")]
         public async Task<IActionResult> Index(League league, string gameId, CancellationToken cancellationToken)
@@ -38,7 +43,7 @@ namespace SportsTracker.App.Controllers
                 return NotFound();
             }
             
-            return PartialView("Partials/_GameDetailsContent", viewModel);
+            return PartialView("Partials/Summary/_GameSummaryPageContent", viewModel);
         }
 
         [HttpGet("{league}/{gameId}/boxscore")]
@@ -96,8 +101,54 @@ namespace SportsTracker.App.Controllers
         private async Task<GameDetailsViewModel?> GetGameDetailsAsync(League league, string gameId, CancellationToken cancellationToken)
         {
             GameDetails? details = await gameService.GetGameDetailsAsync(league, gameId, cancellationToken);
+
+            if (details is null)
+            {
+                return null;
+            }
             
-            return details is null ? null : gameDetailsViewModelMapper.Map(details);
+            GameDetailsViewModel viewModel = gameDetailsViewModelMapper.Map(details);
+
+            if (league is League.NHL or League.NFL or League.MLB)
+            {
+                GameSummaryResponseDto? summary = await gameService.GetGameSummaryAsync(league, gameId, cancellationToken);
+                if (summary is not null)
+                {
+                    if (league == League.NHL)
+                    {
+                        viewModel.HockeyShots = HockeyShotMapper.Map(summary);
+                    }
+                    else
+                    {
+                        HockeySummaryCompetitionDto? competition = summary.Header?.Competitions?.FirstOrDefault();
+                        
+                        viewModel.SituationPeriod = competition?.Status?.DisplayPeriod;
+                        viewModel.SituationClock = competition?.Status?.DisplayClock;
+                        
+                        viewModel.FootballSituation = league == League.NFL ? GameSituationDetailsMapper.Football(competition?.Situation) : null;
+
+                        if (league == League.NFL && details.IsFinal && environment.IsDevelopment())
+                        {
+                            IReadOnlyList<FootballPlaybackPlay> plays = GameSituationDetailsMapper.HistoricalFootballPlays(summary);
+                            
+                            viewModel.HistoricalFootballPlays = plays;
+                            viewModel.FootballSituation = plays.FirstOrDefault()?.Situation;
+                        }
+                        
+                        viewModel.BaseballSituation = league == League.MLB ? GameSituationDetailsMapper.Baseball(competition?.Situation) : null;
+                    }
+                }
+            }
+            
+            if (league == League.MLB && details.IsLive)
+            {
+                CachedScoreboard? scoreboard = await scoreboardService.GetScoreboardAsync(league, cancellationToken);
+                Game? matchingGame = scoreboard?.Games.FirstOrDefault(g => g.Id == gameId);
+                
+                viewModel.BaseballSituation = matchingGame?.Situation?.Baseball ?? viewModel.BaseballSituation;
+            }
+
+            return viewModel;
         }
 
         private async Task<GamePageViewModel<BoxScoreViewModel>?> GetBoxScorePageAsync(League league, string gameId, CancellationToken cancellationToken)

@@ -1,7 +1,7 @@
 ﻿@model SportsTracker.App.ViewModels.GameDetails.GameDetailsViewModel
 
 @{
-    ViewData["Title"] = $"{Model.AwayTeam.Abbreviation} at {Model.HomeTeam.Abbreviation}";
+    ViewData["Title"] = $"{Model.AwayTeam.Abbreviation} at {Model.HomeTeam.Abbreviation} - {Model.StartTime.ToLocalTime():d}";
 }
 
 <div class="container-fluid">

@@ -16,9 +16,11 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
             return league switch
             {
                 League.NFL or League.CFB => MapFootball(competition),
-                League.NBA or League.CBB or League.NHL => MapTimedSport(competition.Status, league),
+                League.NBA or League.CBB => MapTimedSport(competition.Status, league),
+                League.NHL => MapHockey(competition),
                 League.MLB => MapBaseball(competition),
                 League.PGA => null,
+                
                 _ => null
             };
         }
@@ -30,7 +32,7 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
             string headline = league switch
             {
                 League.NBA or League.CBB => FormatBasketballPeriod(status.Period),
-                League.NHL => FormatHocketPeriod(status),
+                League.NHL => FormatHockeyPeriod(status),
 
                 _ => status.Type.ShortDetail
             };
@@ -40,6 +42,40 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
                 Headline = headline,
                 Subheadline = isLive ? status.DisplayClock : string.Empty,
                 Detail = status.Type.ShortDetail
+            };
+        }
+
+        private static GameSituation MapHockey(CompetitionDto competition)
+        {
+            StatusDto status = competition.Status;
+
+            bool isLive = string.Equals(status.Type.State, "in", StringComparison.OrdinalIgnoreCase);
+            
+            HockeySituationDto? situation = DeserializeSituation<HockeySituationDto>(competition.Situation);
+            HockeyLastPlayDto? lastPlay = situation?.LastPlay;
+            
+            string? homeTeamId = competition.Competitors.FirstOrDefault(x => string.Equals(x.HomeAway, "home", StringComparison.OrdinalIgnoreCase))?.Team?.Id;
+            string? awayTeamId = competition.Competitors.FirstOrDefault(x => string.Equals(x.HomeAway, "away", StringComparison.OrdinalIgnoreCase))?.Team?.Id;
+
+            return new GameSituation
+            {
+                Headline = FormatHockeyPeriod(status),
+                Subheadline = isLive ? status.DisplayClock : string.Empty,
+                Detail = status.Type.ShortDetail,
+
+                Hockey = isLive ? new HockeySituation
+                {
+                    Period = status.Period,
+                    Clock = status.DisplayClock,
+                    
+                    HomeTeamId = homeTeamId,
+                    AwayTeamId = awayTeamId,
+                    
+                    LastPlay = lastPlay?.Text,
+                    LastPlayType = lastPlay?.Type?.Abbreviation,
+                    LastPlayTeamId = lastPlay?.Team?.Id,
+                    LastPlayPlayer = lastPlay?.AthletesInvolved?.FirstOrDefault()?.DisplayName
+                } : null
             };
         }
 
@@ -154,7 +190,7 @@ namespace SportsTracker.App.Integrations.ESPN.Mappers
             };
         }
 
-        private static string FormatHocketPeriod(StatusDto status)
+        private static string FormatHockeyPeriod(StatusDto status)
         {
             if (status.Type.Completed)
             {

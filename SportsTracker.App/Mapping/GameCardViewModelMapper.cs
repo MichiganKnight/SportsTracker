@@ -32,6 +32,7 @@ namespace SportsTracker.App.Mapping
                 
                 Baseball = game.Situation?.Baseball,
                 Football = game.Situation?.Football,
+                Hockey = game.Situation?.Hockey,
 
                 IsLive = game.IsLive,
                 IsFinal = game.IsFinal,

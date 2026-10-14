@@ -1,0 +1,85 @@
+﻿@using System.Text.Json
+@using SportsTracker.App.Models.Sport
+@model SportsTracker.App.ViewModels.GameDetails.GameDetailsViewModel
+
+@{
+    IReadOnlyList<FootballPlaybackPlay> plays = Model.HistoricalFootballPlays;
+    
+    int initialIndex = 0;
+    
+    FootballPlaybackPlay initialPlay = plays[initialIndex];
+    
+    string json = JsonSerializer.Serialize(plays, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+}
+
+<div class="football-playback mt-4 pt-3 border-top" data-football-playback data-initial-index="@initialIndex">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="mb-4">Historical Game Playback</h6>
+        
+        <span class="badge bg-secondary">
+            Development Preview
+        </span>
+    </div>
+    
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="fw-semibold" data-playback-clock>
+            Q@(initialPlay.Quarter) - @initialPlay.Clock
+        </span>
+        
+        <span class="text-secondary small" data-playback-count>
+            Play @(initialIndex + 1) of @plays.Count
+        </span>
+    </div>
+    
+    <div class="progress mb-3" style="height: 5px;">
+        <div class="progress-bar" data-playback-progress style="width:@((initialIndex + 1) * 100.0 / plays.Count)%"></div>
+    </div>
+    
+    <div class="mb-3">
+        <div class="small text-secondary mb-1" data-playback-drive>
+            Drive @initialPlay.DriveNumber
+        </div>
+        
+        <div class="fw-medium" data-playback-description>
+            @initialPlay.Description
+        </div>
+        
+        <div class="small text-secondary mt-2" data-playback-score>
+            @Model.AwayTeam.Abbreviation:
+            @(initialPlay.AwayScore?.ToString() ?? "-")
+            |
+            @Model.HomeTeam.Abbreviation:
+            @(initialPlay.HomeScore?.ToString() ?? "-")
+        </div>
+    </div>
+    
+    <div class="d-flex flex-wrap justify-content-center gap-2">
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-playback-action="first" title="First Play">
+            <i class="bi bi-skip-backward-fill"></i>
+            First
+        </button>
+        
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-playback-action="previous">
+            <i class="bi bi-chevron-left"></i>
+            Previous
+        </button>
+        
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-playback-action="next">
+            Next
+            <i class="bi bi-chevron-right"></i>
+        </button>
+        
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-playback-action="last" title="Last Play">
+            Last
+            <i class="bi bi-skip-forward-fill"></i>
+        </button>
+    </div>
+    
+    <div class="text-center small text-secondary mt-3" data-playback-status role="status" aria-live="polite">
+        Select a Play to Update the Field
+    </div>
+    
+    <script type="application/json" data-playback-data>
+        @Html.Raw(json)
+    </script>
+</div>
